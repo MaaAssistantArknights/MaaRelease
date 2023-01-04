@@ -1,0 +1,5 @@
+# 凌晨 4 点清除老旧版本的 OTA 包
+0 4 * * * sh ~/MaaRelease/MaaAssistantArknights/clean_ota.sh
+
+# 每 2 分钟请求一次（对于未认证用户，github 限制每小时 60 次请求）
+*/2 * * * * git -C ~/MaaRelease pull
