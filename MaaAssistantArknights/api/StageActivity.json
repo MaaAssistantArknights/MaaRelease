@@ -50,7 +50,20 @@
         }
     },
     "YoStarJP": {
-        "sideStoryStage": [],
+        "sideStoryStage": [
+            {
+                "Display": "DH-9",
+                "Value": "DH-9",
+                "MinimumRequired": "v4.12.0-beta.1",
+                "Activity": {
+                    "Tip": "SIDE STORY「ドッソレスホリデー」復刻",
+                    "StageName": "DH",
+                    "UtcStartTime": "2023/02/28 16:00:00",
+                    "UtcExpireTime": "2023/03/10 04:00:00",
+                    "TimeZone": 9
+                }
+            }
+        ],
         "resourceCollection": {
             "Tip": "「資源調達」全ステージ開放",
             "UtcStartTime": "2023/02/03 16:00:00",
