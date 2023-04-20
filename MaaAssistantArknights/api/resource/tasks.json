@@ -11,5 +11,34 @@
             500,
             150
         ]
+    },
+    "SN-Chapter2": {
+        "action": "ClickSelf",
+        "roi": [
+            163,
+            418,
+            197,
+            125
+        ],
+        "postDelay": 2000,
+        "next": [
+            "SN-Chapter2",
+            "ChapterSwipeToTheRight"
+        ]
+    },
+    "SN-Chapter3": {
+        "action": "ClickSelf",
+        "roi": [
+            205,
+            487,
+            254,
+            165
+        ],
+        "postDelay": 2000,
+        "next": [
+            "SN-Chapter3",
+            "SwipeToTheLeft"
+            "ChapterSwipeToTheLeft"
+        ]
     }
 }
