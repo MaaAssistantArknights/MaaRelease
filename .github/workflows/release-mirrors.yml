@@ -4,6 +4,10 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release tag (defaults to the tag of the release event)"
+        required: false
 
 jobs:
   get-files:
@@ -11,7 +15,7 @@ jobs:
     steps:
       - name: "Fetch release info"
         run: |
-          echo "release_tag=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          echo "release_tag=${{ inputs.release_tag || github.event.release.tag_name }}" >> $GITHUB_ENV
       - name: "Download release"
         run: |
           mkdir -pv upload-dir/${{ env.release_tag }}
