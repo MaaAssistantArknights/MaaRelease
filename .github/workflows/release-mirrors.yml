@@ -3,6 +3,7 @@ name: release-mirrors
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   get-files:
