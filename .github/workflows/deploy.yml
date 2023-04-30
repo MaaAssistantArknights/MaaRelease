@@ -24,10 +24,16 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
             "
+              set -e
               mkdir -p ~/MaaRelease
-              cd ~/MaaRelease && git init
+              cd ~/MaaRelease
+              git init
               git fetch --force --no-tags --prune --update-head-ok --progress  \
                 'https://github.com/${{ github.repository }}' \
                 '+HEAD:refs/remotes/origin/HEAD'
               git checkout --force --progress refs/remotes/origin/HEAD
+
+              echo Generating lastUpdateTime.json
+              mkdir -p MaaAssistantArknights/api/
+              date --utc +%Y%m%d%H%M%S | jq '{timestamp:.}' | tee MaaAssistantArknights/api/lastUpdateTime.json
             "
