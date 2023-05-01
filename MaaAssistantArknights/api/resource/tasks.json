@@ -1,55 +1,99 @@
 {
-    "SN-Open": {
+    "CW-10": {
+        "algorithm": "JustReturn",
+        "sub": [
+            "CW-Open"
+        ],
+        "next": [
+            "CW-10@SideStoryStage"
+        ]
+    },
+    "CW-9": {
+        "algorithm": "JustReturn",
+        "sub": [
+            "CW-Open"
+        ],
+        "next": [
+            "CW-9@SideStoryStage"
+        ]
+    },
+    "CW-8": {
+        "algorithm": "JustReturn",
+        "sub": [
+            "CW-Open"
+        ],
+        "next": [
+            "CW-8@SideStoryStage"
+        ]
+    },
+    "CW-Open": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
         "text": [
+            "孤星",
             "已开放"
         ],
+        "postDelay": 2000,
         "roi": [
             0,
             500,
             500,
             150
+        ],
+        "next": [
+            "CWChapterToCW"
         ]
     },
-    "SN-Chapter2": {
-        "action": "ClickSelf",
+    "CWChapterToCW": {
         "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "cache": false,
         "text": [
-            "失落旗舰",
-            "失落",
-            "旗舰"
+            "未来将至"
         ],
+        "preDelay": 1000,
         "roi": [
-            163,
-            417,
-            195,
-            125
+            971,
+            126,
+            201,
+            133
         ],
-        "preDelay": 2000,
         "next": [
-            "SN-Chapter2",
             "ChapterSwipeToTheRight"
         ]
     },
-    "SN-Chapter3": {
-        "action": "ClickSelf",
-        "algorithm": "OcrDetect",
+    "CW-10@SideStoryStage": {
         "text": [
-            "无名之海",
-            "无名",
-            "之海"
+            "CW-10",
+            "CW 10"
         ],
         "roi": [
-            258,
-            503,
-            194,
-            123
+            0,
+            215,
+            587,
+            306
+        ]
+    },
+    "CW-9@SideStoryStage": {
+        "text": [
+            "CW-9"
         ],
-        "preDelay": 2000,
-        "next": [
-            "SN-Chapter3",
-            "ChapterSwipeToTheLeft"
+        "roi": [
+            0,
+            215,
+            587,
+            306
+        ]
+    },
+    "CW-8@SideStoryStage": {
+        "text": [
+            "CW-8"
+        ],
+        "roi": [
+            0,
+            215,
+            587,
+            306
         ]
     }
 }
