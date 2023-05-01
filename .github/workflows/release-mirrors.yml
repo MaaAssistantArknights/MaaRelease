@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: "Fetch release info"
         run: |
-          if [ -z "${{ inputs.release_tag }}" ]; then
+          if [ -n "${{ inputs.release_tag }}" ]; then
             echo "release_tag=${{ inputs.release_tag }}" >> $GITHUB_ENV
           else
             gh release list --repo 'MaaAssistantArknights/MaaRelease' --limit 10 | tee ./release_maa.txt
@@ -24,6 +24,8 @@ jobs:
 
             echo "release_tag=$(head -n 1 ./config)" >> $GITHUB_ENV
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Download release"
         run: |
           mkdir -pv upload-dir/${{ env.release_tag }}
