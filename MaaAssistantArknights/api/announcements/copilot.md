@@ -5,6 +5,16 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 热度排序优化啦
+
+```json
+{
+  "time": "2023-05-08T09:09:36.073Z"
+}
+```
+
+✿✿ヽ(°▽°)ノ✿
+
 ## 请更新干员技能
 
 ```json
