@@ -48,6 +48,9 @@ def get_release_info(repo: str, tag: str):
         req.add_header("Authorization", f"Bearer {token}")
     resp = retry_urlopen(req).read()
     releases = json.loads(resp)
+    for rel in releases["assets"]:
+        del rel["uploader"]
+
     return releases
 
 
@@ -81,4 +84,4 @@ if version_type == "stable":
     channels["stable"] = version_json
 
 with open(api_path, "w") as f:
-    json.dump(channels, f, indent=4)
+    json.dump(channels, f)
