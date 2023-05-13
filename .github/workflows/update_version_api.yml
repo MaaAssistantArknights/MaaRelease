@@ -10,8 +10,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        env:
-            GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
+        with:
+          token: ${{ secrets.AUTO_TAG_PAT }}
 
       - name: Update Version API
         run: |
