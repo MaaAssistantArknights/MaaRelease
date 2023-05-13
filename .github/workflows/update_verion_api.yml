@@ -1,0 +1,47 @@
+name: update_version_api
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'alpha / beta / stable'
+        type: string
+        required: true
+      version_id:
+        description: 'like v4.16.5'
+        type: string
+        required: true
+
+jobs:
+  auto_tag_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Update Version API
+        run: |
+          python ./MaaAssistantArknights/update_version.py "${{ inputs.version_type }}" "${{ inputs.version_id }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Git config
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Add files to git
+        run: |
+          git status
+          
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add .
+
+          commit_msg="chore: Update Version API of ""${{ inputs.version_type }}""${{ inputs.version_id }}"
+          git commit -m "$commit_msg"
+
+      - name: Push files to github
+        run: |
+          git push
