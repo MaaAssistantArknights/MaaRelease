@@ -54,12 +54,13 @@ def get_release_info(repo: str, tag: str):
     return releases
 
 
+ota_details = get_release_info("MaaRelease", version_id)
 if version_type == "alpha":
     main_details = None
+    body = ota_details["body"]
 else:
     main_details = get_release_info("MaaAssistantArknights", version_id)
-
-ota_details = get_release_info("MaaRelease", version_id)
+    body = main_details["body"]
 
 api_path = Path(__file__).parent / "api" / "version" / "maa_version.json"
 with open(api_path, "r") as f:
@@ -67,6 +68,7 @@ with open(api_path, "r") as f:
 
 version_json = {
         "version": version_id,
+        "body": body,
         "details": main_details,
         "ota_details": ota_details,
     }
