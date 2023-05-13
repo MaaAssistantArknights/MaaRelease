@@ -5,18 +5,6 @@ import urllib.request
 import urllib.error
 import os
 
-if len(sys.argv) != 3:
-    print("Usage: python update_version.py <version_type> <version>")
-    sys.exit(1)
-
-version_type = sys.argv[1]
-version_id = sys.argv[2]
-
-if version_type != "alpha" and version_type != "beta" and version_type != "stable":
-    print("Usage: python update_version.py <version_type> <version>")
-    print("version_type must be alpha, beta, or stable")
-    sys.exit(1)
-
 
 def retry_urlopen(*args, **kwargs):
     import time
@@ -40,7 +28,8 @@ def retry_urlopen(*args, **kwargs):
                 continue
             raise
 
-def get_release_info(repo: str, tag: str):
+
+def get_tag_info(repo: str, tag: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
     req = urllib.request.Request(url)
     token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", None))
@@ -62,36 +51,81 @@ def get_release_info(repo: str, tag: str):
     return releases
 
 
-ota_details = get_release_info("MaaRelease", version_id)
-if version_type == "alpha":
-    main_details = None
-    body = ota_details["body"]
-else:
-    main_details = get_release_info("MaaAssistantArknights", version_id)
-    body = main_details["body"]
+def get_version_json(version_id: str, only_alpha: bool):
+    ota_details = get_tag_info("MaaRelease", version_id)
+    if only_alpha:
+        main_details = None
+        body = ota_details["body"]
+    else:
+        main_details = get_tag_info("MaaAssistantArknights", version_id)
+        body = main_details["body"]
 
-api_path = Path(__file__).parent / "api" / "version" / "maa_version.json"
-with open(api_path, "r", encoding='utf-8') as f:
-    channels = json.load(f)
-
-version_json = {
+    version_json = {
         "version": version_id,
         "body": body,
         "details": main_details,
         "ota_details": ota_details,
     }
 
-if version_type == "alpha":
-    channels["alpha"] = version_json
+    return version_json
 
-if version_type == "beta":
-    channels["alpha"] = version_json
-    channels["beta"] = version_json
 
-if version_type == "stable":
-    channels["alpha"] = version_json
-    channels["beta"] = version_json
-    channels["stable"] = version_json
+def get_release_info():
+    url = f"https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases"
+    req = urllib.request.Request(url)
+    token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", None))
+    if token:
+        req.add_header("Authorization", f"Bearer {token}")
+    resp = retry_urlopen(req).read()
+    releases = json.loads(resp)
+    
+    alpha = None
+    beta = None
+    stable = None
+    for rel in releases:
+        tag_name = rel["tag_name"]
+        seg = tag_name.split(".")
 
-with open(api_path, "w", encoding='utf-8') as f:
-    json.dump(channels, f, ensure_ascii=False, indent=2)
+        if len(seg) == 3:   # stable
+            if not stable:
+                stable = tag_name
+            if not beta:
+                beta = tag_name
+            if not alpha:
+                alpha = tag_name
+
+        elif len(seg) == 4: # beta
+            if not beta:
+                beta = tag_name
+            if not alpha:
+                alpha = tag_name
+
+        else: # alpha
+            if not alpha:
+                alpha = tag_name
+
+        if stable and beta and alpha:
+            break
+
+    return alpha, beta, stable
+
+def main():
+    alpha, beta, stable = get_release_info()
+    print(f"alpha: {alpha}, beta: {beta}, stable: {stable}")
+
+    alpha_json = get_version_json(alpha, True)
+    beta_json = get_version_json(beta, False)
+    stable_json = get_version_json(stable, False)
+    full_json = {
+        "alpha": alpha_json,
+        "beta": beta_json,
+        "stable": stable_json,
+    }
+
+    api_path = Path(__file__).parent / "api" / "version" / "maa_version.json"
+    with open(api_path, "w", encoding='utf-8') as f:
+        json.dump(full_json, f, ensure_ascii=False, indent=2)
+
+
+if __name__ == '__main__':
+    main()
