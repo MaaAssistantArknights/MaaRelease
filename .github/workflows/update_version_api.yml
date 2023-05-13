@@ -10,6 +10,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        env:
+            GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
 
       - name: Update Version API
         run: |
@@ -21,7 +23,6 @@ jobs:
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
       - name: Add files to git
         run: |
@@ -33,11 +34,3 @@ jobs:
 
           commit_msg="chore: Update Version API"
           git commit -m "$commit_msg"
-
-      - name: Push files to github
-        run: |
-          git push
-
-      - name: Deploy
-        run: |
-          gh workflow run deploy
