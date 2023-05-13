@@ -51,14 +51,20 @@ def get_tag_info(repo: str, tag: str):
     return releases
 
 
-def get_version_json(version_id: str, only_alpha: bool):
+def get_version_json(version_id: str):
     ota_details = get_tag_info("MaaRelease", version_id)
-    if only_alpha:
-        main_details = None
-        body = ota_details["body"]
-    else:
+    try:
         main_details = get_tag_info("MaaAssistantArknights", version_id)
+    except urllib.error.HTTPError as e:
+        if e.status == 404:
+            main_details = None
+        else:
+            raise
+
+    if main_details:
         body = main_details["body"]
+    else:
+        body = ota_details["body"]
 
     version_json = {
         "version": version_id,
@@ -109,22 +115,24 @@ def get_release_info():
 
     return alpha, beta, stable
 
+
 def main():
     alpha, beta, stable = get_release_info()
     print(f"alpha: {alpha}, beta: {beta}, stable: {stable}")
 
-    alpha_json = get_version_json(alpha, True)
-    beta_json = get_version_json(beta, False)
-    stable_json = get_version_json(stable, False)
-    full_json = {
-        "alpha": alpha_json,
-        "beta": beta_json,
-        "stable": stable_json,
-    }
+    alpha_json = get_version_json(alpha)
+    beta_json = get_version_json(beta)
+    stable_json = get_version_json(stable)
 
-    api_path = Path(__file__).parent / "api" / "version" / "maa_version.json"
-    with open(api_path, "w", encoding='utf-8') as f:
-        json.dump(full_json, f, ensure_ascii=False, indent=2)
+    api_path = Path(__file__).parent / "api" / "version"
+    
+    def save_json(json_data, file_name):
+        with open(api_path / file_name, "w", encoding='utf-8') as f:
+            json.dump(json_data, f, ensure_ascii=False, indent=2)
+
+    save_json(alpha_json, "alpha.json")
+    save_json(beta_json, "beta.json")
+    save_json(stable_json, "stable.json")
 
 
 if __name__ == '__main__':
