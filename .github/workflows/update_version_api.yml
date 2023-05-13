@@ -34,3 +34,7 @@ jobs:
 
           commit_msg="chore: Update Version API"
           git commit -m "$commit_msg"
+
+      - name: Push files to github
+        run: |
+          git push
