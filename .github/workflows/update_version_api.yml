@@ -39,7 +39,7 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git add .
 
-          commit_msg="chore: Update Version API of ""${{ inputs.version_type }}""${{ inputs.version_id }}"
+          commit_msg="chore: Update Version API of ""${{ inputs.version_type }}"" ""${{ inputs.version_id }}"
           git commit -m "$commit_msg"
 
       - name: Push files to github
