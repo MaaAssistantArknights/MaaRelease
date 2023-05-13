@@ -48,9 +48,17 @@ def get_release_info(repo: str, tag: str):
         req.add_header("Authorization", f"Bearer {token}")
     resp = retry_urlopen(req).read()
     releases = json.loads(resp)
-    for rel in releases["assets"]:
-        del rel["uploader"]
 
+    del releases["author"]
+    assets = releases["assets"]
+    mini_assets = []
+    for rel in assets:
+        temp = {}
+        temp["name"] = rel["name"]
+        temp["browser_download_url"] = rel["browser_download_url"]
+        mini_assets.append(temp)
+
+    releases["assets"] = mini_assets
     return releases
 
 
@@ -63,7 +71,7 @@ else:
     body = main_details["body"]
 
 api_path = Path(__file__).parent / "api" / "version" / "maa_version.json"
-with open(api_path, "r") as f:
+with open(api_path, "r", encoding='utf-8') as f:
     channels = json.load(f)
 
 version_json = {
@@ -85,5 +93,5 @@ if version_type == "stable":
     channels["beta"] = version_json
     channels["stable"] = version_json
 
-with open(api_path, "w") as f:
-    json.dump(channels, f)
+with open(api_path, "w", encoding='utf-8') as f:
+    json.dump(channels, f, ensure_ascii=False, indent=2)
