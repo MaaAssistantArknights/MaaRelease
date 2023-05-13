@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       version_type:
-        description: 'alpha / beta / stable'
+        description: 'version_type: alpha / beta / stable'
         type: string
         required: true
       version_id:
-        description: 'like v4.16.5'
+        description: 'version_id, like v4.16.5'
         type: string
         required: true
 
