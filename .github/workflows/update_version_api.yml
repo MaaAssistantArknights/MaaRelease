@@ -45,3 +45,7 @@ jobs:
       - name: Push files to github
         run: |
           git push
+
+      - name: Deploy
+        run: |
+          gh workflow run deploy
