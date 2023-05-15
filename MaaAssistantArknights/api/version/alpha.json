@@ -1,237 +1,289 @@
 {
-  "version": "v4.16.5-alpha.1.d099.g823d9cc9",
-  "body": "优化设置和导航界面\n\n**Full Changelog**: [v4.16.4 -> alpha/v4.16.5-alpha.1.d099.g823d9cc9](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.16.4...alpha/v4.16.5-alpha.1.d099.g823d9cc9)",
-  "details": null,
+  "version": "v4.17.0-beta.1",
+  "body": "## v4.17.0-beta.1\r\n\r\n### 改进\r\n\r\n- 设置布局大重构 ✿✿ヽ(°▽°)ノ✿ @moomiji @ABA2396 @MistEO\r\n- 版本更新大优化 ✿✿ヽ(°▽°)ノ✿ @MistEO\r\n- 添加 MuMu12 检测连接与控制台退出模拟器 @ABA2396 @MistEO\r\n- 支持蓝叠hyperV使用自动检测 @ABA2396\r\n- 支持直接读取蓝叠模拟器Hyper-V版本非多开模式下使用的核心 (#4673) @SherkeyXD\r\n- 标题栏显示卡池信息 @MistEO @ABA2396\r\n- UI improvements (#4582) @dantmnf\r\n- 优化保全派驻内置作业 SSS_约翰老妈在建地块_浊蒂水陈版.json (#4686) @junyihan233\r\n\r\n### 修复\r\n\r\n- 解决抄作业guard和supporter字段不识别的问题 (#4735) @AnnoyingFlowers\r\n- XAML Intellisense unable to load resources stored in ResourceDictionary @moomiji\r\n- avatar saved at wrong path in set_avatar() (#4724) @lengyanyu258\r\n- 修正 Android 12 上无法结束游戏进程的问题 (#4685) @AnnAngela\r\n- 修复碎石后加载时间过长导致任务提前中止的问题 @zzyyyl\r\n\r\n### 其他\r\n\r\n- 优化并修复一些CI的错误 @MistEO @horror-proton\r\n- 文档补充 maadeps-download.py 位置 (#4672) @niuden\r\n\r\n### For overseas\r\n\r\n#### YostarKR\r\n\r\n- Fix getting stuck in RIIC for KR (#4749) @178619\r\n\r\n### For develops\r\n\r\n- update linux tutorial @horror-proton\r\n- 让VS可以补全头文件 @MistEO\r\n- 新增 [version api](https://ota.maa.plus/MaaAssistantArknights/api/version/) @MistEO\r\n\r\n**Full Changelog**: [v4.16.4 -> v4.17.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.16.4...v4.17.0-beta.1)\r\n",
+  "details": {
+    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/103021708",
+    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/103021708/assets",
+    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/103021708/assets{?name,label}",
+    "html_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/tag/v4.17.0-beta.1",
+    "id": 103021708,
+    "node_id": "RE_kwDOFutQ4s4GI_yM",
+    "tag_name": "v4.17.0-beta.1",
+    "target_commitish": "dev",
+    "name": "v4.17.0-beta.1",
+    "draft": false,
+    "prerelease": true,
+    "created_at": "2023-05-15T14:19:31Z",
+    "published_at": "2023-05-15T14:53:11Z",
+    "assets": [
+      {
+        "name": "MAA-v4.17.0-beta.1-linux-aarch64.tar.gz",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-linux-aarch64.tar.gz"
+      },
+      {
+        "name": "MAA-v4.17.0-beta.1-linux-x86_64.tar.gz",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-linux-x86_64.tar.gz"
+      },
+      {
+        "name": "MAA-v4.17.0-beta.1-macos-universal.dmg",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-macos-universal.dmg"
+      },
+      {
+        "name": "MAA-v4.17.0-beta.1-win-arm64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-win-arm64.zip"
+      },
+      {
+        "name": "MAA-v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-win-x64.zip"
+      },
+      {
+        "name": "MAAComponent-DebugSymbol-v4.17.0-beta.1-macos-universal.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAAComponent-DebugSymbol-v4.17.0-beta.1-macos-universal.zip"
+      },
+      {
+        "name": "MAAComponent-DebugSymbol-v4.17.0-beta.1-win-arm64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAAComponent-DebugSymbol-v4.17.0-beta.1-win-arm64.zip"
+      },
+      {
+        "name": "MAAComponent-DebugSymbol-v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v4.17.0-beta.1/MAAComponent-DebugSymbol-v4.17.0-beta.1-win-x64.zip"
+      }
+    ],
+    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.17.0-beta.1",
+    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.17.0-beta.1",
+    "body": "## v4.17.0-beta.1\r\n\r\n### 改进\r\n\r\n- 设置布局大重构 ✿✿ヽ(°▽°)ノ✿ @moomiji @ABA2396 @MistEO\r\n- 版本更新大优化 ✿✿ヽ(°▽°)ノ✿ @MistEO\r\n- 添加 MuMu12 检测连接与控制台退出模拟器 @ABA2396 @MistEO\r\n- 支持蓝叠hyperV使用自动检测 @ABA2396\r\n- 支持直接读取蓝叠模拟器Hyper-V版本非多开模式下使用的核心 (#4673) @SherkeyXD\r\n- 标题栏显示卡池信息 @MistEO @ABA2396\r\n- UI improvements (#4582) @dantmnf\r\n- 优化保全派驻内置作业 SSS_约翰老妈在建地块_浊蒂水陈版.json (#4686) @junyihan233\r\n\r\n### 修复\r\n\r\n- 解决抄作业guard和supporter字段不识别的问题 (#4735) @AnnoyingFlowers\r\n- XAML Intellisense unable to load resources stored in ResourceDictionary @moomiji\r\n- avatar saved at wrong path in set_avatar() (#4724) @lengyanyu258\r\n- 修正 Android 12 上无法结束游戏进程的问题 (#4685) @AnnAngela\r\n- 修复碎石后加载时间过长导致任务提前中止的问题 @zzyyyl\r\n\r\n### 其他\r\n\r\n- 优化并修复一些CI的错误 @MistEO @horror-proton\r\n- 文档补充 maadeps-download.py 位置 (#4672) @niuden\r\n\r\n### For overseas\r\n\r\n#### YostarKR\r\n\r\n- Fix getting stuck in RIIC for KR (#4749) @178619\r\n\r\n### For develops\r\n\r\n- update linux tutorial @horror-proton\r\n- 让VS可以补全头文件 @MistEO\r\n- 新增 [version api](https://ota.maa.plus/MaaAssistantArknights/api/version/) @MistEO\r\n\r\n**Full Changelog**: [v4.16.4 -> v4.17.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.16.4...v4.17.0-beta.1)\r\n",
+    "mentions_count": 13
+  },
   "ota_details": {
-    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103011994",
-    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103011994/assets",
-    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103011994/assets{?name,label}",
-    "html_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/tag/v4.16.5-alpha.1.d099.g823d9cc9",
-    "id": 103011994,
-    "node_id": "RE_kwDOIUyZWc4GI9aa",
-    "tag_name": "v4.16.5-alpha.1.d099.g823d9cc9",
+    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103022125",
+    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103022125/assets",
+    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaRelease/releases/103022125/assets{?name,label}",
+    "html_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/tag/v4.17.0-beta.1",
+    "id": 103022125,
+    "node_id": "RE_kwDOIUyZWc4GI_4t",
+    "tag_name": "v4.17.0-beta.1",
     "target_commitish": "main",
     "name": "",
     "draft": false,
     "prerelease": true,
-    "created_at": "2023-05-15T13:49:13Z",
-    "published_at": "2023-05-15T13:52:17Z",
+    "created_at": "2023-05-15T14:55:53Z",
+    "published_at": "2023-05-15T14:55:54Z",
     "assets": [
       {
-        "name": "MAA-v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAA-v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAA-v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAA-v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.0-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.0-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.0-rc.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.0-rc.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.0-rc.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.0-rc.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.0_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.0_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.1-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.1-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.1-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.1-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.12.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.12.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.12.3_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.12.3_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0-beta.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0-beta.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0-beta.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0-beta.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0-beta.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0-beta.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0-beta.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0-beta.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0-beta.3_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0-beta.3_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0-beta.4_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0-beta.4_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0-beta.4_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0-beta.4_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.13.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.13.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.13.0_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.13.0_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.14.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.14.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.14.0-beta.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.14.0-beta.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.14.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.14.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.14.0-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.14.0-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.14.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.14.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.14.0_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.14.0_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.14.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.14.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.14.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.14.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.0-beta.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.0-beta.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.0-beta.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.0-beta.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.0-beta.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.0-beta.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.0-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.0-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.0_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.0_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d103.g781bf240_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d103.g781bf240_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d114.gd594c5a5_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d114.gd594c5a5_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d114.gd594c5a5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d114.gd594c5a5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d123.g823d32b5_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d123.g823d32b5_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d123.g823d32b5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d123.g823d32b5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d129.g079799c7_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d129.g079799c7_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d129.g079799c7_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d129.g079799c7_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d133.g7cb39311_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d133.g7cb39311_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d133.g7cb39311_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d133.g7cb39311_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d142.g3b440b82_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d142.g3b440b82_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d142.g3b440b82_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d142.g3b440b82_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d145.gf644f8c5_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.15.2-alpha.1.d145.gf644f8c5_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.15.2-alpha.1.d145.gf644f8c5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.15.2-alpha.1.d145.gf644f8c5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.0-beta.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.0-beta.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.0-beta.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.0-rc.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.0-rc.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.0-rc.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.0-rc.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.0-rc.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.0-rc.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.0-rc.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.0_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.0_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.0_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d003.g68b6ac6e_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.1-alpha.1.d003.g68b6ac6e_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d003.g68b6ac6e_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.1-alpha.1.d003.g68b6ac6e_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d013.g24524cba_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.1-alpha.1.d013.g24524cba_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d013.g24524cba_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.1-alpha.1.d013.g24524cba_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d018.gfbd54fc5_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.1-alpha.1.d018.gfbd54fc5_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.1-alpha.1.d018.gfbd54fc5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.1-alpha.1.d018.gfbd54fc5_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.1_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.1_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.1_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.2_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.2_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.2_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.3_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.3_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.3_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d005.g9b76b45d_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.4-alpha.1.d005.g9b76b45d_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d005.g9b76b45d_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.4-alpha.1.d005.g9b76b45d_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d008.g7ce9c4c7_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.4-alpha.1.d008.g7ce9c4c7_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d008.g7ce9c4c7_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.4-alpha.1.d008.g7ce9c4c7_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d010.g00e72f96_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.4-alpha.1.d010.g00e72f96_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d010.g00e72f96_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.4-alpha.1.d010.g00e72f96_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d035.g78a1da30_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.4-alpha.1.d035.g78a1da30_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.4-alpha.1.d035.g78a1da30_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.4-alpha.1.d035.g78a1da30_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.4_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.4_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.4_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.4_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d028.gdc988164_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d028.gdc988164_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d028.gdc988164_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d028.gdc988164_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d044.g10bc322f_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d044.g10bc322f_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d044.g10bc322f_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d044.g10bc322f_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d058.ge3efdaea_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d058.ge3efdaea_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d058.ge3efdaea_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d058.ge3efdaea_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d068.g2472e284_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d068.g2472e284_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d068.g2472e284_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d068.g2472e284_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d075.gbe5c6edd_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d075.gbe5c6edd_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d075.gbe5c6edd_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d075.gbe5c6edd_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d081.g1f352462_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d081.g1f352462_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d081.g1f352462_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d081.g1f352462_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d090.gde5adfbf_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d090.gde5adfbf_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d090.gde5adfbf_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d090.gde5adfbf_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d094.g3482bf9c_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d094.g3482bf9c_v4.17.0-beta.1-win-x64.zip"
       },
       {
-        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d094.g3482bf9c_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip",
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.16.5-alpha.1.d099.g823d9cc9/MAAComponent-OTA-v4.16.5-alpha.1.d094.g3482bf9c_v4.16.5-alpha.1.d099.g823d9cc9-win-x64.zip"
+        "name": "MAAComponent-OTA-v4.16.5-alpha.1.d099.g823d9cc9_v4.17.0-beta.1-win-x64.zip",
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v4.17.0-beta.1/MAAComponent-OTA-v4.16.5-alpha.1.d099.g823d9cc9_v4.17.0-beta.1-win-x64.zip"
       }
     ],
-    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v4.16.5-alpha.1.d099.g823d9cc9",
-    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v4.16.5-alpha.1.d099.g823d9cc9",
-    "body": "优化设置和导航界面\n\n**Full Changelog**: [v4.16.4 -> alpha/v4.16.5-alpha.1.d099.g823d9cc9](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.16.4...alpha/v4.16.5-alpha.1.d099.g823d9cc9)"
+    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v4.17.0-beta.1",
+    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v4.17.0-beta.1",
+    "body": ""
   }
 }
