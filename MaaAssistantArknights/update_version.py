@@ -29,6 +29,11 @@ def retry_urlopen(*args, **kwargs):
             raise
 
 
+MIRRORS = [
+    ("github.com", "agent.imgg.dev"),
+    ("github.com", "maa.r2.imgg.dev")
+]
+
 def get_tag_info(repo: str, tag: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
     req = urllib.request.Request(url)
@@ -39,17 +44,18 @@ def get_tag_info(repo: str, tag: str):
     releases = json.loads(resp)
 
     del releases["author"]
-    assets = releases["assets"]
-    mini_assets = []
-    for rel in assets:
-        temp = {}
-        temp["name"] = rel["name"]
-        temp["browser_download_url"] = rel["browser_download_url"]
-        mini_assets.append(temp)
+    
+    for rel in releases["assets"]:
+        del rel["uploader"]
 
-    releases["assets"] = mini_assets
+        mirrors = []
+        url = rel["browser_download_url"]
+        for (raw, rep) in MIRRORS:
+            m = url.replace(raw, rep)
+            mirrors.append(m)
+        rel["mirrors"] = mirrors
+
     return releases
-
 
 def get_version_json(version_id: str):
     ota_details = get_tag_info("MaaRelease", version_id)
@@ -62,19 +68,13 @@ def get_version_json(version_id: str):
             raise
 
     if main_details:
-        body = main_details["body"]
-
-        # v4.17.0 请求信息写错了，临时加一下，之后把下面这行删了
         main_details["assets"] += ota_details["assets"]
-
     else:
-        body = ota_details["body"]
+        main_details = ota_details
 
     version_json = {
         "version": version_id,
-        "body": body,
         "details": main_details,
-        "ota_details": ota_details,
     }
 
     return version_json
