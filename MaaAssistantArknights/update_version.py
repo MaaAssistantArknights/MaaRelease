@@ -63,6 +63,10 @@ def get_version_json(version_id: str):
 
     if main_details:
         body = main_details["body"]
+
+        # v4.17.0 请求信息写错了，临时加一下，之后把下面这行删了
+        main_details["assets"] += ota_details["assets"]
+
     else:
         body = ota_details["body"]
 
