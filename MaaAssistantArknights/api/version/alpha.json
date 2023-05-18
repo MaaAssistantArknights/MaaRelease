@@ -63,7 +63,7 @@
     "node_id": "RE_kwDOIUyZWc4GKP75",
     "tag_name": "v4.17.0-rc.1",
     "target_commitish": "main",
-    "name": "",
+    "name": "v4.17.0-rc.1",
     "draft": false,
     "prerelease": true,
     "created_at": "2023-05-17T16:36:54Z",
@@ -280,6 +280,7 @@
     ],
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v4.17.0-rc.1",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v4.17.0-rc.1",
-    "body": ""
+    "body": "## v4.17.0-rc.1\r\n\r\n### 改进\r\n\r\n- 调整 Hyper-V 蓝叠 地址检测逻辑，需勾选 `自动检测` + `每次检测` @MistEO\r\n- ADB 替换失败则临时用本地的 @MistEO\r\n\r\n### 修复\r\n\r\n- 更新自动战斗点赞反馈提示语 (#4776) @UniMars\r\n- 修复关卡 `消息传递`、窒息` 识别错误 (#4781) @cenfusheng\r\n- 为 Resource loader 添加重入锁 @MistEO\r\n- 修复正式版不显示 release note的问题 @MistEO\r\n- 修复 CI release 不更新 version api 的问题 @MistEO\r\n\r\n### 其他\r\n\r\n- 修复繁中资源，冒烟测试添加所有外服资源检查 @MistEO\r\n- 为冒烟测试的 nuget 添加重试 @MistEO\r\n- ~~小水管爆了~~ 不再从 OTA 站下载更新包 @MistEO\r\n- 更新文档、界面文字等 @MistEO\r\n- 添加关于 MuMu 模拟器 12 的说明 (#4793) @AnnAngela\r\n- Doc : JP シラクザーノ (#4782) @wallsman\r\n- 调整冒烟测试报错时机 @MistEO\r\n\r\n**Full Changelog**: [v4.17.0-beta.1 -> v4.17.0-rc.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.17.0-beta.1...v4.17.0-rc.1)\r\n",
+    "mentions_count": 5
   }
 }
