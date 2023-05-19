@@ -44,16 +44,25 @@ def get_tag_info(repo: str, tag: str):
     releases = json.loads(resp)
 
     del releases["author"]
-    
-    for rel in releases["assets"]:
-        del rel["uploader"]
 
+    assets = releases["assets"]
+    new_assets = []
+    for rel in assets:
         mirrors = []
         url = rel["browser_download_url"]
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
             mirrors.append(m)
-        rel["mirrors"] = mirrors
+
+        new_rel = {
+            "name": rel["name"],
+            "size": rel["size"],
+            "browser_download_url": rel["browser_download_url"],
+            "mirrors": mirrors
+        }
+        new_assets.append(new_rel)
+    
+    releases["assets"] = new_assets
 
     return releases
 
