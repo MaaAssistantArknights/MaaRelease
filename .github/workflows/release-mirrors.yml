@@ -52,7 +52,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-1'
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
-          SOURCE_DIR: "upload-dir/${{ env.release_tag }}"
+          SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
       - name: "Upload to MAA S3"
         uses: jakejarvis/s3-sync-action@v0.5.1
@@ -64,7 +64,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.MAA_MINIO_SECRET_KEY }}
           AWS_REGION: 'us-east-1'
           AWS_S3_ENDPOINT: ${{ secrets.MAA_MINIO_ENDPOINT }}
-          SOURCE_DIR: "upload-dir/${{ env.release_tag }}"
+          SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
       - name: "Upload to AnnAngela's COS"
         uses: TencentCloud/cos-action@v1
@@ -73,7 +73,7 @@ jobs:
           secret_key: ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
           cos_bucket: ${{ secrets.ANNANGELA_COS_BUCKET }}
           cos_region: ap-guangzhou
-          local_path: upload-dir/${{ env.release_tag }}
+          local_path: upload-dir
           remote_path: "MaaRelease"
       - name: "Fire AnnAngela's webhook"
         uses: distributhor/workflow-webhook@v3
