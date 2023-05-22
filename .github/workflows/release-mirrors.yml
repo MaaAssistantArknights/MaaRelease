@@ -11,18 +11,21 @@ jobs:
   get-files:
     runs-on: "ubuntu-latest"
     steps:
+      - uses: actions/checkout@v3
+        with:
+          path: MaaRelease
       - name: "Fetch release info"
         run: |
           if [ -n "${{ inputs.release_tag }}" ]; then
             echo "release_tag=${{ inputs.release_tag }}" >> $GITHUB_ENV
           else
-            gh release list --repo 'MaaAssistantArknights/MaaRelease' --limit 10 | tee ./release_maa.txt
-            head -n 1 ./release_maa.txt | awk '{ print $1 }' > ./config
+            gh release list --repo 'MaaAssistantArknights/MaaRelease' --limit 10 | tee ${{ runner.temp }}/release_maa
+            head -n 1 ${{ runner.temp }}/release_maa | awk '{ print $1 }' > ${{ runner.temp }}/config
 
             echo "config:"
-            cat ./config
+            cat ${{ runner.temp }}/config
 
-            echo "release_tag=$(head -n 1 ./config)" >> $GITHUB_ENV
+            echo "release_tag=$(head -n 1 ${{ runner.temp }}/config)" >> $GITHUB_ENV
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,6 +46,7 @@ jobs:
   #         target: "/data/html/MaaAssistantArknights/MaaRelease/releases/download"
   #         strip_components: 1
       - name: "Upload to R2"
+        if: github.repository == 'MaaAssistantArknights/MaaRelease'
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --follow-symlinks
@@ -55,6 +59,7 @@ jobs:
           SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
       - name: "Upload to MAA S3"
+        if: github.repository == 'MaaAssistantArknights/MaaRelease'
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --acl public-read --follow-symlinks
@@ -66,19 +71,28 @@ jobs:
           AWS_S3_ENDPOINT: ${{ secrets.MAA_MINIO_ENDPOINT }}
           SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
-      - name: "Upload to AnnAngela's COS"
-        uses: TencentCloud/cos-action@v1
+      - name: Use Node.js
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, 'alpha')
+        uses: actions/setup-node@v3
+        id: setup-node
         with:
-          secret_id: ${{ secrets.ANNANGELA_COS_SECRET_ID }}
-          secret_key: ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
-          cos_bucket: ${{ secrets.ANNANGELA_COS_BUCKET }}
-          cos_region: ap-guangzhou
-          local_path: upload-dir
-          remote_path: "MaaRelease"
-      - name: "Fire AnnAngela's webhook"
-        uses: distributhor/workflow-webhook@v3
-        with:
-          webhook_url: https://webhook.annangela.cn/github?from=MaaRelease
-          webhook_secret: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
-          webhook_type: json
-          max_time: 30
+          node-version: lts/*
+          check-latest: true
+          # cache: npm
+      - name: "Upload to AnnAngela's COS and fire webhook"
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, 'alpha')
+        run: |
+          echo "Installing coscli..."
+          gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --repo tencentyun/coscli
+          chmod +x ${{ runner.temp }}/coscli/coscli-linux
+          echo "coscli installed."
+          touch ~/.cos.yaml
+          node MaaRelease/.github/AnnAngela/prepare.js
+          echo "::group::coscli output"
+          ${{ runner.temp }}/coscli/coscli-linux sync ${{ runner.temp }}/upload-dir/${{ env.release_tag }} cos://${{ secrets.ANNANGELA_COS_BUCKET }}/MaaRelease --recursive -e cos.accelerate.myqcloud.com -i ${{ secrets.ANNANGELA_COS_SECRET_ID }} -k ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
+          echo "::endgroup::"
+          node MaaRelease/.github/AnnAngela/webhook.js
+        env:
+          WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
+          WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
+          GH_TOKEN: ${{ github.token }}
