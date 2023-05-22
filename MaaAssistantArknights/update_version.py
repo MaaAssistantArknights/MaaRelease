@@ -4,6 +4,7 @@ from pathlib import Path
 import urllib.request
 import urllib.error
 import os
+import re
 
 
 def retry_urlopen(*args, **kwargs):
@@ -34,7 +35,47 @@ MIRRORS = [
     ("github.com", "maa.r2.imgg.dev")
 ]
 
-def get_tag_info(repo: str, tag: str):
+ANNANGELA_MIRRORS = {
+    'normal': {
+        'raw': "github.com",
+        'rep': "maa-ota.annangela.cn"
+    },
+    'lite': {
+        'raw': "github.com",
+        'rep': "maa-ota-lite.annangela.cn"
+    },
+    'liteThreshold': 10 * 1024 * 1024
+}
+
+def extract_integers(string):
+    pattern = r'\b\d+\b'
+    integers = re.findall(pattern, string)
+    return [int(num) for num in integers[:2]]
+
+def get_annangela_mirror(rel) :
+    name = rel['name']
+    url = rel["browser_download_url"]
+
+    if "MAAComponent-OTA-v" not in rel['name']:
+        return False
+
+    pattern = r"(?<=MAAComponent-OTA-v)(\d+(?:\.\d+)*)(?:-[^-_]+)?_v(\d+(?:\.\d+)*)(?=-)"
+    matches = re.search(pattern, name)
+    if matches:
+        before = matches.group(1)
+        after = matches.group(2)
+        beforeMajor, beforeMinor, *rest = extract_integers(before)
+        afterMajor, afterMinor, *rest = extract_integers(after)
+        if beforeMajor != afterMajor or afterMinor - beforeMinor >3:
+            return False
+    else:
+        return False
+
+    size = rel["size"]
+    site = ANNANGELA_MIRRORS["normal"] if size > ANNANGELA_MIRRORS["liteThreshold"] else ANNANGELA_MIRRORS["lite"]
+    return url.replace(site['raw'], site['rep'])
+
+def get_tag_info(repo: str, tag: str, tagType: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
     req = urllib.request.Request(url)
     token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", None))
@@ -50,6 +91,11 @@ def get_tag_info(repo: str, tag: str):
     for rel in assets:
         mirrors = []
         url = rel["browser_download_url"]
+        if tagType != "alpha":
+            result = get_annangela_mirror(rel)
+            if result != False:
+                mirrors.append(result)
+
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
             mirrors.append(m)
@@ -66,10 +112,10 @@ def get_tag_info(repo: str, tag: str):
 
     return releases
 
-def get_version_json(version_id: str):
-    ota_details = get_tag_info("MaaRelease", version_id)
+def get_version_json(version_id: str, tagType: str):
+    ota_details = get_tag_info("MaaRelease", version_id, tagType)
     try:
-        main_details = get_tag_info("MaaAssistantArknights", version_id)
+        main_details = get_tag_info("MaaAssistantArknights", version_id, tagType)
     except urllib.error.HTTPError as e:
         if e.status == 404:
             main_details = None
@@ -136,9 +182,9 @@ def main():
     alpha, beta, stable = get_release_info()
     print(f"alpha: {alpha}, beta: {beta}, stable: {stable}")
 
-    alpha_json = get_version_json(alpha)
-    beta_json = get_version_json(beta)
-    stable_json = get_version_json(stable)
+    alpha_json = get_version_json(alpha, 'alpha')
+    beta_json = get_version_json(beta, 'beta')
+    stable_json = get_version_json(stable, 'stable')
 
     api_path = Path(__file__).parent / "api" / "version"
     
