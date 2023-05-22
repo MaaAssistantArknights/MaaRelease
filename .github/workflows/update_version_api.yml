@@ -10,8 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.MISTEOWORKFLOW }}
 
       - name: Update Version API
         run: |
@@ -38,3 +36,9 @@ jobs:
       - name: Push files to github
         run: |
           git push
+
+      - name: Deploy
+        run: |
+          gh workflow run deploy
+        env:
+          GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
