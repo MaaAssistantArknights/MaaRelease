@@ -72,7 +72,7 @@ jobs:
           SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
       - name: Use Node.js
-        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, 'alpha')
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, '.g')
         uses: actions/setup-node@v3
         id: setup-node
         with:
@@ -80,7 +80,7 @@ jobs:
           check-latest: true
           # cache: npm
       - name: "Upload to AnnAngela's COS and fire webhook"
-        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, 'alpha')
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, '.g')
         run: |
           echo "Installing coscli..."
           gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --repo tencentyun/coscli
