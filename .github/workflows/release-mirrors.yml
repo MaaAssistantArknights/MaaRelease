@@ -58,19 +58,7 @@ jobs:
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           SOURCE_DIR: "upload-dir"
           DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
-      - name: "Upload to MAA S3"
-        if: github.repository == 'MaaAssistantArknights/MaaRelease'
-        uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --acl public-read --follow-symlinks
-        env:
-          AWS_S3_BUCKET: ${{ secrets.MAA_MINIO_RELEASE_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.MAA_MINIO_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.MAA_MINIO_SECRET_KEY }}
-          AWS_REGION: 'us-east-1'
-          AWS_S3_ENDPOINT: ${{ secrets.MAA_MINIO_ENDPOINT }}
-          SOURCE_DIR: "upload-dir"
-          DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
+
       - name: Use Node.js
         if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(env.release_tag, '.g')
         uses: actions/setup-node@v3
@@ -96,3 +84,17 @@ jobs:
           WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
           GH_TOKEN: ${{ github.token }}
+
+      - name: "Upload to MAA S3"
+        if: github.repository == 'MaaAssistantArknights/MaaRelease'
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_S3_BUCKET: ${{ secrets.MAA_MINIO_RELEASE_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.MAA_MINIO_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MAA_MINIO_SECRET_KEY }}
+          AWS_REGION: 'us-east-1'
+          AWS_S3_ENDPOINT: ${{ secrets.MAA_MINIO_ENDPOINT }}
+          SOURCE_DIR: "upload-dir"
+          DEST_DIR: "MaaAssistantArknights/MaaRelease/releases/download"
