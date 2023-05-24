@@ -131,9 +131,6 @@ def get_version_json(version_id: str, tagType: str):
     version_json = {
         "version": version_id,
         "details": main_details,
-
-        # 兼容老版本，之后删了这个字段
-        "ota_details": ota_details,
     }
 
     return version_json
