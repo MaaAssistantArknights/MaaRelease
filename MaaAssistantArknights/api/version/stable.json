@@ -683,13 +683,13 @@
     "body": "## v4.18.1\n\n### 新增\n\n- 支持 `尖灭测试作战` 抄作业 @MistEO @yuanyan3060 @lza11111\n\n### 改进\n\n- 自动战斗编队列表识别不到时，自动划回来重试 @MistEO\n- 刷理智若检测到OF-1自动停止 @MistEO\n- 软件更新弃用 github api，并全面启用 maa version api @MistEO\n- 博朗台模式同时支持等理智药 @MistEO @ABA2396\n- 肉鸽中不再进阶未精二的干员 (#4825) @whatss7\n- 为窗口标题添加活动名 @MistEO\n\n### 修复\n\n- 修复不能部署干员的问题 @MistEO\n- 全局减小 adb 滑动距离 @MistEO\n- 修复干员识别偶尔滑动失效提前结束的问题；并少存一点日志图 @MistEO\n- 调整鸿雪肉鸽默认技能为1技能 @MistEO\n- 修复连接失败时任务仍被添加的问题 @MistEO\n- 延长战斗中暂停的后延迟 @MistEO\n- GUI display issues @moomiji\n- 修复干员识别replace不生效的问题 @MistEO\n- 控制台退出模拟器统一添加等待时间 #4808 @ABA2396\n- 每次修改客户端类型时主动重新读取资源 @MistEO\n\n### 其他\n\n- 更新海外客户端数据源，移除对 ArknightsGameData 的引用 @MistEO\n- log error on mismatched image size @horror-proton\n- 对蓝叠模拟器Hyper-V的补充说明(#4806) (#4866) @SherkeyXD\n- 修改抽卡重复提示条件，每次启动都会显示抽卡提示 @ABA2396\n- fix s3 synchronization path @GalvinGao\n- ui 相关日志移至 gui.json @ABA2396\n- 修复部分 CI @MistEO\n- 更新文档 @MistEO\n- fix typo: Github -> GitHub (#4883) @eltociear\n\n### For overseas\n\n#### Common\n\n- Fix title version error @MistEO\n\n#### YostarJP\n\n- update JP templates for support of recent features @liuyifan-eric\n\n#### YostarEN\n\n- update InfrastFilterMenuNotStationedButton for EN (#4827) @Enochen\n\n#### YostarKR\n\n- Fix crash for KR @178619\n- Makes Mizuki theme roguelike available for KR (initially) and updates localization (#4894) @178619\n- Update resources for KR (#4868) @178619\n\n#### txwy\n\n- 添加台服开始战斗ocr @ABA2396\n\n**Full Changelog**: [v4.18.0 -> v4.18.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.18.0...v4.18.1)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/103985072/reactions",
-      "total_count": 7,
+      "total_count": 8,
       "+1": 0,
       "-1": 0,
       "laugh": 0,
       "hooray": 0,
       "confused": 0,
-      "heart": 5,
+      "heart": 6,
       "rocket": 2,
       "eyes": 0
     },
