@@ -131,5 +131,24 @@
                 "-10"
             ]
         ]
+    },
+    "SwipeToStageIS": {
+        "Doc": "IS关特殊的上下滑动 修改成缓慢滑动",
+        "baseTask": "SlowlySwipeToTheRight",
+        "specificRect": [
+            98,
+            469,
+            100,
+            100
+        ],
+        "rectMove": [
+            145,
+            129,
+            100,
+            100
+        ],
+        "next": [
+            "#next"
+        ]
     }
 }
