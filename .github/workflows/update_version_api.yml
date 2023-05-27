@@ -2,7 +2,6 @@ name: update_version_api
 
 on:
   workflow_dispatch:
-  release:
 
 jobs:
   update_version_api:

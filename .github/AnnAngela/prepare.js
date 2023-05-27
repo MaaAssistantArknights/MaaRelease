@@ -1,11 +1,9 @@
 import console from "./console.js";
 import fs from "fs";
 import path from "path";
-import timerPromises from "timers/promises";
 import readDir from "./readDir.js";
 console.info("Copy upload-dir to the temp dir of runner...");
 const tempUploadDirPath = path.join(process.env.RUNNER_TEMP, "upload-dir");
-await fs.promises.cp("upload-dir", tempUploadDirPath, { recursive: true });
 console.info("Remove unnecessary files...");
 const uploadDir = await readDir(tempUploadDirPath);
 const unnecessaryFiles = [];
