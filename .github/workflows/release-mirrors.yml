@@ -137,7 +137,7 @@ jobs:
       - mirror0
       - R2
       - AnnAngelaCOS
-      - MAA_S3
+      # - MAA_S3
     steps:
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
