@@ -40,9 +40,9 @@ jobs:
         run: |
             mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Done, folder view:"
             ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
 
@@ -66,9 +66,9 @@ jobs:
         run: |
             mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Done, folder view:"
             ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
       - name: Upload to R2
@@ -102,15 +102,15 @@ jobs:
         run: |
             mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Done, folder view:"
             ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
       - name: Upload to AnnAngela's COS and fire webhook
         run: |
           echo "Installing coscli..."
-          gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --repo tencentyun/coscli
+          gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --pattern '*' --repo tencentyun/coscli
           chmod +x ${{ runner.temp }}/coscli/coscli-linux
           echo "coscli installed."
           touch ~/.cos.yaml
@@ -133,9 +133,9 @@ jobs:
         run: |
             mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
             echo "Done, folder view:"
             ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
       - name: Upload to MAA S3
