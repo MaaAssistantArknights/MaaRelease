@@ -38,13 +38,13 @@ jobs:
     steps:
       - name: Download release files
         run: |
-            mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Done, folder view:"
-            ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            ls -lhA ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
 
       - name: Upload to mirror 0
         uses: appleboy/scp-action@master
@@ -64,13 +64,13 @@ jobs:
     steps:
       - name: Download release files
         run: |
-            mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Done, folder view:"
-            ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            ls -lhA ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
       - name: Upload to R2
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -100,13 +100,13 @@ jobs:
           # cache: npm
       - name: Download release files
         run: |
-            mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Done, folder view:"
-            ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            ls -lhA ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
       - name: Upload to AnnAngela's COS and fire webhook
         run: |
           echo "Installing coscli..."
@@ -131,13 +131,13 @@ jobs:
     steps:
       - name: Download release files
         run: |
-            mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Start to download release files from MaaRelease..."
-            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             # echo "Start to download release files from MaaAssistantArknights..."
-            # gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            # gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --pattern '*' --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
             echo "Done, folder view:"
-            ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+            ls -lhA ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
       - name: Upload to MAA S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
