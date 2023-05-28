@@ -1,6 +1,7 @@
 name: release-mirrors
 
 on:
+  release:
   workflow_dispatch:
     inputs:
       release_tag:
@@ -34,15 +35,16 @@ jobs:
     name: Upload to OTA Server
     runs-on: ubuntu-latest
     needs: getReleaseTag
-    # Disable it, keep for template use
+    # Disable it
     if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease'
     steps:      
-      - uses: actions/checkout@v3
       - name: Download release files
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-      - name: Upload to OTA Server
+        run: |
+          mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Start to download release files..."
+          gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Done."
+      - name: Upload to mirror 0
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_MIRROR_0_HOST }}
@@ -58,11 +60,12 @@ jobs:
     needs: getReleaseTag
     if: github.repository == 'MaaAssistantArknights/MaaRelease'
     steps:
-      - uses: actions/checkout@v3
       - name: Download release files
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
+        run: |
+          mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Start to download release files..."
+          gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Done."
       - name: Upload to R2
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -83,11 +86,6 @@ jobs:
     if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
     steps:      
       - uses: actions/checkout@v3
-      - name: Download release files
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         id: setup-node
@@ -95,6 +93,12 @@ jobs:
           node-version: lts/*
           check-latest: true
           # cache: npm
+      - name: Download release files
+        run: |
+          mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Start to download release files..."
+          gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Done."
       - name: Upload to AnnAngela's COS and fire webhook
         run: |
           echo "Installing coscli..."
@@ -117,12 +121,12 @@ jobs:
     needs: getReleaseTag
     if: github.repository == 'MaaAssistantArknights/MaaRelease'
     steps:      
-      - uses: actions/checkout@v3
       - name: Download release files
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-
+        run: |
+          mkdir -pv ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Start to download release files..."
+          gh release download ${{ needs.getReleaseTag.outputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ needs.getReleaseTag.outputs.release_tag }}
+          echo "Done."
       - name: Upload to MAA S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
