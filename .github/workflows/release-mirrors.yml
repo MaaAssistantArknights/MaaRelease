@@ -87,6 +87,8 @@ jobs:
 
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
+        env:
+            GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
   
       - name: "Upload to MAA S3"
         if: github.repository == 'MaaAssistantArknights/MaaRelease'
