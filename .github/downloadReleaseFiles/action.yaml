@@ -20,7 +20,11 @@ runs:
         mkdir -pv ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
         echo "Start to download release files from MaaRelease..."
         gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
-        echo "Start to download release files from MaaAssistantArknights..."
-        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+        
+        if gh release view ${{ inputs.release_tag }} > /dev/null 2>&1; then
+            echo "Start to download release files from MaaAssistantArknights..."
+            gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --clobber --dir ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
+        fi
+        
         echo "Done, folder view:"
         ls -lhA ${{ runner.temp }}/upload-dir/${{ inputs.release_tag }}
