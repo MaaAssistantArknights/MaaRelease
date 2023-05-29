@@ -108,7 +108,7 @@ jobs:
           touch ~/.cos.yaml
           node .github/AnnAngela/prepare.js
           echo "::group::coscli output"
-          ${{ runner.temp }}/coscli/coscli-linux sync ${{ steps.downloadReleaseFiles.outputs.dir }}/${{ needs.getReleaseTag.outputs.release_tag }} cos://${{ secrets.ANNANGELA_COS_BUCKET }}/MaaRelease --recursive -e cos.accelerate.myqcloud.com -i ${{ secrets.ANNANGELA_COS_SECRET_ID }} -k ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
+          ${{ runner.temp }}/coscli/coscli-linux sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} cos://${{ secrets.ANNANGELA_COS_BUCKET }}/MaaRelease --recursive -e cos.accelerate.myqcloud.com -i ${{ secrets.ANNANGELA_COS_SECRET_ID }} -k ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
           echo "::endgroup::"
           node .github/AnnAngela/webhook.js
         env:

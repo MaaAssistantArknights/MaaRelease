@@ -1,16 +1,12 @@
 import console from "./console.js";
 import fs from "fs";
-import path from "path";
-import timerPromises from "timers/promises";
 import readDir from "./readDir.js";
-console.info("Copy upload-dir to the temp dir of runner...");
-const tempUploadDirPath = path.join(process.env.RUNNER_TEMP, "upload-dir");
-await fs.promises.cp("upload-dir", tempUploadDirPath, { recursive: true });
+const uploadDirPath = "upload-dir";
 console.info("Remove unnecessary files...");
-const uploadDir = await readDir(tempUploadDirPath);
+const uploadDir = await readDir(uploadDirPath);
 const unnecessaryFiles = [];
 for (const file of uploadDir) {
-    const logFileName = path.relative(tempUploadDirPath, file);
+    const logFileName = path.relative(uploadDirPath, file);
     if (!file.includes("/MAAComponent-OTA-v")) {
         console.info("⛔️", logFileName, "Not ota file, mark as unnecessary.");
         unnecessaryFiles.push(file);
