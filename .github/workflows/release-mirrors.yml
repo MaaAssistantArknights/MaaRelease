@@ -121,6 +121,7 @@ jobs:
     needs: getReleaseTag
     if: github.repository == 'MaaAssistantArknights/MaaRelease'
     steps:
+      - uses: actions/checkout@v3
       - name: Download release files
         id: downloadReleaseFiles
         uses: ./.github/downloadReleaseFiles
