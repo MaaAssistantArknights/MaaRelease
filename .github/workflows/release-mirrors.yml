@@ -117,6 +117,7 @@ jobs:
         env:
           WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
+          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
 
   MAA_S3:
     name: Upload to MAA S3
