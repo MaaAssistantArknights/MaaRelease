@@ -6,6 +6,9 @@ on:
       release_tag:
         description: Release tag (defaults to the tag of the release event)
         required: false
+      is_nightly_ota:
+        description: is nightly ota or not
+        required: false
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -146,7 +149,7 @@ jobs:
     runs-on: macos-13
     needs: getReleaseTag
     # Disable due to no relative secrets
-    if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease'
+    if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease' && inputs.is_nightly_ota != 'true'
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
@@ -161,9 +164,9 @@ jobs:
         env:
           RCLONE_CONFIG_MAA_TYPE: s3
           RCLONE_CONFIG_MAA_PROVIDER: Cloudflare
-          RCLONE_CONFIG_MAA_ACCESS_KEY_ID: ${{ secrets.R2_KEY_ID }}
-          RCLONE_CONFIG_MAA_SECRET_ACCESS_KEY: ${{ secrets.R2_ACCESS_KEY }}
-          RCLONE_CONFIG_MAA_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          RCLONE_CONFIG_MAA_ACCESS_KEY_ID: ${{ secrets.R2_MAC_KEY_ID }}
+          RCLONE_CONFIG_MAA_SECRET_ACCESS_KEY: ${{ secrets.R2_MAC_ACCESS_KEY }}
+          RCLONE_CONFIG_MAA_ENDPOINT: ${{ secrets.R2_MAC_ENDPOINT }}
         run: |
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
           rclone delete MAA:maa-release/macos --min-age 90d
