@@ -1,6 +1,7 @@
 import console from "./console.js";
 import fs from "fs";
 import readDir from "./readDir.js";
+import path from "path";
 const uploadDirPath = "upload-dir";
 console.info("Remove unnecessary files...");
 const uploadDir = await readDir(uploadDirPath);
