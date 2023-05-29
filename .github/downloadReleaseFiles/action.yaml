@@ -1,0 +1,43 @@
+name: Download release files
+
+description: Download release files
+
+branding:
+  icon: type
+  color: purple
+
+inputs:
+  release_tag:
+    description: the release tag
+    required: true
+  os:
+    description: the os for ota, "windows" or "macos"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Download release files
+      shell: bash
+      run: |
+        if [ "${{ inputs.os }}" = "windows" ]; then
+          export PATTERN=*.zip
+        else
+          export PATTERN="*.dmg *.delta *.xml"
+        fi
+        echo "pattern: $PATTERN"
+        mkdir -pv upload-dir/${{ inputs.release_tag }}
+        echo "Start to download release files from MaaRelease..."
+        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }}
+        echo "Start to download release files from MaaAssistantArknights..."
+        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }}
+        echo "Done, folder view:"
+        ls -lhA upload-dir/${{ inputs.release_tag }}
+
+outputs:
+  dir:
+    description: dir for the release
+    value: upload-dir
+  dirWithReleaseTag:
+    description: dir for the release, with release tag
+    value: upload-dir/${{ inputs.release_tag }}
