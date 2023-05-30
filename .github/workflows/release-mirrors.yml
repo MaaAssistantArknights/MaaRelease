@@ -175,7 +175,7 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
-    if: always() && contains(needs.*.result, 'success') && contains(needs.*.result, 'skipped')
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     needs:
       - ota_server
       - R2
