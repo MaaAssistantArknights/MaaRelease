@@ -75,17 +75,21 @@ runs:
 
           echo '  Download completed, fetching the "createdAt" attr...'
 
-          CREATED_AT=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json createdAt -q '.createdAt')
+          created_at=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json createdAt -q '.createdAt')
 
-          echo "  The release is created at $CREATED_AT, start to get the list of the release files ..." 
+          echo "  The release is created at $created_at, start to get the list of the release files ..." 
 
-          LIST=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json assets -q '.assets.[].name')
+          list=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json assets -q '.assets.[].name')
 
           echo '  Start to change the times of release files in the list...'
 
+          echo "::group::download_release_files change the times of release files from MaaAssistantArknights/$repo."
           while IFS= read -r filename; do
-            touch -d "$CREATED_AT" "$filename"
-          done <<< "$LIST"
+            echo "    Start to change the modify time of $filename from $(stat -c '%y' $filename) to $created_at."
+            touch -d "$created_at" "$filename"
+            echo "    The new modify time of $filename is $(stat -c '%y' $filename)."
+          done <<< "$list"
+          echo "::endgroup::"
 
           echo '  Done.'
         }
