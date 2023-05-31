@@ -13,13 +13,32 @@ inputs:
   os:
     description: the os for ota, "windows" or "macos"
     required: true
+  notTempDir:
+    description: When set to "true", disables the use of temp dir to prevent potential failures in subsequent Docker actions.
+    required: false
+    default: "false"
 
 runs:
   using: composite
   steps:
     - name: Download release files
+      id: downloadReleaseFiles
       shell: bash
       run: |
+        if [ "${{ inputs.notTempDir }}" = "true" ]; then
+          export DOWNLOAD_DIR="upload-dir"
+        else
+          export DOWNLOAD_DIR="${{ runner.temp }}/upload-dir"
+        fi
+
+        export DOWNLOAD_DIR_WITH_RELEASE_TAG="$DOWNLOAD_DIR/${{ inputs.release_tag }}"
+
+        echo "DOWNLOAD_DIR=$DOWNLOAD_DIR" >> $GITHUB_OUTPUT
+        echo "DOWNLOAD_DIR_WITH_RELEASE_TAG=$DOWNLOAD_DIR_WITH_RELEASE_TAG" >> $GITHUB_OUTPUT
+
+        echo "dir: $DOWNLOAD_DIR"
+        echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
+
         if [ "${{ inputs.os }}" = "windows" ]; then
           export PATTERN=*.zip
         else
@@ -28,14 +47,14 @@ runs:
 
         echo "pattern: $PATTERN"
 
-        mkdir -pv upload-dir/${{ inputs.release_tag }}
+        mkdir -pv $DOWNLOAD_DIR_WITH_RELEASE_TAG
 
         download_release_files() {
           repo="$1"
 
           tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
 
-          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} 2>"$tmpfile"; then
+          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
             if [ "$error" = "release not found" ]; then
               echo "Release ${{ inputs.release_tag }} not found in $repo"
@@ -52,9 +71,9 @@ runs:
         echo "Start to download release files from MaaAssistantArknights..."
         download_release_files 'MaaAssistantArknights'
 
-        if [ -d "upload-dir/${{ inputs.release_tag }}" ] && [ "$(ls -A "upload-dir/${{ inputs.release_tag }}")" ]; then
+        if [ -d "$DOWNLOAD_DIR_WITH_RELEASE_TAG" ] && [ "$(ls -A "$DOWNLOAD_DIR_WITH_RELEASE_TAG")" ]; then
           echo "Done, folder view:"
-          ls -lhA upload-dir/${{ inputs.release_tag }}
+          ls -lhA $DOWNLOAD_DIR_WITH_RELEASE_TAG
         else
           echo "Failed, no release downloaded."
           exit 1
@@ -63,7 +82,7 @@ runs:
 outputs:
   dir:
     description: dir for the release
-    value: upload-dir
+    value: ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR }}
   dirWithReleaseTag:
     description: dir for the release, with release tag
-    value: upload-dir/${{ inputs.release_tag }}
+    value: ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR_WITH_RELEASE_TAG }}
