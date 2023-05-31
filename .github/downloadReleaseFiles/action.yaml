@@ -25,6 +25,10 @@ runs:
       id: downloadReleaseFiles
       shell: bash
       run: |
+        logDivider() {
+          echo "-------------"
+        }
+
         if [ "${{ inputs.notTempDir }}" = "true" ]; then
           export DOWNLOAD_DIR="upload-dir"
         else
@@ -47,6 +51,8 @@ runs:
 
         echo "pattern: $PATTERN"
 
+        logDivider
+
         mkdir -pv $DOWNLOAD_DIR_WITH_RELEASE_TAG
 
         download_release_files() {
@@ -57,7 +63,7 @@ runs:
           if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
             if [ "$error" = "release not found" ]; then
-              echo "Release ${{ inputs.release_tag }} not found in $repo"
+              echo "  Release ${{ inputs.release_tag }} not found in $repo, skipped."
             else
               echo "$error"
             exit 1
@@ -66,10 +72,14 @@ runs:
           fi
         }
 
+        logDivider
+
         echo "Start to download release files from MaaRelease..."
         download_release_files 'MaaRelease'
         echo "Start to download release files from MaaAssistantArknights..."
         download_release_files 'MaaAssistantArknights'
+
+        logDivider
 
         if [ -d "$DOWNLOAD_DIR_WITH_RELEASE_TAG" ] && [ "$(ls -A "$DOWNLOAD_DIR_WITH_RELEASE_TAG")" ]; then
           echo "Done, folder view:"
