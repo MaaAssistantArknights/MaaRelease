@@ -62,14 +62,24 @@ runs:
 
           if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
+            rm -f "$tmpfile"
             if [ "$error" = "release not found" ]; then
               echo "  Release ${{ inputs.release_tag }} not found in $repo, skipped."
+              exit 0
             else
               echo "$error"
-            exit 1
+              exit 1
             fi
-            rm -f "$tmpfile"
           fi
+          echo '  Download completed, fetching the "createdAt" attr...'
+          CREATED_AT=gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json createdAt -q '.createdAt'
+          echo "  The release is created at $CREATED_AT, start to get the list of the release files ..." 
+          LIST=gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json assets -q '.assets.[].name'
+          echo '  Start to change the times of release files in the list...'
+          while IFS= read -r filename; do
+            touch -d "$CREATED_AT" "$filename"
+          done <<< "$LIST"
+          echo '  Done.'
         }
 
         logDivider
@@ -82,6 +92,7 @@ runs:
         logDivider
 
         if [ -d "$DOWNLOAD_DIR_WITH_RELEASE_TAG" ] && [ "$(ls -A "$DOWNLOAD_DIR_WITH_RELEASE_TAG")" ]; then
+          echo "Download complete."
           echo "Done, folder view:"
           ls -lhA $DOWNLOAD_DIR_WITH_RELEASE_TAG
         else
