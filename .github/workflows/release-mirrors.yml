@@ -6,9 +6,6 @@ on:
       release_tag:
         description: Release tag (defaults to the tag of the release event)
         required: false
-      is_nightly_ota:
-        description: is nightly ota or not
-        required: false
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -150,7 +147,7 @@ jobs:
     runs-on: macos-13
     needs: getReleaseTag
     # Disable due to no relative secrets
-    if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease' && inputs.is_nightly_ota != 'true'
+    if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
