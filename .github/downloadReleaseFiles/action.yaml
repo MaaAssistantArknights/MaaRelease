@@ -25,12 +25,33 @@ runs:
         else
           export PATTERN="*.dmg *.delta *.xml"
         fi
+
         echo "pattern: $PATTERN"
+
         mkdir -pv upload-dir/${{ inputs.release_tag }}
+
+        download_release_files() {
+          repo="$1"
+
+          tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
+
+          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} 2>"$tmpfile"; then
+            error=$(cat "$tmpfile")
+            if [ "$error" = "release not found" ]; then
+              echo "Release ${{ inputs.release_tag }} not found in $repo"
+            else
+              echo "$error"
+            exit 1
+            fi
+            rm -f "$tmpfile"
+          fi
+        }
+
         echo "Start to download release files from MaaRelease..."
-        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} || echo "Release ${{ inputs.release_tag }} not found in MaaRelease"
+        download_release_files 'MaaRelease'
         echo "Start to download release files from MaaAssistantArknights..."
-        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} || echo "Release ${{ inputs.release_tag }} not found in MaaAssistantArknights"
+        download_release_files 'MaaAssistantArknights'
+
         if [ -d "upload-dir/${{ inputs.release_tag }}" ] && [ "$(ls -A "upload-dir/${{ inputs.release_tag }}")" ]; then
           echo "Done, folder view:"
           ls -lhA upload-dir/${{ inputs.release_tag }}
