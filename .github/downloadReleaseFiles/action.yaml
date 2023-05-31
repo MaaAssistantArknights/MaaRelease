@@ -89,6 +89,7 @@ runs:
             echo "    Start to change the modify time of $filename from $(stat -c '%y' $filenameWithPath) to $created_at."
             touch -d "$created_at" "$filenameWithPath"
             echo "    The new modify time of $filename is $(stat -c '%y' $filenameWithPath)."
+            printf "\n"
           done <<< "$list"
           echo "::endgroup::"
 
