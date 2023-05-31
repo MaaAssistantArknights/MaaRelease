@@ -28,11 +28,16 @@ runs:
         echo "pattern: $PATTERN"
         mkdir -pv upload-dir/${{ inputs.release_tag }}
         echo "Start to download release files from MaaRelease..."
-        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }}
+        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaRelease' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} || echo "Release ${{ inputs.release_tag }} not found in MaaRelease"
         echo "Start to download release files from MaaAssistantArknights..."
-        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }}
-        echo "Done, folder view:"
-        ls -lhA upload-dir/${{ inputs.release_tag }}
+        gh release download ${{ inputs.release_tag }} --repo 'MaaAssistantArknights/MaaAssistantArknights' --pattern "$PATTERN" --clobber --dir upload-dir/${{ inputs.release_tag }} || echo "Release ${{ inputs.release_tag }} not found in MaaAssistantArknights"
+        if [ -d "upload-dir/${{ inputs.release_tag }}" ] && [ "$(ls -A "upload-dir/${{ inputs.release_tag }}")" ]; then
+          echo "Done, folder view:"
+          ls -lhA upload-dir/${{ inputs.release_tag }}
+        else
+          echo "Failed, no release downloaded."
+          exit 1
+        fi
 
 outputs:
   dir:
