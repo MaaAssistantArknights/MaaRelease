@@ -39,8 +39,8 @@ runs:
       id: ENDPOINT_APPEND
       shell: bash
       run: |
-        if [ -n "${{ AWS_S3_ENDPOINT }}" ]; then
-          echo "ENDPOINT_APPEND=--endpoint-url ${{ AWS_S3_ENDPOINT }}" >> $GITHUB_OUTPUT
+        if [ -n "${{ inputs.AWS_S3_ENDPOINT }}" ]; then
+          echo "ENDPOINT_APPEND=--endpoint-url ${{ inputs.AWS_S3_ENDPOINT }}" >> $GITHUB_OUTPUT
         fi
     - name: Sync S3 Bucket
       shell: bash
