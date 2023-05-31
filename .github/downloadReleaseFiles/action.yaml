@@ -99,6 +99,9 @@ runs:
 
         echo "Start to download release files from MaaRelease..."
         download_release_files 'MaaRelease'
+
+        logDivider
+
         echo "Start to download release files from MaaAssistantArknights..."
         download_release_files 'MaaAssistantArknights'
 
