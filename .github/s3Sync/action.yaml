@@ -35,16 +35,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get endpoint-url
-      id: ENDPOINT_APPEND
-      shell: bash
-      run: |
-        if [ -n "${{ inputs.AWS_S3_ENDPOINT }}" ]; then
-          echo "ENDPOINT_APPEND=--endpoint-url ${{ inputs.AWS_S3_ENDPOINT }}" >> $GITHUB_OUTPUT
-        fi
     - name: Sync S3 Bucket
       shell: bash
       run: |
+        export ENDPOINT_APPEND=""
+        if [ -n "${{ inputs.AWS_S3_ENDPOINT }}" ]; then
+          export ENDPOINT_APPEND="--endpoint-url ${{ inputs.AWS_S3_ENDPOINT }}"
+        fi
+
         echo "Generating a dedicated profile for syncing..."
         aws configure --profile s3-sync <<-EOF > /dev/null 2>&1
         ${{ inputs.AWS_ACCESS_KEY_ID }}
@@ -55,7 +53,7 @@ runs:
 
         echo "Start syncing..."
         echo "::group::aws cli output"
-        aws s3 sync ${{ inputs.SOURCE_DIR }} s3://${{ inputs.AWS_S3_BUCKET }}/${{ inputs.DEST_DIR }} --profile s3-sync ${{ steps.ENDPOINT_APPEND.outputs.ENDPOINT_APPEND }} ${{ inputs.args }}
+        aws s3 sync ${{ inputs.SOURCE_DIR }} s3://${{ inputs.AWS_S3_BUCKET }}/${{ inputs.DEST_DIR }} --profile s3-sync $ENDPOINT_APPEND ${{ inputs.args }}
         echo "::endgroup::"
 
         echo "Done, cleaning up."
