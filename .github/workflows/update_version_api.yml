@@ -23,21 +23,30 @@ jobs:
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Add files to git
+        id: commit
         run: |
-          git status
-          
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git add .
+
+          status=$(git status --porcelain)
+          if [ -z "$status" ]; then
+           echo "Nothing to commit, working tree clean."
+           echo "working_tree_clean=true" >> $GITHUB_OUTPUT
+           exit 0
+          else
+            echo "Found changes:"
+            git status
+          fi
 
           commit_msg="chore: Update Version API"
           git commit -m "$commit_msg"
 
       - name: Push files to github
+        if: steps.commit.outputs.working_tree_clean != 'true'
         run: |
           git push
 
       - name: Deploy
+        if: steps.commit.outputs.working_tree_clean != 'true'
         run: |
           gh workflow run deploy
         env:
