@@ -53,7 +53,7 @@ runs:
 
         echo "Start syncing..."
         echo "::group::aws cli output"
-        aws s3 sync ${{ inputs.SOURCE_DIR }} s3://${{ inputs.AWS_S3_BUCKET }}/${{ inputs.DEST_DIR }} --profile s3-sync $ENDPOINT_APPEND --debug ${{ inputs.args }}
+        aws s3 sync ${{ inputs.SOURCE_DIR }} s3://${{ inputs.AWS_S3_BUCKET }}/${{ inputs.DEST_DIR }} --profile s3-sync $ENDPOINT_APPEND ${{ inputs.args }}
         echo "::endgroup::"
 
         echo "Done, cleaning up."
