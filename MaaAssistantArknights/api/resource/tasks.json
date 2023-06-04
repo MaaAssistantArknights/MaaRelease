@@ -1,135 +1,33 @@
 {
-    "CW-10": {
+    "StartUpThemes": {
         "algorithm": "JustReturn",
-        "sub": [
-            "CW-Open"
-        ],
         "next": [
-            "CW-10@SideStoryStage",
-            "CW-10@SwipeToStage"
+            "GameStart",
+            "StartToWakeUp",
+            "StartToWakeUpOCR",
+            "StartLoginBServer",
+            "StartUpConnectingFlag",
+            "#back",
+            "CloseAnnos#next",
+            "TodaysSupplies",
+            "OfflineConfirm"
         ]
     },
-    "CW-9": {
-        "algorithm": "JustReturn",
-        "sub": [
-            "CW-Open"
-        ],
-        "next": [
-            "CW-9@SideStoryStage",
-            "CW-9@SwipeToStage"
-        ]
-    },
-    "CW-8": {
-        "algorithm": "JustReturn",
-        "sub": [
-            "CW-Open"
-        ],
-        "next": [
-            "CW-8@SideStoryStage",
-            "CW-8@SwipeToStage"
-        ]
-    },
-    "CW-Open": {
-        "action": "ClickSelf",
+    "StartToWakeUpOCR": {
+        "baseTask": "StartToWakeUp",
         "algorithm": "OcrDetect",
         "text": [
-            "孤星",
-            "已开放"
+            "开始唤醒",
+            "登录",
+            "登",
+            "录"
         ],
-        "postDelay": 2000,
+        "fullMatch": true,
         "roi": [
-            0,
-            500,
-            500,
-            150
-        ],
-        "next": [
-            "CWChapterToCW"
-        ]
-    },
-    "CWChapterToCW": {
-        "algorithm": "OcrDetect",
-        "action": "ClickSelf",
-        "cache": false,
-        "text": [
-            "未来将至"
-        ],
-        "preDelay": 1000,
-        "roi": [
-            971,
-            126,
-            201,
-            133
-        ],
-        "next": [
-            "ChapterSwipeToTheRight"
-        ]
-    },
-    "CW-10@SideStoryStage": {
-        "text": [
-            "CW-10",
-            "CW 10",
-            "CW-1O"
-        ],
-        "roi": [
-            0,
-            422,
-            1274,
-            36
-        ]
-    },
-    "CW-9@SideStoryStage": {
-        "text": [
-            "CW-9"
-        ],
-        "roi": [
-            0,
-            422,
-            1274,
-            36
-        ]
-    },
-    "CW-8@SideStoryStage": {
-        "text": [
-            "CW-8"
-        ],
-        "roi": [
-            0,
-            305,
-            1277,
-            38
-        ]
-    },
-    "StageDrops-StageName": {
-        "ocrReplace": [
-            [
-                "^.+-EX-?\\d+$",
-                "_INVALID_"
-            ],
-            [
-                "^.+-S-?\\d+$",
-                "_INVALID_"
-            ],
-            [
-                "^.+-MO-?\\d+$",
-                "_INVALID_"
-            ],
-            [
-                "^OF-1$",
-                "_INVALID_"
-            ],
-            [
-                "Ap-",
-                "AP-"
-            ],
-            [
-                "Bl-",
-                "BI-"
-            ],
-            [
-                "-1O",
-                "-10"
-            ]
+            595,
+            418,
+            87,
+            46
         ]
     },
     "SwipeToStageIS": {
