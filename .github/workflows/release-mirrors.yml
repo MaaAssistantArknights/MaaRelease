@@ -34,7 +34,8 @@ jobs:
   #   1. 每个流程均需使用 actions/checkout 获取复用 workflow 文件；
   #   2. 每个流程均需使用 ./.github/downloadReleaseFiles 下载相关版本文件；
   #   3. 如果是支持 S3 api 的对象存储的话，可以用 ./.github/s3Sync 上传；
-  #      其他类型也可以自己写上传脚本。
+  #      其他类型也可以自己写上传脚本；
+  #   4. 其中 `!contains(needs.getReleaseTag.outputs.release_tag, '.g')` 代表不上传 alpha 版本。
   # 如果需要新增上传流程，需在下方参考其他上传流程和上方说明添加，并在更下方发版流程里按其说明添加依赖。
   ota_server:
     name: Upload to OTA Server
@@ -174,10 +175,12 @@ jobs:
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
           rclone delete MAA:maa-release/macos --min-age 90d
 
-  # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版，
+  # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版，。
   # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道，
   # 或是 MAA S3 那样上传过久难以等待，否则都应在 needs 里添加新的上传流程的 job id，
   # 避免尚未完成上传就发版导致错误码激增。
+  # 最后，新增完上传流程后，除非是像 macOS 一样自行维护发版渠道，
+  # 否则都需要到 MaaAssistantArknights/update_version.py 新增镜像地址生成。
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
