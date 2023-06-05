@@ -20,9 +20,12 @@ jobs:
         id: fetchReleaseInfo
         if: ${{ !inputs.release_tag }}
         run: |
-          gh release list --repo 'MaaAssistantArknights/MaaRelease' --limit 10 | tee ${{ runner.temp }}/release_maa
+          gh release list --repo 'MaaAssistantArknights/MaaRelease' --limit 10 > ${{ runner.temp }}/release_maa
+          echo "-------------"
+          echo "Last 10 release:"
+          column -t ${{ runner.temp }}/release_maa
           head -n 1 ${{ runner.temp }}/release_maa | awk '{ print $1 }' > ${{ runner.temp }}/config
-
+          echo "-------------"
           echo "config:"
           cat ${{ runner.temp }}/config
 

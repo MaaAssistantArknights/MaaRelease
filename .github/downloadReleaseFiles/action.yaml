@@ -29,6 +29,8 @@ runs:
           echo "-------------"
         }
 
+        logDivider
+
         if [ "${{ inputs.notTempDir }}" = "true" ]; then
           export DOWNLOAD_DIR="upload-dir"
         else
