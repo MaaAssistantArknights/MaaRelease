@@ -57,9 +57,9 @@ jobs:
       - name: Upload to OTA Server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_ID }}
+          host: ${{ secrets.OTA_SERVER_SSH_HOST }}
+          username: ${{ secrets.OTA_SERVER_SSH_USER }}
+          key: ${{ secrets.OTA_SERVER_SSH_KEY }}
           source: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
           target: ${{ format('{0}/{1}', 'OTA/MaaAssistantArknights/MaaRelease/releases/download',needs.getReleaseTag.outputs.release_tag) }}
           strip_components: 1
