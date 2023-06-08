@@ -157,7 +157,7 @@ jobs:
     name: Upload to R2 mac
     runs-on: macos-13
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
+    if: 1 == 0 && github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
