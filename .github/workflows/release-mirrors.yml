@@ -9,6 +9,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FILE_PATH: MaaAssistantArknights/MaaRelease/releases/download
 
 jobs:
   # 以下是获取需上传的版本的信息（如果用户手动输入了 release_tag 则改为使用该值）
@@ -61,7 +62,7 @@ jobs:
           username: ${{ secrets.OTA_SERVER_SSH_USER }}
           key: ${{ secrets.OTA_SERVER_SSH_KEY }}
           source: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
-          target: ${{ format('{0}/{1}', 'OTA/MaaAssistantArknights/MaaRelease/releases/download',needs.getReleaseTag.outputs.release_tag) }}
+          target: ${{ format('{0}/{1}/{2}', 'OTA', env.FILE_PATH, needs.getReleaseTag.outputs.release_tag) }}
           strip_components: 1
 
   R2:
@@ -87,7 +88,7 @@ jobs:
           AWS_REGION: us-east-1
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          DEST_DIR: MaaAssistantArknights/MaaRelease/releases/download
+          DEST_DIR: ${{ env.FILE_PATH }}
 
   AnnAngelaCOS:
     name: Upload to AnnAngela's COS and fire webhook
@@ -149,7 +150,7 @@ jobs:
           AWS_REGION: us-east-1
           AWS_S3_ENDPOINT: ${{ secrets.MAA_MINIO_ENDPOINT }}
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          DEST_DIR: MaaAssistantArknights/MaaRelease/releases/download
+          DEST_DIR: ${{ env.FILE_PATH }}
 
   R2_MAC:
     name: Upload to R2 mac
@@ -192,7 +193,7 @@ jobs:
       - R2
       - AnnAngelaCOS
       # - MAA_S3 # 太慢了不等他
-      # R2_MAC 是通过自有渠道发版，不经过 version api
+      # - R2_MAC # 是通过自有渠道发版，不经过 version api
     steps:
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
