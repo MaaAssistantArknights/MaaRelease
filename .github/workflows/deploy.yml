@@ -16,16 +16,16 @@ jobs:
     steps:
       - name: Setup ssh key
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_ID }}
+          SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync repository
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+          ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
             "
               set -e
               mkdir -p ~/MaaRelease
