@@ -62,7 +62,7 @@ jobs:
           host: ${{ secrets.OTA_SERVER_SSH_HOST }}
           username: ${{ secrets.OTA_SERVER_SSH_USER }}
           key: ${{ secrets.OTA_SERVER_SSH_KEY }}
-          source: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
+          source: ${{ steps.downloadReleaseFiles.outputs.dir }}
           target: ${{ format('{0}/{1}/{2}', 'OTA', env.FILE_PATH, needs.getReleaseTag.outputs.release_tag) }}
           strip_components: 1
 
