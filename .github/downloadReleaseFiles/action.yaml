@@ -24,6 +24,8 @@ runs:
     - name: Download release files
       id: downloadReleaseFiles
       shell: bash
+      env:
+        TMPDIR: ${{ runner.temp }}
       run: |
         logDivider() {
           echo "-------------"
@@ -48,7 +50,7 @@ runs:
         if [ "${{ inputs.os }}" = "windows" ]; then
           export PATTERN="--pattern *.zip"
         else
-          export PATTERN="--pattern *.dmg --pattern *.delta --pattern *.xml"
+          export PATTERN="--pattern *.dmg --pattern *.delta --pattern *.xml --pattern *.html"
         fi
 
         echo "pattern: $PATTERN"
@@ -60,11 +62,7 @@ runs:
         download_release_files() {
           repo="$1"
 
-          if [[ "$(uname)" == "Darwin" ]]; then
-            tmpfile=$(mktemp -t downloadReleaseFiles)
-          else
-            tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
-          fi
+          tmpfile=$(mktemp)
 
           if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")

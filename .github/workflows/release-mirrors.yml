@@ -176,8 +176,8 @@ jobs:
           RCLONE_CONFIG_MAA_SECRET_ACCESS_KEY: ${{ secrets.R2_MAC_ACCESS_KEY }}
           RCLONE_CONFIG_MAA_ENDPOINT: ${{ secrets.R2_MAC_ENDPOINT }}
         run: |
-          rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
-          rclone delete MAA:maa-release/macos --min-age 90d
+          rclone copy ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
+          rclone delete MAA:maa-release/macos --min-age 90d --rmdirs
 
   # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版，。
   # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道，
