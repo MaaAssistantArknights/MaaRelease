@@ -60,7 +60,11 @@ runs:
         download_release_files() {
           repo="$1"
 
-          tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
+          if [[ "$(uname)" == "Darwin" ]]; then
+            tmpfile=$(mktemp -t downloadReleaseFiles -p ${{ runner.temp }})
+          else
+            tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
+          fi
 
           if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
