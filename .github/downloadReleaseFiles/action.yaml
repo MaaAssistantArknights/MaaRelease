@@ -46,9 +46,9 @@ runs:
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
         if [ "${{ inputs.os }}" = "windows" ]; then
-          export PATTERN=*.zip
+          export PATTERN="--pattern *.zip"
         else
-          export PATTERN="*.dmg *.delta *.xml"
+          export PATTERN="--pattern *.dmg --pattern *.delta --pattern *.xml"
         fi
 
         echo "pattern: $PATTERN"
@@ -62,7 +62,7 @@ runs:
 
           tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
 
-          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --pattern "$PATTERN" --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
+          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
             rm -f "$tmpfile"
 
@@ -88,10 +88,12 @@ runs:
           echo "::group::download_release_files change the times of release files from MaaAssistantArknights/$repo."
           while IFS= read -r filename; do
             filenameWithPath="$DOWNLOAD_DIR_WITH_RELEASE_TAG/$filename"
-            echo "    Start to change the modify time of $filename from $(stat -c '%y' $filenameWithPath) to $created_at."
-            touch -d "$created_at" "$filenameWithPath"
-            echo "    The new modify time of $filename is $(stat -c '%y' $filenameWithPath)."
-            printf "\n"
+            if [ -e "$filenameWithPath" ]; then
+              echo "    Start to change the modify time of $filename from $(stat -c '%y' $filenameWithPath) to $created_at."
+              touch -d "$created_at" "$filenameWithPath"
+              echo "    The new modify time of $filename is $(stat -c '%y' $filenameWithPath)."
+              printf "\n"
+            fi
           done <<< "$list"
           echo "::endgroup::"
 
