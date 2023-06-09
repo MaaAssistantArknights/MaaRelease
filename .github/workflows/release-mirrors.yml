@@ -10,6 +10,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   FILE_PATH: MaaAssistantArknights/MaaRelease/releases/download
+  TZ: Asia/Shanghai
 
 jobs:
   # 以下是获取需上传的版本的信息（如果用户手动输入了 release_tag 则改为使用该值）
@@ -221,8 +222,6 @@ jobs:
       - updateVersionApi
     steps:
       - name: Get rate limit status for current token
-        env:
-          TZ: Asia/Shanghai
         run: |
           echo '${{ needs.getReleaseTag.outputs.rateLimitStatus }}'  > ${{ runner.temp }}/oldRateLimitStatus.json
           gh api /rate_limit | jq -c '.resources.core' > ${{ runner.temp }}/newRateLimitStatus.json
