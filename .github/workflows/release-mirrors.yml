@@ -227,6 +227,6 @@ jobs:
           echo '${{ needs.getReleaseTag.outputs.rateLimitStatus }}'  > ${{ runner.temp }}/oldRateLimitStatus.json
           gh api /rate_limit | jq -c '.resources.core' > ${{ runner.temp }}/newRateLimitStatus.json
           echo 'Current token rate limit status:'
-          jq -r '.reset |= (tostring | tonumber | strflocaltime("%Y-%m-%d %H:%M:%S %Z"))  | to_entries | map([.key, .value]) | .[] | @tsv' ${{ runner.temp }}/new.json | column -t
+          jq -r '.reset |= (tostring | tonumber | strflocaltime("%Y-%m-%d %H:%M:%S %Z"))  | to_entries | map([.key, .value]) | .[] | @tsv' ${{ runner.temp }}/newRateLimitStatus.json | column -t
           printf "\n"
           echo "Rate limit used in this action: $(jq -n 'input as $oldRateLimitStatus | input as $newRateLimitStatus | $newRateLimitStatus.used - $oldRateLimitStatus.used' ${{ runner.temp }}/oldRateLimitStatus.json ${{ runner.temp }}/newRateLimitStatus.json)"
