@@ -67,7 +67,7 @@ jobs:
           username: ${{ secrets.OTA_SERVER_SSH_USER }}
           key: ${{ secrets.OTA_SERVER_SSH_KEY }}
           source: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          target: ${{ format('{0}/{1}/{2}', 'OTA', env.FILE_PATH, needs.getReleaseTag.outputs.release_tag) }}
+          target: ${{ format('{0}/{1}', 'OTA', env.FILE_PATH) }}
           strip_components: 1
 
   R2:
