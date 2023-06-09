@@ -61,7 +61,7 @@ runs:
           repo="$1"
 
           if [[ "$(uname)" == "Darwin" ]]; then
-            tmpfile=$(mktemp -t ${{ runner.temp }}/downloadReleaseFiles)
+            tmpfile=$(mktemp -t downloadReleaseFiles)
           else
             tmpfile=$(mktemp --suffix=downloadReleaseFiles -p ${{ runner.temp }})
           fi
