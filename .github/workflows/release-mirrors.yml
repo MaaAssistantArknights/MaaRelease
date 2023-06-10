@@ -8,7 +8,7 @@ on:
         required: false
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
   FILE_PATH: MaaAssistantArknights/MaaRelease/releases/download
   TZ: Asia/Shanghai
 
