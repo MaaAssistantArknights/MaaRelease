@@ -47,10 +47,16 @@ runs:
         echo "dir: $DOWNLOAD_DIR"
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
-        if [ "${{ inputs.os }}" = "windows" ]; then
-          export PATTERN="--pattern *.zip"
-        else
-          export PATTERN="--pattern *.dmg --pattern *.delta --pattern *.xml --pattern *.html"
+        export os='${{ inputs.os }}'
+        export PATTERN=""
+        if [[ $OS == *windows* ]]; then
+          export PATTERN="$PATTERN --pattern '*-win-*'"
+        fi
+        if [[ $OS == *macos* ]]; then
+          export PATTERN="$PATTERN --pattern '*.delta' --pattern 'appcast.xml' --pattern '*-macos-*'"
+        fi
+        if [[ $OS == *linux* ]]; then
+          export PATTERN="$PATTERN --pattern '*-linux-*'"
         fi
 
         echo "pattern: $PATTERN"

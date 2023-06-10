@@ -56,6 +56,9 @@ def extract_integers(string):
 def get_annangela_mirror(rel) :
     name = rel['name']
     url = rel["browser_download_url"]
+    
+    if "-win-" not in rel['name']:
+        return False
 
     if "MAAComponent-OTA-v" not in rel['name']:
         return False
@@ -67,7 +70,7 @@ def get_annangela_mirror(rel) :
         after = matches.group(2)
         beforeMajor, beforeMinor, *rest = extract_integers(before)
         afterMajor, afterMinor, *rest = extract_integers(after)
-        if beforeMajor != afterMajor or afterMinor - beforeMinor >3:
+        if beforeMajor != afterMajor or afterMinor - beforeMinor > 3:
             return False
     else:
         return False
@@ -90,6 +93,8 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     assets = releases["assets"]
     new_assets = []
     for rel in assets:
+        if "-win-" not in rel['name'] and "-linux-" not in rel['name']:
+            continue
         mirrors = []
         url = rel["browser_download_url"]
         if tagType != "alpha":
