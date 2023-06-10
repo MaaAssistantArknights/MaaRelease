@@ -55,7 +55,7 @@ runs:
           export PATTERN="$PATTERN --pattern '*-win-*'"
         fi
         if [[ $OS == *macos* ]]; then
-          export PATTERN="$PATTERN --pattern '*.delta' --pattern 'appcast.xml' --pattern '*-macos-*'"
+          export PATTERN="$PATTERN --pattern '*.delta' --pattern 'appcast.xml' --pattern '*-macos-*.dmg'"
         fi
         if [[ $OS == *linux* ]]; then
           export PATTERN="$PATTERN --pattern '*-linux-*'"
