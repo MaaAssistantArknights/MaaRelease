@@ -47,7 +47,9 @@ runs:
         echo "dir: $DOWNLOAD_DIR"
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
-        export os='${{ inputs.os }}'
+        export OS='${{ inputs.os }}'
+        echo "OS: $OS"
+
         export PATTERN=""
         if [[ $OS == *windows* ]]; then
           export PATTERN="$PATTERN --pattern '*-win-*'"
