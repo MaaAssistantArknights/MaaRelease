@@ -71,6 +71,8 @@ runs:
           repo="$1"
 
           tmpfile=$(mktemp)
+          
+          echo "Start to download release files from $repo..."
 
           if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
             error=$(cat "$tmpfile")
@@ -112,12 +114,10 @@ runs:
 
         logDivider
 
-        echo "Start to download release files from MaaRelease..."
         download_release_files 'MaaRelease'
 
         logDivider
 
-        echo "Start to download release files from MaaAssistantArknights..."
         download_release_files 'MaaAssistantArknights'
 
         logDivider
