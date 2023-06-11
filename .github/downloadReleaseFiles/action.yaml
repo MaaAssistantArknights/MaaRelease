@@ -11,7 +11,7 @@ inputs:
     description: the release tag
     required: true
   os:
-    description: the os for ota, "windows" or "macos"
+    description: Select the platforms for downloading the files. Option can be "windows", "linux", "macos", or any combination of the three (separated by commas).
     required: true
   notTempDir:
     description: When set to "true", disables the use of temp dir to prevent potential failures in subsequent Docker actions.

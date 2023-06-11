@@ -1,18 +1,17 @@
 import json
-import sys
 from pathlib import Path
 import urllib.request
 import urllib.error
 import os
 import re
-
+import time
+import http.client
 
 def retry_urlopen(*args, **kwargs):
-    import time
-    import http.client
     for _ in range(5):
         try:
-            resp: http.client.HTTPResponse = urllib.request.urlopen(*args, **kwargs)
+            resp: http.client.HTTPResponse = urllib.request.urlopen(
+                *args, **kwargs)
             return resp
         except urllib.error.HTTPError as e:
             if e.status == 403 and e.headers.get("x-ratelimit-remaining") == "0":
@@ -24,11 +23,11 @@ def retry_urlopen(*args, **kwargs):
                 except ValueError:
                     pass
                 reset_time = max(reset_time, t0 + 10)
-                print(f"rate limit exceeded, retrying after {reset_time - t0:.1f} seconds")
+                print(
+                    f"rate limit exceeded, retrying after {reset_time - t0:.1f} seconds")
                 time.sleep(reset_time - t0)
                 continue
             raise
-
 
 MIRRORS = [
     ("github.com", "agent.imgg.dev"),
@@ -37,15 +36,8 @@ MIRRORS = [
 ]
 
 ANNANGELA_MIRRORS = {
-    'normal': {
-        'raw': "github.com",
-        'rep': "maa-ota.annangela.cn"
-    },
-    'lite': {
-        'raw': "github.com",
-        'rep': "maa-ota-lite.annangela.cn"
-    },
-    'liteThreshold': 10 * 1024 * 1024
+    'raw': "github.com",
+    'rep': "maa-ota.annangela.cn"
 }
 
 def extract_integers(string):
@@ -53,10 +45,10 @@ def extract_integers(string):
     integers = re.findall(pattern, string)
     return [int(num) for num in integers[:2]]
 
-def get_annangela_mirror(rel) :
+def get_annangela_mirror(rel):
     name = rel['name']
     url = rel["browser_download_url"]
-    
+
     if "-win-" not in rel['name']:
         return False
 
@@ -75,9 +67,7 @@ def get_annangela_mirror(rel) :
     else:
         return False
 
-    size = rel["size"]
-    site = ANNANGELA_MIRRORS["normal"] if size > ANNANGELA_MIRRORS["liteThreshold"] else ANNANGELA_MIRRORS["lite"]
-    return url.replace(site['raw'], site['rep'])
+    return url.replace(ANNANGELA_MIRRORS['raw'], ANNANGELA_MIRRORS['rep'])
 
 def get_tag_info(repo: str, tag: str, tagType: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
@@ -113,7 +103,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
             "mirrors": mirrors
         }
         new_assets.append(new_rel)
-    
+
     releases["assets"] = new_assets
 
     return releases
@@ -121,7 +111,8 @@ def get_tag_info(repo: str, tag: str, tagType: str):
 def get_version_json(version_id: str, tagType: str):
     ota_details = get_tag_info("MaaRelease", version_id, tagType)
     try:
-        main_details = get_tag_info("MaaAssistantArknights", version_id, tagType)
+        main_details = get_tag_info(
+            "MaaAssistantArknights", version_id, tagType)
     except urllib.error.HTTPError as e:
         if e.status == 404:
             main_details = None
@@ -140,7 +131,6 @@ def get_version_json(version_id: str, tagType: str):
 
     return version_json
 
-
 def get_release_info():
     url = f"https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases"
     req = urllib.request.Request(url)
@@ -149,7 +139,7 @@ def get_release_info():
         req.add_header("Authorization", f"Bearer {token}")
     resp = retry_urlopen(req).read()
     releases = json.loads(resp)
-    
+
     alpha = None
     beta = None
     stable = None
@@ -165,13 +155,13 @@ def get_release_info():
             if not alpha:
                 alpha = tag_name
 
-        elif len(seg) == 4: # beta
+        elif len(seg) == 4:  # beta
             if not beta:
                 beta = tag_name
             if not alpha:
                 alpha = tag_name
 
-        else: # alpha
+        else:  # alpha
             if not alpha:
                 alpha = tag_name
 
@@ -179,7 +169,6 @@ def get_release_info():
             break
 
     return alpha, beta, stable
-
 
 def main():
     alpha, beta, stable = get_release_info()
@@ -190,7 +179,7 @@ def main():
     stable_json = get_version_json(stable, 'stable')
 
     api_path = Path(__file__).parent / "api" / "version"
-    
+
     def save_json(json_data, file_name):
         with open(api_path / file_name, "w", encoding='utf-8') as f:
             json.dump(json_data, f, ensure_ascii=False, indent=2)
@@ -198,7 +187,6 @@ def main():
     save_json(alpha_json, "alpha.json")
     save_json(beta_json, "beta.json")
     save_json(stable_json, "stable.json")
-
 
 if __name__ == '__main__':
     main()
