@@ -153,16 +153,16 @@ jobs:
           echo 'utilLogPath=${{ runner.temp }}/obsLog/util' >> ~/.obsutilconfig
           echo "obsutil installed."
           echo "::group::obsutil output"
-          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
+          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vlength -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
           echo "::endgroup::"
       - name: Upload OBS log
-        if: always()
+        if: failure()
         run: |
           export OBSUTIL_FOLDER="${{ runner.temp }}/obsutil/$(ls ${{ runner.temp }}/obsutil | grep -P '^obsutil_linux_amd64_\d+\.\d+\.\d+$')"
           echo "OBSUTIL_FOLDER: $OBSUTIL_FOLDER"
           "$OBSUTIL_FOLDER/obsutil" archive ${{ runner.temp }}/obsLog.zip
       - uses: actions/upload-artifact@v3
-        if: always()
+        if: failure()
         with:
           name: obsLog
           path: ${{ runner.temp }}/obsLog
