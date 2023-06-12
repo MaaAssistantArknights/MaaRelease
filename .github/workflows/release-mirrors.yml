@@ -154,7 +154,7 @@ jobs:
           echo 'utilLogPath=${{ runner.temp }}/obsLog/util' >> ~/.obsutilconfig
           echo "obsutil installed."
           echo "::group::obsutil output"
-          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease/${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} -vlength -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
+          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease/${{ needs.getReleaseTag.outputs.release_tag }} -vlength -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
           echo "::endgroup::"
       - name: Package the OBS log
         if: failure()
