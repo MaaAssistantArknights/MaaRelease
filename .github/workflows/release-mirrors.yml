@@ -145,10 +145,22 @@ jobs:
           echo "OBSUTIL_FOLDER: $OBSUTIL_FOLDER"
           chmod +x "$OBSUTIL_FOLDER/obsutil"
           touch ~/.obsutilconfig
+          echo 'sdkLogPath=${{ runner.temp }}/obsSdkLog' >> ~/.obsutilconfig
+          echo 'sdkLogLevel=INFO' >> ~/.obsutilconfig
+          echo 'utilLogPath=${{ runner.temp }}/obsUtilLog' >> ~/.obsutilconfig
           echo "obsutil installed."
           echo "::group::obsutil output"
           "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }}
           echo "::endgroup::"
+      - name: Upload OBS log
+        if: always()
+        run: |
+          "$OBSUTIL_FOLDER/obsutil" ${{ runner.temp }}/obsLog.zip
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: mobsLog
+          path: ${{ runner.temp }}/obsLog.zip
       - name: Fire the webhook
         run: |
           node .github/AnnAngela/webhook.js
