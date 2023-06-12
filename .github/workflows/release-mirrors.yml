@@ -146,7 +146,7 @@ jobs:
           chmod +x "$OBSUTIL_FOLDER/obsutil"
           echo "obsutil installed."
           echo "::group::obsutil output"
-          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }}
+          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }}
           echo "::endgroup::"
       - name: Fire the webhook
         run: |
