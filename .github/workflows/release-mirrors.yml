@@ -137,7 +137,7 @@ jobs:
         run: |
           echo "Installing obsutil..."
           mkdir ${{ runner.temp }}/obsutil
-          wget https://obs-community.obs.cn-north-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz -P ${{ runner.temp }}
+          wget https://obs-community.obs.cn-north-1.myhuaweicloud.com/obsutil/current/obsutil_linux_amd64.tar.gz --progress=dot:giga -P ${{ runner.temp }}
           tar -xzvf ${{ runner.temp }}/obsutil_linux_amd64.tar.gz -C ${{ runner.temp }}/obsutil
           echo '${{ runner.temp }}/obsutil view:'
           tree -afh ${{ runner.temp }}/obsutil
