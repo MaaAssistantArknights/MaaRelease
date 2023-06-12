@@ -157,7 +157,7 @@ jobs:
         run: |
           export OBSUTIL_FOLDER="${{ runner.temp }}/obsutil/$(ls ${{ runner.temp }}/obsutil | grep -P '^obsutil_linux_amd64_\d+\.\d+\.\d+$')"
           echo "OBSUTIL_FOLDER: $OBSUTIL_FOLDER"
-          "$OBSUTIL_FOLDER/obsutil" ${{ runner.temp }}/obsLog.zip
+          "$OBSUTIL_FOLDER/obsutil" archive ${{ runner.temp }}/obsLog.zip
       - uses: actions/upload-artifact@v3
         if: always()
         with:
