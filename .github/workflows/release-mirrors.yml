@@ -6,6 +6,8 @@ on:
       release_tag:
         description: Release tag (defaults to the tag of the release event)
         required: false
+      DEBUG_JOB:
+        description: 如果需要 debug 特定任务，请输入其 job id，多个任务请用 `,` 连接
 
 env:
   GITHUB_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
@@ -54,7 +56,7 @@ jobs:
     name: Upload to OTA Server
     runs-on: ubuntu-latest
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease'
+    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOB || contains(inputs.DEBUG_JOB, 'ota_server'))
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
@@ -78,7 +80,7 @@ jobs:
     name: Upload to R2
     runs-on: ubuntu-latest
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease'
+    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOB || contains(inputs.DEBUG_JOB, 'R2'))
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
@@ -99,11 +101,11 @@ jobs:
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
           DEST_DIR: ${{ env.FILE_PATH }}
 
-  AnnAngelaCOS:
+  AnnAngelaMirror:
     name: Upload to AnnAngela's COS + OBS and fire webhook
     runs-on: ubuntu-latest
     needs: getReleaseTag
-    if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
+    if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOB || contains(inputs.DEBUG_JOB, 'AnnAngelaMirror'))
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
@@ -145,12 +147,13 @@ jobs:
           echo "OBSUTIL_FOLDER: $OBSUTIL_FOLDER"
           chmod +x "$OBSUTIL_FOLDER/obsutil"
           touch ~/.obsutilconfig
-          echo 'sdkLogPath=${{ runner.temp }}/obsSdkLog' >> ~/.obsutilconfig
+          mkdir ${{ runner.temp }}/obsLog
+          echo 'sdkLogPath=${{ runner.temp }}/obsLog/sdk' >> ~/.obsutilconfig
           echo 'sdkLogLevel=INFO' >> ~/.obsutilconfig
-          echo 'utilLogPath=${{ runner.temp }}/obsUtilLog' >> ~/.obsutilconfig
+          echo 'utilLogPath=${{ runner.temp }}/obsLog/util' >> ~/.obsutilconfig
           echo "obsutil installed."
           echo "::group::obsutil output"
-          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }}
+          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vmd5 -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
           echo "::endgroup::"
       - name: Upload OBS log
         if: always()
@@ -162,7 +165,7 @@ jobs:
         if: always()
         with:
           name: obsLog
-          path: ${{ runner.temp }}/obsLog.zip
+          path: ${{ runner.temp }}/obsLog
       - name: Fire the webhook
         run: |
           node .github/AnnAngela/webhook.js
@@ -176,7 +179,7 @@ jobs:
     name: Upload to MAA S3
     runs-on: ubuntu-latest
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease'
+    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOB || contains(inputs.DEBUG_JOB, 'MAA_S3'))
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
@@ -201,7 +204,7 @@ jobs:
     name: Upload to R2 mac
     runs-on: macos-13
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g')
+    if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOB || contains(inputs.DEBUG_JOB, 'R2_MAC'))
     steps:
       - uses: actions/checkout@v3
       - name: Download release files
@@ -232,11 +235,11 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
-    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOB
     needs:
       - ota_server
       - R2
-      - AnnAngelaCOS
+      - AnnAngelaMirror
       # - MAA_S3 # 太慢了不等他
       # - R2_MAC # 是通过自有渠道发版，不经过 version api
     steps:
@@ -251,7 +254,7 @@ jobs:
       - getReleaseTag
       - ota_server
       - R2
-      - AnnAngelaCOS
+      - AnnAngelaMirror
       - MAA_S3
       - R2_MAC
       - updateVersionApi
