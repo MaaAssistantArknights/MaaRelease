@@ -148,20 +148,22 @@ jobs:
           chmod +x "$OBSUTIL_FOLDER/obsutil"
           touch ~/.obsutilconfig
           mkdir ${{ runner.temp }}/obsLog
+          echo 'showProgressBar=false' >> ~/.obsutilconfig
           echo 'sdkLogPath=${{ runner.temp }}/obsLog/sdk' >> ~/.obsutilconfig
           echo 'sdkLogLevel=INFO' >> ~/.obsutilconfig
           echo 'utilLogPath=${{ runner.temp }}/obsLog/util' >> ~/.obsutilconfig
           echo "obsutil installed."
           echo "::group::obsutil output"
-          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease -vlength -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
+          "$OBSUTIL_FOLDER/obsutil" sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} obs://maa-release/MaaRelease/${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} -vlength -e obs.cn-south-4.myhuaweicloud.com -i ${{ secrets.ANNANGELA_OBS_SECRET_ID }} -k ${{ secrets.ANNANGELA_OBS_SECRET_KEY }} -o ${{ runner.temp }}/obsLog
           echo "::endgroup::"
-      - name: Upload OBS log
+      - name: Package the OBS log
         if: failure()
         run: |
           export OBSUTIL_FOLDER="${{ runner.temp }}/obsutil/$(ls ${{ runner.temp }}/obsutil | grep -P '^obsutil_linux_amd64_\d+\.\d+\.\d+$')"
           echo "OBSUTIL_FOLDER: $OBSUTIL_FOLDER"
           "$OBSUTIL_FOLDER/obsutil" archive ${{ runner.temp }}/obsLog.zip
-      - uses: actions/upload-artifact@v3
+      - name: Upload the OBS log
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: obsLog
