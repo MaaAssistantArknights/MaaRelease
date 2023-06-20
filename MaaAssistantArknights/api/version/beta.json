@@ -664,6 +664,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.19.2-rc.1",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.19.2-rc.1",
     "body": "## v4.19.2-rc.1\n\n### 改进\n\n- 雷神保全浊蒂版&约翰保全浊蒂版修改 修改职业名称为英文，同步作业站版本 (#5172) @junyihan233\n- 重训了国服, 日服, 台服和韩服的OCR模型 (#5151) @Plumess\n- 更新了简中和英文的ocr det模型, 以及英文的ocr rec模型 (#5156) @Plumess\n- 优化退出模拟器，添加日志 @ABA2396\n- 随机展示简中文档中模拟器支持列表 (#5161) @bakashigure @AnnAngela\n- 优化界面显示 @moomiji @ABA2396\n- 关卡提示支持显示多个活动 @ABA2396\n\n### 修复\n\n- 修复自动基建 bskill_man_exp4 技能错误 @MistEO\n- 扩大roi范围，修复PlayCover无法开始唤醒 #5099 @ABA2396\n- 点赞接口序列化两次导致后端报错 @ABA2396\n\n### 其他\n\n- fix filename @horror-proton\n- Auto Update Game Resources - 2023-06-15\n- 修正拼写错误 @ABA2396 @kongwei981126 @doquangminh28\n- Update en-bug-report.yaml @ABA2396\n- 移除不需要的changelog @AnnAngela\n- 删除多余mac完整包 @AnnAngela\n- Do not force push tag @MistEO\n- 集成战略文档更新 (#5186) @LingXii\n- Auto Update Game Resources - 2023-06-18 @MistEO\n- 发版检测到docs发生变动时部署 @AnnAngela\n\n### For overseas\n\n#### YostarEN\n\n- translation refactoring of en-us.xaml for YostarEN (#5111) @Constrat @ABA2396\n- Difficulty selection for YostarEN (#5200) @Constrat\n- Fight Task Adverse Start YostarEN (#5196) @Constrat\n- OperBoxNameOCR tasks.json YostarEN (#5169) @Constrat\n\n#### YostarKR\n\n- recruitment failure with DP-Recovery tag for KR (after OCR update) @178619\n- Update ocrReplaces for KR @178619\n\n**Full Changelog**: [v4.19.2-beta.1 -> v4.19.2-rc.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.19.2-beta.1...v4.19.2-rc.1)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/109159622/reactions",
+      "total_count": 2,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 2,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 13
   }
 }
