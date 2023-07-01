@@ -1,6 +1,6 @@
 podTemplate(
   containers: [
-    containerTemplate(name: 'worker', image: 'alpine:latest')
+    containerTemplate(name: 'worker', image: 'alpine:latest', command: 'sleep', args: '1h')
   ]
 ) {
   node(POD_LABEL) {
