@@ -1,6 +1,6 @@
-import console from "./console.js";
+import console from "../modules/console.js";
 import fs from "fs";
-import readDir from "./readDir.js";
+import readDir from "../modules/readDir.js";
 import path from "path";
 const uploadDirPath = process.env.dirWithReleaseTag;
 console.info("uploadDirPath:", uploadDirPath);

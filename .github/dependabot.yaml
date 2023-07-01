@@ -14,3 +14,12 @@ updates:
     commit-message:
       prefix: "github-actions"
       include: "scope"
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "scripts" # Location of package manifests
+    schedule:
+      interval: "daily"
+      time: "08:15"
+      timezone: "Asia/Shanghai"
+    commit-message:
+      prefix: "npm"
+      include: "scope"

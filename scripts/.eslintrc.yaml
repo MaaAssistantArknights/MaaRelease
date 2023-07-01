@@ -11,9 +11,6 @@ parserOptions:
 
 extends: eslint:recommended
 
-ignorePatterns:
-  - dist/
-
 rules:
   logical-assignment-operators: error
   no-new-func: error

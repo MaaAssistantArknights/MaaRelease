@@ -1,5 +1,5 @@
-import console from "./console.js";
-import generateHMACSignature from "./generateHMACSignature.js";
+import console from "../modules/console.js";
+import generateHMACSignature from "../modules/generateHMACSignature.js";
 
 const data = {
     repository: process.env.GITHUB_REPOSITORY,
