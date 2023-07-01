@@ -16,7 +16,7 @@ const minioClient = new Client({
     secretKey: process.env.MINIO_ENDPOINT_PORT,
 });
 /**
- * @type { (bucketName: string, objectName: string, stream: Buffer) => Promise }
+ * @type { (bucketName: string, objectName: string, stream: internal.Readable) => Promise }
  */
 const minioClientPutObject = (...args) => new Promise((res, rej) => minioClient.putObject(...args, (err, result) => err ? rej(err) : res(result)));
 
@@ -69,19 +69,22 @@ const filteredAssets = [...assets.values()].filter(({ name }) => pattern.test(na
 console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
 
-console.info("Start downloading...");
+console.info("Start fetching...");
 await Promise.all(Array.from(({ length: thread }, async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
-        console.info("[Thread", i, "]", "Downloading", asset.name);
-        const file = await (await fetch(asset.url, {
+        console.info("[Thread", i, "]", "Fetching", asset.name);
+        const file = (await fetch(asset.url, {
             headers: {
                 Accept: "application/octet-stream",
                 Authorization: `Bearer ${token}`,
             },
-        })).arrayBuffer();
-        console.info("[Thread", i, "]", "Downloaded", asset.name, ", Uploading to minio");
-        await minioClientPutObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), Buffer.from(file.data));
+        })).body;
+        if (!file) {
+            throw new Error("Stream is null");
+        }
+        console.info("[Thread", i, "]", "Get the stream from", asset.name, ", Uploading to minio");
+        await minioClientPutObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), file);
         console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done.");
         asset = filteredAssets.shift();
     }
