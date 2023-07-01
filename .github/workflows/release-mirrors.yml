@@ -72,7 +72,7 @@ jobs:
         uses: ./.github/downloadReleaseFiles
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows,linux
+          os: windows,linux,macos
           notTempDir: true
       - name: Upload to OTA Server
         uses: appleboy/scp-action@master
@@ -96,7 +96,7 @@ jobs:
         uses: ./.github/downloadReleaseFiles
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows,linux
+          os: windows,linux,macos
       - name: Upload to R2
         uses: ./.github/s3Sync
         with:
@@ -179,7 +179,7 @@ jobs:
         uses: ./.github/downloadReleaseFiles
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: macos
+          os: macos-ota
       - name: Install Rclone
         run: brew install rclone
       - name: Upload Appcast Packages

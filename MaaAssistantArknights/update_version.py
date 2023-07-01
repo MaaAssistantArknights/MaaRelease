@@ -83,18 +83,19 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     assets = releases["assets"]
     new_assets = []
     for rel in assets:
-        if "-win-" not in rel['name'] and "-linux-" not in rel['name']:
+        if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg',rel.name):
             continue
         mirrors = []
         url = rel["browser_download_url"]
-        if tagType != "alpha":
-            result = get_annangela_mirror(rel)
-            if result != False:
-                mirrors.append(result)
 
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
             mirrors.append(m)
+        
+        if tagType != "alpha":
+            result = get_annangela_mirror(rel)
+            if result != False:
+                mirrors.append(result)
 
         new_rel = {
             "name": rel["name"],

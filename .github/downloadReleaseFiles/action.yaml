@@ -11,7 +11,7 @@ inputs:
     description: the release tag
     required: true
   os:
-    description: Select the platforms for downloading the files. Option can be "windows", "linux", "macos", or any combination of the three (separated by commas).
+    description: Select the platforms for downloading the files. Option can be "windows", "linux", "macos", "macos-ota", or any combination of the three (separated by commas).
     required: true
   notTempDir:
     description: When set to "true", disables the use of temp dir to prevent potential failures in subsequent Docker actions.
@@ -47,19 +47,23 @@ runs:
         echo "dir: $DOWNLOAD_DIR"
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
-        export OS='${{ inputs.os }}'
-        echo "OS: $OS"
-
+        echo 'OS: '${{ inputs.os }}''
         export PATTERN=""
-        if [[ $OS == *windows* ]]; then
-          export PATTERN="$PATTERN --pattern *-win-*"
-        fi
-        if [[ $OS == *macos* ]]; then
-          export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml --pattern *-macos-*.dmg"
-        fi
-        if [[ $OS == *linux* ]]; then
-          export PATTERN="$PATTERN --pattern *-linux-*"
-        fi
+        export OSList=$(echo '${{ inputs.os }}' | tr ',' '\n')
+        for OS in $OSList; do
+            if [ "$OS" = "windows" ]; then
+                export PATTERN="$PATTERN --pattern *-win-*"
+            fi
+            if [ "$OS" = "linux" ]; then
+                export PATTERN="$PATTERN --pattern *-linux-*"
+            fi
+            if [ "$OS" = "macos" ]; then
+                export PATTERN="$PATTERN --pattern *-macos-*.dmg"
+            fi
+            if [ "$OS" = "macos-ota" ]; then
+                export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml"
+            fi
+        done
 
         echo "pattern: $PATTERN"
 
