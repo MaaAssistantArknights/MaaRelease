@@ -30,7 +30,7 @@ podTemplate(
     stage('Download files from GitHub Release') {
       container('worker') {
         environment {
-          GITHUB_TOKEN = credentials('maa-github-token')
+          GITHUB_TOKEN = credentials('maa-jenkins-robot-token')
         }
         dir('/tmp/MaaRelease/scripts') {
           sh 'python3 download.py'
