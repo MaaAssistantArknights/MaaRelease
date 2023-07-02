@@ -71,11 +71,11 @@ console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
 
 console.info("Start fetching...");
-await Promise.all(Array.from(({ length: thread }, async (_, i) => {
+await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-        const stat = await minioClient.statObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name)).catch(() => false);
+        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), (err, stat) => res(err ? false : stat)));
         const size = Reflect.has(stat, "size") && typeof stat.size === "number" ? stat.size : -1;
         if (size > 0 && size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
@@ -91,11 +91,11 @@ await Promise.all(Array.from(({ length: thread }, async (_, i) => {
                 throw new Error("Stream is null");
             }
             console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
-            await minioClient.putObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), file, asset.size);
+            await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), file, asset.size, (err, info) => err ? rej(err) : res(info)));
             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done.");
         }
         asset = filteredAssets.shift();
     }
     console.info("[Thread", i, "]", "done.");
-})));
+}));
 console.info("Download done.");
