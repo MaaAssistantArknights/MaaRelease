@@ -11,7 +11,7 @@ const octokit = new Octokit({});
 const { token } = await octokit.auth();
 const minioClient = new Client({
     endPoint: process.env.MINIO_ENDPOINT,
-    port: parseInt(process.env.MINIO_ENDPOINT_PORT),
+    port: +process.env.MINIO_ENDPOINT_PORT,
     useSSL: false,
     accessKey: process.env.MINIO_ACCESS_KEY,
     secretKey: process.env.MINIO_ENDPOINT_PORT,
