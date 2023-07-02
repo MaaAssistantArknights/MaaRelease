@@ -19,31 +19,6 @@ const minioClient = new Client({
 
 let releaseTag = process.env.RELEASE_TAG;
 console.info("Fetching the release list");
-const releaseList = await octokit.rest.repos.listReleases({
-    owner,
-    repo: "MaaRelease",
-});
-let release_id;
-if (!releaseTag) {
-    console.info("No release_tag found in env, use the latest tag.");
-    release_id = releaseList.data[0].id;
-    releaseTag = releaseList.data[0].tag_name;
-} else {
-    console.info("release_tag in env:", releaseTag, "try to find this tag.");
-    const found = releaseList.data.find((release) => release.tag_name === releaseTag);
-    if (found) {
-        console.info("Tag found.");
-        release_id = found.id;
-    } else {
-        console.info("No tag found, use the latest tag.");
-        release_id = releaseList.data[0].id;
-        releaseTag = releaseList.data[0].tag_name;
-    }
-}
-console.info("release_tag:", releaseTag);
-console.info("release_id:", release_id);
-
-const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
 /**
  * @typedef { { repo: string } & Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
  */
@@ -51,17 +26,46 @@ const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
  * @type { Map<string, Asset>}
  */
 const assets = new Map();
-for (const repo of ["MaaRelease", "MaaAssistantArknights"]) {
-    const release = await octokit.rest.repos.getRelease({
-        owner,
-        repo,
-        release_id,
-    });
-    for (const asset of release.data.assets) {
-        asset.repo = repo;
-        assets.set(asset.name, asset);
+const maaReleaseList = await octokit.rest.repos.listReleases({
+    owner,
+    repo: "MaaRelease",
+});
+let maaReleaseFound;
+if (!releaseTag) {
+    console.info("No release_tag found in env, use the latest tag.");
+    maaReleaseFound = maaReleaseList.data[0];
+} else {
+    console.info("release_tag in env:", releaseTag, "try to find this tag.");
+    const found = maaReleaseList.data.find((release) => release.tag_name === releaseTag);
+    if (found) {
+        console.info("Tag found.");
+        maaReleaseFound = found;
+    } else {
+        console.info("No tag found, use the latest tag.");
+        maaReleaseFound = maaReleaseList.data[0];
     }
 }
+releaseTag = maaReleaseFound.tag_name;
+for (const asset of maaReleaseFound.assets) {
+    asset.repo = "MaaRelease";
+    assets.set(asset.name, asset);
+}
+console.info("release_tag:", releaseTag);
+const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
+    owner,
+    repo: "MaaAssistantArknights",
+});
+const maaAssistantArknightsFound = maaAssistantArknightsList.data.find((release) => release.tag_name === releaseTag);
+if (!maaAssistantArknightsFound) {
+    throw new Error(`No release named ${releaseTag} found in MaaAssistantArknights`);
+}
+for (const asset of maaAssistantArknightsFound.assets) {
+    asset.repo = "MaaAssistantArknights";
+    assets.set(asset.name, asset);
+}
+const { created_at } = maaAssistantArknightsFound;
+console.info("created_at:", created_at);
+const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
 const filteredAssets = [...assets.values()].filter(({ name }) => pattern.test(name));
 console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
