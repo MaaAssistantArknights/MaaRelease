@@ -83,7 +83,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     assets = releases["assets"]
     new_assets = []
     for rel in assets:
-        if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg',rel.name):
+        if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg', rel['name']):
             continue
         mirrors = []
         url = rel["browser_download_url"]
