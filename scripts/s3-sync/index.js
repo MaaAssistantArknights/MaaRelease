@@ -17,7 +17,7 @@ const minioClient = new Client({
     secretKey: process.env.MINIO_ENDPOINT_PORT,
 });
 
-let releaseTag = process.env.releaseTag;
+let releaseTag = process.env.RELEASE_TAG;
 console.info("Fetching the release list");
 const releaseList = await octokit.rest.repos.listReleases({
     owner,

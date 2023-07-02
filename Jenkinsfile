@@ -5,7 +5,7 @@ podTemplate(
 ) {
   node(POD_LABEL) {
     environment {
-      RELEASE_TAG = params.customParam
+      RELEASE_TAG = params.release_tag
     }    
 
     parameters {
