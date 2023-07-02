@@ -93,8 +93,8 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 throw new Error("Stream is null");
             }
             console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
-            await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, file, asset.size, (err, info) => err ? rej(err) : res(info)));
-            console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done.");
+            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, file, asset.size, (err, info) => err ? rej(err) : res(info)));
+            console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
         }
         asset = filteredAssets.shift();
     }
