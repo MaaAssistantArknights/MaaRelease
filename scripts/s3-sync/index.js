@@ -77,7 +77,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
         const objectName = path.join(process.env.UPLOAD_DIR, releaseTag, asset.name);
-        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? false : stat)));
+        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {} : stat)));
         const size = Reflect.has(stat, "size") && typeof stat.size === "number" ? stat.size : -1;
         if (size > 0 && size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
