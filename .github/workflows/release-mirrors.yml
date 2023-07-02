@@ -163,7 +163,7 @@ jobs:
         run: |
           node scripts/AnnAngela/webhookForJenkins.js
         env:
-          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/build?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}"
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/build?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
           WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
   R2_MAC:
@@ -192,9 +192,9 @@ jobs:
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs
 
-  # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版，。
-  # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道，
-  # 或是 MAA S3 那样上传过久难以等待，否则都应在 needs 里添加新的上传流程的 job id，
+  # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版。
+  # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道，或是上传过久难以等待
+  # 否则都应在 needs 里添加新的上传流程的 job id，
   # 避免尚未完成上传就发版导致错误码激增。
   # 最后，新增完上传流程后，除非是像 macOS 一样自行维护发版渠道，
   # 否则都需要到 MaaAssistantArknights/update_version.py 新增镜像地址生成。
@@ -207,7 +207,7 @@ jobs:
       - ota_server
       - R2
       - AnnAngelaMirror
-      # - MAA_S3 # 太慢了不等他
+      - MAA_S3
       # - R2_MAC # 是通过自有渠道发版，不经过 version api
     steps:
       - name: Dispatch the "update_version_api" workflow
