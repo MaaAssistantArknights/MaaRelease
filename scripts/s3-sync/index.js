@@ -4,6 +4,7 @@ import path from "path";
 import console from "../modules/console.js";
 import thread from "../modules/getThreadNumber.js";
 import { Client } from "minio";
+import { Readable } from "node:stream";
 const owner = "MaaAssistantArknights";
 console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
 console.info("Initialization done.");
@@ -93,7 +94,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 throw new Error("Stream is null");
             }
             console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
-            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, file, asset.size, (err, info) => err ? rej(err) : res(info)));
+            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, new Readable().wrap(file), asset.size, (err, info) => err ? rej(err) : res(info)));
             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
         }
         asset = filteredAssets.shift();
