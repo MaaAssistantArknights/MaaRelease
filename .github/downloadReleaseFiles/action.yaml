@@ -85,8 +85,11 @@ runs:
             if [ "$error" = "release not found" ]; then
               echo "  Release ${{ inputs.release_tag }} not found in $repo, skipped."
               return
+            elif [ "$error" = "no assets match the file pattern" ]; then
+              echo "  Release ${{ inputs.release_tag }} in $repo has no assets matching the file pattern, skipped."
+              return
             else
-              echo "$error"
+              echo "Error: $error"
               exit 1
             fi
           fi
