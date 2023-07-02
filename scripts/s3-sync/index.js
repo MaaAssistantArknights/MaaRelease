@@ -5,8 +5,8 @@ import console from "../modules/console.js";
 import thread from "../modules/getThreadNumber.js";
 import { Client } from "minio";
 const owner = "MaaAssistantArknights";
-console.info("Initialization done.");
 console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
+console.info("Initialization done.");
 
 const octokit = new Octokit({});
 const { token } = await octokit.auth();
@@ -76,7 +76,8 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), (err, stat) => res(err ? false : stat)));
+        const objectName = path.join(process.env.UPLOAD_DIR, releaseTag, asset.name);
+        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? false : stat)));
         const size = Reflect.has(stat, "size") && typeof stat.size === "number" ? stat.size : -1;
         if (size > 0 && size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
@@ -92,7 +93,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 throw new Error("Stream is null");
             }
             console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
-            await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, path.join(process.env.UPLOAD_DIR, asset.tag_name, asset.name), file, asset.size, (err, info) => err ? rej(err) : res(info)));
+            await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, file, asset.size, (err, info) => err ? rej(err) : res(info)));
             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done.");
         }
         asset = filteredAssets.shift();
