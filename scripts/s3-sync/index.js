@@ -6,6 +6,7 @@ import thread from "../modules/getThreadNumber.js";
 import { Client } from "minio";
 const owner = "MaaAssistantArknights";
 console.info("Initialization done.");
+console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
 
 const octokit = new Octokit({});
 const { token } = await octokit.auth();
