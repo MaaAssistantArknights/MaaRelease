@@ -10,7 +10,7 @@ for (let retryTime = 0; retryTime < 10; retryTime++) {
                 Authorization,
             },
             method: "GET",
-        })).json();
+        })).text();
         console.info("Attempt #", retryTime, "success, result:", result);
         console.info("Done.");
         process.exit(0);
