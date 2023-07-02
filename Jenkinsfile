@@ -1,11 +1,23 @@
 podTemplate(
   containers: [
-    containerTemplate(name: 'worker', image: 'node:lts-alpine', command: 'sleep', args: '1h')
+    containerTemplate(
+        name: 'worker',
+        image: 'node:lts-alpine',
+        ttyEnabled: true, 
+        command: 'cat',
+        envVars: [
+            containerEnvVar(key: 'THREAD', value: '4'),
+            containerEnvVar(key: 'UPLOAD_DIR', value: 'MaaAssistantArknights/MaaRelease/releases/download'),
+            containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
+            containerEnvVar(key: 'MINIO_ENDPOINT', value: 'minio.local'),
+            containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080')
+        ]
+    )
   ]
 ) {
   node(POD_LABEL) {
     environment {
-      RELEASE_TAG = params.release_tag
+      RELEASE_TAG = params.customParam
     }    
 
     parameters {
@@ -14,36 +26,29 @@ podTemplate(
 
     stage('Checkout Repo') {
       container('worker') {
-        dir('/tmp') {
-          git branch: 'main', url: 'https://github.com/MaaArknightsAssistant/MaaRelease.git'
-        }
+        sh 'apk --no-cache update'
+        sh 'apk add git'
+        sh 'git clone https://github.com/MaaAssistantArknights/MaaRelease.git'
       }
     }
 
     stage('Install the dependencies') {
       container('worker') {
-        dir('/tmp/MaaRelease/scripts') {
-          sh 'npm ci'
-        }
+        sh 'cd MaaRelease/scripts && npm ci'
       }
     }
 
     stage('Download files from GitHub Release and upload files to Minio') {
-      container('worker') {
-        environment {
-          GITHUB_PAT = credentials('maa-jenkins-robot-token')
-          THREAD = '4'
-          UPLOAD_DIR = 'MaaAssistantArknights/MaaRelease/releases/download'
-          MINIO_BUCKET = 'maa-release'
-          MINIO_ENDPOINT = 'minio.local'
-          MINIO_ENDPOINT_PORT = '9080'
-          MINIO_ACCESS_KEY = credentials('maa-minio-robot-access-key')
-          MINIO_SECRET_KEY = credentials('maa-minio-robot-secret-key')
-        }
-        dir('/tmp/MaaRelease/scripts') {
-          sh 'node s3-sync/index.js'
-        }
+      withCredentials([
+          string(credentialsId: 'maa-jenkins-robot-token', variable: 'GITHUB_PAT'),
+          string(credentialsId: 'maa-minio-robot-access-key', variable: 'MINIO_ACCESS_KEY'),
+          string(credentialsId: 'maa-minio-robot-secret-key', variable: 'MINIO_SECRET_KEY')
+      ]) {
+          container('worker') {
+            sh 'cd MaaRelease/scripts && node s3-sync/index.js'
+          }
       }
+      
     }
   }
 }
