@@ -11,20 +11,13 @@ podTemplate(
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
             containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
             containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
-            containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000')
+            containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000'),
+            containerEnvVar(key: 'RELEASE_TAG', value: params.release_tag)
         ]
     )
   ]
 ) {
   node(POD_LABEL) {
-    environment {
-      RELEASE_TAG = params.customParam
-    }    
-
-    parameters {
-        string(name: 'release_tag', defaultValue: '', description: 'Release tag (defaults to the tag of the release event)')
-    }
-
     stage('Checkout Repo') {
       container('worker') {
         sh 'apk --no-cache update'
