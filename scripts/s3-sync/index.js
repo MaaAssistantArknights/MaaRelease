@@ -7,6 +7,7 @@ import { Client } from "minio";
 import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
+import byteSize from "byte-size";
 const OWNER = process.env.OWNER || "MaaAssistantArknights";
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.THREAD:", process.env.THREAD);
@@ -130,9 +131,37 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 }, {
                     endStream: true,
                 });
-                req.on("response", (headers) => {
+                req.on("response", async (headers) => {
                     console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+                    let previousHrtime = 0;
+                    const transferredBytes = {
+                        now: 0,
+                        previous: 0,
+                    };
+                    const transferRates = {
+                        immediate: 0,
+                        average: 0,
+                    };
+                    let end = false;
                     minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
+                    const startHrtime = process.hrtime.bigint();
+                    req.on("data", (chunk) => {
+                        const now = process.hrtime.bigint();
+                        transferredBytes.now += chunk.length;
+                        transferRates.immediate = (transferredBytes.now - transferredBytes.previous) / Number(now - previousHrtime) / 10 ** 6;
+                        transferRates.average = transferredBytes.now / Number(now - startHrtime) / 10 ** 6;
+                        previousHrtime = now;
+                        transferredBytes.previous = transferredBytes.now;
+                    });
+                    req.on("end", () => end = true);
+                    req.on("error", () => end = true);
+                    while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
+                        await timerPromises.setTimeout(5000);
+                        if (!end) {
+                            console.info("[Thread", i, "]", "The speed of the stream of", asset.name, "- immediate:", byteSize(+transferRates.immediate, { precision: 3, units: "iec" }), "/s , average:", byteSize(+transferRates.average, { precision: 3, units: "iec" }), "/s");
+                        }
+                    }
+                    return;
                 });
             });
             client.close();
