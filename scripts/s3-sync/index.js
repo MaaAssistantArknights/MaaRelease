@@ -3,10 +3,14 @@ import { Octokit } from "../modules/octokit.js";
 import path from "path";
 import console from "../modules/console.js";
 import thread from "../modules/getThreadNumber.js";
-import { Client } from "minio";
-import { Readable } from "node:stream";
+// eslint-disable-next-line no-unused-vars
+import minio, { Client } from "minio";
+import http2 from "http2";
+import os from "os";
 const owner = "MaaAssistantArknights";
+const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
+console.info("ua:", ua);
 console.info("Initialization done.");
 
 const octokit = new Octokit({});
@@ -18,6 +22,15 @@ const minioClient = new Client({
     accessKey: process.env.MINIO_ACCESS_KEY,
     secretKey: process.env.MINIO_ENDPOINT_PORT,
 });
+/**
+ * @type {(objectName: string) => Promise<minio.BucketItemStat>}
+ */
+const minioClientStatObject = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
+    size: -1,
+    etag: "",
+    lastModified: new Date(-1),
+    metaData: {},
+} : stat)));
 
 let releaseTag = process.env.RELEASE_TAG;
 console.info("Fetching the release list");
@@ -78,36 +91,39 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
         const objectName = path.join(process.env.UPLOAD_DIR, releaseTag, asset.name);
-        const stat = await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {} : stat)));
-        const size = Reflect.has(stat, "size") && typeof stat.size === "number" ? stat.size : -1;
-        if (size > 0 && size === asset.size) {
+        const stat = await minioClientStatObject(objectName);
+        if (stat.size > 0 && stat.size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
         } else {
             console.info("[Thread", i, "]", asset.name, "unexists, start downloading");
-            const file = (await fetch(asset.url, {
-                headers: {
-                    Accept: "application/octet-stream",
-                    Authorization: `Bearer ${token}`,
-                },
-            })).body;
-            if (!file) {
-                throw new Error("Stream is null");
-            }
-            console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
-            const readable = new Readable();
-            const reader = file.getReader();
-            process.nextTick(async () => {
-                while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
-                    const { value, done } = await reader.read();
-                    if (done) {
-                        readable.push(null);
-                        return;
-                    }
-                    readable.push(value);
-                }
+            const url = new URL(asset.url);
+            const client = http2.connect(url);
+            const info = await new Promise((res, rej) => {
+                client.on("error", (err) => {
+                    rej(err);
+                });
+                const req = client.request({
+                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
+                    [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
+                    [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
+                    [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
+                    [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+                }, {
+                    endStream: true,
+                });
+                req.on("response", (headers) => {
+                    console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+                    minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
+                });
             });
-            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, readable, asset.size, (err, info) => err ? rej(err) : res(info)));
-            console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
+            client.close();
+            const stat = await minioClientStatObject(objectName);
+            if (stat.size > 0 && stat.size === asset.size) {
+                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
+            } else {
+                console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
+                throw new Error("Upload failed, size not match");
+            }
         }
         asset = filteredAssets.shift();
     }
