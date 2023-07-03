@@ -110,7 +110,11 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             const response = await fetch(url, {
                 headers,
             });
-            console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+            const data = await response.blob();
+            console.info("[Thread", i, "]", "Downloaded", asset.name, ", uploading to minio");
+            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, Buffer.from(data), (err, info) => err ? rej(err) : res(info)));
+            console.info("[Thread", i, "]", "Uploaded", asset.name, ", wait 5000ms and check the integrity.");
+            /* console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio");
             const readable = new Readable();
             readable._read = () => { };
             const reader = response.body.getReader();
@@ -125,7 +129,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 }
             });
             const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, readable, (err, info) => err ? rej(err) : res(info)));
-            console.info("[Thread", i, "]", "The stream of ", asset.name, "is ended, wait 5000ms and check the integrity.");
+            console.info("[Thread", i, "]", "The stream of ", asset.name, "is ended, wait 5000ms and check the integrity."); */
             await timerPromises.setTimeout(5000);
             const stat = await minioClientStatObject(objectName);
             if (stat.size > 0 && stat.size === asset.size) {
