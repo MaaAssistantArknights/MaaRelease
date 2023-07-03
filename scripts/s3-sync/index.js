@@ -112,7 +112,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                     [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
                 };
                 const apiReq = apiClient.request({
-                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
+                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_HEAD,
                     [http2.constants.HTTP2_HEADER_PATH]: `${apiUrl.pathname}${apiUrl.search}`,
                     ...headers,
                 }, {
@@ -121,6 +121,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 apiReq.on("response", (headers) => {
                     console.info("[Thread", i, "]", "Get the api response of", asset.name, ", redirecting to the downloadable link:", headers);
                     const assetUrl = new URL(headers[http2.constants.HTTP2_HEADER_LOCATION]);
+                    apiClient.close();
                     const assetClient = http2.connect(assetUrl);
                     assetClient.on("error", (err) => {
                         rej(err);
