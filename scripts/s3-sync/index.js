@@ -2,15 +2,17 @@
 import { Octokit } from "../modules/octokit.js";
 import path from "path";
 import console from "../modules/console.js";
-import thread from "../modules/getThreadNumber.js";
 // eslint-disable-next-line no-unused-vars
 import { Client } from "minio";
 import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
-const owner = "MaaAssistantArknights";
+const OWNER = process.env.OWNER || "MaaAssistantArknights";
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
-console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
+console.info("process.env.THREAD:", process.env.THREAD);
+const thread = Math.max(0, Math.min(os.cpus().length, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4));
+console.info("# of thread:", thread);
+console.info("OWNER:", OWNER);
 console.info("ua:", ua);
 console.info("Initialization done.");
 
@@ -43,11 +45,11 @@ console.info("Fetching the release list");
  * @typedef { { repo: string } & Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
  */
 /**
- * @type { Map<string, Asset>}
+ * @type { Asset[] }
  */
-const assets = new Map();
+const assets = [];
 const maaReleaseList = await octokit.rest.repos.listReleases({
-    owner,
+    owner: OWNER,
     repo: "MaaRelease",
 });
 let maaReleaseFound;
@@ -66,13 +68,9 @@ if (!releaseTag) {
     }
 }
 releaseTag = maaReleaseFound.tag_name;
-for (const asset of maaReleaseFound.assets) {
-    asset.repo = "MaaRelease";
-    assets.set(asset.name, asset);
-}
 console.info("release_tag:", releaseTag);
 const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
-    owner,
+    owner: OWNER,
     repo: "MaaAssistantArknights",
 });
 const maaAssistantArknightsFound = maaAssistantArknightsList.data.find((release) => release.tag_name === releaseTag);
@@ -81,12 +79,16 @@ if (!maaAssistantArknightsFound) {
 }
 for (const asset of maaAssistantArknightsFound.assets) {
     asset.repo = "MaaAssistantArknights";
-    assets.set(asset.name, asset);
+    assets.push(asset);
+}
+for (const asset of maaReleaseFound.assets) {
+    asset.repo = "MaaRelease";
+    assets.push(asset);
 }
 const { created_at } = maaAssistantArknightsFound;
 console.info("created_at:", created_at);
 const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
-const filteredAssets = [...assets.values()].filter(({ name }) => pattern.test(name));
+const filteredAssets = assets.filter(({ name }) => pattern.test(name));
 console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
 
@@ -95,7 +97,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-        const objectName = path.join(process.env.UPLOAD_DIR, releaseTag, asset.name);
+        const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
         const stat = await minioClientStatObject(objectName);
         if (stat.size > 0 && stat.size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
