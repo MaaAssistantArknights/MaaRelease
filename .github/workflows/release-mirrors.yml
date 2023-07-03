@@ -11,7 +11,6 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
-  FILE_PATH: MaaAssistantArknights/MaaRelease/releases/download
   TZ: Asia/Shanghai
 
 jobs:
@@ -54,50 +53,65 @@ jobs:
       debug_jobs: ${{ steps.getRateLimitStatus.outputs.debug_jobs }}
 
   # 以下开始是各镜像站上传流程。其中：
-  #   1. 每个流程均需使用 actions/checkout 获取复用 workflow 文件；
-  #   2. 每个流程均需使用 ./.github/downloadReleaseFiles 下载相关版本文件；
-  #   3. 如果是支持 S3 api 的对象存储的话，可以用 ./.github/s3Sync 上传；
+  #   1. 如果是支持 S3 api 的对象存储的话，可以用 ./.github/s3Sync 上传；
   #      其他类型也可以自己写上传脚本；
-  #   4. 其中 `!contains(needs.getReleaseTag.outputs.release_tag, '.g')` 代表不上传 alpha 版本。
-  # 如果需要新增上传流程，需在下方参考其他上传流程和上方说明添加，并在更下方发版流程里按其说明添加依赖。
-  ota_server:
-    name: Upload to OTA Server
-    runs-on: ubuntu-latest
+  #   2. `notAlpha` 代表不上传 alpha 版本。
+  # 如果需要新增上传流程，需在下方参考其他上传流程和上方说明添加。
+  upload:
+    runs-on: ${{ matrix.runs-on }}
     needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
+    strategy:
+      matrix:
+        repo: 
+          - MaaAssistantArknights
+          - MaaRelease
+        os:
+          - windows
+          - linux
+          - macos
+        target: # 必须为 JSON 数组格式
+          - '["ota_server", "R2", "MAA_S3"]'
+        runs-on:
+          - ubuntu-latest
+        include:
+          - repo: MaaRelease
+            os: windows
+            target: '["AnnAngelaMirror"]'
+            notAlpha: 'true'
+          - os: macos-ota
+            runs-on: macos-13
+            target: '["R2_MAC"]'
+            notAlpha: 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: Download release files
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        if: contains(fromJSON(matrix.target), 'AnnAngelaMirror') || contains(fromJSON(matrix.target), 'MAA_S3')
+        with:
+          node-version: lts/*
+          check-latest: true
+      - name: Download release files from ${{ matrix.repo }}
         id: downloadReleaseFiles
         uses: ./.github/downloadReleaseFiles
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows,linux,macos
+          os: windows
           notTempDir: true
+          repo: ${{ matrix.repo }}
+
       - name: Upload to OTA Server
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.OTA_SERVER_SSH_HOST }}
           username: ${{ secrets.OTA_SERVER_SSH_USER }}
           key: ${{ secrets.OTA_SERVER_SSH_KEY }}
           source: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          target: ${{ format('{0}/{1}', 'OTA', env.FILE_PATH) }}
+          target: ${{ format('{0}/{1}', 'OTA', steps.downloadReleaseFiles.outputs.targetDir) }}
           strip_components: 1
 
-  R2:
-    name: Upload to R2
-    runs-on: ubuntu-latest
-    needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
-    steps:
-      - uses: actions/checkout@v3
-      - name: Download release files
-        id: downloadReleaseFiles
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows,linux,macos
       - name: Upload to R2
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
         uses: ./.github/s3Sync
         with:
           args: --acl public-read --follow-symlinks
@@ -107,34 +121,12 @@ jobs:
           AWS_REGION: us-east-1
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          DEST_DIR: ${{ env.FILE_PATH }}
+          DEST_DIR: ${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
-  AnnAngelaMirror:
-    name: Upload to AnnAngela's COS and fire webhook
-    runs-on: ubuntu-latest
-    needs: getReleaseTag
-    if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        id: setup-node
-        with:
-          node-version: lts/*
-          check-latest: true
-          # cache: npm
-      - name: Download release files
-        id: downloadReleaseFiles
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows
-      - name: Prepare the files
-        run: node scripts/AnnAngela/prepare.js
-        env:
-          dirWithReleaseTag: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
       - name: Upload to AnnAngela's COS
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'AnnAngelaMirror') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
         run: |
+          node scripts/AnnAngela/prepare.js
           echo "Installing coscli..."
           gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --repo tencentyun/coscli
           chmod +x ${{ runner.temp }}/coscli/coscli-linux
@@ -143,52 +135,23 @@ jobs:
           echo "::group::coscli output"
           ${{ runner.temp }}/coscli/coscli-linux sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} cos://${{ secrets.ANNANGELA_COS_BUCKET }}/MaaRelease --recursive -e cos.accelerate.myqcloud.com -i ${{ secrets.ANNANGELA_COS_SECRET_ID }} -k ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
           echo "::endgroup::"
-      - name: Fire the webhook
-        run: |
           node scripts/AnnAngela/webhook.js
         env:
+          dirWithReleaseTag: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
           WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          dirWithReleaseTag: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
 
-  MAA_S3:
-    name: Upload to MAA S3
-    runs-on: ubuntu-latest
-    needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        id: setup-node
-        with:
-          node-version: lts/*
-          check-latest: true
-          # cache: npm
-      - name: Fire the webhook
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'MAA_S3') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
         run: |
           node scripts/AnnAngela/webhookForJenkins.js
         env:
           WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
           WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
-  R2_MAC:
-    name: Upload to R2 mac
-    runs-on: macos-13
-    needs: getReleaseTag
-    if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
-    steps:
-      - uses: actions/checkout@v3
-      - name: Download release files
-        id: downloadReleaseFiles
-        uses: ./.github/downloadReleaseFiles
-        with:
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: macos-ota
-      - name: Install Rclone
-        run: brew install rclone
-      - name: Upload Appcast Packages
+      - name: Upload Appcast Packages for macos-ota
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
         env:
           RCLONE_CONFIG_MAA_TYPE: s3
           RCLONE_CONFIG_MAA_PROVIDER: Cloudflare
@@ -196,14 +159,12 @@ jobs:
           RCLONE_CONFIG_MAA_SECRET_ACCESS_KEY: ${{ secrets.R2_MAC_ACCESS_KEY }}
           RCLONE_CONFIG_MAA_ENDPOINT: ${{ secrets.R2_MAC_ENDPOINT }}
         run: |
+          brew install rclone
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs
 
   # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版。
-  # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道，或是上传过久难以等待
-  # 否则都应在 needs 里添加新的上传流程的 job id，
-  # 避免尚未完成上传就发版导致错误码激增。
-  # 最后，新增完上传流程后，除非是像 macOS 一样自行维护发版渠道，
+  # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道的，
   # 否则都需要到 MaaAssistantArknights/update_version.py 新增镜像地址生成。
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
@@ -211,10 +172,7 @@ jobs:
     if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
     needs:
       - getReleaseTag
-      - ota_server
-      - R2
-      - AnnAngelaMirror
-      - MAA_S3
+      - upload
       # - R2_MAC # 是通过自有渠道发版，不经过 version api
     steps:
       - name: Dispatch the "update_version_api" workflow
@@ -226,11 +184,7 @@ jobs:
     if: always()
     needs:
       - getReleaseTag
-      - ota_server
-      - R2
-      - AnnAngelaMirror
-      - MAA_S3
-      - R2_MAC
+      - upload
       - updateVersionApi
     steps:
       - name: Get rate limit status for current token

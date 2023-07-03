@@ -10,6 +10,9 @@ inputs:
   release_tag:
     description: the release tag
     required: true
+  repo:
+    description: the repo, "MaaAssistantArknights" or "MaaRelease"
+    required: true
   os:
     description: Select the platforms for downloading the files. Option can be "windows", "linux", "macos", "macos-ota", or any combination of the three (separated by commas).
     required: true
@@ -33,10 +36,9 @@ runs:
 
         logDivider
 
-        if [ "${{ inputs.notTempDir }}" = "true" ]; then
-          export DOWNLOAD_DIR="upload-dir"
-        else
-          export DOWNLOAD_DIR="${{ runner.temp }}/upload-dir"
+        export DOWNLOAD_DIR="upload-dir/${{ inputs.repo }}"
+        if [ "${{ inputs.notTempDir }}" != "true" ]; then
+          export DOWNLOAD_DIR="${{ runner.temp }}/$DOWNLOAD_DIR"
         fi
 
         export DOWNLOAD_DIR_WITH_RELEASE_TAG="$DOWNLOAD_DIR/${{ inputs.release_tag }}"
@@ -47,23 +49,16 @@ runs:
         echo "dir: $DOWNLOAD_DIR"
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
-        echo 'OS: '${{ inputs.os }}''
-        export PATTERN=""
-        export OSList=$(echo '${{ inputs.os }}' | tr ',' '\n')
-        for OS in $OSList; do
-            if [ "$OS" = "windows" ]; then
-                export PATTERN="$PATTERN --pattern *-win-*"
-            fi
-            if [ "$OS" = "linux" ]; then
-                export PATTERN="$PATTERN --pattern *-linux-*"
-            fi
-            if [ "$OS" = "macos" ]; then
-                export PATTERN="$PATTERN --pattern *-macos-*.dmg"
-            fi
-            if [ "$OS" = "macos-ota" ]; then
-                export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml"
-            fi
-        done
+        echo 'OS: ${{ inputs.os }}'
+        if [ "${{ inputs.os }}" = "windows" ]; then
+            export PATTERN="--pattern *-win-*"
+        elif [ "${{ inputs.os }}" = "linux" ]; then
+            export PATTERN="--pattern *-linux-*"
+        elif [ "${{ inputs.os }}" = "macos" ]; then
+            export PATTERN="--pattern *-macos-*.dmg"
+        elif [ "${{ inputs.os }}" = "macos-ota" ]; then
+            export PATTERN="--pattern *.delta --pattern appcast.xml"
+        fi
 
         echo "pattern: $PATTERN"
 
@@ -71,72 +66,49 @@ runs:
 
         mkdir -pv $DOWNLOAD_DIR_WITH_RELEASE_TAG
 
-        download_release_files() {
-          repo="$1"
+        tmpfile=$(mktemp)
 
-          tmpfile=$(mktemp)
-          
-          echo "Start to download release files from $repo..."
+        echo "Start to download release files from ${{ inputs.repo }}..."
 
-          if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
-            error=$(cat "$tmpfile")
-            rm -f "$tmpfile"
+        if ! gh release download ${{ inputs.release_tag }} --repo "MaaAssistantArknights/${{ inputs.repo }}" $PATTERN --clobber --dir $DOWNLOAD_DIR_WITH_RELEASE_TAG 2>"$tmpfile"; then
+          error=$(cat "$tmpfile")
+          rm -f "$tmpfile"
 
-            if [ "$error" = "release not found" ]; then
-              echo "  Release ${{ inputs.release_tag }} not found in $repo, skipped."
-              return
-            elif [ "$error" = "no assets match the file pattern" ]; then
-              echo "  Release ${{ inputs.release_tag }} in $repo has no assets matching the file pattern, skipped."
-              return
-            else
-              echo "Error: $error"
-              exit 1
-            fi
+          if [ "$error" = "release not found" ]; then
+            echo "Release ${{ inputs.release_tag }} not found in ${{ inputs.repo }}, skipped."
+            return
+          elif [ "$error" = "no assets match the file pattern" ]; then
+            echo "Release ${{ inputs.release_tag }} in ${{ inputs.repo }} has no assets matching the file pattern, skipped."
+            return
+          else
+            echo "Error: $error"
+            exit 1
           fi
-
-          echo '  Download completed, fetching the "createdAt" attr...'
-
-          created_at=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json createdAt -q '.createdAt')
-
-          echo "  The release is created at $created_at, start to get the list of the release files ..." 
-
-          list=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/$repo" --json assets -q '.assets.[].name')
-
-          echo '  Start to change the times of release files in the list...'
-
-          echo "::group::download_release_files change the times of release files from MaaAssistantArknights/$repo."
-          while IFS= read -r filename; do
-            filenameWithPath="$DOWNLOAD_DIR_WITH_RELEASE_TAG/$filename"
-            if [ -e "$filenameWithPath" ]; then
-              echo "    Start to change the modify time of $filename from $(stat -c '%y' $filenameWithPath) to $created_at."
-              touch -d "$created_at" "$filenameWithPath"
-              echo "    The new modify time of $filename is $(stat -c '%y' $filenameWithPath)."
-              printf "\n"
-            fi
-          done <<< "$list"
-          echo "::endgroup::"
-
-          echo '  Done.'
-        }
-
-        logDivider
-
-        download_release_files 'MaaRelease'
-
-        logDivider
-
-        download_release_files 'MaaAssistantArknights'
-
-        logDivider
-
-        if [ -d "$DOWNLOAD_DIR_WITH_RELEASE_TAG" ] && [ "$(ls -A "$DOWNLOAD_DIR_WITH_RELEASE_TAG")" ]; then
-          echo "Download complete."
-          echo "Done, folder view:"
-          ls -lhA $DOWNLOAD_DIR_WITH_RELEASE_TAG
-        else
-          echo "Failed, no release downloaded."
-          exit 1
         fi
+
+        echo 'Download completed, fetching the "createdAt" attr...'
+
+        created_at=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/${{ inputs.repo }}" --json createdAt -q '.createdAt')
+
+        echo "The release is created at $created_at, start to get the list of the release files ..." 
+
+        list=$(gh release view ${{ inputs.release_tag }} --repo "MaaAssistantArknights/${{ inputs.repo }}" --json assets -q '.assets.[].name')
+
+        echo 'Start to change the times of release files in the list...'
+
+        echo "::group::download_release_files change the times of release files from MaaAssistantArknights/${{ inputs.repo }}."
+        while IFS= read -r filename; do
+          filenameWithPath="$DOWNLOAD_DIR_WITH_RELEASE_TAG/$filename"
+          if [ -e "$filenameWithPath" ]; then
+            echo "  Start to change the modify time of $filename from $(stat -c '%y' $filenameWithPath) to $created_at."
+            touch -d "$created_at" "$filenameWithPath"
+            echo "  The new modify time of $filename is $(stat -c '%y' $filenameWithPath)."
+            printf "\n"
+          fi
+        done <<< "$list"
+        echo "::endgroup::"
+
+        echo 'Done.'
 
 outputs:
   dir:
@@ -145,3 +117,6 @@ outputs:
   dirWithReleaseTag:
     description: dir for the release, with release tag
     value: ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR_WITH_RELEASE_TAG }}
+  targetDir:
+    description: dir for the target
+    value: ${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', inputs.repo, 'releases/download') }}
