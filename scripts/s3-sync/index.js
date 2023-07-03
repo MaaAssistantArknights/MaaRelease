@@ -145,7 +145,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             await timerPromises.setTimeout(5000);
             const stat = await minioClientStatObject(objectName);
             if (stat.size > 0 && stat.size === asset.size) {
-                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
+                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...info, ...stat });
             } else {
                 console.error("[Thread", i, "]", "Uploading", asset.name, "failed, size not match - asset.size:", asset.size, "stat:", stat);
                 throw new Error("Upload failed, size not match");
