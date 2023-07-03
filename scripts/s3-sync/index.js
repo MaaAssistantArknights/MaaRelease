@@ -16,8 +16,9 @@ console.info("Initialization done.");
 
 const octokit = new Octokit({});
 const { token } = await octokit.auth();
+const MINIO_WAIT_TIME_AFTER_UPLOAD_MS = +process.env.MINIO_WAIT_TIME_AFTER_UPLOAD_MS || 1000;
 const minioClient = new Client({
-    endPoint: process.env.MINIO_ENDPOINT,
+    endPoint: process.env.MINIO_ENDPOINT_DOMAIN,
     port: +process.env.MINIO_ENDPOINT_PORT,
     useSSL: false,
     accessKey: process.env.MINIO_ACCESS_KEY,
@@ -133,11 +134,11 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 });
             });
             client.close();
-            console.info("[Thread", i, "]", "The stream of ", asset.name, "is ended, wait 5000ms and check the integrity.");
-            await timerPromises.setTimeout(5000);
+            console.info("[Thread", i, "]", "The stream of", asset.name, "is ended, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
+            await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
             const stat = await minioClientStatObject(objectName);
             if (stat.size > 0 && stat.size === asset.size) {
-                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
+                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
             } else {
                 console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
                 throw new Error("Upload failed, size not match");

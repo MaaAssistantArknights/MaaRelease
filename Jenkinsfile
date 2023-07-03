@@ -9,8 +9,9 @@ podTemplate(
             containerEnvVar(key: 'THREAD', value: '4'),
             containerEnvVar(key: 'UPLOAD_DIR', value: 'MaaAssistantArknights/MaaRelease/releases/download'),
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
-            containerEnvVar(key: 'MINIO_ENDPOINT', value: 'minio.local'),
-            containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080')
+            containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
+            containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
+            containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000')
         ]
     )
   ]
