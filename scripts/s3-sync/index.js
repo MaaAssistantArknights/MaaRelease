@@ -133,7 +133,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 });
                 req.on("response", async (headers) => {
                     console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                    let previousHrtime = 0;
+                    let previousHrtime = 0n;
                     const transferredBytes = {
                         now: 0,
                         previous: 0,
