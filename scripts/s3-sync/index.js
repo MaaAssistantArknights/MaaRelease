@@ -7,6 +7,7 @@ import thread from "../modules/getThreadNumber.js";
 import { Client } from "minio";
 import http2 from "http2";
 import os from "os";
+import timerPromises from "timers/promises";
 const owner = "MaaAssistantArknights";
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
@@ -99,32 +100,54 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
         } else {
             console.info("[Thread", i, "]", asset.name, "unexists, start downloading");
-            const url = new URL(asset.url);
-            const client = http2.connect(url);
             const info = await new Promise((res, rej) => {
-                client.on("error", (err) => {
+                const apiUrl = new URL(asset.url);
+                const apiClient = http2.connect(apiUrl);
+                apiClient.on("error", (err) => {
                     rej(err);
                 });
-                const req = client.request({
-                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
-                    [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
+                const headers = {
                     [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
                     [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
                     [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+                };
+                const apiReq = apiClient.request({
+                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
+                    [http2.constants.HTTP2_HEADER_PATH]: `${apiUrl.pathname}${apiUrl.search}`,
+                    ...headers,
                 }, {
                     endStream: true,
                 });
-                req.on("response", (headers) => {
-                    console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                    minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
+                apiReq.on("response", (headers) => {
+                    console.info("[Thread", i, "]", "Get the api response of", asset.name, ", redirecting to the downloadable link:", headers);
+                    const assetUrl = new URL(headers[http2.constants.HTTP2_HEADER_LOCATION]);
+                    const assetClient = http2.connect(assetUrl);
+                    assetClient.on("error", (err) => {
+                        rej(err);
+                    });
+                    const assetReq = apiClient.request({
+                        [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
+                        [http2.constants.HTTP2_HEADER_PATH]: `${assetUrl.pathname}${assetUrl.search}`,
+                        ...headers,
+                    }, {
+                        endStream: true,
+                    });
+                    assetReq.on("response", (headers) => {
+                        console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+                        minioClient.putObject(process.env.MINIO_BUCKET, objectName, assetReq, (err, info) => {
+                            assetClient.close();
+                            err ? rej(err) : res(info);
+                        });
+                    });
                 });
             });
-            client.close();
+            console.info("[Thread", i, "]", "The stream of ", asset.name, "is ended, wait 5000ms and check the integrity.");
+            await timerPromises.setTimeout(5000);
             const stat = await minioClientStatObject(objectName);
             if (stat.size > 0 && stat.size === asset.size) {
                 console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", info);
             } else {
-                console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
+                console.error("[Thread", i, "]", "Uploading", asset.name, "failed, size not match - asset.size:", asset.size, "stat:", stat);
                 throw new Error("Upload failed, size not match");
             }
         }
