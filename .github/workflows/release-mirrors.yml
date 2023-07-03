@@ -71,7 +71,7 @@ jobs:
           - linux
           - macos
         target: # 必须为 JSON 数组格式
-          - '["ota_server", "R2", "MAA_S3"]'
+          - '["ota_server", "R2"]'
         runs-on:
           - ubuntu-latest
         include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
@@ -102,31 +102,6 @@ jobs:
           os: windows
           notTempDir: true
           repo: ${{ matrix.repo }}
-
-      - name: Fire the webhook of MAA_S3
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'MAA_S3') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
-        run: |
-          node scripts/AnnAngela/webhookForJenkins.js
-        env:
-          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
-          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
-
-      - name: Upload to OTA Server
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
-        run: |
-          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
-          chmod 600 ${{ runner.temp }}/tmp
-          KEY_INFO=$(ssh-keygen -lf ${{ runner.temp }}/tmp)
-          KEY_TYPE=$(echo "$KEY_INFO" | awk '{print $4}' | sed 's/[(|)]//g')
-          echo "KEY_INFO: $KEY_INFO"
-          echo "KEY_TYPE: $KEY_TYPE"
-          export KEY_NAME=id_${KEY_TYPE,,}
-          echo "KEY_NAME: $KEY_NAME"
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ~/.ssh/$KEY_NAME
-          chmod 600 ~/.ssh/$KEY_NAME
-          ssh-keyscan -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
-          rsync -vcrRtz --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
       - name: Upload to R2
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
@@ -160,6 +135,23 @@ jobs:
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
 
+      - name: Upload to OTA Server
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
+        run: |
+          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
+          chmod 600 ${{ runner.temp }}/tmp
+          KEY_INFO=$(ssh-keygen -lf ${{ runner.temp }}/tmp)
+          KEY_TYPE=$(echo "$KEY_INFO" | awk '{print $4}' | sed 's/[(|)]//g')
+          echo "KEY_INFO: $KEY_INFO"
+          echo "KEY_TYPE: $KEY_TYPE"
+          export KEY_NAME=id_${KEY_TYPE,,}
+          echo "KEY_NAME: $KEY_NAME"
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ~/.ssh/$KEY_NAME
+          chmod 600 ~/.ssh/$KEY_NAME
+          ssh-keyscan -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
+          rsync -vcrRtzhhh --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
+
       - name: Upload Appcast Packages for macos-ota
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
         env:
@@ -173,6 +165,25 @@ jobs:
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs
 
+  
+  MAA_S3:
+    needs: getReleaseTag
+    runs-on: ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          check-latest: true
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
+        run: |
+          node scripts/AnnAngela/webhookForJenkins.js
+        env:
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
+          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
+
   # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版。
   # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道的，
   # 否则都需要到 MaaAssistantArknights/update_version.py 新增镜像地址生成。
@@ -183,7 +194,7 @@ jobs:
     needs:
       - getReleaseTag
       - upload
-      # - R2_MAC # 是通过自有渠道发版，不经过 version api
+      - MAA_S3
     steps:
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
@@ -195,6 +206,7 @@ jobs:
     needs:
       - getReleaseTag
       - upload
+      - MAA_S3
       - updateVersionApi
     steps:
       - name: Get rate limit status for current token
