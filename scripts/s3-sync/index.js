@@ -4,7 +4,7 @@ import path from "path";
 import console from "../modules/console.js";
 import thread from "../modules/getThreadNumber.js";
 // eslint-disable-next-line no-unused-vars
-import minio, { Client } from "minio";
+import { Client } from "minio";
 import http2 from "http2";
 import os from "os";
 const owner = "MaaAssistantArknights";
@@ -23,7 +23,10 @@ const minioClient = new Client({
     secretKey: process.env.MINIO_ENDPOINT_PORT,
 });
 /**
- * @type {(objectName: string) => Promise<minio.BucketItemStat>}
+ * @typedef { { size: number, etag: string, lastModified: Date, metaData: { [key: string]: any } } } BucketItemStat
+ */
+/**
+ * @type {(objectName: string) => Promise<BucketItemStat>}
  */
 const minioClientStatObject = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
     size: -1,
