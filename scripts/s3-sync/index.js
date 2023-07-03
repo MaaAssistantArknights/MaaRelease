@@ -6,7 +6,6 @@ import thread from "../modules/getThreadNumber.js";
 // eslint-disable-next-line no-unused-vars
 import { Client } from "minio";
 import http2 from "http2";
-import tls from "tls";
 import os from "os";
 import timerPromises from "timers/promises";
 const owner = "MaaAssistantArknights";
@@ -114,12 +113,8 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             console.info("[Thread", i, "]", "Get the downloadable link of", asset.name, ", start downloading");
             const url = new URL(response.headers.get("location"));
             const client = http2.connect(url, {
-                createConnection: () => tls.connect({
-                    host: url.hostname,
-                    port: url.port ? +url.port : 443,
-                    minVersion: "TLSv1.2",
-                    maxVersion: "TLSv1.3",
-                }),
+                minVersion: "TLSv1.3",
+                maxVersion: "TLSv1.3",
             });
             const info = await new Promise((res, rej) => {
                 client.on("error", (err) => {
