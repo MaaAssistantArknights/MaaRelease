@@ -110,7 +110,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             const response = await fetch(url, {
                 headers,
             });
-            const data = await response.blob();
+            const data = await response.arrayBuffer();
             console.info("[Thread", i, "]", "Downloaded", asset.name, ", uploading to minio");
             const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, Buffer.from(data), (err, info) => err ? rej(err) : res(info)));
             console.info("[Thread", i, "]", "Uploaded", asset.name, ", wait 5000ms and check the integrity.");
