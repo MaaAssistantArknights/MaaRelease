@@ -29,10 +29,13 @@ def retry_urlopen(*args, **kwargs):
                 continue
             raise
 
-MIRRORS = [
+MIRRORS_INNER = [
+    ("github.com", "s3.maa-org.net:25240/maa-release"),
+]
+
+MIRRORS_OUTER = [
     ("github.com", "agent.imgg.dev"),
     ("github.com", "maa.r2.imgg.dev"),
-    ("github.com", "s3.maa-org.net:25240/maa-release"),
 ]
 
 ANNANGELA_MIRRORS = {
@@ -85,23 +88,32 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     for rel in assets:
         if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg', rel['name']):
             continue
-        mirrors = []
+        mirrors_outer = []
+        mirrors_inner = []
         url = rel["browser_download_url"]
 
-        for (raw, rep) in MIRRORS:
+        for (raw, rep) in MIRRORS_OUTER:
             m = url.replace(raw, rep)
-            mirrors.append(m)
+            mirrors_outer.append(m)
+
+        for (raw, rep) in MIRRORS_INNER:
+            m = url.replace(raw, rep)
+            mirrors_inner.append(m)
         
         if tagType != "alpha":
             result = get_annangela_mirror(rel)
             if result != False:
                 mirrors.append(result)
 
+        mirrors = [*mirrors_outer, *mirrors_inner]
+
         new_rel = {
             "name": rel["name"],
             "size": rel["size"],
             "browser_download_url": rel["browser_download_url"],
-            "mirrors": mirrors
+            "mirrors": mirrors,
+            "mirrors_outer": mirrors_outer,
+            "mirrors_inner": mirrors_inner
         }
         new_assets.append(new_rel)
 
