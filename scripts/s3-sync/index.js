@@ -8,6 +8,7 @@ import { Client } from "minio";
 import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
+import { Readable } from "stream";
 const owner = "MaaAssistantArknights";
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.UPLOAD_DIR:", process.env.UPLOAD_DIR);
@@ -100,48 +101,30 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
         } else {
             console.info("[Thread", i, "]", asset.name, "unexists, start downloading");
-            const info = await new Promise((res, rej) => {
-                const apiUrl = new URL(asset.url);
-                const apiClient = http2.connect(apiUrl);
-                apiClient.on("error", (err) => {
-                    rej(err);
-                });
-                const headers = {
-                    [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
-                    [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
-                    [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
-                };
-                const apiReq = apiClient.request({
-                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_HEAD,
-                    [http2.constants.HTTP2_HEADER_PATH]: `${apiUrl.pathname}${apiUrl.search}`,
-                    ...headers,
-                }, {
-                    endStream: true,
-                });
-                apiReq.on("response", (headers) => {
-                    console.info("[Thread", i, "]", "Get the api response of", asset.name, ", redirecting to the downloadable link:", headers);
-                    const assetUrl = new URL(headers[http2.constants.HTTP2_HEADER_LOCATION]);
-                    apiClient.close();
-                    const assetClient = http2.connect(assetUrl);
-                    assetClient.on("error", (err) => {
-                        rej(err);
-                    });
-                    const assetReq = apiClient.request({
-                        [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
-                        [http2.constants.HTTP2_HEADER_PATH]: `${assetUrl.pathname}${assetUrl.search}`,
-                        ...headers,
-                    }, {
-                        endStream: true,
-                    });
-                    assetReq.on("response", (headers) => {
-                        console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                        minioClient.putObject(process.env.MINIO_BUCKET, objectName, assetReq, (err, info) => {
-                            assetClient.close();
-                            err ? rej(err) : res(info);
-                        });
-                    });
-                });
+            const url = new URL(asset.url);
+            const headers = {
+                [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
+                [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
+                [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+            };
+            const response = await fetch(url, {
+                headers,
             });
+            console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+            const readable = new Readable();
+            readable._read = () => { };
+            const reader = response.body.getReader();
+            process.nextTick(async () => {
+                while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        readable.push(null);
+                        break;
+                    }
+                    readable.push(value);
+                }
+            });
+            const info = await new Promise((res, rej) => minioClient.putObject(process.env.MINIO_BUCKET, objectName, readable, (err, info) => err ? rej(err) : res(info)));
             console.info("[Thread", i, "]", "The stream of ", asset.name, "is ended, wait 5000ms and check the integrity.");
             await timerPromises.setTimeout(5000);
             const stat = await minioClientStatObject(objectName);
