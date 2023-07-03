@@ -117,7 +117,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 createConnection: () => tls.connect({
                     host: url.hostname,
                     port: url.port ? +url.port : 443,
-                    minVersion: "TLSv1.3",
+                    minVersion: "TLSv1.2",
                     maxVersion: "TLSv1.3",
                 }),
             });
