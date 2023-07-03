@@ -61,6 +61,7 @@ jobs:
   upload:
     needs: getReleaseTag
     strategy:
+      fail-fast: false
       matrix:
         repo: 
           - MaaAssistantArknights
@@ -102,16 +103,18 @@ jobs:
           notTempDir: true
           repo: ${{ matrix.repo }}
 
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'MAA_S3') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
+        run: |
+          node scripts/AnnAngela/webhookForJenkins.js
+        env:
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
+          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
+
       - name: Upload to OTA Server
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.OTA_SERVER_SSH_HOST }}
-          username: ${{ secrets.OTA_SERVER_SSH_USER }}
-          key: ${{ secrets.OTA_SERVER_SSH_KEY }}
-          source: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          target: ${{ format('{0}/{1}', 'OTA', steps.downloadReleaseFiles.outputs.targetDir) }}
-          strip_components: 1
+        run: |
+          rsync -vcrRtz --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
       - name: Upload to R2
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
@@ -144,14 +147,6 @@ jobs:
           WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-
-      - name: Fire the webhook of MAA_S3
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'MAA_S3') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
-        run: |
-          node scripts/AnnAngela/webhookForJenkins.js
-        env:
-          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
-          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
       - name: Upload Appcast Packages for macos-ota
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
