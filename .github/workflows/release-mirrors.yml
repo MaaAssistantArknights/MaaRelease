@@ -116,7 +116,7 @@ jobs:
         run: |
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
           chmod 600 ${{ runner.temp }}/tmp
-          KEY_INFO=$(ssh-keygen -l -f ${{ runner.temp }}/tmp)
+          KEY_INFO=$(ssh-keygen -lf ${{ runner.temp }}/tmp)
           KEY_TYPE=$(echo "$KEY_INFO" | awk '{print $4}' | sed 's/[(|)]//g')
           echo "KEY_INFO: $KEY_INFO"
           echo "KEY_TYPE: $KEY_TYPE"
