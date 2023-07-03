@@ -53,12 +53,12 @@ jobs:
       debug_jobs: ${{ steps.getRateLimitStatus.outputs.debug_jobs }}
 
   # 以下开始是各镜像站上传流程。其中：
-  #   1. 如果是支持 S3 api 的对象存储的话，可以用 ./.github/s3Sync 上传；
+  #   1. 可以通过对 matrix 的排列组合来实现多个镜像站使用同一组下载数据的上传，减少 api rate limit 的使用；
+  #   2. 如果是支持 S3 api 的对象存储的话，可以用 ./.github/s3Sync 上传；
   #      其他类型也可以自己写上传脚本；
-  #   2. `notAlpha` 代表不上传 alpha 版本。
+  #   3. `notAlpha` 代表不上传 alpha 版本。
   # 如果需要新增上传流程，需在下方参考其他上传流程和上方说明添加。
   upload:
-    runs-on: ${{ matrix.runs-on }}
     needs: getReleaseTag
     strategy:
       matrix:
@@ -82,6 +82,7 @@ jobs:
             runs-on: macos-13
             target: '["R2_MAC"]'
             notAlpha: 'true'
+    runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
