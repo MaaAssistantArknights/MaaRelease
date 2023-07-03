@@ -73,12 +73,14 @@ jobs:
           - '["ota_server", "R2", "MAA_S3"]'
         runs-on:
           - ubuntu-latest
-        include:
+        include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
           - repo: MaaRelease
             os: windows
+            runs-on: ubuntu-latest
             target: '["AnnAngelaMirror"]'
             notAlpha: 'true'
-          - os: macos-ota
+          - repo: MaaRelease
+            os: macos-ota
             runs-on: macos-13
             target: '["R2_MAC"]'
             notAlpha: 'true'
