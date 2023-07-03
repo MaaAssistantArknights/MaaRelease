@@ -99,8 +99,19 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
         if (stat.size > 0 && stat.size === asset.size) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
         } else {
-            console.info("[Thread", i, "]", asset.name, "unexists, start downloading");
-            const url = new URL(asset.url);
+            console.info("[Thread", i, "]", asset.name, "unexists, start getting the downloadable link");
+            const headers = {
+                [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
+                [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
+                [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+            };
+            const response = await fetch(asset.url, {
+                method: "HEAD",
+                redirect: "manual",
+                headers,
+            });
+            console.info("[Thread", i, "]", "Get the downloadable link of", asset.name, ", start downloading");
+            const url = new URL(response.headers.get("location"));
             const client = http2.connect(url);
             const info = await new Promise((res, rej) => {
                 client.on("error", (err) => {
@@ -109,9 +120,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 const req = client.request({
                     [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
                     [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
-                    [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
-                    [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
-                    [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+                    ...headers,
                 }, {
                     endStream: true,
                 });
