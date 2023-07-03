@@ -114,6 +114,17 @@ jobs:
       - name: Upload to OTA Server
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         run: |
+          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
+          KEY_INFO=$(ssh-keygen -l -f ${{ runner.temp }}/tmp)
+          KEY_TYPE=$(echo "$KEY_INFO" | awk '{print $4}' | sed 's/[(|)]//g')
+          echo "KEY_INFO: $KEY_INFO"
+          echo "KEY_TYPE: $KEY_TYPE"
+          export KEY_NAME=id_${KEY_TYPE,,}
+          echo "KEY_NAME: $KEY_NAME"
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ~/.ssh/$KEY_NAME
+          chmod 600 ~/.ssh/$KEY_NAME
+          ssh-keyscan -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
           rsync -vcrRtz --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
       - name: Upload to R2
