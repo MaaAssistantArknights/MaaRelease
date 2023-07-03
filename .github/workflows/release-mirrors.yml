@@ -159,6 +159,13 @@ jobs:
     if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        id: setup-node
+        with:
+          node-version: lts/*
+          check-latest: true
+          # cache: npm
       - name: Fire the webhook
         run: |
           node scripts/AnnAngela/webhookForJenkins.js
