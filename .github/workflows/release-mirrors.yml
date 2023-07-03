@@ -115,6 +115,7 @@ jobs:
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         run: |
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
+          chmod 600 ${{ runner.temp }}/tmp
           KEY_INFO=$(ssh-keygen -l -f ${{ runner.temp }}/tmp)
           KEY_TYPE=$(echo "$KEY_INFO" | awk '{print $4}' | sed 's/[(|)]//g')
           echo "KEY_INFO: $KEY_INFO"
