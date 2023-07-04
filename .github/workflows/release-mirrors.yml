@@ -116,21 +116,11 @@ jobs:
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
           DEST_DIR: ${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
-      - name: Upload to AnnAngela's COS
+      - name: Fire the webhook of AnnAngela's COS
         if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'AnnAngelaMirror') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
         run: |
-          node scripts/AnnAngela/prepare.js
-          echo "Installing coscli..."
-          gh release download --pattern coscli-linux --dir ${{ runner.temp }}/coscli --clobber --repo tencentyun/coscli
-          chmod +x ${{ runner.temp }}/coscli/coscli-linux
-          touch ~/.cos.yaml
-          echo "coscli installed."
-          echo "::group::coscli output"
-          ${{ runner.temp }}/coscli/coscli-linux sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} cos://${{ secrets.ANNANGELA_COS_BUCKET }}/MaaRelease --recursive -e cos.accelerate.myqcloud.com -i ${{ secrets.ANNANGELA_COS_SECRET_ID }} -k ${{ secrets.ANNANGELA_COS_SECRET_KEY }}
-          echo "::endgroup::"
           node scripts/AnnAngela/webhook.js
         env:
-          dirWithReleaseTag: ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
           WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
           WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
