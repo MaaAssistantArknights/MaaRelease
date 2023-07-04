@@ -76,24 +76,12 @@ jobs:
           - ubuntu-latest
         include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
           - repo: MaaRelease
-            os: windows
-            runs-on: ubuntu-latest
-            target: '["AnnAngelaMirror"]'
-            notAlpha: 'true'
-          - repo: MaaRelease
             os: macos-ota
-            runs-on: macos-13
             target: '["R2_MAC"]'
-            notAlpha: 'true'
+            runs-on: macos-13
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        if: contains(fromJSON(matrix.target), 'AnnAngelaMirror') || contains(fromJSON(matrix.target), 'MAA_S3')
-        with:
-          node-version: lts/*
-          check-latest: true
       - name: Download release files from ${{ matrix.repo }}
         id: downloadReleaseFiles
         uses: ./.github/downloadReleaseFiles
@@ -116,15 +104,6 @@ jobs:
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
           DEST_DIR: ${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
-      - name: Fire the webhook of AnnAngela's COS
-        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'AnnAngelaMirror') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
-        run: |
-          node scripts/AnnAngela/webhook.js
-        env:
-          WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
-          WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
-          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-
       - name: Upload to OTA Server
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         run: |
@@ -143,7 +122,7 @@ jobs:
           rsync -vcrRtzhhh --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
 
       - name: Upload Appcast Packages for macos-ota
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && matrix.notAlpha == 'true' && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
         env:
           RCLONE_CONFIG_MAA_TYPE: s3
           RCLONE_CONFIG_MAA_PROVIDER: Cloudflare
@@ -156,9 +135,10 @@ jobs:
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs
 
   
-  MAA_S3:
+  webhook:
     needs: getReleaseTag
     runs-on: ubuntu
+    if: ${{ !contains(needs.getReleaseTag.outputs.release_tag, '.g') }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
@@ -174,6 +154,15 @@ jobs:
           WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
           WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
+      - name: Fire the webhook of AnnAngela's COS
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
+        run: |
+          node scripts/AnnAngela/webhook.js
+        env:
+          WEBHOOK_URL: https://webhook.annangela.cn/custom?from=MaaRelease
+          WEBHOOK_SECRET: ${{ secrets.ANNANGELA_WEBHOOK_SECRET }}
+          release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
+
   # 以下是发版流程，通过触发生成 maa version api 文件的 workflow 发版。
   # 如果新增了上传流程，除非是像 macOS 一样自行维护发版渠道的，
   # 否则都需要到 MaaAssistantArknights/update_version.py 新增镜像地址生成。
@@ -184,7 +173,7 @@ jobs:
     needs:
       - getReleaseTag
       - upload
-      - MAA_S3
+      - webhook
     steps:
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
@@ -196,7 +185,7 @@ jobs:
     needs:
       - getReleaseTag
       - upload
-      - MAA_S3
+      - webhook
       - updateVersionApi
     steps:
       - name: Get rate limit status for current token
