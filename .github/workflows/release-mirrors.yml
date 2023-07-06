@@ -94,6 +94,7 @@ jobs:
       - name: Upload to R2
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
         uses: ./.github/s3Sync
+        continue-on-error: true
         with:
           args: --acl public-read --follow-symlinks
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
@@ -169,7 +170,7 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
-    if: always() # && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
     needs:
       - getReleaseTag
       - upload
