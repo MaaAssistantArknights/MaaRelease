@@ -169,7 +169,7 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
-    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
+    if: always() # && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
     needs:
       - getReleaseTag
       - upload
