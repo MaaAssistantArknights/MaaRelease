@@ -176,3 +176,4 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     console.info("[Thread", i, "]", "done.");
 }));
 console.info("Download done.");
+process.exit(0);
