@@ -91,6 +91,7 @@ console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
 
 console.info("Start fetching...");
+const beginHrtime = process.hrtime.bigint();
 await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
@@ -117,6 +118,11 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 minVersion: "TLSv1.3",
                 maxVersion: "TLSv1.3",
             });
+            /**
+             * @type { ReturnType<byteSize> }
+             */
+            let transferRates;
+            let durationInSeconds = -1;
             const info = await new Promise((res, rej) => {
                 client.on("error", (err) => {
                     rej(err);
@@ -134,27 +140,28 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                         now: 0,
                         previous: 0,
                     };
-                    /**
-                     * @type { ReturnType<byteSize> }
-                     */
-                    let transferRates;
                     let end = false;
                     minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
                     const startHrtime = process.hrtime.bigint();
                     req.on("data", (chunk) => {
                         const now = process.hrtime.bigint();
                         transferredBytes.now += chunk.length;
-                        transferRates = byteSize(transferredBytes.now * 10 ** 9 / Number(now - startHrtime), { precision: 3, units: "iec" });
+                        transferRates = byteSize(transferredBytes.now * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
                         transferredBytes.previous = transferredBytes.now;
                     });
-                    req.on("end", () => end = true);
+                    req.on("end", () => {
+                        const now = process.hrtime.bigint();
+                        end = true;
+                        durationInSeconds = Number(now - startHrtime) / 10 ** 9;
+                        transferRates = byteSize(asset.size * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
+                    });
                     req.on("error", () => end = true);
                     const total = byteSize(asset.size, { precision: 3, units: "iec" });
                     while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
                         await timerPromises.setTimeout(5000);
                         if (!end) {
                             const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
-                            console.info("[Thread", i, "]", "Stat", asset.name, "- progress:", progress.value, progress.long, "/", total.value, total.long, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.long, "/s");
+                            console.info("[Thread", i, "]", "Stat", asset.name, "- progress:", progress.value, progress.unit, "/", total.value, total.unit, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.unit, "/s");
                         }
                     }
                     return;
@@ -165,7 +172,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
             const stat = await minioClientStatObject(objectName);
             if (stat.size > 0 && stat.size === asset.size) {
-                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
+                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info, durationInSeconds, transferRates });
             } else {
                 console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
                 throw new Error("Upload failed, size not match");
@@ -175,7 +182,8 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     }
     console.info("[Thread", i, "]", "done.");
 }));
-console.info("Download done, validating...");
+const endHrtime = process.hrtime.bigint();
+console.info("Download done, duration:", Number(endHrtime - beginHrtime) / 10 ** 9, "s, validating...");
 const failedAssets = [];
 for (const asset of filteredAssets) {
     const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
