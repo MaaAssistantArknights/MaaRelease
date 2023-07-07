@@ -154,7 +154,7 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                         await timerPromises.setTimeout(5000);
                         if (!end) {
                             const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
-                            console.info("[Thread", i, "]", "The speed of the stream of", asset.name, "- progress:", progress.value, progress.long, "/", total.value, total.long, ", average:", transferRates?.value, transferRates?.long, "/s");
+                            console.info("[Thread", i, "]", "The speed of the stream of", asset.name, "- progress:", progress.value, progress.long, "/", total.value, total.long, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.long, "/s");
                         }
                     }
                     return;
