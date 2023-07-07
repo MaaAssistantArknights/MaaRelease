@@ -179,8 +179,7 @@ jobs:
   
   webhook:
     needs: getReleaseTag
-    runs-on: ubuntu
-    if: ${{ !contains(needs.getReleaseTag.outputs.release_tag, '.g') }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
@@ -197,7 +196,7 @@ jobs:
           WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
       - name: Fire the webhook of AnnAngela's COS
-        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
+        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
         run: |
           node scripts/AnnAngela/webhook.js
         env:
