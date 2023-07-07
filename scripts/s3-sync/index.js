@@ -75,19 +75,16 @@ const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
     repo: "MaaAssistantArknights",
 });
 const maaAssistantArknightsFound = maaAssistantArknightsList.data.find((release) => release.tag_name === releaseTag);
-if (!maaAssistantArknightsFound) {
-    throw new Error(`No release named ${releaseTag} found in MaaAssistantArknights`);
-}
-for (const asset of maaAssistantArknightsFound.assets) {
-    asset.repo = "MaaAssistantArknights";
-    assets.push(asset);
+if (maaAssistantArknightsFound) {
+    for (const asset of maaAssistantArknightsFound.assets) {
+        asset.repo = "MaaAssistantArknights";
+        assets.push(asset);
+    }
 }
 for (const asset of maaReleaseFound.assets) {
     asset.repo = "MaaRelease";
     assets.push(asset);
 }
-const { created_at } = maaAssistantArknightsFound;
-console.info("created_at:", created_at);
 const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
 const filteredAssets = assets.filter(({ name }) => pattern.test(name));
 console.info("# of assets:", assets.size);
