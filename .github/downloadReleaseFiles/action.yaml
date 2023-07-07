@@ -117,6 +117,3 @@ outputs:
   dirWithReleaseTag:
     description: dir for the release, with release tag
     value: ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR_WITH_RELEASE_TAG }}
-  targetDir:
-    description: dir for the target
-    value: ${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', inputs.repo, 'releases/download') }}

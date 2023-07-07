@@ -103,10 +103,11 @@ jobs:
           AWS_REGION: us-east-1
           AWS_S3_ENDPOINT: ${{ secrets.AWS_S3_ENDPOINT }}
           SOURCE_DIR: ${{ steps.downloadReleaseFiles.outputs.dir }}
-          DEST_DIR: ${{ steps.downloadReleaseFiles.outputs.targetDir }}
+          DEST_DIR: ${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}
 
       - name: Upload to OTA Server
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
+        continue-on-error: true
         run: |
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
           chmod 600 ${{ runner.temp }}/tmp
@@ -120,7 +121,12 @@ jobs:
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ~/.ssh/$KEY_NAME
           chmod 600 ~/.ssh/$KEY_NAME
           ssh-keyscan -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
-          rsync -vcrRtzhhh --delete ${{ steps.downloadReleaseFiles.outputs.dir }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ steps.downloadReleaseFiles.outputs.targetDir }}
+          echo "::group::rsync version"
+          rsync --version
+          echo "::endgroup::"
+          echo "Start rsync-ing..."
+          cd ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR }}
+          rsync -vvcrRtzmhhh --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}
 
       - name: Upload Appcast Packages for macos-ota
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
@@ -170,7 +176,7 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
-    if: always() # && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && !inputs.DEBUG_JOBS
     needs:
       - getReleaseTag
       - upload
