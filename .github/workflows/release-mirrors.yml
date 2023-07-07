@@ -141,7 +141,7 @@ jobs:
               echo 'Rsync failed due to "'"$REASON_NAME"'", Retrying...'
               sleep 5
             else
-              if [[ $RC -eq 0 ]]
+              if [[ $RC -eq 0 ]]; then
                 echo "Rsync succeeded, exiting..."
               else
                 echo "Rsync failed due to unknown reason, exiting..."
