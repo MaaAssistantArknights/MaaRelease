@@ -171,6 +171,7 @@ jobs:
           RCLONE_CONFIG_MAA_ACCESS_KEY_ID: ${{ secrets.R2_MAC_KEY_ID }}
           RCLONE_CONFIG_MAA_SECRET_ACCESS_KEY: ${{ secrets.R2_MAC_ACCESS_KEY }}
           RCLONE_CONFIG_MAA_ENDPOINT: ${{ secrets.R2_MAC_ENDPOINT }}
+          HOMEBREW_NO_ENV_HINTS: true
         run: |
           brew install rclone
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos
