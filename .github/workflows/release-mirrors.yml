@@ -125,6 +125,7 @@ jobs:
           rsync --version
           echo "::endgroup::"
           echo "Start rsync-ing..."
+          set +e
           i=0
           RC=-1
           while [[ $i -lt $MAX_RETRIES ]]
