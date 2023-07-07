@@ -175,5 +175,20 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     }
     console.info("[Thread", i, "]", "done.");
 }));
-console.info("Download done.");
-process.exit(0);
+console.info("Download done, validating...");
+const failedAssets = [];
+for (const asset of filteredAssets) {
+    const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
+    const stat = await minioClientStatObject(objectName);
+    if (stat.size > 0 && stat.size === asset.size) {
+        continue;
+    }
+    console.info("The size of", asset.name, "is not match, asset.size:", asset.size, "stat:", stat);
+    failedAssets.push(asset.name);
+}
+if (failedAssets.length === 0) {
+    console.info("All assets are uploaded successfully.");
+    process.exit(0);
+}
+console.info("Failed assets:", failedAssets);
+process.exit(1);
