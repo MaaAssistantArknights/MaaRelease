@@ -125,8 +125,39 @@ jobs:
           rsync --version
           echo "::endgroup::"
           echo "Start rsync-ing..."
-          cd ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR }}
-          rsync -vvcrRtzmhhh --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}
+          i=0
+          RC=-1
+          while [[ $i -lt $MAX_RETRIES ]]
+          do
+            echo 'Trying rsync...'
+            cd ${{ steps.downloadReleaseFiles.outputs.DOWNLOAD_DIR }}
+            echo "::group::rsync output"
+            rsync -vvcrRtzmhhh --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}
+            RC=$?
+            echo "::endgroup::"
+            echo "RC: $RC"
+            REASON_NAME="RSYNC_RETRYABLE_REASON_$RC"
+            if env | grep -q "^$REASON_NAME="; then
+              echo 'Rsync failed due to "'"$REASON_NAME"'", Retrying...'
+              sleep 5
+            else
+              if [[ $RC -eq 0 ]]
+                echo "Rsync succeeded, exiting..."
+              else
+                echo "Rsync failed due to unknown reason, exiting..."
+              fi
+              exit $RC
+            fi
+          done
+          if [ $i -ge $MAX_RETRIES ]
+          then
+            echo "Hit maximum number ($MAX_RETRIES) of retries, giving up."
+          fi
+        env:
+          MAX_RETRIES: 5
+          RSYNC_RETRYABLE_REASON_12: Error in rsync protocol data stream
+          RSYNC_RETRYABLE_REASON_23: Error in partial transfer
+          RSYNC_RETRYABLE_REASON_30: Timeout in data send/receive
 
       - name: Upload Appcast Packages for macos-ota
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
