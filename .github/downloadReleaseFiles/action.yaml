@@ -50,15 +50,22 @@ runs:
         echo "dirWithReleaseTag: $DOWNLOAD_DIR_WITH_RELEASE_TAG"
 
         echo 'OS: ${{ inputs.os }}'
-        if [ "${{ inputs.os }}" = "windows" ]; then
-            export PATTERN="--pattern *-win-*"
-        elif [ "${{ inputs.os }}" = "linux" ]; then
-            export PATTERN="--pattern *-linux-*"
-        elif [ "${{ inputs.os }}" = "macos" ]; then
-            export PATTERN="--pattern *-macos-*.dmg"
-        elif [ "${{ inputs.os }}" = "macos-ota" ]; then
-            export PATTERN="--pattern *.delta --pattern appcast.xml"
-        fi
+        export OSList=$(echo '${{ inputs.os }}' | tr ',' '\n')
+        export PATTERN=""
+        for OS in $OSList; do
+            if [ "$OS" = "windows" ]; then
+                export PATTERN="$PATTERN --pattern *-win-*"
+            fi
+            if [ "$OS" = "linux" ]; then
+                export PATTERN="$PATTERN --pattern *-linux-*"
+            fi
+            if [ "$OS" = "macos" ]; then
+                export PATTERN="$PATTERN --pattern *-macos-*.dmg"
+            fi
+            if [ "$OS" = "macos-ota" ]; then
+                export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml"
+            fi
+        done
 
         echo "pattern: $PATTERN"
 

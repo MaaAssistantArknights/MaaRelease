@@ -64,14 +64,13 @@ jobs:
         repo: 
           - MaaAssistantArknights
           - MaaRelease
-        os:
-          - windows
-          - linux
-          - macos
+        os: # 必须为逗号分隔格式
+          - windows,linux,macos
         target: # 必须为逗号分隔格式
           - ota_server,R2
         runs-on:
           - ubuntu-latest
+
         include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
           - repo: MaaRelease
             os: macos-ota
@@ -90,7 +89,7 @@ jobs:
         uses: ./.github/downloadReleaseFiles
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
-          os: windows
+          os: ${{ matrix.os }}
           notTempDir: false
           repo: ${{ matrix.repo }}
 
@@ -212,6 +211,8 @@ jobs:
   updateVersionApi:
     name: Dispatch the "update_version_api" workflow
     runs-on: ubuntu-latest
+    needs:
+      - getReleaseTag
     if: always()
     steps:
       - name: Dispatch the "update_version_api" workflow
