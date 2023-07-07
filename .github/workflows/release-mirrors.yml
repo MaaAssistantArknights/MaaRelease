@@ -19,6 +19,7 @@ jobs:
     name: Get release tag
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Fetch release info
         id: fetchReleaseInfo
         if: ${{ !inputs.release_tag }}
