@@ -39,7 +39,7 @@ podTemplate(
           string(credentialsId: 'maa-minio-robot-secret-key', variable: 'MINIO_SECRET_KEY')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts && node s3-sync/index.js'
+            sh 'cd MaaRelease/scripts && TZ=Asia/Shanghai node s3-sync/index.js'
           }
       }
       
