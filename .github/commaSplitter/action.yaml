@@ -1,0 +1,28 @@
+name: Comma list splitter
+
+description: Split the input via comma
+
+branding:
+  icon: type
+  color: purple
+
+inputs:
+  input:
+    description: the input
+
+runs:
+  using: composite
+  steps:
+    - name: Split the input
+      id: splitter
+      shell: bash
+      run: |
+        IFS=',' read -ra list_data <<< "${{ inputs.input }}"
+        output=$(jq -cn '[$ARGS.positional[]]' --args "${list_data[@]}")
+        echo "output=$output" >> $GITHUB_OUTPUT
+        echo "output: $output"
+
+outputs:
+  output:
+    description: the output
+    value: ${{ steps.splitter.outputs.output }}

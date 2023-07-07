@@ -41,12 +41,9 @@ jobs:
           echo 'Current token rate limit status:'
           echo $rateLimitStatus | jq -r '.reset |= (tostring | tonumber | strflocaltime("%Y-%m-%d %H:%M:%S %Z"))  | to_entries | map([.key, .value]) | .[] | @tsv' | column -t
       - id: generateDebugOptions
-        name: Generate debug options from input
-        run: |
-          IFS=',' read -ra list_data <<< "${{ inputs.DEBUG_JOBS }}"
-          debug_jobs=$(jq -cn '[$ARGS.positional[]]' --args "${list_data[@]}")
-          echo "debug_jobs=$debug_jobs" >> $GITHUB_OUTPUT
-          echo "debug_jobs: $debug_jobs"
+        uses: ./.github/commaSplitter
+        with:
+          input: ${{ inputs.DEBUG_JOBS }}
     outputs:
       release_tag: ${{ inputs.release_tag || steps.fetchReleaseInfo.outputs.release_tag }}
       rateLimitStatus: ${{ steps.getRateLimitStatus.outputs.rateLimitStatus }}
@@ -70,18 +67,23 @@ jobs:
           - windows
           - linux
           - macos
-        target: # 必须为 JSON 数组格式
-          - '["ota_server", "R2"]'
+        target: # 必须为逗号分隔格式
+          - ota_server,R2
         runs-on:
           - ubuntu-latest
         include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
           - repo: MaaRelease
             os: macos-ota
-            target: '["R2_MAC"]'
+            target: R2_MAC
             runs-on: macos-13
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v3
+      - id: generateTargetList
+        name: Generate target list
+        uses: ./.github/commaSplitter
+        with:
+          input: ${{ matrix.target }}
       - name: Download release files from ${{ matrix.repo }}
         id: downloadReleaseFiles
         uses: ./.github/downloadReleaseFiles
@@ -92,7 +94,7 @@ jobs:
           repo: ${{ matrix.repo }}
 
       - name: Upload to R2
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(steps.generateTargetList.outputs.output), 'R2') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2'))
         uses: ./.github/s3Sync
         continue-on-error: true
         with:
@@ -106,7 +108,7 @@ jobs:
           DEST_DIR: ${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}
 
       - name: Upload to OTA Server
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(matrix.target), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(steps.generateTargetList.outputs.output), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         continue-on-error: true
         run: |
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
@@ -128,18 +130,23 @@ jobs:
           set +e
           i=0
           RC=-1
-          while [[ $i -lt $MAX_RETRIES ]]
+          while [[ true ]]
           do
-            echo 'Trying rsync...'
+            echo "Trying rsync #i..."
             cd ${{ steps.downloadReleaseFiles.outputs.dir }}
-            echo "::group::rsync output"
+            echo "::group::rsync #i output"
             rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}/
             RC=$?
+            i=$((i+1))
             echo "::endgroup::"
             echo "RC: $RC"
             REASON_NAME="RSYNC_RETRYABLE_REASON_$RC"
             if env | grep -q "^$REASON_NAME="; then
-              echo 'Rsync failed due to "'"$REASON_NAME"'", Retrying...'
+              if [ $i -ge $MAX_RETRIES ]; then
+                echo "Hit maximum number ($MAX_RETRIES) of retries, giving up."
+                exit $RC;
+              fi
+              echo 'Rsync failed due to "'"${!REASON_NAME}"'", retrying...'
               sleep 5
             else
               if [[ $RC -eq 0 ]]; then
@@ -150,10 +157,6 @@ jobs:
               exit $RC
             fi
           done
-          if [ $i -ge $MAX_RETRIES ]
-          then
-            echo "Hit maximum number ($MAX_RETRIES) of retries, giving up."
-          fi
         env:
           MAX_RETRIES: 5
           RSYNC_RETRYABLE_REASON_12: Error in rsync protocol data stream
@@ -161,7 +164,7 @@ jobs:
           RSYNC_RETRYABLE_REASON_30: Timeout in data send/receive
 
       - name: Upload Appcast Packages for macos-ota
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(matrix.target), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(steps.generateTargetList.outputs.output), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
         env:
           RCLONE_CONFIG_MAA_TYPE: s3
           RCLONE_CONFIG_MAA_PROVIDER: Cloudflare
