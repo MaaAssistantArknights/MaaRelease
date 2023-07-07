@@ -131,9 +131,9 @@ jobs:
           while [[ $i -lt $MAX_RETRIES ]]
           do
             echo 'Trying rsync...'
-            cd ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
+            cd ${{ steps.downloadReleaseFiles.outputs.dir }}
             echo "::group::rsync output"
-            rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete . ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}/{3}', 'MaaAssistantArknights', matrix.repo, 'releases/download', needs.getReleaseTag.outputs.release_tag) }}/
+            rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}/
             RC=$?
             echo "::endgroup::"
             echo "RC: $RC"
