@@ -130,35 +130,31 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
                 });
                 req.on("response", async (headers) => {
                     console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                    let previousHrtime = 0n;
                     const transferredBytes = {
                         now: 0,
                         previous: 0,
                     };
                     /**
-                     * @type { Record<string, ReturnType<byteSize>> }
+                     * @type { ReturnType<byteSize> }
                      */
-                    const transferRates = {
-                        immediate: 0,
-                        average: 0,
-                    };
+                    let transferRates;
                     let end = false;
                     minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
                     const startHrtime = process.hrtime.bigint();
                     req.on("data", (chunk) => {
                         const now = process.hrtime.bigint();
                         transferredBytes.now += chunk.length;
-                        transferRates.immediate = byteSize((transferredBytes.now - transferredBytes.previous) * 10 ** 6 / Number(now - previousHrtime), { precision: 3, units: "iec" });
-                        transferRates.average = byteSize(transferredBytes.now * 10 ** 6 / Number(now - startHrtime), { precision: 3, units: "iec" });
-                        previousHrtime = now;
+                        transferRates = byteSize(transferredBytes.now * 10 ** 9 / Number(now - startHrtime), { precision: 3, units: "iec" });
                         transferredBytes.previous = transferredBytes.now;
                     });
                     req.on("end", () => end = true);
                     req.on("error", () => end = true);
+                    const total = byteSize(asset.size, { precision: 3, units: "iec" });
                     while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
                         await timerPromises.setTimeout(5000);
                         if (!end) {
-                            console.info("[Thread", i, "]", "The speed of the stream of", asset.name, "- immediate:", transferRates.immediate.value, transferRates.immediate.long, "/s , average:", transferRates.average.value, transferRates.average.long, "/s");
+                            const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
+                            console.info("[Thread", i, "]", "The speed of the stream of", asset.name, "- progress:", progress.value, progress.long, "/", total.value, total.long, ", average:", transferRates?.value, transferRates?.long, "/s");
                         }
                     }
                     return;
