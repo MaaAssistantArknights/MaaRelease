@@ -88,7 +88,7 @@ jobs:
         with:
           release_tag: ${{ needs.getReleaseTag.outputs.release_tag }}
           os: windows
-          notTempDir: true
+          notTempDir: false
           repo: ${{ matrix.repo }}
 
       - name: Upload to R2
@@ -133,7 +133,7 @@ jobs:
             echo 'Trying rsync...'
             cd ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }}
             echo "::group::rsync output"
-            rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete * ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}/{3}', 'MaaAssistantArknights', matrix.repo, 'releases/download', needs.getReleaseTag.outputs.release_tag) }}/
+            rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete . ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}/{3}', 'MaaAssistantArknights', matrix.repo, 'releases/download', needs.getReleaseTag.outputs.release_tag) }}/
             RC=$?
             echo "::endgroup::"
             echo "RC: $RC"
