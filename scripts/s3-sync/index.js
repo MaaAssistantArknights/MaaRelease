@@ -31,6 +31,9 @@ const minioClient = new Client({
  * @typedef { { size: number, etag: string, lastModified: Date, metaData: { [key: string]: any } } } BucketItemStat
  */
 /**
+ * @typedef { { repo: string } & Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
+ */
+/**
  * @type {(objectName: string) => Promise<BucketItemStat>}
  */
 const minioClientStatObject = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
@@ -42,9 +45,6 @@ const minioClientStatObject = (objectName) => new Promise((res) => minioClient.s
 
 let releaseTag = process.env.RELEASE_TAG;
 console.info("Fetching the release list");
-/**
- * @typedef { { repo: string } & Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
- */
 /**
  * @type { Asset[] }
  */
@@ -70,6 +70,15 @@ if (!releaseTag) {
 }
 releaseTag = maaReleaseFound.tag_name;
 console.info("release_tag:", releaseTag);
+/**
+ * @param { Asset } asset 
+ * @return { Promise<{ stat: BucketItemStat, status: boolean }> }
+ */
+const validateAssetViaStatObject = async (asset) => {
+    const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
+    const stat = await minioClientStatObject(objectName);
+    return { stat, status: stat.size > 0 && stat.size === asset.size };
+};
 const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
     owner: OWNER,
     repo: "MaaAssistantArknights",
@@ -92,13 +101,14 @@ console.info("# of filtered assets:", filteredAssets.length);
 
 console.info("Start fetching...");
 const beginHrtime = process.hrtime.bigint();
+const changedAssets = [];
 await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
         console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
         const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
-        const stat = await minioClientStatObject(objectName);
-        if (stat.size > 0 && stat.size === asset.size) {
+        const { status: isExist } = await validateAssetViaStatObject(asset);
+        if (isExist) {
             console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
         } else {
             console.info("[Thread", i, "]", asset.name, "unexists, start getting the downloadable link");
@@ -170,9 +180,10 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
             client.close();
             console.info("[Thread", i, "]", "The stream of", asset.name, "is ended, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
             await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
-            const stat = await minioClientStatObject(objectName);
-            if (stat.size > 0 && stat.size === asset.size) {
+            const { stat, status: isValidate } = await validateAssetViaStatObject(asset);
+            if (isValidate) {
                 console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info, durationInSeconds, transferRates });
+                changedAssets.push(asset);
             } else {
                 console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
                 throw new Error("Upload failed, size not match");
@@ -183,19 +194,23 @@ await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     console.info("[Thread", i, "]", "done.");
 }));
 const endHrtime = process.hrtime.bigint();
-console.info("Download done, duration:", Number(endHrtime - beginHrtime) / 10 ** 9, "s, validating...");
+console.info("Download progress done, duration:", Number(endHrtime - beginHrtime) / 10 ** 9, "s.");
+if (changedAssets.length === 0) {
+    console.info("No assets are uploaded, exit.");
+    process.exit(0);
+}
+console.info("Validating", changedAssets.length, "uploaded assets...");
 const failedAssets = [];
-for (const asset of filteredAssets) {
-    const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
-    const stat = await minioClientStatObject(objectName);
-    if (stat.size > 0 && stat.size === asset.size) {
+for (const asset of changedAssets) {
+    const { stat, status: isExist } = await validateAssetViaStatObject(asset);
+    if (isExist) {
         continue;
     }
     console.info("The size of", asset.name, "is not match, asset.size:", asset.size, "stat:", stat);
     failedAssets.push(asset.name);
 }
 if (failedAssets.length === 0) {
-    console.info("All assets are uploaded successfully.");
+    console.info("All assets are uploaded successfully, exit.");
     process.exit(0);
 }
 console.info("Failed assets:", failedAssets);
