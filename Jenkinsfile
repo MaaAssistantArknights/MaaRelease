@@ -21,14 +21,14 @@ podTemplate(
     stage('Checkout Repo') {
       container('worker') {
         sh 'apk --no-cache update'
-        sh 'apk add git'
-        sh 'git clone https://github.com/MaaAssistantArknights/MaaRelease.git'
+        sh 'apk add git uuidgen'
+        sh 'git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
       }
     }
 
     stage('Install the dependencies') {
       container('worker') {
-        sh 'cd MaaRelease/scripts && npm ci'
+        sh 'cd MaaRelease/scripts && npm run ciInCI'
       }
     }
 

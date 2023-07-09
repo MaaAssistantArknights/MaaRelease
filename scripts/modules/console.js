@@ -7,3 +7,4 @@ const toLocalTimeZoneString = (date = new Date()) => `${date.getFullYear()}-${fi
 export default new Proxy(originalConsole, {
     get: (t, p) => prefixable.includes(p) ? t[p].bind(t, `[${toLocalTimeZoneString()}]`) : t[p],
 });
+export { originalConsole };

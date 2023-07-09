@@ -5,6 +5,11 @@
         "@octokit/plugin-retry": "^5.0.5",
         "@octokit/rest": "^19.0.13",
         "byte-size": "^8.1.1",
-        "minio": "^7.1.1"
+        "minio": "^7.1.1",
+        "simple-git": "^3.19.1"
+    },
+    "scripts": {
+        "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
+        "ciInCI": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci"
     }
 }
