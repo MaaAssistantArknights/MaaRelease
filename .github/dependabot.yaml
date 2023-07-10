@@ -14,6 +14,10 @@ updates:
     commit-message:
       prefix: "github-actions"
       include: "scope"
+    assignees:
+      - AnnAngela
+    reviewers:
+      - AnnAngela
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "scripts" # Location of package manifests
     schedule:
@@ -23,3 +27,7 @@ updates:
     commit-message:
       prefix: "npm"
       include: "scope"
+    assignees:
+      - AnnAngela
+    reviewers:
+      - AnnAngela
