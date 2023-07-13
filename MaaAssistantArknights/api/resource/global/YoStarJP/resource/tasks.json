@@ -1,9 +1,9 @@
 {
-    "IS-Open": {
+    "FC-Open": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
         "next": [
-            "EnterChapterIS"
+            "EnterChapterFC"
         ],
         "roi": [
             0,
@@ -16,10 +16,11 @@
             "開放"
         ]
     },
-    "EnterChapterIS": {
+    "EnterChapterFC": {
         "text": [
-            "ウォルシーニ",
-            "ウォル"
+            "沼",
+            "たなびく",
+            "煙"
         ]
     }
 }

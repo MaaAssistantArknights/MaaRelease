@@ -1,9 +1,9 @@
 {
-    "IS-Open": {
+    "FC-Open": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
         "next": [
-            "EnterChapterIS"
+            "EnterChapterFC"
         ],
         "roi": [
             0,
@@ -12,13 +12,14 @@
             150
         ],
         "text": [
-            "シラクザーノ"
+            "스테이지",
+            "개방"
         ]
     },
-    "EnterChapterIS": {
+    "EnterChapterFC": {
         "text": [
-            "ウォルシーニ",
-            "ウォル"
+            "안갯속",
+            "늪지대"
         ]
     }
 }

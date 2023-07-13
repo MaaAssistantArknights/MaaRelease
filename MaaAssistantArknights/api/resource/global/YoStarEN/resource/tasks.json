@@ -1,9 +1,9 @@
 {
-    "IS-Open": {
+    "FC-Open": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
         "next": [
-            "EnterChapterIS"
+            "EnterChapterFC"
         ],
         "roi": [
             0,
@@ -12,12 +12,14 @@
             150
         ],
         "text": [
-            "Siracusano"
+            "Event",
+            "opened"
         ]
     },
-    "EnterChapterIS": {
+    "EnterChapterFC": {
         "text": [
-            "Volsinii"
+            "Swamp",
+            "Mists"
         ]
     },
     "OperBoxNameOCR": {
