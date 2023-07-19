@@ -18,6 +18,11 @@ console.info("OWNER:", OWNER);
 console.info("ua:", ua);
 console.info("Initialization done.");
 
+process.on("uncaughtException", (err) => {
+    console.error(err);
+    process.exit(1);
+});
+
 const octokit = new Octokit({});
 const { token } = await octokit.auth();
 const MINIO_WAIT_TIME_AFTER_UPLOAD_MS = +process.env.MINIO_WAIT_TIME_AFTER_UPLOAD_MS || 1000;
@@ -34,15 +39,6 @@ const minioClient = new Client({
 /**
  * @typedef { { repo: string } & Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
  */
-/**
- * @type {(objectName: string) => Promise<BucketItemStat>}
- */
-const minioClientStatObjectInternal = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
-    size: -1,
-    etag: "",
-    lastModified: new Date(-1),
-    metaData: {},
-} : stat)));
 const RETRYABLE_ERROR_CODES_FOR_MINIO_STAT = ["SlowDown"];
 /**
  * @type {(objectName: string, thread?: number) => Promise<BucketItemStat>}
@@ -51,10 +47,15 @@ const minioClientStatObject = async (objectName, thread) => {
     let lastError;
     for (let i; i < NUMBER_OF_RETRIES; i++) {
         try {
-            return await minioClientStatObjectInternal(objectName);
+            return await new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
+                size: -1,
+                etag: "",
+                lastModified: new Date(-1),
+                metaData: {},
+            } : stat)));
         } catch (e) {
             lastError = e;
-            if (RETRYABLE_ERROR_CODES_FOR_MINIO_STAT.includes(e)) {
+            if (RETRYABLE_ERROR_CODES_FOR_MINIO_STAT.includes(e.code)) {
                 console.error(...[...typeof thread === "number" ? ["[Thread", i, "]"] : [], "minioClientStatObject get retryable error #", i, ":", e]);
                 await timerPromises.setTimeout(1000);
             } else {
@@ -65,7 +66,9 @@ const minioClientStatObject = async (objectName, thread) => {
             }
         }
     }
-    throw lastError;
+    if (lastError) {
+        throw lastError;
+    }
 };
 
 let releaseTag = process.env.RELEASE_TAG;
