@@ -36,12 +36,36 @@ const minioClient = new Client({
 /**
  * @type {(objectName: string) => Promise<BucketItemStat>}
  */
-const minioClientStatObject = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
+const minioClientStatObjectInternal = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
     size: -1,
     etag: "",
     lastModified: new Date(-1),
     metaData: {},
 } : stat)));
+const RETRYABLE_ERROR_CODES_FOR_MINIO_STAT = ["SlowDown"];
+/**
+ * @type {(objectName: string, thread?: number) => Promise<BucketItemStat>}
+ */
+const minioClientStatObject = async (objectName, thread) => {
+    let lastError;
+    for (let i; i < 5; i++) {
+        try {
+            return await minioClientStatObjectInternal(objectName);
+        } catch (e) {
+            lastError = e;
+            if (RETRYABLE_ERROR_CODES_FOR_MINIO_STAT.includes(e)) {
+                console.error(...[...typeof thread === "number" ? ["[Thread", i, "]"] : [], "minioClientStatObject get retryable error #", i, ":", e]);
+                await timerPromises.setTimeout(1000);
+            } else {
+                if (typeof thread === "number") {
+                    e.thread = thread;
+                }
+                throw e;
+            }
+        }
+    }
+    throw lastError;
+};
 
 let releaseTag = process.env.RELEASE_TAG;
 console.info("Fetching the release list");
@@ -72,11 +96,12 @@ releaseTag = maaReleaseFound.tag_name;
 console.info("release_tag:", releaseTag);
 /**
  * @param { Asset } asset 
+ * @param { number } [thread]
  * @return { Promise<{ stat: BucketItemStat, status: boolean }> }
  */
-const validateAssetViaStatObject = async (asset) => {
+const validateAssetViaStatObject = async (asset, thread) => {
     const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
-    const stat = await minioClientStatObject(objectName);
+    const stat = await minioClientStatObject(objectName, thread);
     return { stat, status: stat.size > 0 && stat.size === asset.size };
 };
 const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
@@ -105,91 +130,106 @@ const changedAssets = [];
 await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
-        console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-        const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
-        const { status: isExist } = await validateAssetViaStatObject(asset);
-        if (isExist) {
-            console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
-        } else {
-            console.info("[Thread", i, "]", asset.name, "unexists, start getting the downloadable link");
-            const headers = {
-                [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
-                [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
-                [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
-            };
-            const response = await fetch(asset.url, {
-                method: "HEAD",
-                redirect: "manual",
-                headers,
-            });
-            console.info("[Thread", i, "]", "Get the downloadable link of", asset.name, ", start downloading");
-            const url = new URL(response.headers.get("location"));
-            const client = http2.connect(url, {
-                minVersion: "TLSv1.3",
-                maxVersion: "TLSv1.3",
-            });
-            /**
-             * @type { ReturnType<byteSize> }
-             */
-            let transferRates;
-            let durationInSeconds = -1;
-            const info = await new Promise((res, rej) => {
-                client.on("error", (err) => {
-                    rej(err);
-                });
-                const req = client.request({
-                    [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
-                    [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
-                    ...headers,
-                }, {
-                    endStream: true,
-                });
-                req.on("response", async (headers) => {
-                    console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                    const transferredBytes = {
-                        now: 0,
-                        previous: 0,
+        let lastError, isDone = false;
+        for (let j = 0; j < 5; j++) {
+            try {
+                console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
+                console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
+                const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
+                const { status: isExist } = await validateAssetViaStatObject(asset);
+                if (isExist) {
+                    console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
+                } else {
+                    console.info("[Thread", i, "]", asset.name, "unexists, start getting the downloadable link");
+                    const headers = {
+                        [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
+                        [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
+                        [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
                     };
-                    let end = false;
-                    minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
-                    const startHrtime = process.hrtime.bigint();
-                    req.on("data", (chunk) => {
-                        const now = process.hrtime.bigint();
-                        transferredBytes.now += chunk.length;
-                        transferRates = byteSize(transferredBytes.now * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
-                        transferredBytes.previous = transferredBytes.now;
+                    const response = await fetch(asset.url, {
+                        method: "HEAD",
+                        redirect: "manual",
+                        headers,
                     });
-                    req.on("end", () => {
-                        const now = process.hrtime.bigint();
-                        end = true;
-                        durationInSeconds = Number(now - startHrtime) / 10 ** 9;
-                        transferRates = byteSize(asset.size * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
+                    console.info("[Thread", i, "]", "Get the downloadable link of", asset.name, ", start downloading");
+                    const url = new URL(response.headers.get("location"));
+                    const client = http2.connect(url, {
+                        minVersion: "TLSv1.3",
+                        maxVersion: "TLSv1.3",
                     });
-                    req.on("error", () => end = true);
-                    const total = byteSize(asset.size, { precision: 3, units: "iec" });
-                    while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
-                        await timerPromises.setTimeout(5000);
-                        if (!end) {
-                            const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
-                            console.info("[Thread", i, "]", "Stat", asset.name, "- progress:", progress.value, progress.unit, "/", total.value, total.unit, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.unit, "/s");
-                        }
+                    /**
+                     * @type { ReturnType<byteSize> }
+                     */
+                    let transferRates;
+                    let durationInSeconds = -1;
+                    const info = await new Promise((res, rej) => {
+                        client.on("error", (err) => {
+                            rej(err);
+                        });
+                        const req = client.request({
+                            [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
+                            [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
+                            ...headers,
+                        }, {
+                            endStream: true,
+                        });
+                        req.on("response", async (headers) => {
+                            console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
+                            const transferredBytes = {
+                                now: 0,
+                                previous: 0,
+                            };
+                            let end = false;
+                            minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
+                            const startHrtime = process.hrtime.bigint();
+                            req.on("data", (chunk) => {
+                                const now = process.hrtime.bigint();
+                                transferredBytes.now += chunk.length;
+                                transferRates = byteSize(transferredBytes.now * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
+                                transferredBytes.previous = transferredBytes.now;
+                            });
+                            req.on("end", () => {
+                                const now = process.hrtime.bigint();
+                                end = true;
+                                durationInSeconds = Number(now - startHrtime) / 10 ** 9;
+                                transferRates = byteSize(asset.size * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
+                            });
+                            req.on("error", () => end = true);
+                            const total = byteSize(asset.size, { precision: 3, units: "iec" });
+                            while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
+                                await timerPromises.setTimeout(5000);
+                                if (!end) {
+                                    const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
+                                    console.info("[Thread", i, "]", "Stat", asset.name, "- progress:", progress.value, progress.unit, "/", total.value, total.unit, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.unit, "/s");
+                                }
+                            }
+                            return;
+                        });
+                    });
+                    client.close();
+                    console.info("[Thread", i, "]", "The stream of", asset.name, "is ended, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
+                    await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
+                    const { stat, status: isValidate } = await validateAssetViaStatObject(asset);
+                    if (isValidate) {
+                        console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info, durationInSeconds, transferRates });
+                        changedAssets.push(asset);
+                    } else {
+                        console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
+                        throw new Error("Upload failed, size not match");
                     }
-                    return;
-                });
-            });
-            client.close();
-            console.info("[Thread", i, "]", "The stream of", asset.name, "is ended, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
-            await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
-            const { stat, status: isValidate } = await validateAssetViaStatObject(asset);
-            if (isValidate) {
-                console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info, durationInSeconds, transferRates });
-                changedAssets.push(asset);
-            } else {
-                console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
-                throw new Error("Upload failed, size not match");
+                }
+                asset = filteredAssets.shift();
+                isDone = true;
+                break;
+            } catch (e) {
+                e.thread = i;
+                lastError = e;
+                console.error("[Thread", i, "]", "Error:", e);
             }
         }
-        asset = filteredAssets.shift();
+        if (!isDone) {
+            throw lastError;
+        }
     }
     console.info("[Thread", i, "]", "done.");
 }));
