@@ -37,10 +37,11 @@ podTemplate(
       withCredentials([
           string(credentialsId: 'maa-jenkins-robot-token', variable: 'GITHUB_PAT'),
           string(credentialsId: 'maa-minio-robot-access-key', variable: 'MINIO_ACCESS_KEY'),
-          string(credentialsId: 'maa-minio-robot-secret-key', variable: 'MINIO_SECRET_KEY')
+          string(credentialsId: 'maa-minio-robot-secret-key', variable: 'MINIO_SECRET_KEY'),
+          string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts && TZ=Asia/Shanghai node s3-sync/index.js'
+            sh 'cd MaaRelease/scripts ; TZ=Asia/Shanghai node s3-sync/index.js ; [ $? -ne 0 ] && s3-sync/errorReport.js'
           }
       }
       

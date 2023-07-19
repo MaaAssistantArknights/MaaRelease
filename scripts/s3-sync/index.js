@@ -201,6 +201,8 @@ await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
                 e.thread = i;
                 lastError = e;
                 console.error("[Thread", i, "]", "Error:", e);
+                console.info("[Thread", i, "]", "Waiting 5000 ms.");
+                await timerPromises.setTimeout(5000);
             }
         }
         if (!isDone) {
