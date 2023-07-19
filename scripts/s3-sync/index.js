@@ -11,8 +11,9 @@ import byteSize from "byte-size";
 const OWNER = process.env.OWNER || "MaaAssistantArknights";
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.THREAD:", process.env.THREAD);
-const thread = Math.max(0, Math.min(os.cpus().length, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4));
-console.info("# of thread:", thread);
+const THREAD = Math.max(0, Math.min(os.cpus().length, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4));
+const NUMBER_OF_RETRIES = Math.max(0, Number.isSafeInteger(+process.env.NUMBER_OF_RETRIES) ? +process.env.NUMBER_OF_RETRIES : 5);
+console.info("# of thread:", THREAD);
 console.info("OWNER:", OWNER);
 console.info("ua:", ua);
 console.info("Initialization done.");
@@ -48,7 +49,7 @@ const RETRYABLE_ERROR_CODES_FOR_MINIO_STAT = ["SlowDown"];
  */
 const minioClientStatObject = async (objectName, thread) => {
     let lastError;
-    for (let i; i < 5; i++) {
+    for (let i; i < NUMBER_OF_RETRIES; i++) {
         try {
             return await minioClientStatObjectInternal(objectName);
         } catch (e) {
@@ -127,11 +128,11 @@ console.info("# of filtered assets:", filteredAssets.length);
 console.info("Start fetching...");
 const beginHrtime = process.hrtime.bigint();
 const changedAssets = [];
-await Promise.all(Array.from({ length: thread }).map(async (_, i) => {
+await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
     let asset = filteredAssets.shift();
     while (asset) {
         let lastError, isDone = false;
-        for (let j = 0; j < 5; j++) {
+        for (let j = 0; j < NUMBER_OF_RETRIES; j++) {
             try {
                 console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
                 console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
