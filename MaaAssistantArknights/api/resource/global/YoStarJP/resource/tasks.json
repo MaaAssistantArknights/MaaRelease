@@ -1,22 +1,11 @@
 {
     "FC-Open": {
-        "action": "ClickSelf",
-        "algorithm": "OcrDetect",
-        "next": [
-            "EnterChapterFC"
-        ],
-        "roi": [
-            0,
-            500,
-            500,
-            150
-        ],
         "text": [
             "ステージ",
             "開放"
         ]
     },
-    "EnterChapterFC": {
+    "FCChapterToFC": {
         "text": [
             "沼",
             "たなびく",
