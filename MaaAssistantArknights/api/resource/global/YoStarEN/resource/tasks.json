@@ -1,25 +1,14 @@
 {
     "FC-Open": {
-        "action": "ClickSelf",
-        "algorithm": "OcrDetect",
-        "next": [
-            "EnterChapterFC"
-        ],
-        "roi": [
-            0,
-            500,
-            500,
-            150
-        ],
         "text": [
-            "Event",
-            "opened"
+            "Event <What the Firelight Casts> is now",
+            "open"
         ]
     },
-    "EnterChapterFC": {
+    "FCChapterToFC": {
         "text": [
-            "Swamp",
-            "Mists"
+            "SWAMP",
+            "MISTS"
         ]
     },
     "OperBoxNameOCR": {
