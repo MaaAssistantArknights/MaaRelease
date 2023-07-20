@@ -1,22 +1,11 @@
 {
     "FC-Open": {
-        "action": "ClickSelf",
-        "algorithm": "OcrDetect",
-        "next": [
-            "EnterChapterFC"
-        ],
-        "roi": [
-            0,
-            500,
-            500,
-            150
-        ],
         "text": [
             "스테이지",
             "개방"
         ]
     },
-    "EnterChapterFC": {
+    "FCChapterToFC": {
         "text": [
             "안갯속",
             "늪지대"
