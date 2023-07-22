@@ -95,7 +95,7 @@ for (const asset of maaReleaseFound.assets) {
     asset.repo = "MaaRelease";
     assets.push(asset);
 }
-const pattern = /-(?:win|linux)-|-macos-.+\.dmg/;
+const pattern = /-(?:win|linux)-|-macos-universal\.dmg|-macos-runtime-universal\.zip/;
 const filteredAssets = assets.filter(({ name }) => pattern.test(name));
 console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);

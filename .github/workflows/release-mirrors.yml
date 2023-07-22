@@ -65,7 +65,7 @@ jobs:
           - MaaAssistantArknights
           - MaaRelease
         os: # 必须为逗号分隔格式
-          - windows,linux,macos
+          - windows,linux,macos,macos-runtime
         target: # 必须为逗号分隔格式
           - ota_server,R2
         runs-on:

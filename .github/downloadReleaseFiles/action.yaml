@@ -60,10 +60,13 @@ runs:
                 export PATTERN="$PATTERN --pattern *-linux-*"
             fi
             if [ "$OS" = "macos" ]; then
-                export PATTERN="$PATTERN --pattern *-macos-*.dmg"
+                export PATTERN="$PATTERN --pattern *-macos-universal.dmg"
             fi
             if [ "$OS" = "macos-ota" ]; then
                 export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml"
+            fi
+            if [ "$OS" = "macos-runtime" ]; then
+                export PATTERN="$PATTERN --pattern *-macos-runtime-universal.zip"
             fi
         done
 

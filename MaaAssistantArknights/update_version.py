@@ -86,7 +86,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     assets = releases["assets"]
     new_assets = []
     for rel in assets:
-        if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg', rel['name']):
+        if not re.search(r'-(?:win|linux)-|-macos-universal\.dmg|-macos-runtime-universal\.zip', rel['name']):
             continue
         mirrors_outer = []
         mirrors_inner = []
