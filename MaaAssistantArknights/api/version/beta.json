@@ -1121,6 +1121,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.20.0",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.20.0",
     "body": "## v4.20.0\n\n### 新增\n\n- 适配萨米肉鸽 (#5393) @DavidWang19 @SherkeyXD @LingXii @qxdqhr @HauKuen @yyjdelete @Ziqing19 @mathlover @yc080713 @mikucy @hguandl @vic233333 @salenth\n- 定时任务可切换配置 (#5323) @ABA2396 @MistEO\n\n### 改进\n\n- 自动关闭“检测到有未下载的语音资源”窗口 (#5396) @Hydrogina\n- 肉鸽debug日志写入图片前限制文件夹内图片数量 (#5325) @BladeHiker\n- 优化HttpClient构建过程 (#5357) @ChingCdesu @HisAtri\n- 自动检测更新的随机延迟改为一小时 @ABA2396\n- 更改更新弹窗格式 @ABA2396\n- 优化水月部分地图部署逻辑 (#5576) @Yumi0606\n- 全局配置不存在时会优先使用当前配置的字段，并赋值给全局配置 @ABA2396\n- 调整窗口标题 @TiSpH\n\n### 修复\n\n- 添加定时器缺少的判断 @ABA2396\n- 点击技能启动按钮时，验证按钮已消失，防止卡死在子弹时间中 (#5374) @chaserhkj\n- 添加山的干员名字纠错规则 (#5372) @chaserhkj\n- add CloseEvent task for Phantom Roguelike (#5358) @chaserhkj\n- 强制启动定时任务未在运行时不关闭方舟 #5346 @ABA2396\n- 尝试修复运行时下载完成更新包后卡死 (#5327) @ABA2396\n- 强制定时启动无法保存; 配置名称过长显示问题 (#5532) @TiSpH\n- 定时功能设置无法更新 @ABA2396\n- 0 时的定时任务无法提前重启 (#5571) @TiSpH\n- 修复定时器配置从未选择时的逻辑错误 @ABA2396\n- 修复输入非法时间时，输入框会重置但却存储错误数据的问题 @ABA2396\n\n### 其他\n\n- 优化了互斥规划问题的 dlx 算法实现在一定情况下的速度 @lhhxxxxx\n- 更新裁图小工具 @MistEO\n- 在文档的导航栏里加上前往官网的链接 @AnnAngela\n- 修改关卡重连描述 @ABA2396\n- 代码清理 @ABA2396\n- fix typo in AsstCaller.h (#5435) @eltociear\n- 添加一键编译macOS Core的脚本 @hguandl\n- 在用户有代理的情况下，提升国外镜像的优先级 (s3限速上行50Mbps) @ChingCdesu\n- AsstConf.h 对 clang-tidy 不友好的问题 (#5510) @hxdnshx\n- 规范化step name (#5517) @SherkeyXD\n- 删除export后面多余的空格 (#5515) @SherkeyXD\n- 修复对ranges支持检测的判断条件 (#5548) @hguandl\n- 修复初次使用多出来一个Global配置的问题 @MistEO\n- added new ignored Sami IS4 images @Constrat\n- 打包 macos dylib @AnnAngela\n\n### For overseas\n\n#### Common\n\n- FC event stages implementation for KR, JP, EN @Constrat\n\n#### YostarEN\n\n- raised threshold for StageAnnihilation.png (#5234) @Constrat\n- Added correct StageAnnihilation.png after update @Constrat\n- Visiting only 1 Friend Clue Exchange in YostarEN (#5424) @Constrat\n- Missing .png for YostarEN and modified tools/ignore_list_of_templates.txt (lack of Chinese characters) (#5458) @Constrat\n- OperBox not retrieving Oper Class bar in EN @Constrat\n- added missing strings form missing_translate-YostarEN @Constrat\n- Workaround for EN infrastracture oper regex (#5549) @Constrat\n\n#### YostarKR\n\n- Improved operator awareness in infrastructure (#5564) @zewoosJ\n- add tutorial docs for kr @zewoosJ @178619\n\n#### txwy\n\n- 繁中服干员名识别错误 @Arcelibs\n\n### For dev\n\n- Python api 更新 同时请求多个url下载 (#5390) @HisAtri\n- 使用字典推导式 (#5381) @HisAtri\n- 修复Python更新器中重试次数的问题 (#5402) @Q-ModifiedJ\n- 适配pythonAPI到最新版 (#5347) @DoyoDia\n\n**Full Changelog**: [v4.19.3 -> v4.20.0](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.19.3...v4.20.0)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/113214956/reactions",
+      "total_count": 7,
+      "+1": 7,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 32
   }
 }
