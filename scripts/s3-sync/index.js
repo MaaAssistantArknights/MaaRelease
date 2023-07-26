@@ -24,7 +24,7 @@ if (!FILE_PATTERN) {
 const pattern = new RegExp(FILE_PATTERN);
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.THREAD:", process.env.THREAD);
-const THREAD = Math.max(0, Math.min(os.cpus().length, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4));
+const THREAD = Math.max(0, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4);
 const NUMBER_OF_RETRIES = Math.max(0, Number.isSafeInteger(+process.env.NUMBER_OF_RETRIES) ? +process.env.NUMBER_OF_RETRIES : 5);
 console.info("# of thread:", THREAD);
 console.info("OWNER:", owner);

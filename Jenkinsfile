@@ -6,13 +6,15 @@ podTemplate(
         ttyEnabled: true, 
         command: 'cat',
         envVars: [
-            containerEnvVar(key: 'THREAD', value: '4'),
+            containerEnvVar(key: 'THREAD', value: '2'),
             containerEnvVar(key: 'NUMBER_OF_RETRIES', value: '5'),
             containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
             containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
             containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
             containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000'),
+            containerEnvVar(key: 'TZ', value: 'Asia/Shanghai'),
+            containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
             containerEnvVar(key: 'RELEASE_TAG', value: params.release_tag)
         ]
     )
@@ -41,7 +43,7 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts ; export TZ=Asia/Shanghai ; export OWNER=MaaAssistantArknights ; function MaaRelease_s3_sync() { REPO=MaaRelease node s3-sync/index.js; } ; function MaaAssistantArknights_s3_sync() { REPO=MaaAssistantArknights node s3-sync/index.js; } ; export -f MaaRelease_s3_sync ; export -f MaaAssistantArknights_s3_sync ; parallel ::: "MaaRelease_s3_sync" "MaaAssistantArknights_s3_sync" ; [ $? -ne 0 ] && s3-sync/errorReport.js'
+            sh 'cd MaaRelease/scripts ; function MaaRelease_s3_sync() { REPO=MaaRelease node s3-sync/index.js; } ; function MaaAssistantArknights_s3_sync() { REPO=MaaAssistantArknights node s3-sync/index.js; } ; export -f MaaRelease_s3_sync ; export -f MaaAssistantArknights_s3_sync ; parallel ::: "MaaRelease_s3_sync" "MaaAssistantArknights_s3_sync" ; [ $? -ne 0 ] && s3-sync/errorReport.js'
           }
       }
       
