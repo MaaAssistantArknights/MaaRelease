@@ -8,13 +8,29 @@ import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
 import byteSize from "byte-size";
-const OWNER = process.env.OWNER || "MaaAssistantArknights";
+const owner = process.env.OWNER;
+const repo = process.env.REPO;
+if (!owner) {
+    throw new SyntaxError("OWNER is not defined.");
+}
+if (!repo) {
+    throw new SyntaxError("REPO is not defined.");
+}
+let FILE_PATTERN = process.env.FILE_PATTERN;
+if (!FILE_PATTERN) {
+    FILE_PATTERN = ".*";
+    console.info("FILE_PATTERN is not defined, use default value: .*");
+}
+const pattern = new RegExp(FILE_PATTERN);
 const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()}; ${process.arch})`;
 console.info("process.env.THREAD:", process.env.THREAD);
 const THREAD = Math.max(0, Math.min(os.cpus().length, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4));
 const NUMBER_OF_RETRIES = Math.max(0, Number.isSafeInteger(+process.env.NUMBER_OF_RETRIES) ? +process.env.NUMBER_OF_RETRIES : 5);
 console.info("# of thread:", THREAD);
-console.info("OWNER:", OWNER);
+console.info("OWNER:", owner);
+console.info("REPO:", repo);
+console.info("FILE_PATTERN:", FILE_PATTERN);
+console.info("pattern:", pattern);
 console.info("ua:", ua);
 console.info("Initialization done.");
 
@@ -32,7 +48,7 @@ const minioClient = new Client({
  * @typedef { { size: number, etag: string, lastModified: Date, metaData: Record<string, any> } } BucketItemStat
  */
 /**
- * @typedef { Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] & { repo: string } } Asset
+ * @typedef { Awaited<ReturnType<octokit['rest']['repos']['getRelease']>>['data']['assets'][number] } Asset
  */
 /**
  * @type {(objectName: string) => Promise<BucketItemStat>}
@@ -50,52 +66,39 @@ console.info("Fetching the release list");
  * @type { Asset[] }
  */
 const assets = [];
-const maaReleaseList = await octokit.rest.repos.listReleases({
-    owner: OWNER,
-    repo: "MaaRelease",
+const releaseList = await octokit.rest.repos.listReleases({
+    owner,
+    repo,
 });
-let maaReleaseFound;
+let releaseFound;
 if (!releaseTag) {
     console.info("No release_tag found in env, use the latest tag.");
-    maaReleaseFound = maaReleaseList.data[0];
+    releaseFound = releaseList.data[0];
 } else {
     console.info("release_tag in env:", releaseTag, "try to find this tag.");
-    const found = maaReleaseList.data.find((release) => release.tag_name === releaseTag);
+    const found = releaseList.data.find((release) => release.tag_name === releaseTag);
     if (found) {
         console.info("Tag found.");
-        maaReleaseFound = found;
+        releaseFound = found;
     } else {
         console.info("No tag found, use the latest tag.");
-        maaReleaseFound = maaReleaseList.data[0];
+        releaseFound = releaseList.data[0];
     }
 }
-releaseTag = maaReleaseFound.tag_name;
+releaseTag = releaseFound.tag_name;
 console.info("release_tag:", releaseTag);
 /**
  * @param { Asset } asset
  * @return { Promise<{ stat: BucketItemStat, status: boolean }> }
  */
 const validateAssetViaStatObject = async (asset) => {
-    const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
+    const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
     const stat = await minioClientStatObject(objectName);
     return { stat, status: stat.size > 0 && stat.size === asset.size };
 };
-const maaAssistantArknightsList = await octokit.rest.repos.listReleases({
-    owner: OWNER,
-    repo: "MaaAssistantArknights",
-});
-const maaAssistantArknightsFound = maaAssistantArknightsList.data.find((release) => release.tag_name === releaseTag);
-if (maaAssistantArknightsFound) {
-    for (const asset of maaAssistantArknightsFound.assets) {
-        asset.repo = "MaaAssistantArknights";
-        assets.push(asset);
-    }
-}
-for (const asset of maaReleaseFound.assets) {
-    asset.repo = "MaaRelease";
+for (const asset of releaseFound.assets) {
     assets.push(asset);
 }
-const pattern = /-(?:win|linux)-|-macos-universal\.dmg|-macos-runtime-universal\.zip/;
 const filteredAssets = assets.filter(({ name }) => pattern.test(name));
 console.info("# of assets:", assets.size);
 console.info("# of filtered assets:", filteredAssets.length);
@@ -111,7 +114,7 @@ await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
             try {
                 console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
                 console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-                const objectName = path.join(OWNER, asset.repo, "releases", "download", releaseTag, asset.name);
+                const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
                 const { status: isExist } = await validateAssetViaStatObject(asset);
                 if (isExist) {
                     console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");

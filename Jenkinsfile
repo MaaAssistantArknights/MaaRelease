@@ -22,7 +22,7 @@ podTemplate(
     stage('Checkout Repo') {
       container('worker') {
         sh 'apk --no-cache update'
-        sh 'apk add git uuidgen'
+        sh 'apk add git uuidgen parallel'
         sh 'git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
       }
     }
@@ -41,7 +41,7 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts ; TZ=Asia/Shanghai node s3-sync/index.js ; [ $? -ne 0 ] && s3-sync/errorReport.js'
+            sh 'cd MaaRelease/scripts ; export TZ=Asia/Shanghai ; export OWNER=MaaAssistantArknights ; function MaaRelease_s3_sync() { REPO=MaaRelease node s3-sync/index.js; } ; function MaaAssistantArknights_s3_sync() { REPO=MaaAssistantArknights node s3-sync/index.js; } ; export -f MaaRelease_s3_sync ; export -f MaaAssistantArknights_s3_sync ; parallel ::: "MaaRelease_s3_sync" "MaaAssistantArknights_s3_sync" ; [ $? -ne 0 ] && s3-sync/errorReport.js'
           }
       }
       
