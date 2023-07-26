@@ -5,8 +5,8 @@ const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRe
         "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
     },
     data: {
-        owner: process.env.OWNER,
-        repo: process.env.REPO,
+        OWNER: process.env.OWNER,
+        REPO: process.env.REPO,
         RELEASE_TAG: process.env.RELEASE_TAG,
     },
 })).json();
