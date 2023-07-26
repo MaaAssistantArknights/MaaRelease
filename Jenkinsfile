@@ -14,6 +14,7 @@ podTemplate(
             containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000'),
             containerEnvVar(key: 'TZ', value: 'Asia/Shanghai'),
             containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
+            containerEnvVar(key: 'FILE_PATTERN', value: '/-(?:win|linux)-|-macos-universal\\.dmg|-macos-runtime-universal\\.zip/'),
             containerEnvVar(key: 'RELEASE_TAG', value: params.release_tag)
         ]
     )
