@@ -8,7 +8,6 @@ podTemplate(
         envVars: [
             containerEnvVar(key: 'THREAD', value: '2'),
             containerEnvVar(key: 'NUMBER_OF_RETRIES', value: '5'),
-            containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
             containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
             containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
