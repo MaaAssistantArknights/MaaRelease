@@ -44,8 +44,8 @@ podTemplate(
       ]) {
           container('worker') {
             sh 'cd MaaRelease/scripts'
-            sh 'export REPO=MaaAssistantArknights ; node s3-sync/index.js ; [ $? -ne 0 ] && node s3-sync/errorReport.js'
-            sh 'export REPO=MaaRelease ; node s3-sync/index.js ; [ $? -ne 0 ] && node s3-sync/errorReport.js'
+            sh 'REPO=MaaAssistantArknights node s3-sync/index.js'
+            sh 'REPO=MaaRelease node s3-sync/index.js'
           }
       }
       
