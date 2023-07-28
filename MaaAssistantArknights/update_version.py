@@ -86,7 +86,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     assets = releases["assets"]
     new_assets = []
     for rel in assets:
-        if not re.search(r'-(?:win|linux)-|-macos-.+\.dmg', rel['name']):
+        if not re.search(r'-(?:win|linux)-|-macos-universal\.dmg|-macos-runtime-universal\.zip', rel['name']):
             continue
         mirrors_outer = []
         mirrors_inner = []
@@ -191,6 +191,21 @@ def main():
     beta_json = get_version_json(beta, 'beta')
     stable_json = get_version_json(stable, 'stable')
 
+    summary_json = {
+        "alpha": {
+            "version": alpha_json["version"],
+            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/alpha.json"
+        },
+        "beta": {
+            "version": beta_json["version"],
+            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/beta.json"
+        },
+        "stable": {
+            "version": stable_json["version"],
+            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/stable.json"
+        }
+    }
+
     api_path = Path(__file__).parent / "api" / "version"
 
     def save_json(json_data, file_name):
@@ -200,6 +215,7 @@ def main():
     save_json(alpha_json, "alpha.json")
     save_json(beta_json, "beta.json")
     save_json(stable_json, "stable.json")
+    save_json(summary_json, "summary.json")
 
 if __name__ == '__main__':
     main()

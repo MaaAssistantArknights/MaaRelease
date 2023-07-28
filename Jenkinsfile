@@ -6,13 +6,15 @@ podTemplate(
         ttyEnabled: true, 
         command: 'cat',
         envVars: [
-            containerEnvVar(key: 'THREAD', value: '4'),
+            containerEnvVar(key: 'THREAD', value: '2'),
             containerEnvVar(key: 'NUMBER_OF_RETRIES', value: '5'),
-            containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
             containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
             containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
             containerEnvVar(key: 'MINIO_WAIT_TIME_AFTER_UPLOAD_MS', value: '1000'),
+            containerEnvVar(key: 'TZ', value: 'Asia/Shanghai'),
+            containerEnvVar(key: 'OWNER', value: 'MaaAssistantArknights'),
+            containerEnvVar(key: 'FILE_PATTERN', value: '/-(?:win|linux)-|-macos-universal\\.dmg|-macos-runtime-universal\\.zip/'),
             containerEnvVar(key: 'RELEASE_TAG', value: params.release_tag)
         ]
     )
@@ -22,7 +24,7 @@ podTemplate(
     stage('Checkout Repo') {
       container('worker') {
         sh 'apk --no-cache update'
-        sh 'apk add git uuidgen'
+        sh 'apk add git uuidgen parallel'
         sh 'git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
       }
     }
@@ -41,7 +43,9 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts ; TZ=Asia/Shanghai node s3-sync/index.js ; [ $? -ne 0 ] && s3-sync/errorReport.js'
+            sh 'cd MaaRelease/scripts'
+            sh 'REPO=MaaAssistantArknights node s3-sync/index.js'
+            sh 'REPO=MaaRelease node s3-sync/index.js'
           }
       }
       

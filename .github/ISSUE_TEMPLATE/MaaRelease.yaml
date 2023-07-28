@@ -1,0 +1,11 @@
+name: MaaRelease 相关问题
+description: 仅供内部使用
+body:
+  - type: textarea
+    id: issue-body
+    attributes:
+      label: issue 正文
+      description: 正文输入框
+      placeholder: 发生什么事了🔉发生什么事了🔉发生什么事了🔉发生什么事了🔉发生什么事了🔉发生什么事了🔉
+    validations:
+      required: true
