@@ -11,5 +11,8 @@
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
         "ciInCI": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci"
+    },
+    "engines": {
+        "node": "^18.17 ^20.1"
     }
 }
