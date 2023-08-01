@@ -43,9 +43,8 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh 'cd MaaRelease/scripts'
-            sh 'REPO=MaaAssistantArknights node s3-sync/index.js'
-            sh 'REPO=MaaRelease node s3-sync/index.js'
+            sh 'REPO=MaaAssistantArknights node MaaRelease/scripts/s3-sync/index.js'
+            sh 'REPO=MaaRelease node MaaRelease/scripts/s3-sync/index.js'
           }
       }
       
