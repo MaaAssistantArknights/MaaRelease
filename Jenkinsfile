@@ -24,7 +24,7 @@ podTemplate(
     stage('Checkout Repo') {
       container('worker') {
         sh 'apk --no-cache update'
-        sh 'apk add git uuidgen parallel'
+        sh 'apk add git uuidgen'
         sh 'git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
       }
     }
