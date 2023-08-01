@@ -126,6 +126,9 @@ runs:
         done <<< "$list"
         echo "::endgroup::"
 
+        echo Size:
+        du -hs $DOWNLOAD_DIR_WITH_RELEASE_TAG
+
         echo 'Done.'
 
 outputs:
