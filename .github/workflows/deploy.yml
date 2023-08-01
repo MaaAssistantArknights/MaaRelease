@@ -5,8 +5,9 @@ on:
     branches:
       - main
     paths:
+      - nginx.conf
       - 'MaaAssistantArknights/**'
-      - '.github/workflows/deploy.yml'
+      - .github/workflows/deploy.yml
   workflow_dispatch:
 
 jobs:
