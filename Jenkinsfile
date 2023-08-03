@@ -4,6 +4,7 @@ podTemplate(
         name: 'worker',
         image: 'node:lts-alpine',
         ttyEnabled: true, 
+        alwaysPullImage: true,
         command: 'cat',
         envVars: [
             containerEnvVar(key: 'THREAD', value: '2'),
