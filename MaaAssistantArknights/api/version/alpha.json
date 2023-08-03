@@ -661,14 +661,14 @@
     "body": "## v4.21.0\n\n### 新增\n\n- 新增 `火山旅梦` 活动导航 @ABA2396\n- 更新 `火山旅梦` 部分游戏资源（地图还没更新）@MistEO\n- 给牛牛抽卡提示增加阴间特效 (#5694) @SherkeyXD\n\n### 改进\n\n- 新增萨米肉鸽4~5层部署策略 (#5725) @LingXii\n- 优化傀影肉鸽招募逻辑和棘刺队作战逻辑 (#5707) @Lancarus\n- 进一步优化水月肉鸽部分关卡作战逻辑 (#5663) @Yumi0606\n- 优化肉鸽招募逻辑 (#5621) @SherkeyXD\n- 选择刷源石锭策略时强制启用投资选项 (#5625) @SherkeyXD\n- 一些文字识别问题与死囚之夜部分高台站位 (#5710) @cenfusheng\n- 使用 version summary api 检查更新 @MistEO\n- Implement ADB hard restart. (#5666) @AsterNighT\n- 修复干员青枳识别 (#5775) @Black1312\n\n### 修复\n\n- 更新的逻辑小错误 (#5752) @tangge233\n- 关闭模拟器权限不够时失败报错 @ABA2396\n- 连接失败后自动重启模拟器功能失效 @ABA2396\n- 主线导航识别问题 @ABA2396\n- mumu模拟器在游戏未启动时关闭游戏报错，增加关闭游戏日志和判断 @ABA2396\n- 修复一处因 MarkdownIt 引入导致的404链接 (#5680) @abc1763613206\n- 本地化文件错误/localization file error @ABA2396\n- gui.log 在自重启后有几率无法正常写入 (#5624) @TiSpH\n\n### 其他\n\n- 新增 C# 代码静态分析 @hxdnshx\n- 改进 macos-runtime-universal.zip 生成 @AnnAngela\n- 主目录存在 DEBUG.txt 时每次开始任务都重新解析tasks.json (#5736) @ABA2396\n- i18n: 5ec976c9194d68b9b5c78234152ab2eb1953c5d4 moved changes to new file to allow future edits @Constrat\n- SSS available in global, removed from regex @Constrat\n- i18n: Added EN translation to SSS files @Constrat\n- typo: fix typo @ABA2396\n- 界面选项改为 mumu 6 @MistEO\n- 添加关联项目 MaaFramework @MistEO\n- macos-runtime-universal.zip 生成过程自适应版本号 @AnnAngela\n- 添加macos-runtime的resource文件夹和dylib的symlink @ChingCdesu\n- 添加对于mumu12后台保活功能的设置的说明 (#5781) @SherkeyXD\n\n### For overseas\n\n#### YostarEN\n\n- SSS Implementation for YostarEN @Constrat\n- WB event navigation for EN @Constrat\n- missing name-component for SSS + tweaked regex @Constrat\n- Dossoles ROI and Stage name fixes + temp OCR rep for long names @Constrat\n- ulterior changes / fixes from 9f2c7488b3310ac6a0e2304b7796181d88703f91 @Constrat\n- Auto Update Wrong order, rerun before limited @Constrat\n- Manual stage navigation for EN (fix #4874) @Constrat\n- duplicate: repeats in Ocr replace EN tasks.json @Constrat\n- better StartButton1.png @Constrat\n- Wrong event in display @Constrat\n- from ba75736 Manual Stage navigation EN @Constrat\n\n#### txwy\n\n- 繁中服水月肉鴿  @vonnoq @Lancarus @momomochi987 @Arcelibs @avw621314\n- 繁中服支持牛牛抽卡 @ABA2396\n- 重製繁中服部分截圖 (#5748) @momomochi987\n- 繁中服水月肉鴿「委託完成」卡住 (#5766) @vonnoq\n\n#### YostarJP\n\n- 日服水月肉鸽事件选项确认页面 (#5749) @Manicsteiner\n- JP : add Operators 登臨意 (#5636) @wallsman\n\n**Full Changelog**: [v4.20.0 -> v4.21.0](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.20.0...v4.21.0)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/114828719/reactions",
-      "total_count": 2,
-      "+1": 0,
+      "total_count": 10,
+      "+1": 3,
       "-1": 0,
       "laugh": 0,
-      "hooray": 0,
+      "hooray": 2,
       "confused": 0,
       "heart": 0,
-      "rocket": 2,
+      "rocket": 5,
       "eyes": 0
     },
     "mentions_count": 22
