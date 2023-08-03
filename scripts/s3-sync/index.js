@@ -102,8 +102,8 @@ try {
         assets.push(asset);
     }
     const filteredAssets = assets.filter(({ name }) => pattern.test(name));
-    console.info("assets:", assets);
-    console.info("filtered assets:", filteredAssets);
+    console.info("assets:", assets.map(({ name }) => name));
+    console.info("filtered assets:", filteredAssets.map(({ name }) => name));
 
     console.info("Start fetching...");
     const beginHrtime = process.hrtime.bigint();
