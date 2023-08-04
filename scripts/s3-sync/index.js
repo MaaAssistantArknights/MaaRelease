@@ -47,7 +47,7 @@ try {
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY,
         transportAgent: new http.Agent({
-            timeout: Number.MAX_SAFE_INTEGER,
+            timeout: 2147483647,
             keepAlive: true,
         }),
     });
@@ -149,13 +149,14 @@ try {
                             if (!response.ok) {
                                 throw new Error("Response not ok");
                             }
+                            console.info("[Thread", i, "]", asset.name, "unexists, start downloading the asset.");
                             const startFetchHrtime = process.hrtime.bigint();
                             const arrayBuffer = await response.arrayBuffer();
                             const endFetchHrtime = process.hrtime.bigint();
                             data = Buffer.from(arrayBuffer);
                             durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
                             transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
-                            console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading");
+                            console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading.");
                         } else {
                             console.info("[Thread", i, "]", asset.name, "unexists, but the asset is downloaded, start uploading.");
                         }
@@ -166,8 +167,8 @@ try {
                         const transferRatesInUploading = byteSize(data.byteLength / durationInSecondsInUploading, { precision: 3, units: "iec" });
                         console.info("[Thread", i, "]", asset.name, "uploaded in", durationInSecondsInUploading, "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
                         await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
-                        const { stat, status: isValidate } = await validateAssetViaStatObject(asset);
-                        if (isValidate) {
+                        const { stat, status: isValidated } = await validateAssetViaStatObject(asset);
+                        if (isValidated) {
                             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
                             changedAssets.push(asset);
                         } else {
