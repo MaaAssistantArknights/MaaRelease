@@ -9,13 +9,14 @@ import timerPromises from "timers/promises";
 import byteSize from "byte-size";
 import http from "http";
 let success = true;
+let RELEASE_TAG = process.env.RELEASE_TAG;
+const OWNER = process.env.OWNER;
+const REPO = process.env.REPO;
 try {
-    const owner = process.env.OWNER;
-    const repo = process.env.REPO;
-    if (!owner) {
+    if (!OWNER) {
         throw new SyntaxError("OWNER is not defined.");
     }
-    if (!repo) {
+    if (!REPO) {
         throw new SyntaxError("REPO is not defined.");
     }
     // read FILE_PATTERN from env, this `atob` code is used to avoid false alert from codeql
@@ -30,8 +31,8 @@ try {
     const THREAD = Math.max(0, Number.isSafeInteger(+process.env.THREAD) ? +process.env.THREAD : 4);
     const NUMBER_OF_RETRIES = Math.max(0, Number.isSafeInteger(+process.env.NUMBER_OF_RETRIES) ? +process.env.NUMBER_OF_RETRIES : 5);
     console.info("# of thread:", THREAD);
-    console.info("OWNER:", owner);
-    console.info("REPO:", repo);
+    console.info("OWNER:", OWNER);
+    console.info("REPO:", REPO);
     console.info("FILE_PATTERN:", FILE_PATTERN);
     console.info("pattern:", pattern);
     console.info("ua:", ua);
@@ -67,23 +68,22 @@ try {
         metaData: {},
     } : stat)));
 
-    let releaseTag = process.env.RELEASE_TAG;
     console.info("Fetching the release list");
     /**
      * @type { Asset[] }
      */
     const assets = [];
     const releaseList = await octokit.rest.repos.listReleases({
-        owner,
-        repo,
+        owner: OWNER,
+        repo: REPO,
     });
     let releaseFound;
-    if (!releaseTag) {
+    if (!RELEASE_TAG) {
         console.info("No release_tag found in env, use the latest tag.");
         releaseFound = releaseList.data[0];
     } else {
-        console.info("release_tag in env:", releaseTag, "try to find this tag.");
-        const found = releaseList.data.find((release) => release.tag_name === releaseTag);
+        console.info("release_tag in env:", RELEASE_TAG, "try to find this tag.");
+        const found = releaseList.data.find((release) => release.tag_name === RELEASE_TAG);
         if (found) {
             console.info("Tag found.");
             releaseFound = found;
@@ -92,14 +92,14 @@ try {
             releaseFound = releaseList.data[0];
         }
     }
-    releaseTag = releaseFound.tag_name;
-    console.info("release_tag:", releaseTag);
+    RELEASE_TAG = releaseFound.tag_name;
+    console.info("release_tag:", RELEASE_TAG);
     /**
      * @param { Asset } asset
      * @return { Promise<{ stat: BucketItemStat, status: boolean }> }
      */
     const validateAssetViaStatObject = async (asset, thread) => {
-        const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
+        const objectName = path.join(OWNER, REPO, "releases", "download", RELEASE_TAG, asset.name);
         for (let i = 0; i < NUMBER_OF_RETRIES; i++) {
             try {
                 const stat = await minioClientStatObject(objectName);
@@ -130,7 +130,7 @@ try {
                 try {
                     console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
                     console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
-                    const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
+                    const objectName = path.join(OWNER, REPO, "releases", "download", RELEASE_TAG, asset.name);
                     const { status: isExist } = await validateAssetViaStatObject(asset, i);
                     if (isExist) {
                         console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
@@ -219,9 +219,9 @@ try {
     success = false;
 }
 const data = {
-    OWNER: process.env.OWNER,
-    REPO: process.env.REPO,
-    RELEASE_TAG: process.env.RELEASE_TAG,
+    OWNER,
+    REPO,
+    RELEASE_TAG,
     success,
 };
 console.info("Start report:", data);
