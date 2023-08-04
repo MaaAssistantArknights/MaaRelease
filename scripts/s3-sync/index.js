@@ -9,6 +9,7 @@ import timerPromises from "timers/promises";
 import byteSize from "byte-size";
 import http from "http";
 let success = true;
+let duration = -1;
 let RELEASE_TAG = process.env.RELEASE_TAG;
 const OWNER = process.env.OWNER;
 const REPO = process.env.REPO;
@@ -193,7 +194,8 @@ try {
         console.info("[Thread", i, "]", "done.");
     }));
     const afterHrtime = process.hrtime.bigint();
-    console.info("Download progress done, duration:", Number(afterHrtime - beginHrtime) / 10 ** 9, "s.");
+    duration = Number(afterHrtime - beginHrtime) / 10 ** 9;
+    console.info("Download progress done, duration:", duration, "s.");
     if (changedAssets.length === 0) {
         console.info("No assets are uploaded, exit.");
     } else {
@@ -223,6 +225,7 @@ const data = {
     REPO,
     RELEASE_TAG,
     success,
+    duration,
 };
 console.info("Start report:", data);
 const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
