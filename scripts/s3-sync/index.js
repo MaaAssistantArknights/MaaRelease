@@ -56,7 +56,12 @@ try {
     /**
      * @type {(objectName: string) => Promise<BucketItemStat>}
      */
-    const minioClientStatObject = (objectName) => new Promise((res, rej) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => err ? rej(err) : res(stat)));
+    const minioClientStatObject = (objectName) => new Promise((res, rej) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => err && err.code !== "NotFound" ? rej(err) : res(err ? {
+        size: -1,
+        etag: "",
+        lastModified: new Date(-1),
+        metaData: {},
+    } : stat)));
 
     let releaseTag = process.env.RELEASE_TAG;
     console.info("Fetching the release list");
@@ -89,14 +94,14 @@ try {
      * @param { Asset } asset
      * @return { Promise<{ stat: BucketItemStat, status: boolean }> }
      */
-    const validateAssetViaStatObject = async (asset) => {
+    const validateAssetViaStatObject = async (asset, thread) => {
         const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
         for (let i = 0; i < NUMBER_OF_RETRIES; i++) {
             try {
                 const stat = await minioClientStatObject(objectName);
                 return { stat, status: stat.size > 0 && stat.size === asset.size };
             } catch (e) {
-                console.error("ValidateAssetViaStatObject error #", i, "/", NUMBER_OF_RETRIES, ", wait 5000 ms:", e);
+                console.error(...typeof thread === "number" ? ["[Thread", thread, "]"] : [], "ValidateAssetViaStatObject error #", i, "/", NUMBER_OF_RETRIES, ", wait 5000 ms:", e);
                 await timerPromises.setTimeout(5000);
             }
         }
