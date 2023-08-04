@@ -156,7 +156,7 @@ try {
                             data = Buffer.from(arrayBuffer);
                             durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
                             transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
-                            console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading.");
+                            console.info("[Thread", i, "]", asset.name, "fetched in", +durationInSecondsInFetching.toFixed(3), "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading.");
                         } else {
                             console.info("[Thread", i, "]", asset.name, "unexists, but the asset is downloaded, start uploading.");
                         }
@@ -165,7 +165,7 @@ try {
                         const endPutHrtime = process.hrtime.bigint();
                         const durationInSecondsInUploading = Number(endPutHrtime - startPutHrtime) / 10 ** 9;
                         const transferRatesInUploading = byteSize(data.byteLength / durationInSecondsInUploading, { precision: 3, units: "iec" });
-                        console.info("[Thread", i, "]", asset.name, "uploaded in", durationInSecondsInUploading, "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
+                        console.info("[Thread", i, "]", asset.name, "uploaded in", +durationInSecondsInUploading.toFixed(3), "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
                         await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
                         const { stat, status: isValidated } = await validateAssetViaStatObject(asset);
                         if (isValidated) {
