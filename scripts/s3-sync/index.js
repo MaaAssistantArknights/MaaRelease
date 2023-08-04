@@ -233,7 +233,7 @@ const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRe
         "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
     },
     method: "POST",
-    data,
+    body: JSON.stringify(data),
 })).json();
 console.info("result:", result);
 process.exit(success ? 0 : 1);
