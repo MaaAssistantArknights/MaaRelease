@@ -123,7 +123,8 @@ try {
     await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
         let asset = filteredAssets.shift();
         while (asset) {
-            let isDone = false;
+            let data, durationInSecondsInFetching, transferRatesInFetching,
+                isDone = false;
             for (let j = 0; j < NUMBER_OF_RETRIES; j++) {
                 try {
                     console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
@@ -133,27 +134,31 @@ try {
                     if (isExist) {
                         console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
                     } else {
-                        console.info("[Thread", i, "]", asset.name, "unexists, start fetching the asset");
-                        const headers = {
-                            accept: "application/octet-stream",
-                            authorization: `Bearer ${token}`,
-                            "user-agent": ua,
-                        };
-                        const response = await fetch(asset.url, {
-                            method: "GET",
-                            redirect: "follow",
-                            headers,
-                        });
-                        if (!response.ok) {
-                            throw new Error("Response not ok");
+                        if (!data) {
+                            console.info("[Thread", i, "]", asset.name, "unexists, start fetching the asset.");
+                            const headers = {
+                                accept: "application/octet-stream",
+                                authorization: `Bearer ${token}`,
+                                "user-agent": ua,
+                            };
+                            const response = await fetch(asset.url, {
+                                method: "GET",
+                                redirect: "follow",
+                                headers,
+                            });
+                            if (!response.ok) {
+                                throw new Error("Response not ok");
+                            }
+                            const startFetchHrtime = process.hrtime.bigint();
+                            const arrayBuffer = await response.arrayBuffer();
+                            const endFetchHrtime = process.hrtime.bigint();
+                            data = Buffer.from(arrayBuffer);
+                            durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
+                            transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
+                            console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading");
+                        } else {
+                            console.info("[Thread", i, "]", asset.name, "unexists, but the asset is downloaded, start uploading.");
                         }
-                        const startFetchHrtime = process.hrtime.bigint();
-                        const arrayBuffer = await response.arrayBuffer();
-                        const endFetchHrtime = process.hrtime.bigint();
-                        const data = Buffer.from(arrayBuffer);
-                        const durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
-                        const transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
-                        console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading");
                         const startPutHrtime = process.hrtime.bigint();
                         const info = await minioClient.putObject(process.env.MINIO_BUCKET, objectName, data);
                         const endPutHrtime = process.hrtime.bigint();
