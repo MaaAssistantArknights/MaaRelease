@@ -8,6 +8,7 @@ import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
 import byteSize from "byte-size";
+import http from "http";
 let success = true;
 try {
     const owner = process.env.OWNER;
@@ -46,6 +47,10 @@ try {
         useSSL: false,
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY,
+        transportAgent: new http.Agent({
+            timeout: Number.MAX_SAFE_INTEGER,
+            keepAlive: true,
+        }),
     });
     /**
      * @typedef { { size: number, etag: string, lastModified: Date, metaData: Record<string, any> } } BucketItemStat
