@@ -4,7 +4,6 @@ import { Octokit } from "../modules/octokit.js";
 import path from "path";
 // eslint-disable-next-line no-unused-vars
 import { Client } from "minio";
-import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
 import byteSize from "byte-size";
@@ -134,78 +133,37 @@ try {
                     if (isExist) {
                         console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
                     } else {
-                        console.info("[Thread", i, "]", asset.name, "unexists, start getting the downloadable link");
+                        console.info("[Thread", i, "]", asset.name, "unexists, start fetching the asset");
                         const headers = {
-                            [http2.constants.HTTP2_HEADER_ACCEPT]: "application/octet-stream",
-                            [http2.constants.HTTP2_HEADER_AUTHORIZATION]: `Bearer ${token}`,
-                            [http2.constants.HTTP2_HEADER_USER_AGENT]: ua,
+                            accept: "application/octet-stream",
+                            authorization: `Bearer ${token}`,
+                            "user-agent": ua,
                         };
                         const response = await fetch(asset.url, {
-                            method: "HEAD",
-                            redirect: "manual",
+                            method: "GET",
+                            redirect: "follow",
                             headers,
                         });
-                        console.info("[Thread", i, "]", "Get the downloadable link of", asset.name, ", start downloading");
-                        const url = new URL(response.headers.get("location"));
-                        const client = http2.connect(url, {
-                            minVersion: "TLSv1.3",
-                            maxVersion: "TLSv1.3",
-                        });
-                        /**
-                         * @type { ReturnType<byteSize> }
-                         */
-                        let transferRates;
-                        let durationInSeconds = -1;
-                        const info = await new Promise((res, rej) => {
-                            client.on("error", (err) => {
-                                rej(err);
-                            });
-                            const req = client.request({
-                                [http2.constants.HTTP2_HEADER_METHOD]: http2.constants.HTTP2_METHOD_GET,
-                                [http2.constants.HTTP2_HEADER_PATH]: `${url.pathname}${url.search}`,
-                                ...headers,
-                            }, {
-                                endStream: true,
-                            });
-                            req.on("response", async (headers) => {
-                                console.info("[Thread", i, "]", "Get the stream of", asset.name, ", transfering to minio:", headers);
-                                const transferredBytes = {
-                                    now: 0,
-                                    previous: 0,
-                                };
-                                let end = false;
-                                minioClient.putObject(process.env.MINIO_BUCKET, objectName, req, asset.size, (err, info) => err ? rej(err) : res(info));
-                                const startHrtime = process.hrtime.bigint();
-                                req.on("data", (chunk) => {
-                                    const now = process.hrtime.bigint();
-                                    transferredBytes.now += chunk.length;
-                                    transferRates = byteSize(transferredBytes.now * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
-                                    transferredBytes.previous = transferredBytes.now;
-                                });
-                                req.on("end", () => {
-                                    const now = process.hrtime.bigint();
-                                    end = true;
-                                    durationInSeconds = Number(now - startHrtime) / 10 ** 9;
-                                    transferRates = byteSize(asset.size * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
-                                });
-                                req.on("error", () => { end = true; });
-                                const total = byteSize(asset.size, { precision: 3, units: "iec" });
-                                while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
-                                    await timerPromises.setTimeout(5000);
-                                    if (!end) {
-                                        const progress = byteSize(transferredBytes.now, { precision: 3, units: "iec" });
-                                        console.info("[Thread", i, "]", "Stat", asset.name, "- progress:", progress.value, progress.unit, "/", total.value, total.unit, "=", +(transferredBytes.now * 100 / asset.size).toFixed(3), "% | average:", transferRates?.value, transferRates?.unit, "/s");
-                                    }
-                                }
-                                return;
-                            });
-                        });
-                        client.close();
-                        console.info("[Thread", i, "]", "The stream of", asset.name, "is ended, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
+                        if (!response.ok) {
+                            throw new Error("Response not ok");
+                        }
+                        const startFetchHrtime = process.hrtime.bigint();
+                        const arrayBuffer = await response.arrayBuffer();
+                        const endFetchHrtime = process.hrtime.bigint();
+                        const data = Buffer.from(arrayBuffer);
+                        const durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
+                        const transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
+                        console.info("[Thread", i, "]", asset.name, "fetched in", durationInSecondsInFetching, "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading");
+                        const startPutHrtime = process.hrtime.bigint();
+                        const info = await minioClient.putObject(process.env.MINIO_BUCKET, objectName, data);
+                        const endPutHrtime = process.hrtime.bigint();
+                        const durationInSecondsInUploading = Number(endPutHrtime - startPutHrtime) / 10 ** 9;
+                        const transferRatesInUploading = byteSize(data.byteLength / durationInSecondsInUploading, { precision: 3, units: "iec" });
+                        console.info("[Thread", i, "]", asset.name, "uploaded in", durationInSecondsInUploading, "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
                         await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
                         const { stat, status: isValidate } = await validateAssetViaStatObject(asset);
                         if (isValidate) {
-                            console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info, durationInSeconds, transferRates });
+                            console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
                             changedAssets.push(asset);
                         } else {
                             console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
@@ -227,8 +185,8 @@ try {
         }
         console.info("[Thread", i, "]", "done.");
     }));
-    const endHrtime = process.hrtime.bigint();
-    console.info("Download progress done, duration:", Number(endHrtime - beginHrtime) / 10 ** 9, "s.");
+    const afterHrtime = process.hrtime.bigint();
+    console.info("Download progress done, duration:", Number(afterHrtime - beginHrtime) / 10 ** 9, "s.");
     if (changedAssets.length === 0) {
         console.info("No assets are uploaded, exit.");
         process.exit(0);
