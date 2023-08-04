@@ -196,24 +196,24 @@ try {
     console.info("Download progress done, duration:", Number(afterHrtime - beginHrtime) / 10 ** 9, "s.");
     if (changedAssets.length === 0) {
         console.info("No assets are uploaded, exit.");
-        process.exit(0);
-    }
-    console.info("Validating", changedAssets.length, "uploaded assets...");
-    const failedAssets = [];
-    for (const asset of changedAssets) {
-        const { stat, status: isExist } = await validateAssetViaStatObject(asset);
-        if (isExist) {
-            continue;
+    } else {
+        console.info("Validating", changedAssets.length, "uploaded assets...");
+        const failedAssets = [];
+        for (const asset of changedAssets) {
+            const { stat, status: isExist } = await validateAssetViaStatObject(asset);
+            if (isExist) {
+                continue;
+            }
+            console.info("The size of", asset.name, "is not match, asset.size:", asset.size, "stat:", stat);
+            failedAssets.push(asset.name);
         }
-        console.info("The size of", asset.name, "is not match, asset.size:", asset.size, "stat:", stat);
-        failedAssets.push(asset.name);
+        if (failedAssets.length === 0) {
+            console.info("All assets are uploaded successfully, exit.");
+        } else {
+            console.info("Failed assets:", failedAssets);
+            throw new Error("Failed to upload some assets.");
+        }
     }
-    if (failedAssets.length === 0) {
-        console.info("All assets are uploaded successfully, exit.");
-        process.exit(0);
-    }
-    console.info("Failed assets:", failedAssets);
-    throw new Error("Failed to upload some assets.");
 } catch (e) {
     console.error("Error:", e);
     success = false;
