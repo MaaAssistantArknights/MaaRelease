@@ -8,6 +8,7 @@ import http2 from "http2";
 import os from "os";
 import timerPromises from "timers/promises";
 import byteSize from "byte-size";
+let success = true;
 try {
     const owner = process.env.OWNER;
     const repo = process.env.REPO;
@@ -55,12 +56,7 @@ try {
     /**
      * @type {(objectName: string) => Promise<BucketItemStat>}
      */
-    const minioClientStatObject = (objectName) => new Promise((res) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => res(err ? {
-        size: -1,
-        etag: "",
-        lastModified: new Date(-1),
-        metaData: {},
-    } : stat)));
+    const minioClientStatObject = (objectName) => new Promise((res, rej) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => err ? rej(err) : res(stat)));
 
     let releaseTag = process.env.RELEASE_TAG;
     console.info("Fetching the release list");
@@ -95,8 +91,15 @@ try {
      */
     const validateAssetViaStatObject = async (asset) => {
         const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
-        const stat = await minioClientStatObject(objectName);
-        return { stat, status: stat.size > 0 && stat.size === asset.size };
+        for (let i = 0; i < NUMBER_OF_RETRIES; i++) {
+            try {
+                const stat = await minioClientStatObject(objectName);
+                return { stat, status: stat.size > 0 && stat.size === asset.size };
+            } catch (e) {
+                console.error("ValidateAssetViaStatObject error #", i, "/", NUMBER_OF_RETRIES, ", wait 5000 ms:", e);
+                await timerPromises.setTimeout(5000);
+            }
+        }
     };
     for (const asset of releaseFound.assets) {
         assets.push(asset);
@@ -111,7 +114,7 @@ try {
     await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
         let asset = filteredAssets.shift();
         while (asset) {
-            let lastError, isDone = false;
+            let isDone = false;
             for (let j = 0; j < NUMBER_OF_RETRIES; j++) {
                 try {
                     console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
@@ -175,7 +178,7 @@ try {
                                     durationInSeconds = Number(now - startHrtime) / 10 ** 9;
                                     transferRates = byteSize(asset.size * 10 ** 6 / (Number(now - startHrtime) / 10 ** 3), { precision: 3, units: "iec" });
                                 });
-                                req.on("error", () => end = true);
+                                req.on("error", () => { end = true; });
                                 const total = byteSize(asset.size, { precision: 3, units: "iec" });
                                 while (Number.MAX_SAFE_INTEGER > Number.MIN_SAFE_INTEGER) {
                                     await timerPromises.setTimeout(5000);
@@ -204,14 +207,12 @@ try {
                     break;
                 } catch (e) {
                     e.thread = i;
-                    lastError = e;
-                    console.error("[Thread", i, "]", "Error:", e);
-                    console.info("[Thread", i, "]", "Waiting 5000 ms.");
+                    console.error("[Thread", i, "]", "Upload error #", j, "/", NUMBER_OF_RETRIES, ", wait 5000 ms:", e);
                     await timerPromises.setTimeout(5000);
                 }
             }
             if (!isDone) {
-                throw lastError;
+                console.error("[Thread", i, "]", "Upload error for asset", asset.name, ", skip.");
             }
         }
         console.info("[Thread", i, "]", "done.");
@@ -240,17 +241,20 @@ try {
     throw new Error("Failed to upload some assets.");
 } catch (e) {
     console.error("Error:", e);
-    console.info("Start report.");
-    const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_errorReport", {
-        headers: {
-            "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
-        },
-        data: {
-            OWNER: process.env.OWNER,
-            REPO: process.env.REPO,
-            RELEASE_TAG: process.env.RELEASE_TAG,
-        },
-    })).json();
-    console.info("result:", result);
-    process.exit(0);
+    success = false;
 }
+const data = {
+    OWNER: process.env.OWNER,
+    REPO: process.env.REPO,
+    RELEASE_TAG: process.env.RELEASE_TAG,
+    success,
+};
+console.info("Start report:", data);
+const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
+    headers: {
+        "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
+    },
+    data,
+})).json();
+console.info("result:", result);
+process.exit(success ? 0 : 1);
