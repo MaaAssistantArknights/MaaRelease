@@ -109,6 +109,7 @@ try {
                 await timerPromises.setTimeout(5000);
             }
         }
+        return { status: false };
     };
     for (const asset of releaseFound.assets) {
         assets.push(asset);
@@ -130,7 +131,7 @@ try {
                     console.info("[Thread", i, "]", "Trying to upload", asset.name, "#", j);
                     console.info("[Thread", i, "]", "Get the stat from minio for", asset.name);
                     const objectName = path.join(owner, repo, "releases", "download", releaseTag, asset.name);
-                    const { status: isExist } = await validateAssetViaStatObject(asset);
+                    const { status: isExist } = await validateAssetViaStatObject(asset, i);
                     if (isExist) {
                         console.info("[Thread", i, "]", asset.name, "is already uploaded, skip.");
                     } else {
@@ -167,7 +168,7 @@ try {
                         const transferRatesInUploading = byteSize(data.byteLength / durationInSecondsInUploading, { precision: 3, units: "iec" });
                         console.info("[Thread", i, "]", asset.name, "uploaded in", +durationInSecondsInUploading.toFixed(3), "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
                         await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
-                        const { stat, status: isValidated } = await validateAssetViaStatObject(asset);
+                        const { stat, status: isValidated } = await validateAssetViaStatObject(asset, i);
                         if (isValidated) {
                             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
                             changedAssets.push(asset);
