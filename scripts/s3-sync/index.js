@@ -121,6 +121,8 @@ try {
     const filteredAssets = assets.filter(({ name }) => pattern.test(name));
     console.info("assets:", assets.length, assets.map(({ name }) => name));
     console.info("filtered assets:", filteredAssets.length, filteredAssets.map(({ name }) => name));
+    count.total = assets.length;
+    count.filtered = filteredAssets.length;
 
     console.info("Start fetching...");
     const beforeUsedMemory = process.memoryUsage();
@@ -203,8 +205,6 @@ try {
     memoryOutput(afterUsedMemory, "usage");
     memoryOutput(Object.fromEntries(Object.entries(afterUsedMemory).map(([k, v]) => [k, v - beforeUsedMemory[k]])), "diff");
     duration = Number(afterHrtime - beginHrtime) / 10 ** 9;
-    count.total = assets.length;
-    count.filtered = filteredAssets.length;
     count.downloaded = changedAssets.length;
     console.info("Download progress done, duration:", duration, "s.");
     if (changedAssets.length === 0) {
