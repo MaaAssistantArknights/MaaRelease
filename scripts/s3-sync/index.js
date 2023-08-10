@@ -13,6 +13,7 @@ let duration = -1;
 let RELEASE_TAG = process.env.RELEASE_TAG;
 const OWNER = process.env.OWNER;
 const REPO = process.env.REPO;
+const count = {};
 try {
     if (!OWNER) {
         throw new SyntaxError("OWNER is not defined.");
@@ -70,7 +71,7 @@ try {
     } : stat)));
     const getByteSize = (input) => byteSize(input, { precision: 3, units: "iec" });
     const memoryOutput = (usedMemory, type) => {
-        console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}\n  - Array Buffers: ${getByteSize(usedMemory.arrayBuffers)}`);
+        console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}`);
     };
 
     console.info("Fetching the release list");
@@ -204,6 +205,9 @@ try {
     memoryOutput(afterUsedMemory, "usage");
     memoryOutput(Object.fromEntries(Object.entries(afterUsedMemory).map(([k, v]) => [k, v - beforeUsedMemory[k]])), "diff");
     duration = Number(afterHrtime - beginHrtime) / 10 ** 9;
+    count.total = assets.length;
+    count.filtered = filteredAssets.length;
+    count.downloaded = changedAssets.length;
     console.info("Download progress done, duration:", duration, "s.");
     if (changedAssets.length === 0) {
         console.info("No assets are uploaded, exit.");
@@ -235,6 +239,7 @@ const data = {
     RELEASE_TAG,
     success,
     duration,
+    count,
 };
 console.info("Start report:", data);
 const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
