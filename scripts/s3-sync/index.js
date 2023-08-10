@@ -68,6 +68,10 @@ try {
         lastModified: new Date(-1),
         metaData: {},
     } : stat)));
+    const getByteSize = (input) => byteSize(input, { precision: 3, units: "iec" });
+    const memoryOutput = (usedMemory, type) => {
+        console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}`);
+    };
 
     console.info("Fetching the release list");
     /**
@@ -120,8 +124,10 @@ try {
     console.info("filtered assets:", filteredAssets.length, filteredAssets.map(({ name }) => name));
 
     console.info("Start fetching...");
-    const beginHrtime = process.hrtime.bigint();
+    const beforeUsedMemory = process.memoryUsage();
+    memoryOutput(beforeUsedMemory, "usage");
     const changedAssets = [];
+    const beginHrtime = process.hrtime.bigint();
     await Promise.all(Array.from({ length: THREAD }).map(async (_, i) => {
         let asset = filteredAssets.shift();
         while (asset) {
@@ -157,7 +163,7 @@ try {
                             const endFetchHrtime = process.hrtime.bigint();
                             data = Buffer.from(arrayBuffer);
                             durationInSecondsInFetching = Number(endFetchHrtime - startFetchHrtime) / 10 ** 9;
-                            transferRatesInFetching = byteSize(data.byteLength / durationInSecondsInFetching, { precision: 3, units: "iec" });
+                            transferRatesInFetching = getByteSize(data.byteLength / durationInSecondsInFetching);
                             console.info("[Thread", i, "]", asset.name, "fetched in", +durationInSecondsInFetching.toFixed(3), "sec with", +transferRatesInFetching.value, transferRatesInFetching.unit, "/s, start uploading.");
                         } else {
                             console.info("[Thread", i, "]", asset.name, "unexists, but the asset is downloaded, start uploading.");
@@ -166,7 +172,7 @@ try {
                         const info = await minioClient.putObject(process.env.MINIO_BUCKET, objectName, data);
                         const endPutHrtime = process.hrtime.bigint();
                         const durationInSecondsInUploading = Number(endPutHrtime - startPutHrtime) / 10 ** 9;
-                        const transferRatesInUploading = byteSize(data.byteLength / durationInSecondsInUploading, { precision: 3, units: "iec" });
+                        const transferRatesInUploading = getByteSize(data.byteLength / durationInSecondsInUploading);
                         console.info("[Thread", i, "]", asset.name, "uploaded in", +durationInSecondsInUploading.toFixed(3), "sec with", +transferRatesInUploading.value, transferRatesInUploading.unit, "/s, wait", MINIO_WAIT_TIME_AFTER_UPLOAD_MS, "ms and check the integrity.");
                         await timerPromises.setTimeout(MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
                         const { stat, status: isValidated } = await validateAssetViaStatObject(asset, i);
@@ -194,6 +200,9 @@ try {
         console.info("[Thread", i, "]", "done.");
     }));
     const afterHrtime = process.hrtime.bigint();
+    const afterUsedMemory = process.memoryUsage();
+    memoryOutput(afterUsedMemory, "usage");
+    memoryOutput(Object.fromEntries(Object.entries(afterUsedMemory).map(([k, v]) => [k, v - beforeUsedMemory[k]])), "diff");
     duration = Number(afterHrtime - beginHrtime) / 10 ** 9;
     console.info("Download progress done, duration:", duration, "s.");
     if (changedAssets.length === 0) {
