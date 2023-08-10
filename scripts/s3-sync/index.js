@@ -70,9 +70,7 @@ try {
         metaData: {},
     } : stat)));
     const getByteSize = (input) => byteSize(input, { precision: 3, units: "iec" });
-    const memoryOutput = (usedMemory, type) => {
-        console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}`);
-    };
+    const memoryOutput = (usedMemory, type) => console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}\n  - Array Buffers: ${getByteSize(usedMemory.arrayBuffers)}`);
 
     console.info("Fetching the release list");
     /**
