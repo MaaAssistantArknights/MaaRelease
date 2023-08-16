@@ -5,6 +5,16 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 维护完成
+
+```json
+{
+  "time": "2023-08-16T15:02:37.642Z"
+}
+```
+
+✿✿ヽ(°▽°)ノ✿
+
 ## 紧急施工中
 
 ```json
