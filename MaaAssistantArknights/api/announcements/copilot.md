@@ -5,7 +5,7 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
-## 请更新干员技能
+## 紧急施工中
 
 ```json
 {
@@ -13,7 +13,7 @@ https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/
 }
 ```
 
-后端炸了，紧急施工中 QAQ
+作业站后端炸了，紧急维护中，请耐心等待 QAQ
 
 ![](img/capoo1.gif)
 
