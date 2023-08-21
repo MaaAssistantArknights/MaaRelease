@@ -1,6 +1,7 @@
 /* eslint-disable no-loop-func */
 import console from "../modules/console.js";
 import { Octokit } from "../modules/octokit.js";
+import retryableFetch from "../modules/retryableFetch.js";
 import path from "path";
 // eslint-disable-next-line no-unused-vars
 import { Client } from "minio";
@@ -13,7 +14,10 @@ let duration = -1;
 let RELEASE_TAG = process.env.RELEASE_TAG;
 const OWNER = process.env.OWNER;
 const REPO = process.env.REPO;
-const count = {};
+const count = {
+    durationInSeconds: 0,
+    byteLength: 0,
+};
 try {
     if (!OWNER) {
         throw new SyntaxError("OWNER is not defined.");
@@ -180,6 +184,8 @@ try {
                         if (isValidated) {
                             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
                             changedAssets.push(asset);
+                            count.durationInSeconds += durationInSecondsInUploading;
+                            count.byteLength += data.byteLength;
                         } else {
                             console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
                             throw new Error("Upload failed, size not match");
@@ -240,7 +246,7 @@ const data = {
     count,
 };
 console.info("Start report:", data);
-const result = await (await fetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
+const result = await (await retryableFetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
     headers: {
         "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
     },
