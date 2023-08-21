@@ -184,8 +184,10 @@ try {
                         if (isValidated) {
                             console.info("[Thread", i, "]", "Uploaded", asset.name, ", Done:", { ...stat, ...info });
                             changedAssets.push(asset);
-                            count.durationInSeconds += durationInSecondsInFetching;
-                            count.byteLength += data.byteLength;
+                            if (typeof durationInSecondsInFetching === "number") {
+                                count.durationInSeconds += durationInSecondsInFetching;
+                                count.byteLength += data.byteLength;
+                            }
                         } else {
                             console.error("[Thread", i, "]", "Uploaded", asset.name, ", failed, size not match - asset.size:", asset.size, "stat:", stat);
                             throw new Error("Upload failed, size not match");
