@@ -195,5 +195,55 @@
             "TimeZone": -7,
             "IsResourceCollection": true
         }
+    },
+    "txwy": {
+        "sideStoryStage": [
+            {
+                "Display": "BI-6",
+                "Value": "BI-6",
+                "Drop": "31023",
+                "MinimumRequired": "v4.21.0",
+                "Activity": {
+                    "Tip": "SideStory「風雪過境」復刻",
+                    "StageName": "BI",
+                    "UtcStartTime": "2023/08/29 16:00:00",
+                    "UtcExpireTime": "2023/09/08 03:59:59",
+                    "TimeZone": 8
+                }
+            },
+            {
+                "Display": "BI-7",
+                "Value": "BI-7",
+                "Drop": "30033",
+                "MinimumRequired": "v4.21.0",
+                "Activity": {
+                    "Tip": "SideStory「風雪過境」復刻",
+                    "StageName": "BI",
+                    "UtcStartTime": "2023/08/29 16:00:00",
+                    "UtcExpireTime": "2023/09/08 03:59:59",
+                    "TimeZone": 8
+                }
+            },
+            {
+                "Display": "BI-8",
+                "Value": "BI-8",
+                "Drop": "30093",
+                "MinimumRequired": "v4.21.0",
+                "Activity": {
+                    "Tip": "SideStory「風雪過境」復刻",
+                    "StageName": "BI",
+                    "UtcStartTime": "2023/08/29 16:00:00",
+                    "UtcExpireTime": "2023/09/08 03:59:59",
+                    "TimeZone": 8
+                }
+            }
+        ],
+        "resourceCollection": {
+            "Tip": "「資源收集」限時全天開放",
+            "UtcStartTime": "2023/07/13 16:00:00",
+            "UtcExpireTime": "2023/07/27 03:59:59",
+            "TimeZone": 8,
+            "IsResourceCollection": true
+        }
     }
 }
