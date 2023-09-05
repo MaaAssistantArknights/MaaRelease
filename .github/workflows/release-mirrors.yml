@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Fetch release info
         id: fetchReleaseInfo
         if: ${{ !inputs.release_tag }}
@@ -79,6 +81,8 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - id: generateTargetList
         name: Generate target list
         uses: ./.github/commaSplitter
@@ -185,6 +189,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          show-progress: false
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
