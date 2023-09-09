@@ -14,7 +14,7 @@ def listfiles(path, prefix):
     for f in os.listdir(path):
         if not f.endswith('.png') and not f.endswith('.json'):
             continue
-        files.append(str(prefix / f))
+        files.append(str(prefix + f))
     return files
 
 files = listfiles(resource / "template"/"infrast", "resource/template/infrast/")
