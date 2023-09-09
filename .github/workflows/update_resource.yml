@@ -37,6 +37,6 @@ jobs:
                 ~/MaaAssistantArknights/resource \
                 ~/MaaAssistantArknights/resource/dynamic_list.txt
 
-              mkdir ~/MaaRelease/MaaAssistantArknights/resource
+              mkdir -p ~/MaaRelease/MaaAssistantArknights/resource
               cp -r ./resource/* ~/MaaRelease/MaaAssistantArknights/resource
             "
