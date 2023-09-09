@@ -692,6 +692,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.24.0-beta.1",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.24.0-beta.1",
     "body": "## v4.24.0-beta.1\n\n### 新增\n\n- 新增复刻活动时，连续刷普通1-9关 (异形UI暂不支持，例如愚人号)，支持上报至企鹅物流 (#6230) @status102\n- 增加刷理智每次打关卡之前时的理智剩余量输出 (#6146) @status102\n- 支持 SideStory「不义之财」活动导航 & 添加 \"SideStoryStage\" 模板 roi @ABA2396\n- shutdown/hibernate after all other MAAs have exited, or just exit itself (#6147) @Neptsun\n- 添加CLI支持 (#6144) @wangl-cc\n- 新增肉鸽干员自动撤退字段 (#6241) @AnnoyingFlowers\n- 注册表查询bluestacks hyper-v的conf位置 (#6083) @Gliese129\n- 支持woolang绑定 (#6142) @mrcino\n\n### 改进\n\n- 优化萨米肉鸽策略 (#6266) @Lancarus\n- 优化刷源石锭模式的逻辑，跳过战斗后招募，增加进入纵向节点的逻辑 (#6140) @Lancarus\n\n### 修复\n\n- 修复萨米肉鸽关卡json“生人勿进”->\"生人勿近\" (#6262) @Lancarus\n- 尝试修复网络波动造成的碎石不用问题 (#6220) @zzyyyl\n- 修复萨米肉鸽作战关卡逻辑错误 (#6235) @mole828\n- 萨米商店不识别第二排商品 (#6232) @Lancarus\n- 修复肉鸽道中抓取干员 山 或 林 后重复开启技能的问题 (#6221) @AnnoyingFlowers\n- regex for trader shopping in I.S. @Constrat\n- 萨米boss关正则替换错误 (#6211) @Lancarus\n- 麒麟X夜刀->麒麟R夜刀 (#6195) (#6199) @Constrat @SherkeyXD\n- fix failing to choose rewards from the last run @178619\n- 修复仓库识别无法在表格框内滚动 @ABA2396\n\n### 其他\n\n- A Flurry to the Flame event navigation @Constrat\n- corrected a44dc12 time and event naming @Constrat\n- 修正格式 @ABA2396\n- 对CLI文档的侧边栏支持 (#6199) @SherkeyXD\n- 尽可能稳定的打更多层数 -> 尽可能稳定地打更多层数 (#6200) @govizlora\n- Untrastrated fix @wallsman\n- 跟进蓝叠Hyper-V的连接指导 (#6083) (#6137) @SherkeyXD\n- 取消连接时加载资源 @ABA2396\n- 加点加载资源和连接模拟器的日志 @ABA2396\n- i18n: Translations update from MAA Weblate (#6151) @weblate\n- add log @AnnAngela\n\n### For overseas\n\n#### YostarKR\n\n- update resources for YoStarKR @178619\n- Update localization for YoStarKR @178619\n- Update ocrReplaces for YoStarKR @178619\n\n#### YostarEN\n\n- updated templates for EN (#6094) @Constrat\n\n#### txwy\n\n- 繁中文件大更新 (#6226) @momomochi987\n- 對照陸服，整理與補充繁中服的 template 跟 tasks  (#6196) @momomochi987\n\n#### YostarJP\n\n- (JP) Fix autoupdate change typo @wallsman\n- （JP）紅炎遣らう落葉 Update @wallsman\n- [JP] readme Update test / Japanese font readability (#6228) @wallsman\n\n**Full Changelog**: [v4.23.3 -> v4.24.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.23.3...v4.24.0-beta.1)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/120411005/reactions",
+      "total_count": 5,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 5,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 18
   }
 }
