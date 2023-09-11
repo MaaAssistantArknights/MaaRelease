@@ -681,7 +681,7 @@
     ],
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.24.0-beta.2",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.24.0-beta.2",
-    "body": "## v4.24.0-beta.2\n\n### 新增\n\n- 自动更新游戏资源而不用更新软件版本 (#6283) @MistEO\n- 可自选日志日期显示格式 @ABA2396\n\n### 改进\n\n- 优化萨米肉鸽策略 (#6288) @Lancarus\n- 优化刷理智的SSReopen导航逻辑，允许从普通关页面启动时短路开始于主页的导航逻辑 (#6287) @status102\n\n### 修复\n\n- 简单修复一下异步Load导致的错误 @MistEO\n- Missing templates in EN @Constrat\n- 修复连接安卓手机，及多开模拟器时，adb 端口判断异常\n\n### 其他\n\n- revert: 1095f9cf00162f30eae8666b4f63e87cad1d9857 Auto update has wrong time and event [skip ci] @Constrat\n- 将其他语言的SSReopen说明修改为注释，目前仅支持国服/B服 (#6271) @status102\n- I.S. missing EN translations. @Constrat\n\n**Full Changelog**: [v4.24.0-beta.1 -> v4.24.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.24.0-beta.1...v4.24.0-beta.2)\n",
+    "body": "## v4.24.0-beta.2\r\n\r\n### 新增\r\n\r\n- 自动更新游戏资源而不用更新软件版本 (#6283) @MistEO\r\n- 可自选日志日期显示格式 @ABA2396\r\n\r\n### 改进\r\n\r\n- 优化萨米肉鸽策略 (#6288) @Lancarus\r\n- 优化刷理智的SSReopen导航逻辑，允许从普通关页面启动时短路开始于主页的导航逻辑 (#6287) @status102\r\n\r\n### 修复\r\n\r\n- 简单修复一下异步Load导致的错误 @MistEO\r\n- Missing templates in EN @Constrat\r\n- 修复连接安卓手机，及多开模拟器时，adb 端口判断异常 @MistEO\r\n\r\n### 其他\r\n\r\n- revert: 1095f9cf00162f30eae8666b4f63e87cad1d9857 Auto update has wrong time and event [skip ci] @Constrat\r\n- 将其他语言的SSReopen说明修改为注释，目前仅支持国服/B服 (#6271) @status102\r\n- I.S. missing EN translations. @Constrat\r\n\r\n**Full Changelog**: [v4.24.0-beta.1 -> v4.24.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.24.0-beta.1...v4.24.0-beta.2)\r\n",
     "mentions_count": 5
   }
 }
