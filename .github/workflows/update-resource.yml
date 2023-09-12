@@ -36,7 +36,4 @@ jobs:
               python3 ~/MaaRelease/scripts/update_resource/list.py \
                 ~/MaaAssistantArknights/resource \
                 ~/MaaAssistantArknights/resource/dynamic_list.txt
-
-              mkdir -p ~/MaaRelease/MaaAssistantArknights/resource
-              cp -r ./resource/* ~/MaaRelease/MaaAssistantArknights/resource
             "
