@@ -672,6 +672,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.24.0-beta.3",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.24.0-beta.3",
     "body": "## v4.24.0-beta.3\n\n### 新增\n\n- 基建 制造站、贸易站、控制中枢 新增支持干员编组配置 (#6249) @status102\n- 基建支持加工站 @MistEO\n- 新增开始唤醒时账号切换功能 (官服、B服 only) (#6268) @status102\n- 自动战斗-自动编队，新增自动补充低信赖干员、追加自定干员选项 (#6282) @status102\n\n### 改进\n\n- 增加未通过企鹅检查的掉落截图，增加 UnknownStage 时的难度回调 (#6308) @zzyyyl\n- 优化自动战斗-自动编队-追加自定干员选项UI，当选项禁用时，居中CheckBox (#6322) @status102\n- 优化萨米肉鸽策略 (#6321) @Lancarus\n\n### 修复\n\n- 修复因部分皮肤造成的关卡难度识别问题 (#6309) @zzyyyl\n- 修复肉鸽某些开局干员精二后首次进入关卡时不选三技能的问题 @AnnoyingFlowers\n- 修复更新资源下载异常，及检查更新按钮过早亮起的问题 @MistEO\n\n### 其他\n\n- 更新文档 @Rbqwow @Black1312 @HisAtri\n\n### For overseas\n\n#### YostarEN\n\n- new EN Roguelike@ChooseOperConfirm.png @Constrat\n- YostarEN Reclamation Algorithm implementation (#6267) @ABA2396\n\n#### txwy\n\n- 繁中服「敘拉古人」活動導航 @momomochi987\n\n\n### For develops\n\n- 把多镜像下载器应用于Python接口 (#6247) @HisAtri\n\n**Full Changelog**: [v4.24.0-beta.2 -> v4.24.0-beta.3](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.24.0-beta.2...v4.24.0-beta.3)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/120818348/reactions",
+      "total_count": 2,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 2,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 11
   }
 }
