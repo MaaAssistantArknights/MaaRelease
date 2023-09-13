@@ -1,42 +1,9 @@
 {   
-    "BI-8": {
-        "algorithm": "JustReturn",
-        "sub": [
-            "BI-Open"
-        ],
-        "next": [
-            "BI-8@SideStoryStage",
-            "BI-8@SwipeToStage"
-        ]
-    },
-    "BI-7": {
-        "algorithm": "JustReturn",
-        "sub": [
-            "BI-Open"
-        ],
-        "next": [
-            "BI-7@SideStoryStage",
-            "BI-7@SwipeToStage"
-        ]
-    },
-    "BI-6": {
-        "algorithm": "JustReturn",
-        "sub": [
-            "BI-Open"
-        ],
-        "next": [
-            "BI-6@SideStoryStage",
-            "BI-6@SwipeToStage"
-        ]
-    },
-    "BI-Open": {
+    "IS-Open": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
-        "text": [
-            "風雪",
-            "復刻",
-            "活動",
-            "開放"
+        "next": [
+            "EnterChapterIS"
         ],
         "postDelay": 2000,
         "roi": [
@@ -45,43 +12,15 @@
             500,
             150
         ],
-        "next": [
-            "BIChapterToBI"
+        "text": [
+            "敘拉古人",
+            "活動",
+            "已開放"
         ]
     },
-    "BIChapterToBI": {
-        "algorithm": "OcrDetect",
-        "action": "ClickSelf",
-        "cache": false,
+	"EnterChapterIS": {
         "text": [
-            "雪山大典",
-            "雪山",
-            "大典"
-        ],
-        "preDelay": 1000,
-        "roi": [
-            999,
-            243,
-            281,
-            176
-        ],
-        "next": [
-            "ChapterSwipeToTheRight"
-        ]
-    },
-    "BI-8@SideStoryStage": {
-        "text": [
-            "BI-8"
-        ]
-    },
-    "BI-7@SideStoryStage": {
-        "text": [
-            "BI-7"
-        ]
-    },
-    "BI-6@SideStoryStage": {
-        "text": [
-            "BI-6"
+            "沃爾西尼"
         ]
     }
 }
