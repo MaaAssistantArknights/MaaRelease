@@ -191,6 +191,18 @@
     "YoStarEN": {
         "sideStoryStage": [
             {
+                "Display": "GA-1~8 Auto",
+                "Value": "SSReopen-GA",
+                "MinimumRequired": "v4.24.0-beta.4.d063.gcc24ced60",
+                "Activity": {
+                    "Tip": "Guide Ahead Rerun",
+                    "StageName": "GA",
+                    "UtcStartTime": "2023/09/21 10:00:00",
+                    "UtcExpireTime": "2023/10/01 03:59:59",
+                    "TimeZone": -7
+                }
+            },
+            {
                 "Display": "GA-6",
                 "Value": "GA-6",
                 "Drop": "30023",
