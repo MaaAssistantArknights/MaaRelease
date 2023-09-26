@@ -653,6 +653,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.24.0-rc.1",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.24.0-rc.1",
     "body": "## v4.24.0-rc.1\n\n### 新增\n\n- 新增领取邮件功能 (#6438) @broken-paint\n\n### 改进\n\n- 在非烧水模式，取消刷直升按钮 (#6484) @mole828\n- optimize time diff format in sanity report (#6512) @KevinT3Hu\n\n### 修复\n\n- 自动战斗跳过“以下干员出战后将被禁用，是否继续？”对话框 #4917 #4694 #5351 (#6492) @Hydrogina\n- 自动战斗-自动编队-补充低信赖干员: 修正补充顺序，避免在极端情况下补充错误 (#6499) @status102\n- 尝试修复肉鸽卡在招募界面 (#6516) @Lancarus\n- 自动战斗-战斗列表，补充突袭结算图，修复从缓存文件夹添加作业时报错 (#6497) @status102\n- 修复凹直升功能造成的卡在招募立绘等bug (#6502) @Lancarus\n- 删掉多余的模板图片 @zzyyyl\n- 🐞 fix(Java-HTTP): 修复Java-HTTP api的编译问题 (#6490) @gylove1994\n\n### 其他\n\n- 优化部分 WPF 代码 (#6510) @ABA2396 @zzyyyl\n- 优化 wpf 代码 (#6504) @zzyyyl\n- i18n: at on in date time @Constrat\n- debug: debug 模式下增加一项可省略模板任务名的检查 @zzyyyl\n- 文档杂项修改 (#6485) @Rbqwow\n- Update 3.5-肉鸽辅助协议.md @Lancarus\n\n**Full Changelog**: [v4.24.0-beta.5 -> v4.24.0-rc.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.24.0-beta.5...v4.24.0-rc.1)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/122351765/reactions",
+      "total_count": 4,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 4,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 11
   }
 }
