@@ -6,6 +6,6 @@
 
 感谢理解！  
 
-**PS：你！不要搞得大家用不了MAA！**
+**PS：你！不要搞得大家用不了 MAA！**  
 
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/NoSkland.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg)
