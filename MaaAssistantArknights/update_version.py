@@ -46,6 +46,8 @@ def extract_integers(string):
     return [int(num) for num in integers[:2]]
 
 def get_annangela_mirror(rel):
+    return False
+    
     name = rel['name']
     url = rel["browser_download_url"]
 
