@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-resource:
+  ota:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,15 +25,15 @@ jobs:
           ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
             "
               set -e
-              mkdir -p ~/MaaAssistantArknights
-              cd ~/MaaAssistantArknights
-              git init
-              git fetch --force --no-tags --prune --update-head-ok --progress  \
-                'https://github.com/MaaAssistantArknights/MaaAssistantArknights' \
-                '+HEAD:refs/remotes/origin/HEAD'
-              git checkout --force --progress refs/remotes/origin/HEAD
-
-              python3 ~/MaaRelease/scripts/update_resource/list.py \
-                ~/MaaAssistantArknights/resource \
-                ~/MaaAssistantArknights/resource/dynamic_list.txt
+              sh ~/MaaRelease/scripts/updateResource.sh
             "
+  s3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease'
+        run: |
+          node scripts/AnnAngela/webhookForJenkins.js
+        env:
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-resource-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
+          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}

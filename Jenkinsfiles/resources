@@ -1,0 +1,46 @@
+podTemplate(
+  containers: [
+    containerTemplate(
+        name: 'worker',
+        image: 'ubuntu:jammy',
+        ttyEnabled: true,
+        envVars: [
+            containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
+            containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
+            containerEnvVar(key: 'MINIO_ENDPOINT_PORT', value: '9080'),
+            containerEnvVar(key: 'TZ', value: 'Asia/Shanghai'),
+        ]
+    )
+  ]
+) {
+  node(POD_LABEL) {
+    stage('Install minio cli') {
+      container('worker') {
+        sh 'curl https://dl.min.io/client/mc/release/linux-amd64/mc -o ~/mc'
+        sh 'chmod +x ~/mc'
+      }
+    }
+    stage('Fetching the MaaRelease') {
+      container('worker') {
+        sh 'cd ~ && git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
+      }
+    }
+    stage('Fetching the resources') {
+      container('worker') {
+        sh 'sh MaaRelease/scripts/updateResource.sh'
+      }
+    }
+    stage('Uploading the resources') {
+      withCredentials([
+          string(credentialsId: 'maa-minio-robot-access-key', variable: 'MINIO_ACCESS_KEY'),
+          string(credentialsId: 'maa-minio-robot-secret-key', variable: 'MINIO_SECRET_KEY'),
+          string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
+      ]) {
+          container('worker') {
+            sh '~/mc alias set s3 $MINIO_ENDPOINT_DOMAIN $MINIO_ACCESS_KEY $MINIO_SECRET_KEY'
+            sh '~/mc mirror ~/MaaAssistantArknights/resource s3/maa-resources/MaaAssistantArknights/MaaAssistantArknights/resource --md5 --overwrite --preserve --remove'
+          }
+      }
+    }
+  }
+}
