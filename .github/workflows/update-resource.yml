@@ -7,6 +7,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  s3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease'
+        run: |
+          node scripts/AnnAngela/webhookForJenkins.js
+        env:
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-resource-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
+          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
   ota:
     runs-on: ubuntu-latest
 
@@ -27,13 +37,3 @@ jobs:
               set -e
               sh ~/MaaRelease/scripts/updateResource.sh
             "
-  s3:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fire the webhook of MAA_S3
-        if: github.repository == 'MaaAssistantArknights/MaaRelease'
-        run: |
-          node scripts/AnnAngela/webhookForJenkins.js
-        env:
-          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-resource-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
-          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
