@@ -34,16 +34,9 @@ jobs:
         with:
           show-progress: false
           path: ${{ runner.temp }}/MaaRelease
-      - name: Checkout MAA
-        uses: actions/checkout@v4
-        with:
-          repository: MaaAssistantArknights/MaaAssistantArknights
-          show-progress: false
-          path: ${{ runner.temp }}/MaaAssistantArknights
       - name: Setup workspace
         run: |
           mv ${{ runner.temp }}/MaaRelease ~/MaaRelease
-          mv ${{ runner.temp }}/MaaAssistantArknights ~/MaaAssistantArknights
           sh ~/MaaRelease/scripts/update_resource/updateResource.sh
       - name: Upload to R2
         if: github.repository == 'MaaAssistantArknights/MaaRelease'
