@@ -33,10 +33,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           show-progress: false
-          path: ${{ runner.temp }}/MaaRelease
       - name: Setup workspace
         run: |
-          mv ${{ runner.temp }}/MaaRelease ~/MaaRelease
+          mkdir -p ~/MaaRelease
+          mv * ~/MaaRelease/
           sh ~/MaaRelease/scripts/update_resource/updateResource.sh
       - name: Upload to R2
         if: github.repository == 'MaaAssistantArknights/MaaRelease'
