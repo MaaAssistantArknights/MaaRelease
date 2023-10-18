@@ -43,5 +43,5 @@ jobs:
           ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
             "
               set -e
-              sh ~/MaaRelease/scripts/updateResource.sh
+              sh ~/MaaRelease/scripts/update_resource/updateResource.sh
             "
