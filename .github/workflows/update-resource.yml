@@ -56,6 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: 
       - s3
+      - R2
 
     steps:
       - name: Setup ssh key
