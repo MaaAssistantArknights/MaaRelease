@@ -16,9 +16,9 @@ podTemplate(
   node(POD_LABEL) {
     stage('Install dependencies') {
       container('worker') {
+        sh 'apt install python3 curl'
         sh 'curl https://dl.min.io/client/mc/release/linux-amd64/mc -o ~/mc'
         sh 'chmod +x ~/mc'
-        sh 'apt install python3'
       }
     }
     stage('Fetching the MaaRelease') {
