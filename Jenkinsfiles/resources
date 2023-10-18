@@ -28,7 +28,7 @@ podTemplate(
     }
     stage('Fetching the resources') {
       container('worker') {
-        sh 'sh MaaRelease/scripts/updateResource.sh'
+        sh 'sh ~/MaaRelease/scripts/updateResource.sh'
       }
     }
     stage('Uploading the resources') {
