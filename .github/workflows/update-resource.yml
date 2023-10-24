@@ -23,7 +23,7 @@ jobs:
         run: |
           node scripts/AnnAngela/webhookForJenkins.js
         env:
-          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-resource-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-resource-s3-sync/build?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}
           WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
   R2:

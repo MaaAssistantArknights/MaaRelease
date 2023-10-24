@@ -6,7 +6,7 @@ const result = await (await retryableFetch(process.env.WEBHOOK_URL, {
     headers: {
         Authorization,
     },
-    method: "POST",
+    method: "GET",
 })).text();
 console.info("Result:", result);
 console.info("Done.");
