@@ -6,7 +6,6 @@ on:
       - "**.js"
       - "**.py"
       - .github/workflows/CodeQL.yaml
-      - .github/codeql-config.yaml
   pull_request:
     paths:
       - "**.js"
