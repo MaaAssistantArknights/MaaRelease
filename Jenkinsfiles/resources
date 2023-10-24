@@ -38,7 +38,7 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh '~/mc alias set s3 $MINIO_ENDPOINT_DOMAIN $MINIO_ACCESS_KEY $MINIO_SECRET_KEY'
+            sh '~/mc alias set s3 http://$MINIO_ENDPOINT_DOMAIN $MINIO_ACCESS_KEY $MINIO_SECRET_KEY'
             sh '~/mc mirror ~/MaaAssistantArknights/resource s3/maa-resources/MaaAssistantArknights/MaaAssistantArknights/resource --md5 --overwrite --preserve --remove'
           }
       }
