@@ -2,7 +2,8 @@ name: "MAA Code CodeQL config"
 
 packs:
   javascript:
-    - codeql/javascript-experimental-atm-queries
-    - codeql/javascript-queries
+    - +security-and-quality
+    - +codeql/javascript-queries
   python:
-    - codeql/python-queries
+    - +security-and-quality
+    - +codeql/python-queries
