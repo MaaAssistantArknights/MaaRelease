@@ -16,7 +16,7 @@ podTemplate(
   node(POD_LABEL) {
     stage('Install dependencies') {
       container('worker') {
-        sh 'apt update && apt install -y -o "Dpkg::Options::=--force-confold" --no-install-recommends python3 curl'
+        sh 'apt update && apt install -y -o "Dpkg::Options::=--force-confold" --no-install-recommends python3 curl ca-certificates'
         sh 'curl https://dl.min.io/client/mc/release/linux-amd64/mc -o ~/mc'
         sh 'chmod +x ~/mc'
       }
