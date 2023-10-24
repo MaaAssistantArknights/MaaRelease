@@ -1,9 +1,0 @@
-name: "MAA Code CodeQL config"
-
-packs:
-  javascript:
-    - +security-and-quality
-    - +codeql/javascript-queries
-  python:
-    - +security-and-quality
-    - +codeql/python-queries

@@ -37,7 +37,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: javascript, python
-          config-file: ./.github/codeql-config.yaml
+          queries: +security-and-quality
           setup-python-dependencies: false
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
