@@ -24,7 +24,7 @@ podTemplate(
     stage('Fetching the MaaRelease') {
       container('worker') {
         sh 'cd ~ && git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
-        sh 'ls -lh ~'
+        sh 'ls -lh ~/MaaRelease'
       }
     }
     stage('Fetching the resources') {
