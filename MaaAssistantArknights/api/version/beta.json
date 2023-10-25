@@ -691,11 +691,11 @@
     "body": "## v4.26.0-beta.2\r\n\r\n### 新增\r\n\r\n- 公招出高星干员时选中多个tag (#6900) @broken-paint\r\n- IS 关卡导航 @ABA2396\r\n\r\n### 改进\r\n\r\n- 开始任务后强制锁定当前基建配置，强制定时启动时强制刷新基建配置 @ABA2396\r\n- perf 优化萨米肉鸽部分关卡策略 @Lancarus\r\n- 优化水月肉鸽策略 (#7043) @Yumi0606\r\n- perf & typo: removed redundant variable & variable typo (#7032) @Constrat\r\n- perf & refactor: 重构 tools/AutoLocalization (#6995) @quyansiyuanwang @Constrat\r\n- 优化部分肉鸽逻辑 (#7004) @Lancarus\r\n- 当清空自动战斗-战斗列表中的所有任务时，移除缓存中的战斗列表文件夹 (#6994) @status102\r\n\r\n### 修复\r\n\r\n- 修复“迷城”界面公开招募有时出错的问题 @zzyyyl\r\n- 修复肉鸽探索失败后卡在每月委托/解锁收藏品等界面 @zzyyyl\r\n- 剪切板错误 @ABA2396\r\n- fix #7027 (#7039) @Cryolitia\r\n- 修复肉鸽打完退出的问题 @zzyyyl\r\n- 修复Wpf自动战斗-战斗列表-批量导入时，缓存文件夹未存在导致报错的bug；调整关卡名匹配规则 (#6988) @status102\r\n- YostarEN Mizuki I.S. Trader + encouter regex (#6993) @Constrat\r\n- 修复部分模板图片 @zzyyyl\r\n- 修复美服 “A Cold Separation”（寒渊惜别）关卡识别错误 @zzyyyl\r\n- 修复 maatouch 滑动 @zzyyyl\r\n- add 1 sec delay for resource OTA @MistEO\r\n\r\n### 其他\r\n\r\n- TaskData 优化 (#6844) @zzyyyl\r\n- 增加任务截图插件 (#6973) @zzyyyl\r\n- 声明 baseTask 的任务直接覆盖同名任务 (#7016) @zzyyyl\r\n- bump `maa-cli` and update documents (#7050) @wangl-cc\r\n- 增加 TaskSorter 脚本对 tasks.json 进行排序 (#7046) @zzyyyl\r\n- Change to Appimage Package on Linux (#7030) @Cryolitia\r\n- 删除多余引用 @ABA2396\r\n- Revert \"feat: 删除无用的 Roguelike@Continue 相关任务\" @zzyyyl\r\n- 补充基建排班协议中`period`字段不存在时的计划切换动作 (#6998) @status102\r\n- re-write changelog_generator in algorithm (#6972) @quyansiyuanwang\r\n- update MaaCore.vcxproj.filters @zzyyyl\r\n- fix some warnings from visual studio (#7031) @status102\r\n\r\n### For overseas\r\n\r\n#### YostarJP\r\n\r\n- 日服保全派驻 (#7012) @Manicsteiner\r\n\r\n#### txwy\r\n\r\n- 繁中服 保全派駐 (#7021) @vonnoq\r\n- 繁中服「照我以火」活動導航 (#7002) @momomochi987 @Constrat @zzyyyl\r\n- 繁中服 保全派駐識別修正 (#7041) @vonnoq\r\n- 調整繁中服某些不期而遇的 ocrReplace (#6977) @momomochi987\r\n\r\n**Full Changelog**: [v4.26.0-beta.1 -> v4.26.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.26.0-beta.1...v4.26.0-beta.2)\r\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/126291700/reactions",
-      "total_count": 1,
+      "total_count": 4,
       "+1": 0,
       "-1": 0,
       "laugh": 0,
-      "hooray": 1,
+      "hooray": 4,
       "confused": 0,
       "heart": 0,
       "rocket": 0,
