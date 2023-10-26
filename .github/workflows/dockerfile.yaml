@@ -47,10 +47,10 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: harbor.maa-org.net/maa/MaaS3Jenkins-base
+          images: harbor.maa-org.net/maa/jenkins-base
           tags: |
             type=raw,value=latest
-            type=sha,format=long,prefix={{date 'Y-MM-DDTHH-mm-ss[Z]'}}_
+            type=sha,prefix={{date 'Y-MM-DDTHH-mm-ss[Z]'}}_
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -59,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: dockerfile/MaaS3Jenkins-base/Dockerfile
+          file: dockerfile/jenkins-base/Dockerfile
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
