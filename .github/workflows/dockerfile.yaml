@@ -13,11 +13,12 @@ on:
       - scripts
       - .github/workflows/dockerfile.yaml
 
+env:
+  TZ: Asia/Shanghai
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout repository
