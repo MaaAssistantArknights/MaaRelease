@@ -2,6 +2,7 @@ set -e
 mkdir -p ~/MaaAssistantArknights
 cd ~/MaaAssistantArknights
 git init
+echo Start to fetch resource from github, it takes time...
 git fetch --force --no-tags --prune --update-head-ok  \
   'https://github.com/MaaAssistantArknights/MaaAssistantArknights' \
   '+HEAD:refs/remotes/origin/HEAD'
