@@ -4,6 +4,7 @@ podTemplate(
         name: 'worker',
         image: 'harbor.maa-org.net/maa/jenkins-base:latest',
         ttyEnabled: true,
+        alwaysPullImage: true,
         envVars: [
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
             containerEnvVar(key: 'MINIO_ENDPOINT_DOMAIN', value: 'minio.local'),
