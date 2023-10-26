@@ -27,6 +27,8 @@ jobs:
         with:
           show-progress: false
           repository: MaaAssistantArknights/containers
+      
+      - run: ls -lh .
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
@@ -59,10 +61,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: dockerfile/MaaS3Jenkins/base/Dockerfile
+          file: ./dockerfile/MaaS3Jenkins/base/Dockerfile
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+          push: true
