@@ -22,18 +22,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout MaaAssistantArknights/containers
         uses: actions/checkout@v4
         with:
           show-progress: false
           repository: MaaAssistantArknights/containers
+          path: MaaContainers
 
-      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Checkout MaaAssistantArknights/MaaRelease
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+          repository: MaaAssistantArknights/MaaRelease
+          path: MaaRelease
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          check-latest: true
+          cache: npm
+      - name: Generate cache primary key based on nodejs's and npm's version and package-lock.json's hash
+        id: version
+        shell: bash
+        run: echo "hash=npm_cache:node@$(node -v | grep -oP '(?<=^v)\d+')_npm@$(npm -v | grep -oP '^\d+')_package-lock@$(openssl dgst -sha3-512 MaaRelease/scripts/package-lock.json | grep -oP '[\da-f]{128}')" >> $GITHUB_OUTPUT && cat $GITHUB_OUTPUT
+      - name: Try to restore node_modules from cache
+        uses: actions/cache/restore@v3
+        id: cache
+        with:
+          path: MaaRelease/scripts/node_modules
+          key: ${{ steps.version.outputs.hash }}
+      - name: Install dependencies if no cache for node_modules
+        if: success() && steps.cache.outputs.cache-hit != 'true'
+        run: cd MaaRelease/scripts && npm run ci
+      - name: Save node_modules to cache
+        if: success() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v3
+        with:
+          path: MaaRelease/scripts/node_modules
+          key: ${{ steps.version.outputs.hash }}
+      - name: Run prebuild.sh
+        run: sh MaaContainers/dockerfile/jenkins-base/prebuild.sh
+
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
       - name: Log into registry
         uses: docker/login-action@v3
         with:
@@ -41,8 +74,6 @@ jobs:
           username: ${{ secrets.MAA_HARBOR_ROBOT_USERNAME }}
           password: ${{ secrets.MAA_HARBOR_ROBOT_PASSWORD }} # 每 30 天更新一次
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -52,14 +83,12 @@ jobs:
             type=raw,value=latest
             type=sha,prefix={{date 'Y-MM-DDTHH-mm-ss[Z]'}}_
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: dockerfile/jenkins-base/Dockerfile
+          file: MaaContainers/dockerfile/jenkins-base/Dockerfile
           platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
