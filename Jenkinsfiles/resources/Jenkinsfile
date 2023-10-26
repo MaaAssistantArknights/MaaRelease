@@ -2,7 +2,7 @@ podTemplate(
   containers: [
     containerTemplate(
         name: 'worker',
-        image: 'ubuntu:jammy',
+        image: 'harbor.maa-org.net/maa/jenkins-base:latest',
         ttyEnabled: true,
         envVars: [
             containerEnvVar(key: 'MINIO_BUCKET', value: 'maa-release'),
@@ -14,21 +14,9 @@ podTemplate(
   ]
 ) {
   node(POD_LABEL) {
-    stage('Install dependencies') {
-      container('worker') {
-        sh 'apt update && apt install -y -o "Dpkg::Options::=--force-confold" --no-install-recommends python3 curl ca-certificates git'
-        sh 'curl https://dl.min.io/client/mc/release/linux-amd64/mc -o ~/mc'
-        sh 'chmod +x ~/mc'
-      }
-    }
-    stage('Fetching the MaaRelease') {
-      container('worker') {
-        sh 'cd ~ && git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
-      }
-    }
     stage('Fetching the resources') {
       container('worker') {
-        sh 'sh ~/MaaRelease/scripts/update_resource/updateResource.sh'
+        sh 'sh /root/MaaRelease/scripts/update_resource/updateResource.sh'
       }
     }
     stage('Uploading the resources') {
@@ -38,8 +26,8 @@ podTemplate(
           string(credentialsId: 'annangela-qqbot-token', variable: 'ANNANGELA_QQBOT_TOKEN')
       ]) {
           container('worker') {
-            sh '~/mc alias set s3 http://$MINIO_ENDPOINT_DOMAIN:$MINIO_ENDPOINT_PORT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY'
-            sh '~/mc mirror ~/MaaAssistantArknights/resource s3/maa-resources/MaaAssistantArknights/MaaAssistantArknights/resource --md5 --overwrite --preserve --remove'
+            sh '/root/mc alias set s3 http://$MINIO_ENDPOINT_DOMAIN:$MINIO_ENDPOINT_PORT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY'
+            sh '/root/mc mirror /root/MaaAssistantArknights/resource s3/maa-resources/MaaAssistantArknights/MaaAssistantArknights/resource --md5 --overwrite --preserve --remove'
           }
       }
     }

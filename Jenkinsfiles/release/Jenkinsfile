@@ -2,7 +2,7 @@ podTemplate(
   containers: [
     containerTemplate(
         name: 'worker',
-        image: 'node:lts-alpine',
+        image: 'harbor.maa-org.net/maa/jenkins-base:latest',
         ttyEnabled: true, 
         alwaysPullImage: true,
         command: 'cat',
@@ -22,20 +22,6 @@ podTemplate(
   ]
 ) {
   node(POD_LABEL) {
-    stage('Checkout Repo') {
-      container('worker') {
-        sh 'apk --no-cache update'
-        sh 'apk add git uuidgen'
-        sh 'git clone --depth 1 https://github.com/MaaAssistantArknights/MaaRelease.git'
-      }
-    }
-
-    stage('Install the dependencies') {
-      container('worker') {
-        sh 'cd MaaRelease/scripts && npm run ciInCI'
-      }
-    }
-
     stage('Download files from GitHub Release and upload files to Minio') {
       withCredentials([
           string(credentialsId: 'maa-jenkins-robot-token', variable: 'GITHUB_PAT'),
