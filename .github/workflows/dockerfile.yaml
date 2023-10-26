@@ -11,7 +11,7 @@ on:
     branches: 
       - main
     paths:
-      - scripts
+      - scripts/**
       - .github/workflows/dockerfile.yaml
 
 env:
