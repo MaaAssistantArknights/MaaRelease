@@ -28,22 +28,6 @@
     },
     "IS-Open": {
         "action": "ClickSelf",
-        "roi": [
-            77,
-            64,
-            396,
-            437
-        ],
-        "sub": [
-            "EnterChapterIS"
-        ],
-        "next": [
-            "SideStoryStage",
-            "SwipeToStageIS"
-        ]
-    },
-    "IS-OpenOcr": {
-        "action": "ClickSelf",
         "algorithm": "OcrDetect",
         "roi": [
             0,
