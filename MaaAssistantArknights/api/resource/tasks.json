@@ -4,8 +4,8 @@
         "action": "DoNothing",
         "sub": [],
         "next": [
-            "IS-Open",
-            "IS-OpenOcr"
+            "IS-10@IS-Open",
+            "IS-10@IS-OpenOcr"
         ]
     },
     "IS-9": {
@@ -13,8 +13,8 @@
         "action": "DoNothing",
         "sub": [],
         "next": [
-            "IS-Open",
-            "IS-OpenOcr"
+            "IS-9@IS-Open",
+            "IS-9@IS-OpenOcr"
         ]
     },
     "IS-8": {
@@ -22,8 +22,8 @@
         "action": "DoNothing",
         "sub": [],
         "next": [
-            "IS-Open",
-            "IS-OpenOcr"
+            "IS-8@IS-Open",
+            "IS-8@IS-OpenOcr"
         ]
     },
     "IS-Open": {
@@ -61,6 +61,25 @@
         "next": [
             "SideStoryStage",
             "SwipeToStageIS"
+        ]
+    },
+    "SwipeToStageIS": {
+        "Doc": "IS关特殊的上下滑动",
+        "baseTask": "SlowlySwipeToTheRight",
+        "specificRect": [
+            98,
+            469,
+            100,
+            100
+        ],
+        "rectMove": [
+            145,
+            129,
+            100,
+            100
+        ],
+        "next": [
+            "SideStoryStage"
         ]
     }
 }
