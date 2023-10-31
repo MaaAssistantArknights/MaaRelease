@@ -679,6 +679,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v4.26.0-beta.3",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v4.26.0-beta.3",
     "body": "## v4.26.0-beta.3\n\n### 新增\n\n- 肉鸽增加不期而遇事件名输出 (#7112) @status102\n- 调整理智药使用为按瓶计数，移除了博朗台在使用理智药不溢出情况下的额外等待，调整Wpf理智药使用输出 (#7022) @status102\n- 新增获取信用-借助战时使用指定编队 (#7061) @status102 @broken-paint @MistEO\n- 萨米肉鸽使用密文板  (#7086) @Lancarus @zzyyyl\n- Add Operator JP/12章 @wallsman\n\n### 改进\n\n- 增加雷电模拟器 nc 截图方式 (#7062) @zzyyyl\n- add some mirror for resource updates @MistEO\n- 优化部分情况下，单个刷理智任务在多次执行时等待时间过长 (#7108) @status102\n- 优化Wpf关卡数据更新提示，改为Growl.Info (#7103) @status102\n- 优化萨米肉鸽部分关卡策略 (#7099) (#7075) @Lancarus\n\n### 修复\n\n- 調整繁中服「照我以火」導航任務、替換水月肉鴿 \"繼續探索\" 圖片 (#7085) @momomochi987\n- As in my Adumbration operator implementation @Constrat\n- Morgan 摩根 ocrreplace [skip ci] @Constrat\n- c# warnings @MistEO\n- 修复Wpf无法复制版本号至剪贴板 (#7109) @status102\n- 优化设置引导界面的视觉效果，并给 UI Theme 添加翻译 (#7047) @SherkeyXD\n- Mizuki I.S. encouter regex [skip ci] @Constrat\n- Terra Research Commission EN regex [skip ci] @Constrat\n- 叙拉古人活动导航 @ABA2396\n- Il Siracusano enter screen change @Constrat\n- 修复日文文档中顿号导致的渲染问题 @SherkeyXD\n- coredump after failing to restart minitouch @horror-proton\n- 修复肉鸽编队会漏选干员的问题（比如>=3页） (#7038) @wengzhe\n- fix：萨米肉鸽层名ocr错误 @Lancarus\n- resource updater + updated data (#7079) @Constrat\n- 修复在点击停止后下一次开始任务时可能操作延时很高的问题 (#7052) @zzyyyl\n- duplicate update in stage.json (my mistake from 859802071176f9f145dabd6f3c3ecb442cc3663c) @Constrat\n- 修复日服基建换班卡在宿舍 (#7068) @MejiroSilence\n- 修复 #7016 可能影响的部分任务 (#7066) @zzyyyl\n- SkipThePreBattlePlot lowered threshold @Constrat\n- 修复公招多选 Tags 选项不保存的问题 (#7065) @broken-paint\n- fix code block in user guide for CLI (#7060) @wangl-cc\n\n### 其他\n\n- 多划几次 @ABA2396\n- format @zzyyyl\n- manual after res-update fix @Constrat\n- Wpf迁移MaaCore引用，统一合并至MaaService (#6945) @status102\n\n**Full Changelog**: [v4.26.0-beta.2 -> v4.26.0-beta.3](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.26.0-beta.2...v4.26.0-beta.3)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/127089736/reactions",
+      "total_count": 2,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 2,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 14
   }
 }
