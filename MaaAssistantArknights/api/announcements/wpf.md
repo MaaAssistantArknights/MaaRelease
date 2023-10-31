@@ -6,12 +6,12 @@
 
 感谢理解！  
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg" width="720px" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg" width="720px" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg" width="100%" /><br>
