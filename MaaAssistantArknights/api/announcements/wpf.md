@@ -6,12 +6,12 @@
 
 感谢理解！  
 
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg)
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg)
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg" width="720px" />
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg" width="720px" />
