@@ -6,6 +6,12 @@
 
 感谢理解！  
 
-**PS：你！不要搞得大家用不了 MAA！**  
-
-![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg)
+![NoSkland](https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg)
