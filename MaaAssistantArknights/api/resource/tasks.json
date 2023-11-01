@@ -2,88 +2,88 @@
     "MedicineExpiringTime": {
         "fullMatch": true
     },
-    "IS-10": {
+    "ZT-9": {
         "algorithm": "JustReturn",
-        "action": "DoNothing",
-        "sub": [],
-        "next": [
-            "IS-10@IS-Open",
-            "IS-10@IS-OpenOcr"
-        ]
-    },
-    "IS-9": {
-        "algorithm": "JustReturn",
-        "action": "DoNothing",
-        "sub": [],
-        "next": [
-            "IS-9@IS-Open",
-            "IS-9@IS-OpenOcr"
-        ]
-    },
-    "IS-8": {
-        "algorithm": "JustReturn",
-        "action": "DoNothing",
-        "sub": [],
-        "next": [
-            "IS-8@IS-Open",
-            "IS-8@IS-OpenOcr"
-        ]
-    },
-    "IS-Open": {
-        "action": "ClickSelf",
-        "roi": [
-            77,
-            64,
-            396,
-            437
-        ],
         "sub": [
-            "EnterChapterIS"
+            "ZT-OpenOcr"
         ],
         "next": [
-            "SideStoryStage",
-            "SwipeToStageIS"
+            "ZT-9@SideStoryStage",
+            "ZT-9@SwipeToStage"
         ]
     },
-    "IS-OpenOcr": {
+    "ZT-8": {
+        "algorithm": "JustReturn",
+        "sub": [
+            "ZT-OpenOcr"
+        ],
+        "next": [
+            "ZT-8@SideStoryStage",
+            "ZT-8@SwipeToStage"
+        ]
+    },
+    "ZT-7": {
+        "algorithm": "JustReturn",
+        "sub": [
+            "ZT-OpenOcr"
+        ],
+        "next": [
+            "ZT-7@SideStoryStage",
+            "ZT-7@SwipeToStage"
+        ]
+    },
+    "ZT-OpenOcr": {
         "action": "ClickSelf",
         "algorithm": "OcrDetect",
+        "text": [
+            "崔林",
+            "之金",
+            "恩典",
+            "无情"
+        ],
+        "postDelay": 2000,
         "roi": [
             0,
             500,
             500,
             150
         ],
-        "text": [
-            "叙拉古人",
-            "复刻"
-        ],
-        "sub": [
-            "EnterChapterIS"
-        ],
         "next": [
-            "SideStoryStage",
-            "SwipeToStageIS"
+            "ZTChapterToZT"
         ]
     },
-    "SwipeToStageIS": {
-        "Doc": "IS关特殊的上下滑动",
-        "baseTask": "SlowlySwipeToTheRight",
-        "specificRect": [
-            98,
-            469,
-            100,
-            100
+    "ZTChapterToZT": {
+        "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "cache": false,
+        "text": [
+            "朝见",
+            "双塔"
         ],
-        "rectMove": [
-            145,
-            129,
-            100,
-            100
+        "preDelay": 1000,
+        "roi": [
+            1059,
+            367,
+            206,
+            129
         ],
         "next": [
-            "SideStoryStage",
-            "SwipeToStageIS"
+            "ChapterSwipeToTheRight"
+        ]
+    },
+    "ZT-9@SideStoryStage": {
+        "text": [
+            "ZT-9"
+        ]
+    },
+    "ZT-8@SideStoryStage": {
+        "text": [
+            "ZT-8"
+        ]
+    },
+    "ZT-7@SideStoryStage": {
+        "text": [
+            "ZT-7"
         ]
     }
 }
