@@ -1,17 +1,21 @@
-# 请不要去跳脸，MAA 会死的
+# 【公告】连战相关功能实现
 
-请不要在鹰角官方动态（包括不限于：森空岛、B 站动态、微博动态）下讨论任何关于 MAA 内容。  
+**省流：MAA 已支持对连战结算界面的识别，但尚未支持自动设置连战次数，后续使用刷理智功能时将会强制设置连战次数为1**。
 
-我们理解各位对 MAA 的热情，鹰角或许也知道 MAA，但脚本属于灰色地带，我们一直避免与官方产生冲突，请大家不要跳脸，也不要在不相关的场合刷 MAA。  
+近期，《明日方舟》新增了 `连战` 功能，我们发现连战功能可以减少多次重复战斗的用时，所以我们开始了对该功能的适配工作。最新的版本已经支持了对连战界面的识别。但在对自动选择连战次数的适配过程中，我们注意到存在一系列问题，导致暂时不能自动选择连战次数。
 
-感谢理解！  
+例如，未勾选使用理智药、源石或剩余理智过少时，刷理智任务将无法运行（如关卡选择为芯片本6连战，36*6=216>135+80=215，甚至在满体力+一瓶理智药的情况下都无法运行），无法清空当前的理智，导致剩余的理智全部用于 `剩余理智` 功能，这显然不符合预期。
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/2.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/3.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/4.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/5.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/6.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/7.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/8.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/9.jpg" width="100%" /><br>
+此外，还存在指定次数功能不明确、战斗失败后的战斗次数回滚、尽量避免药物溢出理智以及等待时间自适应等问题，增加了功能实现的复杂性。
+
+为解决这些问题，我们计划在刷理智的第一次执行时强制将连战次数调整为1。同时，我们将努力实现后续调整连战次数的功能，例如：
+
+1. 直接选择当前理智下或吃指定数量的理智药后可选择的最大次数；
+2. 中途断连次数回滚；
+3. 等待时间自适应等。
+
+一旦这些功能得以实现，我们将对系统进行相应的修改，以更好地利用连战功能。
+
+感谢您的理解和支持，如果您有更好的解决方案，欢迎在评论区、issue 中进行讨论。
+
+祝游戏愉快！
