@@ -1,6 +1,7 @@
 name: sync-resource
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -33,9 +34,10 @@ jobs:
           cd MaaResource
           shopt -s extglob
 
-          rm -rf cache
-          cp -rf ../MaaAssistantArknights/api/resource cache
-          cp -rf ../MaaAssistantArknights/api/gui/StageActivity.json cache/
+          cd cache
+          rm -rf !(".gitignore")
+          cp -rf ../../MaaAssistantArknights/api/* .
+          cd ..
           
           git add .
           git status
