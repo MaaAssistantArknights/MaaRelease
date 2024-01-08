@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo:
+        repo: 
           - MaaAssistantArknights
           - MaaRelease
         os: # 必须为逗号分隔格式
@@ -184,6 +184,7 @@ jobs:
           rclone sync ${{ steps.downloadReleaseFiles.outputs.dirWithReleaseTag }} MAA:maa-release/macos --log-level INFO
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs --log-level INFO
 
+  
   webhook:
     needs: getReleaseTag
     runs-on: ubuntu-latest
@@ -196,13 +197,13 @@ jobs:
         with:
           node-version: lts/*
           check-latest: true
-      # - name: Fire the webhook of MAA_S3
-      #   if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
-      #   run: |
-      #     node scripts/AnnAngela/webhookForJenkins.js
-      #   env:
-      #     WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
-      #     WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
+      - name: Fire the webhook of MAA_S3
+        if: github.repository == 'MaaAssistantArknights/MaaRelease' && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'MAA_S3'))
+        run: |
+          node scripts/AnnAngela/webhookForJenkins.js
+        env:
+          WEBHOOK_URL: https://jenkins.maa-org.net/job/maa-release-s3-sync/buildWithParameters?token=${{ secrets.MAA_JENKINS_PROJECT_TOKEN }}&release_tag=${{ needs.getReleaseTag.outputs.release_tag }}
+          WEBHOOK_SECRET: ${{ secrets.MAA_JENKINS_ROBOT_TOKEN }}
 
       - name: Fire the webhook of AnnAngela's COS
         if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
@@ -225,7 +226,7 @@ jobs:
     steps:
       - name: Dispatch the "update_version_api" workflow
         run: gh workflow run update_version_api --repo ${{ github.repository }}
-
+  
   getRateLimitStatus:
     name: Get rate limit status for current token
     runs-on: ubuntu-latest
