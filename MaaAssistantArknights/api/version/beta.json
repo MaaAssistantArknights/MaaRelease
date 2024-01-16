@@ -651,8 +651,8 @@
     "body": "## v5.0.0-beta.1\n\n### 新增 | New\n\n- dotnet8.0 (#7554) @hxdnshx @SherkeyXD @LiamSho @ABA2396 @moomiji\n- 增加肉鸽刷开局模式下只凹精二选项 (#7705)  @s-yh-china\n\n### 改进 | Improved\n\n- 优化萨米锏精二优先度 (#7939) @Lancarus\n- 优化萨米肉鸽部分关卡逻辑 (#7936) @Lancarus\n- update skill_ready_cls model (#7733) @MistEO\n- 优化萨米肉鸽部分关卡逻辑 (#7935) @Lancarus\n- 优化肉鸽作战逻辑，使不能空放的干员技能不影响后续部署指令的执行 (#7934) @Lancarus\n- 优化刷理智-已开始战斗x次时临期理智药使用输出以增加可读性 (#7846) @status102\n- 优化截图耗时额外提示文本触发条件，改为由平均耗时触发 (#7868) @status102\n- 优化部分插件判断 @status102\n- 减少重复截图 (#7945) @zzyyyl\n- 优化连续战斗次数列表展开图片 @status102\n\n### 修复 | Fix\n\n- 修复部分情况下肉鸽结算点击错误 @status102\n- 修复肉鸽-刷钱模式下仍然会在商店进行招募、购物的错误 (#7863) @status102\n- 配置修改后无法保存 @ABA2396\n- 修复刷理智结束时理智输出错误 @status102\n- 干员识别报错 @ABA2396\n- 开机自启功能异常 @ABA2396\n- 修复基建排班的 JSON schema (#7788) @wangl-cc\n- 自动战斗群组中多名干员在编组中时不会选择 @ABA2396\n- EN Challenge mode battle list @Constrat\n- Template diagram missing from EN/JP @Constrat @Manicsteiner @zzyyyl @HX3N\n\n### 其他 | Other\n\n- 谁把我fody删了 @Cryolitia\n- 未在字典中的连接配置在使用自动检测时报错 @ABA2396\n- optimize template in 5e4002b058bc928a5e4b7c1dbd43f164682bbaf7 @zzyyyl\n- 修复并无损压缩模板图片 (#7831) @zzyyyl\n- 解决冲突 @ABA2396\n- 删除没有用到的 task @zzyyyl\n- 肉鸽设置追加部分注释 @status102\n- 一键长草期间锁定自动肉鸽设置以符合执行逻辑 @status102\n- 调整剩余理智关卡的说明 @status102\n- gitignore FodyWeavers.xsd @ABA2396\n- added ps1 for cloning ResourceUpdater repo for local developing @Constrat\n- YoStarKR ocrReplace regex fix (#7901) @HX3N\n- YoStarKR ocrReplace text replacement (#7897) @HX3N\n- YoStarKR LE stage navigation (#7896) @HX3N\n- YoStarKR template image replacement (#7895) @HX3N\n- YoStarKR LE Stage navigation (#7894) @HX3N\n- YoStarKR ocr text replacement (#7845) @HX3N\n\n**Full Changelog**: [v4.28.8 -> v5.0.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.28.8...v5.0.0-beta.1)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/136624617/reactions",
-      "total_count": 4,
-      "+1": 4,
+      "total_count": 6,
+      "+1": 6,
       "-1": 0,
       "laugh": 0,
       "hooray": 0,
