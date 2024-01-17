@@ -43,25 +43,11 @@ jobs:
           check-latest: true
           cache: npm
           cache-dependency-path: MaaRelease/scripts/package-lock.json
-      - name: Generate cache primary key based on nodejs's and npm's version and package-lock.json's hash
-        id: version
-        shell: bash
-        run: echo "hash=npm_cache:node@$(node -v | grep -oP '(?<=^v)\d+')_npm@$(npm -v | grep -oP '^\d+')_package-lock@$(openssl dgst -sha3-512 MaaRelease/scripts/package-lock.json | grep -oP '[\da-f]{128}')" >> $GITHUB_OUTPUT && cat $GITHUB_OUTPUT
-      - name: Try to restore node_modules from cache
-        uses: actions/cache/restore@v3
-        id: cache
+      - name: Installing the dependencies
+        uses: AnnAngela/cached_node-modules@v2
         with:
-          path: MaaRelease/scripts/node_modules
-          key: ${{ steps.version.outputs.hash }}
-      - name: Install dependencies if no cache for node_modules
-        if: success() && steps.cache.outputs.cache-hit != 'true'
-        run: cd MaaRelease/scripts && npm run ci
-      - name: Save node_modules to cache
-        if: success() && steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
-        with:
-          path: MaaRelease/scripts/node_modules
-          key: ${{ steps.version.outputs.hash }}
+          command: npm run ciInCI
+          cwd: MaaRelease/scripts
       - name: Run prebuild.sh
         run: sh MaaContainers/dockerfile/jenkins-base/prebuild.sh
 
