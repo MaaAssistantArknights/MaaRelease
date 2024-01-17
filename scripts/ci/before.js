@@ -7,11 +7,13 @@ import fs from "fs";
 import path from "path";
 
 const packageLockFile = "package-lock.json";
-
 const registries = [
     "https://registry.npmjs.org/",
     "https://mirrors.cloud.tencent.com/npm/",
 ];
+
+await fs.promises.rm("./node_modules", { recursive: true, force: true });
+
 const targetPath = "index.json";
 const latency = await testLatency(registries.map((base) => `${base}${targetPath}`));
 const targetRegistry = latency.sort(([, a], [, b]) => a - b)[0][0].replace(targetPath, "");

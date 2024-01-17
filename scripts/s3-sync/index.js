@@ -1,15 +1,14 @@
-/* eslint-disable no-loop-func */
 import console from "../modules/console.js";
 import { Octokit } from "../modules/octokit.js";
 import retryableFetch from "../modules/retryableFetch.js";
 import path from "path";
-// eslint-disable-next-line no-unused-vars
+
 import { Client } from "minio";
 import os from "os";
 import timerPromises from "timers/promises";
 import byteSize from "byte-size";
 import http from "http";
-let success = true;
+let lastError;
 let duration = -1;
 let RELEASE_TAG = process.env.RELEASE_TAG;
 const OWNER = process.env.OWNER;
@@ -67,12 +66,17 @@ try {
     /**
      * @type {(objectName: string) => Promise<BucketItemStat>}
      */
-    const minioClientStatObject = (objectName) => new Promise((res, rej) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => err && err.code !== "NotFound" ? rej(err) : res(err ? {
-        size: -1,
-        etag: "",
-        lastModified: new Date(-1),
-        metaData: {},
-    } : stat)));
+    /* const minioClientStatObject = (objectName) => new Promise((res, rej) => minioClient.statObject(process.env.MINIO_BUCKET, objectName, (err, stat) => err && err.code !== "NotFound"
+        ? rej(err)
+        : res(err
+            ? {
+                size: -1,
+                etag: "",
+                lastModified: new Date(-1),
+                metaData: {},
+            }
+            : stat))); */
+    const minioClientStatObject = (objectName) => minioClient.statObject(process.env.MINIO_BUCKET, objectName);
     const getByteSize = (input) => byteSize(input, { precision: 3, units: "iec" });
     const memoryOutput = (usedMemory, type) => console.log(`Memory ${type}: \n  - Heap used: ${getByteSize(usedMemory.heapUsed)}\n  - Heap total: ${getByteSize(usedMemory.heapTotal)}\n  - External: ${getByteSize(usedMemory.external)}\n  - RSS: ${getByteSize(usedMemory.rss)}\n  - Array Buffers: ${getByteSize(usedMemory.arrayBuffers)}`);
 
@@ -236,24 +240,28 @@ try {
         }
     }
 } catch (e) {
-    console.error("Error:", e);
-    success = false;
+    lastError = e;
 }
 const data = {
     OWNER,
     REPO,
     RELEASE_TAG,
-    success,
+    success: !!lastError,
     duration,
     count,
 };
-console.info("Start report:", data);
-const result = await (await retryableFetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
-    headers: {
-        "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
-    },
-    method: "POST",
-    body: JSON.stringify(data),
-})).json();
-console.info("result:", result);
-process.exit(success ? 0 : 1);
+// @TODO Remove this condition if qqbot is fixed
+if (Number.MAX_SAFE_INTEGER < Number.MIN_SAFE_INTEGER) {
+    console.info("Start report:", data);
+    const result = await (await retryableFetch("https://qqbot.annangela.cn/webhook?type=MaaRelease&origin=jenkins_report", {
+        headers: {
+            "x-authorization": process.env.ANNANGELA_QQBOT_TOKEN,
+        },
+        method: "POST",
+        body: JSON.stringify(data),
+    })).json();
+    console.info("result:", result);
+}
+if (lastError) {
+    throw lastError;
+}

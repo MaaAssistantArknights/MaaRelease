@@ -1,6 +1,6 @@
 import console from "../modules/console.js";
 /**
- * @param {string[]} urls 
+ * @param {string[]} urls
  * @return {Promise<[string, number][]>}
  */
 const testLatency = async (urls, times = 5, timeout = 3000) => {

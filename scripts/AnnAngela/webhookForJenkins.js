@@ -19,4 +19,3 @@ console.info("Status:", result.status);
 console.info("Headers:", Object.fromEntries(safeHeadersEntries));
 console.info("Result:", await result.text());
 console.info("Done.");
-process.exit(0);
