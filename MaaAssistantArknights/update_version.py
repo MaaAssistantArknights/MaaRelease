@@ -7,6 +7,7 @@ import re
 import time
 import http.client
 
+
 def retry_urlopen(*args, **kwargs):
     for _ in range(5):
         try:
@@ -29,8 +30,9 @@ def retry_urlopen(*args, **kwargs):
                 continue
             raise
 
+
 MIRRORS = [
-    ("github.com", "s3.maa-org.net:25240/maa-release"),
+    # ("github.com", "s3.maa-org.net:25240/maa-release"),
     ("github.com", "agent.imgg.dev"),
     ("github.com", "maa.r2.imgg.dev"),
 ]
@@ -40,14 +42,16 @@ ANNANGELA_MIRRORS = {
     'rep': "maa-ota.annangela.cn"
 }
 
+
 def extract_integers(string):
     pattern = r'\b\d+\b'
     integers = re.findall(pattern, string)
     return [int(num) for num in integers[:2]]
 
+
 def get_annangela_mirror(rel):
     return False
-    
+
     name = rel['name']
     url = rel["browser_download_url"]
 
@@ -71,6 +75,7 @@ def get_annangela_mirror(rel):
 
     return url.replace(ANNANGELA_MIRRORS['raw'], ANNANGELA_MIRRORS['rep'])
 
+
 def get_tag_info(repo: str, tag: str, tagType: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
     req = urllib.request.Request(url)
@@ -93,7 +98,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
             mirrors.append(m)
-        
+
         if tagType != "alpha":
             result = get_annangela_mirror(rel)
             if result != False:
@@ -110,6 +115,7 @@ def get_tag_info(repo: str, tag: str, tagType: str):
     releases["assets"] = new_assets
 
     return releases
+
 
 def get_version_json(version_id: str, tagType: str):
     ota_details = get_tag_info("MaaRelease", version_id, tagType)
@@ -133,6 +139,7 @@ def get_version_json(version_id: str, tagType: str):
     }
 
     return version_json
+
 
 def get_release_info():
     url = f"https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases"
@@ -173,6 +180,7 @@ def get_release_info():
 
     return alpha, beta, stable
 
+
 def main():
     alpha, beta, stable = get_release_info()
     print(f"alpha: {alpha}, beta: {beta}, stable: {stable}")
@@ -206,6 +214,7 @@ def main():
     save_json(beta_json, "beta.json")
     save_json(stable_json, "stable.json")
     save_json(summary_json, "summary.json")
+
 
 if __name__ == '__main__':
     main()
