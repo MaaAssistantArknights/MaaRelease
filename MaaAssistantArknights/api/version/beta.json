@@ -597,8 +597,8 @@
     "body": "## v5.0.0-beta.2\n\n### 新增 | New\n\n- 肉鸽开局干员支持输入任意客户端对应名称 (#7726) @ABA2396\n\n### 改进 | Improved\n\n- 优化自动战斗部署栏识别条件，保全增加节能模式 (#8044) @ABA2396\n- 优化wpf肉鸽结算输出格式 for i18n (#8011) @status102 @Constrat\n- 萨米肉鸽适配新干员用法 (#8033) @Lancarus\n- more scalable solution to 7bbb5f3 thanks to @ABA2396 @Constrat\n- 限制理智识别重试次数 fix #7998 @status102\n\n### 修复 | Fix\n\n- 剩余理智关卡在限定了关卡选择刷取条件（如次数）时会吃临期理智药 @ABA2396\n- Replacing strange space characters in ResourceUpdater for JP Recruit fix #8027 @Constrat\n- Eyjafjalla Alter regex [skip ci] @Constrat\n- So Long Adele navigation @Constrat\n- So Long Adele ROI change (pre Trials for Navigator) @Constrat\n- Executor the Ex Foedere regex OCR @Constrat\n- 测试版显示错误的ui版本号 @ABA2396\n\n### 其他 | Other\n\n- 基建排班工具链接更新 @ABA2396\n- skipping recruit YostarJP, until further fix (#8028) @Constrat\n- 不存在tmp时不保存version @ABA2396\n- Logger析构时不滚动日志 (#7975) @status102\n- [Doc]Operator JP name add for Adele @wallsman\n- YoStarKR translation modify (#8047) @HX3N\n- YoStarJP ocr fix Swire & Eyjafjalla Alter (#8038) @Manicsteiner\n- YoStarJP operator name ocr fix (#7968) @Manicsteiner\n- removed YostarJP recruit data skip @Constrat\n- reformatted CharsNameOcr for YostarEN (removed duplicate + moved) [skip changelo] @Constrat\n- YoStarKR ocr text update for SO LONG ADELE (#8024) @HX3N\n- update build tutorial @horror-proton\n- YoStarKR modifiy tasks.json (#8014) @HX3N\n- YostarEN So Long Adele event navigation @Constrat\n- YoStarJP 火山と雲と夢色の旅路 navigation (#8015) @Manicsteiner\n- bump `maa-cli` to `v0.4.0` (#7996) @wangl-cc\n- YoStarKR add ReceiveMail.png (#8009) @HX3N\n- YoStarJP ReceiveMail.png (#8004) @Manicsteiner\n\n**Full Changelog**: [v5.0.0-beta.1 -> v5.0.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.0.0-beta.1...v5.0.0-beta.2)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/138107586/reactions",
-      "total_count": 6,
-      "+1": 6,
+      "total_count": 7,
+      "+1": 7,
       "-1": 0,
       "laugh": 0,
       "hooray": 0,
