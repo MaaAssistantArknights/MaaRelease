@@ -1,500 +1,609 @@
 {
-  "version": "v5.0.0-beta.2.d034.gd520dad86",
+  "version": "v5.0.0",
   "details": {
-    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/139540421",
-    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/139540421/assets",
-    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaRelease/releases/139540421/assets{?name,label}",
-    "html_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/tag/v5.0.0-beta.2.d034.gd520dad86",
-    "id": 139540421,
-    "node_id": "RE_kwDOIUyZWc4IUTfF",
-    "tag_name": "v5.0.0-beta.2.d034.gd520dad86",
-    "target_commitish": "main",
-    "name": "",
+    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/139706705",
+    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/139706705/assets",
+    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/139706705/assets{?name,label}",
+    "html_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/tag/v5.0.0",
+    "id": 139706705,
+    "node_id": "RE_kwDOFutQ4s4IU8FR",
+    "tag_name": "v5.0.0",
+    "target_commitish": "dev",
+    "name": "v5.0.0",
     "draft": false,
-    "prerelease": true,
-    "created_at": "2024-02-01T16:32:35Z",
-    "published_at": "2024-02-01T16:36:47Z",
+    "prerelease": false,
+    "created_at": "2024-02-02T16:52:34Z",
+    "published_at": "2024-02-02T17:25:40Z",
     "assets": [
       {
-        "name": "MAA-v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 143167999,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAA-v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-linux-aarch64.AppImage",
+        "size": 139461824,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.AppImage",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAA-v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAA-v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.AppImage",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.AppImage"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40552278,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-linux-aarch64.tar.gz",
+        "size": 148183244,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.tar.gz",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.tar.gz",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-aarch64.tar.gz"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40552323,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-linux-x86_64.AppImage",
+        "size": 139977920,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.AppImage",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.AppImage",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.AppImage"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40524215,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-linux-x86_64.tar.gz",
+        "size": 148737806,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.tar.gz",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.tar.gz",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-linux-x86_64.tar.gz"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40524234,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-macos-universal.dmg",
+        "size": 178402936,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.24.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40524215,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-win-arm64.zip",
+        "size": 141890813,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-arm64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.24.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-arm64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-arm64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40410550,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-win-x64.zip",
+        "size": 143169386,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40012236,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-DebugSymbol-v5.0.0-win-arm64.zip",
+        "size": 13950028,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-arm64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-arm64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-arm64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40012236,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-DebugSymbol-v5.0.0-win-x64.zip",
+        "size": 13689702,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaAssistantArknights/releases/download/v5.0.0/MAAComponent-DebugSymbol-v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.25.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40012236,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-macos-runtime-universal.zip",
+        "size": 157908448,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-runtime-universal.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.25.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-runtime-universal.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-runtime-universal.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 40010717,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-macos-universal.dmg",
+        "size": 178402936,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-macos-universal.dmg"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39858508,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAA-v5.0.0-win-x64.zip",
+        "size": 143169386,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAA-v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39853077,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-win-x64.zip",
+        "size": 40553665,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.3_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.26.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39853077,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-win-x64.zip",
+        "size": 40553710,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.4_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.26.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39628507,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-win-x64.zip",
+        "size": 40525602,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.26.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-beta.5_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39606944,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-win-x64.zip",
+        "size": 40525621,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0-rc.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.27.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39170655,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.24.0_v5.0.0-win-x64.zip",
+        "size": 40525602,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.24.0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.27.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39170655,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-win-x64.zip",
+        "size": 40411937,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.27.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39162821,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-win-x64.zip",
+        "size": 40013623,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.2_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39070803,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-win-x64.zip",
+        "size": 40013623,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0-beta.3_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39070776,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.25.0_v5.0.0-win-x64.zip",
+        "size": 40013623,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.25.0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39070822,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-win-x64.zip",
+        "size": 40012104,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39070822,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-win-x64.zip",
+        "size": 39859895,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.2_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39052476,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-win-x64.zip",
+        "size": 39854464,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.3_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0-beta.3_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39049375,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.26.0_v5.0.0-win-x64.zip",
+        "size": 39854464,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.4_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39049375,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.26.1_v5.0.0-win-x64.zip",
+        "size": 39629894,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.26.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39049375,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-win-x64.zip",
+        "size": 39608331,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0-beta.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39027892,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.27.0_v5.0.0-win-x64.zip",
+        "size": 39172042,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.5_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39027892,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.27.1_v5.0.0-win-x64.zip",
+        "size": 39172042,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.27.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39015238,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-win-x64.zip",
+        "size": 39164208,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.7_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39015238,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-win-x64.zip",
+        "size": 39072190,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.7_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0-beta.2_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39015238,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.0_v5.0.0-win-x64.zip",
+        "size": 39072163,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39015238,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.1_v5.0.0-win-x64.zip",
+        "size": 39072209,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 39011232,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.2_v5.0.0-win-x64.zip",
+        "size": 39072209,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.2_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.2_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.2_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8937461,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.3_v5.0.0-win-x64.zip",
+        "size": 39053863,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.3_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.3_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.3_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8937461,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.4_v5.0.0-win-x64.zip",
+        "size": 39050762,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.4_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.4_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.4_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8924028,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-win-x64.zip",
+        "size": 39050762,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d005.g48263ab49_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8915843,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-win-x64.zip",
+        "size": 39050762,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5-alpha.1.d013.ga5aa75091_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8915843,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.5_v5.0.0-win-x64.zip",
+        "size": 39029279,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.5_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 38991647,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.6_v5.0.0-win-x64.zip",
+        "size": 39029279,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.6_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.6_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.6_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8915843,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-win-x64.zip",
+        "size": 39016625,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7-alpha.1.d005.g9c0f6cfc0_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8915843,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.7_v5.0.0-win-x64.zip",
+        "size": 39016625,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.7_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8424981,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-win-x64.zip",
+        "size": 39016625,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d001.g27ff5a11b_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8422860,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-win-x64.zip",
+        "size": 39016625,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d035.g984ba72b9_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8398120,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-win-x64.zip",
+        "size": 39012619,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d074.g1ebdecaa1_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8274440,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-win-x64.zip",
+        "size": 8938848,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d081.g5e4002b05_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8422860,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-win-x64.zip",
+        "size": 8938848,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d093.gc051f2095_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 7666699,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-win-x64.zip",
+        "size": 8925415,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d097.gd988c096d_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 7666699,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-win-x64.zip",
+        "size": 8917230,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d113.g77df630a6_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 7666699,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-win-x64.zip",
+        "size": 8917230,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8-alpha.1.d116.g671813708_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 7610420,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.8_v5.0.0-win-x64.zip",
+        "size": 38993034,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.8_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 7610420,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-win-x64.zip",
+        "size": 8917230,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d119.gf7e990b25_v5.0.0-win-x64.zip"
         ]
       },
       {
-        "name": "MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-        "size": 8255860,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
+        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-win-x64.zip",
+        "size": 8917230,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-win-x64.zip",
         "mirrors": [
-          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip",
-          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0-beta.2.d034.gd520dad86/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-beta.2.d034.gd520dad86-win-x64.zip"
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d139.g54e723b54_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-win-x64.zip",
+        "size": 8426368,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v4.28.9-alpha.1.d155.gfeea4f1ac_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-win-x64.zip",
+        "size": 8424247,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d002.gd8b012193_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-win-x64.zip",
+        "size": 8399507,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d005.g4658f0553_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-win-x64.zip",
+        "size": 8275827,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1.d021.g90a6c36b1_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-win-x64.zip",
+        "size": 8424247,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.1_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-win-x64.zip",
+        "size": 7668086,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d023.g3ebe8d2cc_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-win-x64.zip",
+        "size": 7668086,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d024.g3e2297db9_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-win-x64.zip",
+        "size": 7668086,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d027.gb56eaa948_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-win-x64.zip",
+        "size": 7653435,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d032.g1bc32ff06_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-win-x64.zip",
+        "size": 7653435,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d033.gf6ffd5ea8_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2.d034.gd520dad86_v5.0.0-win-x64.zip",
+        "size": 7653435,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d034.gd520dad86_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d034.gd520dad86_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2.d034.gd520dad86_v5.0.0-win-x64.zip"
+        ]
+      },
+      {
+        "name": "MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-win-x64.zip",
+        "size": 8257247,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-win-x64.zip",
+        "mirrors": [
+          "https://agent.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-win-x64.zip",
+          "https://maa.r2.imgg.dev/MaaAssistantArknights/MaaRelease/releases/download/v5.0.0/MAAComponent-OTA-v5.0.0-beta.2_v5.0.0-win-x64.zip"
         ]
       }
     ],
-    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v5.0.0-beta.2.d034.gd520dad86",
-    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v5.0.0-beta.2.d034.gd520dad86",
-    "body": "修复自动更新报错，但遇到报错的人估计也用不了自动更新（x）\n\n**Full Changelog**: [v5.0.0-beta.2 -> alpha/v5.0.0-beta.2.d034.gd520dad86](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.0.0-beta.2...alpha/v5.0.0-beta.2.d034.gd520dad86)"
+    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v5.0.0",
+    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v5.0.0",
+    "body": "## v5.0.0\n\n### 新增 | New\n\n- 资源更新完毕后添加自动重启（需勾选 设置-软件更新-自动安装更新包） @ABA2396\n- SideStory「怀黍离」导航 (#8124) @AnnAngela\n- CLI 支持多天排班 @wangl-cc\n- 增加肉鸽刷开局模式下只凹精二选项 (#7705) @s-yh-china\n- 萨米肉鸽新板子 @ABA2396\n- ui 和 core 版本不一致时开始任务添加 waring 提示 @ABA2396\n- 肉鸽开局干员支持输入任意客户端对应名称 (#7726) @ABA2396\n- 萨米肉鸽适配新干员用法 (#8033) @Lancarus\n- 连战次数选择 (#8159) @ABA2396\n\n### 改进 | Improved\n\n- 基建排班工具链接更新 @ABA2396\n- 捕获启动模拟器时产生的权限不足异常 (#7908) @Chiichen\n- 允许直接复制干员识别的结果 @ABA2396\n- 优化萨米事不过四策略 (#8059) @Lancarus\n- 优化连续战斗次数列表展开图片 @status102\n- 优化萨米锏精二优先度 (#7939) @Lancarus\n- 优化萨米肉鸽部分关卡逻辑 (#7925、#7935、#7936) @Lancarus\n- 初步适配萨米肉鸽dlc关卡等 (#7924) @Lancarus\n- 优化肉鸽作战逻辑，使不能空放的干员技能不影响后续部署指令的执行 (#7934) @Lancarus\n- 更新繁中服生息演算最後一天的日期 (#7903) @momomochi987\n- 优化刷理智-已开始战斗x次时临期理智药使用输出以增加可读性 (#7846) @status102\n- 优化截图耗时额外提示文本触发条件，改为由平均耗时触发 (#7868) @status102\n- 优化自动战斗部署栏识别条件，保全增加节能模式 (#8044) @ABA2396\n- 优化wpf肉鸽结算输出格式 for i18n (#8011) @status102 @Constrat\n- more scalable solution to 7bbb5f3 thanks to @ABA2396 @Constrat\n- 限制理智识别重试次数 fix #7998 @status102\n- 修改 前行的林地 默认选择 @ABA2396\n\n### 修复 | Fix\n\n- 减少重复截图 (#7945) @zzyyyl\n- 更新导航格式 @ABA2396\n- 修复OCR识别干员黍错误的问题 @SherkeyXD\n- 点击 `复制错误信息` 报错 @ABA2396\n- 更新吐司通知报错 @ABA2396\n- 修复更新重启后热键失效 @ABA2396\n- SL-8 not recognized @Constrat\n- 修复刷开局模式下强制启用投资造成与UI显示不一致的错误 @status102\n- 自动战斗群组中多名干员在编组中时不会选择 @ABA2396\n- 修复基建排班的 JSON schema (#7788) @wangl-cc\n- 修复肉鸽烧水选择难度可能不对的问题 (#7946) @zzyyyl\n- 一键长草期间锁定自动肉鸽设置以符合执行逻辑 @status102\n- 修复刷理智调整战斗次数时可能错误点击关卡报酬 (#7942) @status102\n- 勾选启动后直接最小化时无法使用右键强制显示 @ABA2396\n- 使用启动旧版.cmd启动后下次更新报错 @ABA2396\n- 下调检测阈值以尝试修复刷理智卡在次数选择 fix #7919 @status102\n- reduced Mizuki@Roguelike@MissionFailedFlag threshold for iOS fix #7864 temporary fix as #7872 exists @Constrat\n- 修复部分情况下肉鸽结算点击错误 @status102\n- 修复肉鸽-刷钱模式下仍然会在商店进行招募、购物的错误 (#7863) @status102\n- 配置修改后无法保存 @ABA2396\n- 修复刷理智结束时理智输出错误 @status102\n- 清剩余理智时卡在选择次数 @ABA2396\n- 修复README的一处链接错误 (#7905) @Chiichen\n- changed template YostarEN I.S. enter @zzyyyl\n- 移除 StageEncounterClickToLeave 任务 (#7887) @zzyyyl\n- 修复肉鸽刷源石锭模式卡住的问题 (#7882) @zzyyyl\n- EN服 无法自动吃大理智药 @ABA2396\n- 提供打不开MAA_win7.exe的处理方法 @ABA2396\n- 干员识别报错 @ABA2396\n- subprocess handle leak @dantmnf\n- 修复部分情况下，关卡掉落识别关卡名出错 @status102\n- ClickedCorrectStage more ocrReplace regex @Constrat\n- 不存在tmp时不保存version @ABA2396\n- 剩余理智关卡在限定了关卡选择刷取条件（如次数）时会吃临期理智药 @ABA2396\n- Eyjafjalla Alter regex [skip ci] @Constrat\n- So Long Adele navigation @Constrat\n- So Long Adele ROI change (pre Trials for Navigator) @Constrat\n- Executor the Ex Foedere regex OCR @Constrat\n- 测试版显示错误的ui版本号 @ABA2396\n- 博朗台模式识别理智回复时间大于6分钟则返回失败 @ABA2396\n\n### 其他 | Other\n\n- 谁把我fody删了 @Cryolitia\n- Logger析构时不滚动日志 (#7975) @status102\n- update skill_ready_cls model (#7733) @MistEO\n- 版本兼容 @ABA2396\n- 修复SSS_自走机械搏斗场_浊蒂重岳塞雷娅泥岩_速冷脚本没有文件名后缀的错误 (#7879) @junyihan233\n- 修复并无损压缩模板图片 (#7831) @zzyyyl\n- 未在字典中的连接配置在使用自动检测时报错 @ABA2396\n- 开机自启功能异常 .net 8 的 string.GetHashCode() 重启之后不一样了） @ABA2396\n- 解决冲突 @ABA2396\n- 兼容旧版本语言特性 @ABA2396\n- 修复#7733文件路径错误 (#7980) @status102\n- 优化ConfigurationHelper @ABA2396\n- optimize template in 5e4002b058bc928a5e4b7c1dbd43f164682bbaf7 @zzyyyl\n- 优化RoguelikeSetting格式 @status102\n- 优化部分插件判断 @status102\n- 删除没有用到的 task @zzyyyl\n- Update qodana.yaml @ABA2396\n- moved version requirement for faster triaging (#8121) @Constrat @ABA2396\n- Update cn-bug-report.yaml @ABA2396\n- Update en-bug-report.yaml @ABA2396\n- 移除Sample本地运行时重复加载外服资源，避免产生潜在的错误 (#7930) @status102\n- 简化部分初始化 @status102\n- 添加词典 [skip ci] @ABA2396\n- 简化集合 [skip ci] @ABA2396\n- typo: 修改插件名以符合项目格式 @status102\n- 调整剩余理智关卡的说明 @status102\n- translated some infrast log lines (#7889) @Constrat @status102\n- 肉鸽设置追加部分注释 @status102\n- gitignore FodyWeavers.xsd @ABA2396\n- 修改公招多选tag选项描述 @broken-paint\n- added ps1 for cloning ResourceUpdater repo for local developing @Constrat\n- update instruction for waydroid @horror-proton\n- net8后不进行MAA_win7.exe备份 @ABA2396\n- 修改readme中最大分辨率为2k @status102\n- fix SyncRes build error @dantmnf\n- dotnet8.0 (#7554) @hxdnshx @SherkeyXD @LiamSho @ABA2396 @moomiji\n- update build tutorial @horror-proton\n- bump `maa-cli` to `v0.4.0` (#7996) @wangl-cc\n\n### For Developers\n\n- vs设计器无法正常显示窗体 @ABA2396\n- 修正CopilotTask参数名`is_adverse` -> `is_raid` (#8126) @status102\n- 允许插件停用ProcessTask (#7954) @status102\n\n### For Overseas\n\n#### twxy\n\n- 繁中服「吾導先路」復刻活動導航 (#8071) @momomochi987\n\n#### YoStarEN\n\n- EN Challenge mode battle list @Constrat\n- changed template YostarEN I.S. enter fix #7766 fix #7886 @Constrat\n- YosrarEN Lingering Echoes stage navigation @Constrat\n- reformatted CharsNameOcr for YostarEN (removed duplicate + moved) [skip changelo] @Constrat\n- YostarEN So Long Adele event navigation @Constrat\n\n#### YoStarJP\n\n- YoStarJP roguelike nextlevel ocr (#7859) @Manicsteiner @Constrat\n- YoStarJP AnnihilationReturnFlag.png (#7964) @Manicsteiner\n- YoStarJP ocr fix Chestnut, Bena (#8077) @Manicsteiner\n- skipping recruit YostarJP, until further fix (#8028) @Constrat\n- Replacing strange space characters in ResourceUpdater for JP Recruit fix #8027 @Constrat\n- YoStarJP 塵影に交わる残響 復刻 navigation (#7888) @Manicsteiner\n- [Doc]Operator JP name add for Adele @wallsman\n- YoStarJP ocr fix Swire & Eyjafjalla Alter (#8038) @Manicsteiner\n- YoStarJP operator name ocr fix (#7968) @Manicsteiner\n- removed YostarJP recruit data skip @Constrat\n- YoStarJP 火山と雲と夢色の旅路 navigation (#8015) @Manicsteiner\n- YoStarJP ReceiveMail.png (#8004) @Manicsteiner\n- YoStarJP ocr fix (#8086) @Manicsteiner\n\n#### YoStarKR\n\n- YoStarKR modified ocr text (#7960) @HX3N\n- YoStarKR \"CharsNameOcrReplace\" modification (#8070) @HX3N\n- YoStarKR added some missing task (#8069) @HX3N\n- YoStarKR added template image (#7974) @HX3N\n- YoStarKR ocrReplace regex fix (#7901) @HX3N\n- YoStarKR ocrReplace text replacement (#7897) @HX3N\n- YoStarKR LE stage navigation (#7896) @HX3N\n- YoStarKR template image replacement (#7895) @HX3N\n- YoStarKR LE Stage navigation (#7894) @HX3N\n- YoStarKR ocr text replacement (#7845) @HX3N\n- YoStarKR translation modify (#8047) @HX3N\n- YoStarKR ocr text update for SO LONG ADELE (#8024) @HX3N\n- YoStarKR modifiy tasks.json (#8014) @HX3N\n- YoStarKR add ReceiveMail.png (#8009) @HX3N\n- YoStarKR fixed ocr '紧急调遣' and '龙腾.(A/F/L)' (#8074) @HX3N\n- YoStarKR ocrReplace modification (Infrast, Recruit, Roguelike) (#8072) @HX3N\n\n**Full Changelog**: [v4.28.8 -> v5.0.0](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v4.28.8...v5.0.0)\n",
+    "mentions_count": 23
   }
 }
