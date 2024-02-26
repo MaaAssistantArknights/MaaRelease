@@ -78,7 +78,7 @@ jobs:
           - repo: MaaRelease
             os: macos-ota
             target: R2_MAC
-            runs-on: macos-13
+            runs-on: macos-14
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
