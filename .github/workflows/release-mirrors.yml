@@ -137,9 +137,9 @@ jobs:
           RC=-1
           while [[ true ]]
           do
-            echo "Trying rsync #i..."
+            echo "Trying rsync #$i..."
             cd ${{ steps.downloadReleaseFiles.outputs.dir }}
-            echo "::group::rsync #i output"
+            echo "::group::rsync #$i output"
             rsync -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}/
             RC=$?
             i=$((i+1))
