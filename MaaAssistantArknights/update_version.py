@@ -78,6 +78,7 @@ def get_annangela_mirror(rel):
 
 def get_tag_info(repo: str, tag: str, tagType: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
+    print(url)
     req = urllib.request.Request(url)
     token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", None))
     if token:
@@ -142,7 +143,7 @@ def get_version_json(version_id: str, tagType: str):
 
 
 def get_release_info():
-    url = f"https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases"
+    url = f"https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases?per_page=100"
     req = urllib.request.Request(url)
     token = os.environ.get("GH_TOKEN", os.environ.get("GITHUB_TOKEN", None))
     if token:
