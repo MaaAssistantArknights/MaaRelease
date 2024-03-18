@@ -8,7 +8,7 @@
         "byte-size": "^8.1.1",
         "eslint": "^8.57.0",
         "minio": "^7.1.3",
-        "simple-git": "^3.22.0"
+        "simple-git": "^3.23.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
