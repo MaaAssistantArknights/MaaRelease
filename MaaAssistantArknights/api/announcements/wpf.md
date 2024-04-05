@@ -1,15 +1,1 @@
-# 【公告】关于.net8版本更新后开机自启设置问题解决方案
-
-近期的公测版和内测版已经开始推送.net8版本了，不少正式版用户也提前安装了.net8运行库。不过.net8的一些方法实现和.net framework 4.8有很大不同，在更新了运行库之后可能会遇到一些问题，这也是为什么这个版本需要这么长时间测试的原因。
-
-如果正式版（v4.28.8）用户在安装运行库之后发现设置里的开机自启显示为未勾选，但实际上开机时可以自启，请不要再次勾选，显示问题已在新版本修复，请在更新v5.x版本后再根据下方内容操作。
-
-其余版本遇到开机自启的问题（无法开机自启 / 开机自启多个），请按照以下步骤进行设置：
-
-1. 打开注册表编辑器：Win + R，输入 regedit，回车。
-
-2. 导航至 计算机\HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run。
-
-3. 找到值是maa路径的项并全部删除。
-
-4. 重启maa，重新设置开机自启。
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="100%" /><br>
