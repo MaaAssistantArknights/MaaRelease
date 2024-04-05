@@ -4,4 +4,4 @@
 
 请勿参加内鬼消息的传播，禁止将内鬼消息发送至任何 MAA 群。  
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg" width="720px" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg" width="100%" /><br>
