@@ -1,1 +1,1 @@
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.jpg" width="100%" /><br>
+
