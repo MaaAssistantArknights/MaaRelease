@@ -251,10 +251,7 @@ for (const REPO of REPO_LIST.trim().split(/\s*,\s*/)) {
                     }
                     console.info(`[${REPO}]`, "Removing", folderPath);
                     const items = await listObjectsV2(process.env.MINIO_BUCKET, folderPath, true);
-                    await minioClient.removeObjects(process.env.MINIO_BUCKET, [
-                        ...items.map(({ name }) => name),
-                        folderPath,
-                    ]);
+                    await minioClient.removeObjects(process.env.MINIO_BUCKET, items.map(({ name }) => name));
                     console.info(`[${REPO}]`, "Removed", folderPath);
                 }
 
