@@ -1,0 +1,30 @@
+services:
+  monio-cronjob:
+    image: harbor.maa-org.net/maa/minio-cronjob
+    container_name: monio-cronjob
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+
+      - THREAD=2
+      - NUMBER_OF_RETRIES=5
+
+      - OWNER=MaaAssistantArknights
+      - REPO_LIST=MaaAssistantArknights,MaaRelease
+      - FILE_PATTERN=-(?:win|linux)-|-macos-universal\\.dmg|-macos-runtime-universal\\.zip
+
+      # 如有需要也可修改
+      - MINIO_BUCKET=maa-release
+      - MINIO_ENDPOINT_DOMAIN=minio.local
+      - MINIO_ENDPOINT_PORT=9080
+      - MINIO_WAIT_TIME_AFTER_UPLOAD_MS=1000
+      
+      - GITHUB_PAT=<CHANGE_ME>
+      - MINIO_ACCESS_KEY=<CHANGE_ME>
+      - MINIO_SECRET_KEY=<CHANGE_ME>
+      # - ANNANGELA_QQBOT_TOKEN=<CHANGE_ME>
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 1
