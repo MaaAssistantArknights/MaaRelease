@@ -8,6 +8,7 @@ import byteSize from "byte-size";
 import { CronJob } from "cron";
 import console from "../modules/console.js";
 import { Octokit } from "../modules/octokit.js";
+import proxiableFetch from "../modules/proxiableFetch.js";
 import retryableFetch from "../modules/retryableFetch.js";
 
 const getByteSize = (input) => {
@@ -40,20 +41,21 @@ const ua = `Node.js/${process.versions.node} (${process.platform} ${os.release()
 console.info("process.env.THREAD:", process.env.THREAD?.trim());
 const THREAD = getIntegerFromProcessEnv("THREAD", 4, 0);
 const NUMBER_OF_RETRIES = getIntegerFromProcessEnv("NUMBER_OF_RETRIES", 5, 0);
+const MINIO_WAIT_TIME_AFTER_UPLOAD_MS = getIntegerFromProcessEnv("MINIO_WAIT_TIME_AFTER_UPLOAD_MS", 1000, 0);
 console.info("# of thread:", THREAD);
+console.info("# of retries:", NUMBER_OF_RETRIES);
+console.info("MINIO_WAIT_TIME_AFTER_UPLOAD_MS:", MINIO_WAIT_TIME_AFTER_UPLOAD_MS);
 console.info("OWNER:", OWNER);
 console.info("REPO_LIST:", REPO_LIST);
 console.info("FILE_PATTERN:", FILE_PATTERN);
 console.info("pattern:", pattern);
 console.info("ua:", ua);
-const octokit = new Octokit({});
-const { token } = await octokit.auth();
-const headers = {
-    accept: "application/octet-stream",
-    authorization: `Bearer ${token}`,
-    "user-agent": ua,
-};
-const MINIO_WAIT_TIME_AFTER_UPLOAD_MS = getIntegerFromProcessEnv("MINIO_WAIT_TIME_AFTER_UPLOAD_MS", 1000, 0);
+
+const octokit = new Octokit({
+    request: {
+        fetch: proxiableFetch,
+    },
+});
 const minioClient = new Client({
     endPoint: process.env.MINIO_ENDPOINT_DOMAIN,
     port: +process.env.MINIO_ENDPOINT_PORT,
@@ -65,6 +67,14 @@ const minioClient = new Client({
         keepAlive: true,
     }),
 });
+
+const { token } = await octokit.auth();
+const headers = {
+    accept: "application/octet-stream",
+    authorization: `Bearer ${token}`,
+    "user-agent": ua,
+};
+
 /**
  * @typedef { Awaited<ReturnType<octokit["rest"]["repos"]["getRelease"]>>["data"]["assets"][number] & { releaseTag: string } } Asset
  */

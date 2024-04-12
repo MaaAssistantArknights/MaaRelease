@@ -12,7 +12,11 @@ if (Reflect.has(process.env, "GITHUB_PAT")) {
     };
 }
 
-class OctokitWithRetry extends Octokit.plugin(retry) {
+const OctokitWithRetry = Octokit.plugin(retry);
+class OctokitWithRetryAndDefaultAuthOptions extends OctokitWithRetry {
+    /**
+     * @param { ConstructorParameters<OctokitWithRetry>[0] } options
+     */
     constructor(options) {
         super({
             ...defaultAuthOptions,
@@ -21,5 +25,5 @@ class OctokitWithRetry extends Octokit.plugin(retry) {
     }
 }
 
-export { OctokitWithRetry as Octokit };
-export default { OctokitWithRetry: Octokit };
+export { OctokitWithRetryAndDefaultAuthOptions as Octokit };
+export default { OctokitWithRetryWithDefaultAuthOptions: Octokit };

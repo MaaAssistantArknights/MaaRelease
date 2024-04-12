@@ -22,6 +22,8 @@ services:
       - GITHUB_PAT=<CHANGE_ME>
       - MINIO_ACCESS_KEY=<CHANGE_ME>
       - MINIO_SECRET_KEY=<CHANGE_ME>
+      - HTTP_PROXY=<CHANGE_ME>
+      - NO_PROXY=<CHANGE_ME>
       # - ANNANGELA_QQBOT_TOKEN=<CHANGE_ME>
     logging:
       driver: json-file

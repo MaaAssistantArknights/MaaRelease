@@ -10,6 +10,7 @@ const packageLockFile = "package-lock.json";
 const registries = [
     "https://registry.npmjs.org/",
     "https://mirrors.cloud.tencent.com/npm/",
+    "https://registry.npmmirror.com/",
 ];
 
 await fs.promises.rm("./node_modules", { recursive: true, force: true });
