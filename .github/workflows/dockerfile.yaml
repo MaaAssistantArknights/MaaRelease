@@ -60,7 +60,7 @@ jobs:
           cwd: MaaRelease/scripts
       - name: Run prebuild.sh
         if: matrix.prebuildPath != ''
-        run: sh ${{ matrix.prebuildPath }}
+        run: sh MaaContainers/${{ matrix.prebuildPath }}
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v3
