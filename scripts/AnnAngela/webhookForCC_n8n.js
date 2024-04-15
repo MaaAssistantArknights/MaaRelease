@@ -7,9 +7,7 @@ const result = await retryableFetch(process.env.WEBHOOK_URL, {
         "Content-Type": "application/json",
     },
     method: "PUT",
-    body: JSON.stringify({
-        RELEASE_TAG: process.env.RELEASE_TAG,
-    }),
+    body: process.env.BODY,
 });
 const headersEntries = [...result.headers.entries()];
 const unsafeOrUnneedHeaders = [

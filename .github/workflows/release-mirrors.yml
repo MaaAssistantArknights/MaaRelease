@@ -203,7 +203,7 @@ jobs:
         env:
           WEBHOOK_URL: https://workflow.maa-org.net/webhook/MaaRelease
           WEBHOOK_SECRET:  ${{ format('{0} {1}', 'MaaRelease', secrets.CC_N8N_CREDENTIAL) }}
-          RELEASE_TAG: ${{ needs.getReleaseTag.outputs.release_tag }}
+          BODY: '{"RELEASE_TAG": "${{ needs.getReleaseTag.outputs.release_tag }}"}'
 
       - name: Fire the webhook of AnnAngela's COS
         if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
