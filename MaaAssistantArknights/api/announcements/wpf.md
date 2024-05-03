@@ -4,8 +4,8 @@
 
 **如需自定义选择关卡，可参考以下方式**
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/StageManuallyInput_1.jpg" width="100%" /><br>
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/StageManuallyInput_2.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/StageManuallyInput_1.png" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/StageManuallyInput_2.png" width="100%" /><br>
 
 # 公告
 
