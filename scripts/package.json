@@ -4,14 +4,14 @@
         "@annangela/eslint-config": "^5.2.0",
         "@octokit/auth-unauthenticated": "^6.1.0",
         "@octokit/plugin-retry": "^7.1.1",
-        "@octokit/rest": "^20.1.0",
+        "@octokit/rest": "^20.1.1",
         "byte-size": "^8.1.1",
         "cron": "^3.1.7",
         "eslint": "^8.57.0",
         "minimatch": "^9.0.4",
         "minio": "^8.0.0",
         "simple-git": "^3.24.0",
-        "undici": "^6.15.0"
+        "undici": "^6.16.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
