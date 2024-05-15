@@ -709,6 +709,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v5.3.0-beta.1",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v5.3.0-beta.1",
     "body": "## v5.3.0-beta.1\n\n### 新增 | New\n\n* 连战次数选项可隐藏 @ABA2396\n* 自动公招公招手动确认支援机械改为手动确认1星 (#9047) @Toby-Shi-cloud\n* 添加状态监测站 (#9001) @AnnAngela\n* 肉鸽适配新干员用法 (#8967) @Lancarus\n* mumu12 截图增强 (#8939) @MistEO @status102 @ABA2396\n* auto retry start on app startup crash (#8966) @Constrat\n\n### 改进 | Improved\n\n* 更新 actions/checkout@v4 (#9042) @AnnAngela\n* 优化肉鸽ew优先度 (#9020) @Lancarus\n* Mumu12模拟器截图增强模式禁用时隐藏配置项输入框 @status102\n* 增加Mumu12模拟器截图增强配置的模拟器路径存在检查 @status102\n* 更新文档(#8981)(#8964) @Rbqwow @horror-proton\n\n### 修复 | Fix\n\n* 理智药数量识别错误 @ABA2396\n* 干员识别修正: 崖心8 -> 崖心 (#9048) @kuttakke @Constrat\n* 修复受损引用 (#9041) @AnnAngela\n* 关卡导航无法识别部分关卡 @ABA2396\n* 重复延迟 @ABA2396\n* 自动编队选错排在末尾的干员 @ABA2396\n* 暂停下干员卡在结束部署后 @ABA2396\n* 修复LT14-04地图参数 @status102\n* 修复截图增强模式禁用时，模拟器路径无效时无法启动 @status102\n* MuMu模拟器连接失败 @ABA2396\n* 关卡导航切换关卡难度报错 @ABA2396\n* 开关 MuMu 极速操控需要重启生效 @ABA2396\n* 修复肉鸽关卡识别受截图速度影响的问题 @MistEO\n* 一图流 243 一天四换换班结束时的日志信息 (#8838) @bodayw\n* increase delay post \"Mission Start\" button (#8950) @Constrat\n* delay after enter floor affected by fast screenshots @Constrat\n* unexpected change @status102\n* fallback to normal for empty m_first_tags @horror-proton\n\n### 其他 | Other\n\n* 添加 `MuMu 截图增强模式` 启用方法提示 @ABA2396\n* 移动旧保全作业 @status102\n* 路径不存在时弹窗提示 @ABA2396\n* 连接时判断截图方式是否生效 @ABA2396\n* 修改注释 @ABA2396\n* update glossary @HX3N\n* format TaskQueueViewModel @ABA2396\n* Update bug-report (#9015) @ABA2396\n* format AsstProxy @ABA2396\n* fix markdown format @horror-proton\n* Translations update from MAA Weblate (#9066) @LiamSho @ABA2396\n* add favourite tip for i18n (#9051) @Constrat @Manicsteiner @HX3N @ABA2396\n* remove unused directives @ABA2396\n\n### For Overseas\n\n#### YostarJP\n\n* YoStarJP ocr fix (#9033) @Manicsteiner\n* add JP ツウィリングトゥルムの黄金 @wallsman\n* YoStarJP ocr fix (#9022) @Manicsteiner\n* YoStarJP roguelike fix (#8991) @Manicsteiner\n\n**Full Changelog**: [v5.2.3 -> v5.3.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.2.3...v5.3.0-beta.1)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/155356045/reactions",
+      "total_count": 1,
+      "+1": 1,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 15
   }
 }
