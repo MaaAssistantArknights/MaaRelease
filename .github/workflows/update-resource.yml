@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - .github/workflows/update-resource.yml
+      - MaaAssistantArknights/api/**
   workflow_dispatch:
 
 jobs:
