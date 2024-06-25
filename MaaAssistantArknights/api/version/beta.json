@@ -681,11 +681,11 @@
     "body": "## v5.4.0-beta.2\n\n### 新增 | New\n\n* 无法连接设备时尝试断开连接然后重新连接 (#9433) @lingting\n* GPU 加速推理 (DX12/DirectML) @dantmnf @SherkeyXD\n* SideStory「生路」活动导航 @ABA2396\n* 增加暂停放技能和暂停撤退 (#9348) @Lancarus\n\n### 改进 | Improved\n\n* 优化仓库识别结果展示，支持多语言显示 (#9434) @ABA2396\n* 继续#7904的重构 (#9409) @IzakyL\n* 优化代码 @ABA2396\n* 优化数据绑定逻辑，减少 AsstProxy 逻辑处理 @ABA2396\n* 优化肉鸽选项显示逻辑 @ABA2396\n* 增加更新时解压更新包失败日志，增加解压失败解决方案 @ABA2396\n* 优化萨米肉鸽棘刺技能携带 (#9400) @Daydreamer114\n* 优化热更新 @ABA2396\n* 允许使用“feat!”表示重大更新 @zzyyyl\n* 更新 py 回调 @ABA2396\n* 优化关卡选择为剿灭时的逻辑判断 @ABA2396\n* 优化肉鸽shopping策略 (#9332) @ntgmc\n* 优化萨米肉鸽夺树者高台对boss输出策略 (#9294) @Daydreamer114\n* 更新关卡列表与提示延迟至空闲时间，避免动态修改关卡列表 @ABA2396\n\n### 修复 | Fix\n\n* intentionally leak onnxruntime objects to avoid crash @dantmnf\n* 弹药类技能不能二次关闭的问题 (#9379) @HoshinoAyako\n* 自动战斗跳过对话模板更新 (#9380) @HoshinoAyako\n* 无法跳过关卡开始的剧情 @ABA2396\n* add `/D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR` @horror-proton\n* 战斗列表禁用包含非法字符的关卡名添加 (#9363) @status102\n* add AsstSetConnectionExtras to wine bridge @dantmnf\n* check before destroy callback @dantmnf\n* 修复时间比较报错的问题 @SherkeyXD\n* 刷理智结束时有概率报错 @ChingCdesu\n* fix endless loop in InfrastProductionTask @horror-proton\n* fix coredump caused by screencap failure @horror-proton\n* 保全文件命名错误 (#9322) @ntgmc\n\n### 其他 | Other\n\n* update cn-mumu-report.yaml @Rbqwow\n* fix missing includes @horror-proton\n* use factory function instead of class @horror-proton\n* bump zzyyyl/issue-checker from 1.7 to 1.8 @zzyyyl\n* 修正生息演算相关打标签逻辑 @zzyyyl\n* changelog生成器repo独立设置 @SherkeyXD\n* move functions to TileCalc2 and TileDef @horror-proton\n* Amiya new promotion in RoguelikeBattleTaskPlugin (#9377) @Manicsteiner\n* use NativeLibrary for wine check @dantmnf\n* Amiya new promotion (#9347) @178619\n* 修正临时招募优先度描述错误 (#9344) @IzakyL\n* StyleCop链接使用cdn @SherkeyXD\n\n### For Overseas\n\n#### txwy\n\n* 初步適配繁中服薩米肉鴿 (#9429) @momomochi987\n\n#### YostarEN\n\n* YostarEN RS navigation @Constrat\n* en 服在没有源石和理智药的情况下无法退出刷理智任务 @ABA2396\n\n#### YostarJP\n\n* YoStarJP RS navigation (#9427) @Manicsteiner\n* YoStarJP roguelike ocr fix (#9426) @Manicsteiner\n\n#### YostarKR\n\n* YoStarKR RS stage navigation @HX3N\n* depot analyzer to detect multipliers for KR (#9343) @178619\n* YoStar add translations for new feat @HX3N\n\n**Full Changelog**: [v5.4.0-beta.1 -> v5.4.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.4.0-beta.1...v5.4.0-beta.2)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/161629313/reactions",
-      "total_count": 2,
+      "total_count": 3,
       "+1": 0,
       "-1": 0,
       "laugh": 0,
-      "hooray": 2,
+      "hooray": 3,
       "confused": 0,
       "heart": 0,
       "rocket": 0,
