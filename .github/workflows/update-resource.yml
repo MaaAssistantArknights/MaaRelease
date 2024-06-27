@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  cancel-in-progress: true
+  cancel-in-progress: false
   group: update-resource@MaaRelease
 
 jobs:
