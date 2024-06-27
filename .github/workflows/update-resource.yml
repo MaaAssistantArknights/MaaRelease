@@ -6,6 +6,10 @@ on:
       - .github/workflows/update-resource.yml
   workflow_dispatch:
 
+concurrency:
+  cancel-in-progress: true
+  group: update-resource@MaaRelease
+
 jobs:
   CC_n8n:
     runs-on: ubuntu-latest
