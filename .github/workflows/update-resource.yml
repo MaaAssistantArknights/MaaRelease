@@ -34,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - CC_n8n
-      - R2
 
     steps:
       - name: Setup ssh key
