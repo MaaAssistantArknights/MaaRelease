@@ -206,7 +206,7 @@ jobs:
           BODY: '{"RELEASE_TAG": "${{ needs.getReleaseTag.outputs.release_tag }}"}'
 
       - name: Fire the webhook of AnnAngela's COS
-        if: (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
+        if: false || (github.repository == 'MaaAssistantArknights/MaaRelease' || github.repository == 'AnnAngela/MaaRelease') && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'AnnAngelaMirror'))
         run: |
           node scripts/AnnAngela/webhook.js
         env:
