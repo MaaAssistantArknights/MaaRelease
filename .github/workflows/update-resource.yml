@@ -33,6 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: MaaAssistantArknights/MaaResource
+          ssh-key: ${{secrets.MAA_RESOURCE_DEPLOY}}
       - name: Push to GitLab
         uses: SvanBoxel/gitlab-mirror-and-ci-action@master
         with:
