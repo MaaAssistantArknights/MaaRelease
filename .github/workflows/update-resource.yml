@@ -29,7 +29,21 @@ jobs:
         env:
           WEBHOOK_URL: https://workflow.maa-org.net/webhook/MaaResource
           WEBHOOK_SECRET:  ${{ format('{0} {1}', 'MaaRelease', secrets.CC_N8N_CREDENTIAL) }}
-
+  CC_gitlab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push to GitLab
+        uses: SvanBoxel/gitlab-mirror-and-ci-action@master
+        with:
+          args: "https://gitlab.maa-org.net/MaaAssistantArknights/MaaResource"
+        env:
+          FOLLOW_TAGS: "false"
+          FORCE_PUSH: "false"
+          GITLAB_HOSTNAME: "gitlab.maa-org.net"
+          GITLAB_USERNAME: ${{ secrets.GITLAB_BOT_NAME }}
+          GITLAB_PASSWORD: ${{ secrets.GITLAB_BOT_PASSWORD }}
+          GITLAB_PROJECT_ID: "1"
   ota:
     runs-on: ubuntu-latest
     needs:
