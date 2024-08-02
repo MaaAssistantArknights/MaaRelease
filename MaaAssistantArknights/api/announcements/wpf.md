@@ -1,8 +1,8 @@
 # 停止资源版本自动更新
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/congratulations.png" width="100%" /><br>
-现停止提供资源版本自动更新，手动更新方式参考以下图片。仓库地址 https://github.com/MaaAssistantArknights/MaaResource
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/1.png" width="100%" /><br>
+现停止提供资源版本自动更新，手动更新方式参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
+
+仓库地址 [https://github.com/MaaAssistantArknights/MaaResource](https://github.com/MaaAssistantArknights/MaaResource)
 
 # 长期公告
 
