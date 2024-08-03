@@ -780,14 +780,14 @@
     "body": "## v5.5.114514\n\n### 新增 | New\n\n* 新增去伪存真节点gui记录 @DavidWang19\n* SideStory「太阳甩在身后」导航 @SherkeyXD\n* 可组合式完成后任务 (#9960) @Icexbb @status102\n* Daily Orundum from Lucky wall YostarEN @Constrat\n* YostarKR HS navigation @HX3N\n* YostarEN HS navigation @Constrat\n* 幸运墙 免费单抽 for YostarKR @HX3N\n* 幸运墙 免费单抽 for YostarJP (#9994) @Manicsteiner\n\n### 改进 | Improved\n\n* 截图测试按钮增加翻译，移动至全局层级 @status102\n* 优化萨卡兹肉鸽ew精二优先级 (#9984) @Daydreamer114\n\n### 修复 | Fix\n\n* Wpf代理 proxy 读取错误 @ABA2396\n* 定时检查更新与界面显示不符 @ABA2396\n* 幸运墙适配夏活 @SherkeyXD\n* YostarEN roguelike navigation reverting #8769  previous temporary fix for #8764 @Constrat\n* 修复截图测试会触发完成后动作的Bug (#10002) @status102\n* 修复萨卡兹肉鸽去伪存真节点卡住的问题 @zzyyyl\n* YostarKR training seprate string @HX3N\n* YostarEN revert StartToVisit template @Constrat\n* YostarKR remove StartToVisit @HX3N\n* YostarKR roguelike navigation @HX3N\n* Manual HS operators ocrReplace @Constrat\n* YostarEN Sami I.S. encounter regex @Constrat\n* Tweaked training room timer detection + new TrainingLevel templates Yostar fucked up the templates with this update @Constrat\n* OrundumActivities confirmation on global @Constrat\n\n### 文档 | Docs\n\n* 修复Readme中的Weblate链接 @Rbqwow\n* use gpt to translate zh-cn to en-us (#10007) @Rbqwow\n* GameData Yostar citation @Constrat\n* Update 肉鸽辅助协议.md @Lancarus\n* Update 肉鸽辅助协议.md @Lancarus\n* Update integrated-strategy-schema.md @Lancarus\n* 补充后台保活限定词和自动战斗帧数要求 @Rbqwow\n* 更新 Issue 模板 @Rbqwow\n\n### 其他 | Other\n\n* recruitment data runs only on \"char_\" @Constrat\n* typo + YostarJP ghost THRM-EX appearing twice (no idea what's going on) @Constrat\n* trap_470_tmantic having same name as 맨티코어 instead of \"Manticore Killer\" @Constrat\n* 修复debug模式在intel mac系统下无法通过编译的问题 (#9940) @Alan-Charred\n* 移除tasks.json中的无效参数 @status102\n* caching @Constrat\n* paths for auto optimizayion @Constrat\n* caching for res-upd @Constrat\n* res-upd optimize_template (I am stupid) @Constrat\n* res-upd optimize-templates @Constrat\n* oxipng for ResourceUpdater @Constrat\n* ResourceUpdater KR Shamare incosistency @Constrat\n* 更新 ChangelogGenerator @zzyyyl\n* 完成后动作标题下方增加分隔线 @status102\n* 屏蔽资源版本更新 @ABA2396\n* use starts_with instead of compare @Constrat\n* 更新`其他`文档 更新部分翻译 @Rbqwow\n* 增加日志输出 PackageTask 的当前 subtask @zzyyyl\n* 减少部分日志输出 @zzyyyl\n* 增加一些肉鸽参数 (#9875) @Lancarus\n* deprecate legacy GPUs (#9990) @dantmnf\n* HTTP2 (#9967) @SherkeyXD\n* 格式化专精剩余时间输出 @ABA2396\n* YostarEN trader regex @Constrat\n* lucky wall, StartToVisit for YostarJP (#10019) @Manicsteiner\n* revert: fix: caching @Constrat\n* EN tweak [skip ci] @Constrat\n* YostarKR Sami roguelike expansion and fix ocr @HX3N\n* YostarJP ocr fix 黍 @Manicsteiner\n* StartToVisit ROI for Yostar servers @Manicsteiner\n* tools: updated ignore list @Constrat\n* roguelike navigation for YostarJP (#9995) @Manicsteiner\n* Update ja-jp.json @wallsman\n* Revert \"feat: 印象加深后卡住时截图\" @zzyyyl\n* Revert \"feat: 战斗流程协议命令块增强 (#9952)\" @status102\n* 统一 commitizen @zzyyyl\n\n**Full Changelog**: [v5.5.0 -> v5.5.11451](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.5.0...v5.5.11451)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/168395457/reactions",
-      "total_count": 5,
-      "+1": 2,
+      "total_count": 10,
+      "+1": 4,
       "-1": 0,
-      "laugh": 0,
+      "laugh": 2,
       "hooray": 0,
       "confused": 0,
       "heart": 0,
-      "rocket": 3,
+      "rocket": 4,
       "eyes": 0
     },
     "mentions_count": 15
