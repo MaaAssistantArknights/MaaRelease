@@ -1,5 +1,9 @@
 {
     "CV-Open": {
-        "text": ["黑色艦船", "黑色","艦船", "關卡", "開啟"]
-    }
+        "action": "ClickSelf",
+        "algorithm": "OcrDetect",
+        "postDelay": 2000,
+        "text": ["黑色艦船", "黑色","艦船", "關卡", "開啟"],
+        "next": ["CVChapterToCV"]
+    },
 }
