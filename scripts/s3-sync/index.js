@@ -1,13 +1,13 @@
 import console from "../modules/console.js";
 import { Octokit } from "../modules/octokit.js";
 import retryableFetch from "../modules/retryableFetch.js";
-import path from "path";
+import path from "node:path";
 
 import { Client } from "minio";
-import os from "os";
-import timerPromises from "timers/promises";
+import os from "node:os";
+import timerPromises from "node:timers/promises";
 import byteSize from "byte-size";
-import http from "http";
+import http from "node:http";
 let lastError;
 let duration = -1;
 let RELEASE_TAG = process.env.RELEASE_TAG;
