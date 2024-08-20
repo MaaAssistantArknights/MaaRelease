@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 /**
  * @param {string} key
  * @param {Buffer} raw

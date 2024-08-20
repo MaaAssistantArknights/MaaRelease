@@ -1,7 +1,7 @@
 import console from "../modules/console.js";
-import fs from "fs";
+import fs from "node:fs";
 import readDir from "../modules/readDir.js";
-import path from "path";
+import path from "node:path";
 const uploadDirPath = process.env.dirWithReleaseTag;
 console.info("uploadDirPath:", uploadDirPath);
 console.info("Remove unnecessary files...");
