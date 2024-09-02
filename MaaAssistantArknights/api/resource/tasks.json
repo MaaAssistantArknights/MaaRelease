@@ -27,11 +27,7 @@
         "baseTask": "SS-OpenOcr",
         "text": [
            "泰拉饭",
-           "泰拉",
-           "拉饭",
-           "走遍泰拉",
-           "走遍",
-           "遍泰"
+           "走遍泰拉"
         ],
         "roi": [93, 533, 297, 43],
         "next": ["DTChapterToDT"]
@@ -40,11 +36,7 @@
         "baseTask": "SS-OpenOcr",
         "text": [
            "泰拉饭",
-           "泰拉",
-           "拉饭",
-           "走遍泰拉",
-           "走遍",
-           "遍泰"
+           "走遍泰拉"
         ],
         "next": ["DTChapterToDT"]
     },
@@ -62,53 +54,36 @@
         "next": ["#self", "ChapterSwipeToTheRight"]
     },
     "DT-8@SideStoryStage": {
+        "isAscii": false,
         "text": [
            "罗",
            "德",
            "岛"
-        ]
+        ],
+        "roi": [726, 395, 33, 33]
     },
     "DT-7@SideStoryStage": {
+        "isAscii": false,
         "text": [
            "健",
            "康"
-        ]
+        ],
+        "roi": [730, 387, 37, 35]
     },
     "DT-6@SideStoryStage": {
+        "isAscii": false,
         "text": [
            "海",
            "鲜"
-        ]
+        ],
+        "roi": [733, 359, 40, 33]
     },
     "DT-3@SideStoryStage": {
+        "isAscii": false,
         "text": [
            "黄",
            "金"
-        ]
-    },
-    "DT-8@SwipeToStage": {
-        "text": [
-           "罗",
-           "德",
-           "岛"
-        ]
-    },
-    "DT-7@SwipeToStage": {
-        "text": [
-           "健",
-           "康"
-        ]
-    },
-    "DT-6@SwipeToStage": {
-        "text": [
-           "海",
-           "鲜"
-        ]
-    },
-    "DT-3@SwipeToStage": {
-        "text": [
-           "黄",
-           "金"
-        ]
+        ],
+        "roi": [744, 264, 38, 35]
     }
 }
