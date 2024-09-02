@@ -1,32 +1,76 @@
 {
-   "SL-8": {
+   "DT-8": {
         "algorithm": "JustReturn",
-        "sub": ["SL-OpenOpt"],
-        "next": ["SL-8@SideStoryStage", "SL-8@SwipeToStage"]
+        "sub": ["DT-OpenOpt"],
+        "next": ["DT-8@SideStoryStage", "DT-8@SwipeToStage"]
     },
-    "SL-7": {
+    "DT-7": {
         "algorithm": "JustReturn",
-        "sub": ["SL-OpenOpt"],
-        "next": ["SL-7@SideStoryStage", "SL-7@SwipeToStage"]
+        "sub": ["DT-OpenOpt"],
+        "next": ["DT-7@SideStoryStage", "DT-7@SwipeToStage"]
     },
-    "SL-6": {
+    "DT-6": {
         "algorithm": "JustReturn",
-        "sub": ["SL-OpenOpt"],
-        "next": ["SL-6@SideStoryStage", "SL-6@SwipeToStage"]
+        "sub": ["DT-OpenOpt"],
+        "next": ["DT-6@SideStoryStage", "DT-6@SwipeToStage"]
     },
-    "SL-OpenOpt": {
+    "DT-3": {
         "algorithm": "JustReturn",
-        "next": ["SL-OpenOcr", "SL-Open"]
+        "sub": ["DT-OpenOpt"],
+        "next": ["DT-3@SideStoryStage", "DT-3@SwipeToStage"]
     },
-    "SL-Open": {
-        "baseTask": "SS-OpenOcr",
-        "text": ["火山", "旅梦"],
-        "roi": [505, 57, 462, 628],
-        "next": ["SLChapterToSL"]
+    "DT-OpenOpt": {
+        "algorithm": "JustReturn",
+        "next": ["DT-OpenOcr", "DT-Open"]
     },
-    "SL-OpenOcr": {
-        "baseTask": "SS-OpenOcr",
-        "text": ["火山", "旅梦"],
-        "next": ["SLChapterToSL"]
+    "DT-Open": {
+        "bDTeTDTk": "SS-OpenOcr",
+        "text": [
+           "泰拉饭",
+           "泰拉",
+           "拉饭",
+           "走遍泰拉",
+           "走遍",
+           "遍泰"
+        ],
+        "roi": [93, 533, 297, 43],
+        "next": ["DTChapterToDT"]
+    },
+    "DT-OpenOcr": {
+        "bDTeTDTk": "SS-OpenOcr",
+        "text": [
+           "泰拉饭",
+           "泰拉",
+           "拉饭",
+           "走遍泰拉",
+           "走遍",
+           "遍泰"
+        ],
+        "next": ["DTChapterToDT"]
+    },
+   "DTChapterToDT": {
+        "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "text": [
+           "品尝魔物",
+           "品尝",
+           "尝魔",
+           "魔物",
+        ],
+        "preDelay": 3000,
+        "roi": [1034, 466, 117, 35],
+        "next": ["#self", "ChapterSwipeToTheRight"]
+    },
+    "DT-8@SideStoryStage": {
+        "text": ["罗"]
+    },
+    "DT-7@SideStoryStage": {
+        "text": ["健"]
+    },
+    "DT-6@SideStoryStage": {
+        "text": ["海"]
+    },
+    "DT-3@SideStoryStage": {
+        "text": ["黄"]
     }
 }
