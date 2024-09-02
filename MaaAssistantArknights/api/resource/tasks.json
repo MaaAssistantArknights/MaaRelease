@@ -24,7 +24,7 @@
         "next": ["DT-OpenOcr", "DT-Open"]
     },
     "DT-Open": {
-        "bDTeTDTk": "SS-OpenOcr",
+        "baseTask": "SS-OpenOcr",
         "text": [
            "泰拉饭",
            "泰拉",
@@ -37,7 +37,7 @@
         "next": ["DTChapterToDT"]
     },
     "DT-OpenOcr": {
-        "bDTeTDTk": "SS-OpenOcr",
+        "baseTask": "SS-OpenOcr",
         "text": [
            "泰拉饭",
            "泰拉",
