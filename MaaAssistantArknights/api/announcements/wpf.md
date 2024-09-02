@@ -1,12 +1,14 @@
-# 生息演算内容拓展Ⅱ
+# 停止资源版本热更新
 
-生息演算内容拓展之后加了点剧情， 现在的版本制造刷点数的自己过一下这个剧情后再过三天到下个定量之日再开始任务还是能用的， 靠一直开局刷点数的会卡住， 得等修了之后更新才能用。    
-
-# 停止资源版本自动更新
-
-现停止提供资源版本自动更新，手动更新方式参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
+现停止提供资源版本热更新，手动更新方式参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
 
 仓库地址 [https://github.com/MaaAssistantArknights/MaaResource](https://github.com/MaaAssistantArknights/MaaResource)
+
+**资源版本与软件版本相对独立，更新资源文件无法修复软件中的 bug 或添加新功能。有关版本更新的详细信息，请参阅更新日志。**
+
+目前，MAA 仅暂停了资源文件的自动更新，但软件版本更新仍在正常进行。每次版本更新都包括资源更新，因此资源并非完全静态。
+
+如果资源版本滞后，可能会影响新关卡的自动战斗、掉落物识别，以及公招中的新标签和干员识别等功能。如果不依赖这些功能，可以选择等待 MAA 软件版本更新。
 
 # 长期公告
 
@@ -14,4 +16,4 @@
 
 请勿参加内鬼消息的传播，禁止将内鬼消息发送至任何 MAA 群。  
 
-<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg" width="100%" /><br>
+<img src="https://ota.maa.plus/MaaAssistantArknights/api/announcements/img/NoSkland.jpg" width="20%" /><br>
