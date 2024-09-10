@@ -5,13 +5,16 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
-## 迷宫饭主题活动不支持使用战斗列表
+## 迷宫饭主题活动部分关卡不支持使用战斗列表
 
 ```json
 {
-  "time": "2024-09-06T17:25:15.427Z"
+  "time": "2024-09-10T01:19:07.351Z"
 }
 ```
+
+* **“品尝魔物”**（普通关）：不支持
+* **“走遍泰拉”**（ＥＸ关）：支持哦~
 
 ![](img/capoo1.gif)
 
