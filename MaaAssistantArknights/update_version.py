@@ -34,7 +34,7 @@ def retry_urlopen(*args, **kwargs):
 MIRRORS = [
     ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
     ("github.com", "maa.r2.imgg.dev"),
-    ("github.com", "agent.imgg.dev"),
+    # ("github.com", "agent.imgg.dev"),
     ("github.com", "agent.chingc.cc"),
 ]
 
