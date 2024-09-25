@@ -92,5 +92,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          provenance: false
-          push: true
+          provenance: mode=max
+          sbom: true
