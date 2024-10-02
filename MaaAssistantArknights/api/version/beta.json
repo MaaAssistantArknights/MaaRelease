@@ -689,6 +689,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v5.7.0-beta.2",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v5.7.0-beta.2",
     "body": "## v5.7.0-beta.2\n\n### 新增 | New\n\n* ZT關卡導引更新 @XuQingTW\n* 掉落统计显示当前关卡名称 @ABA2396\n\n### 改进 | Improved\n\n* 优化可清除内容的下拉框显示效果 @ABA2396 @Alan-Charred\n\n### 修复 | Fix\n\n* 肉鸽重新编队应在首页执行 @YueLengM\n* 自动编队偶现无法匹配职业图标 @ABA2396\n* 强制定时启动前显示窗口 导致程序崩溃 @ABA2396\n* 强制定时启动报错 @ABA2396\n\n### 文档 | Docs\n\n* 更新 bug-issue 模板 (#10675) @Daydreamer114\n* LD screenshot JP translate (#10659) @Manicsteiner @ABA2396\n\n### 其他 | Other\n\n* switch to StageSideStory.png for OD YostarKR @HX3N\n* switch to StageSideStory.png for OD YostarEN @Constrat\n* YostarKR switch OD navigation to template @HX3N\n* switch OD navigation to template @Constrat\n* txwy gamedata + various refactoring for resource updater @Constrat\n* perf!: Full multithread implementation for ResourceUpdater.exe + method refactoring @Constrat\n* InvokeAsync 前判断是否已经在 ui 线程 @ABA2396\n* 执行完成后动作前输出当前选择的动作 @ABA2396\n* uncommented update stages section. @Constrat\n* 调整肉鸽 StageTraderRefreshWithDice 任务的 roi 参数 (#10686) @Alan-Charred\n* renamed input directory @Constrat\n* resupd clone data script wrong location @Constrat\n* 降低 Tales@RA@LeaveCurrentZone 任务的 templThreshold (#10658) @Alan-Charred\n* ResourceUpdater always returning 0 even on error @Constrat\n* ResourceUpdater git diff not finding pngs @Constrat\n* ResourceUpdater.exe implements multi-threading + fix for missing foldartals Lighter implementation compared to #10683 @Constrat\n* 移除 ConnectSettingsUserControl 设计时高度限制 @ABA2396\n* removed wrong tooltip from AllowUseStoneSave @Constrat\n* EN tweak for Use Originium option @Constrat\n* EN tweak @Constrat\n* 调整 bug report @ABA2396\n* Update ResourceUpdater script and clone_data_repo.ps1 @Constrat\n* cd to starting dir for script tools @Constrat\n* ResourceUpdater tweaks and code optimizations (#10689) @Constrat\n* more threading, namespace refactoring for ResourceUpdater @Constrat\n* TimerSettings 改用 NumericUpDown 验证输入 @ABA2396\n* 定时启动添加日志 @ABA2396\n* 主定时器改用 Timer @ABA2396\n* 在 ui 线程清除日志 @ABA2396\n\n**Full Changelog**: [v5.7.0-beta.1 -> v5.7.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.7.0-beta.1...v5.7.0-beta.2)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/177706714/reactions",
+      "total_count": 1,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 1,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 8
   }
 }
