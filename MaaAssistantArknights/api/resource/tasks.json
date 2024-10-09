@@ -24,12 +24,8 @@
         "next": ["GO-OpenOcr", "GO-Open"]
     },
     "GO-Open": {
-        "baseTask": "SS-OpenOcr",
-        "text": [
-           "追迹日落以西",
-           "未了往昔"
-        ],
-        "roi": [98, 531, 270, 36],
+        "baseTask": "SS-Open",
+        "template": "StageSideStory.png",
         "next": ["GOChapterToGO"]
     },
     "GO-OpenOcr": {
