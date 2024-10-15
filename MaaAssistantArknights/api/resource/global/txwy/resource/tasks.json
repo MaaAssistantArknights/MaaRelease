@@ -1,8 +1,13 @@
 {
     "ZT-OpenOcr": {
-        "text": ["權威", "無情", "關卡", "開放"]
+        "text": ["敘拉古人", "復刻", "活動", "開放"],
+        "action": "ClickSelf",
+        "algorithm": "OcrDetect",
+        "postDelay": 2000,
+        "roi": [0, 500, 500, 150],
+        "next": ["EnterChapterIS","SwipeToStageIS"]
     },
-    "ZTChapterToZT": {
-        "text": ["朝見", "雙塔"]
-    }
+    "EnterChapterIS": {
+        "text": ["沃爾西尼"]
+    },
 }
