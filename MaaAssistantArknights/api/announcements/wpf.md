@@ -1,3 +1,13 @@
+# MAA 💩记
+
+💩官动态： https://www.bilibili.com/opus/988906607817523221
+
+💩官记录： https://docs.qq.com/doc/DQ2dFUnREaURZUWt0
+
+发💩不是为了让你们看💩，是为了提醒那些换钱买了免费软件的，能退款的抓紧退款，不能退款的抓紧举报。
+
+B 站的这坨大💩只是顺带的
+
 # 停止资源版本热更新
 
 现停止提供资源版本热更新，手动更新方式参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
