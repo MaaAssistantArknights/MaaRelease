@@ -1,8 +1,8 @@
 # MAA 💩记
 
-💩官动态： <https://www.bilibili.com/opus/988906607817523221>
+💩官动态： [B 动态](https://www.bilibili.com/opus/988906607817523221)
 
-💩官记录： <https://docs.qq.com/doc/DQ2dFUnREaURZUWt0>
+💩官记录： [Q 文档](https://docs.qq.com/doc/DQ2dFUnREaURZUWt0)
 
 发💩不是为了让你们看💩，是为了提醒那些换钱买了免费软件的，能退款的抓紧退款，不能退款的抓紧举报。
 
@@ -12,7 +12,7 @@ B 站的这坨大💩只是顺带的
 
 现停止提供资源版本热更新，手动更新方式参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
 
-仓库地址 <https://github.com/MaaAssistantArknights/MaaResource>
+仓库地址 [仓库](https://github.com/MaaAssistantArknights/MaaResource)
 
 **资源版本与软件版本相对独立，更新资源文件无法修复软件中的 bug 或添加新功能。有关版本更新的详细信息，请参阅更新日志。**
 
