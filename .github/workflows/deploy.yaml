@@ -7,7 +7,7 @@ on:
     paths:
       - nginx.conf
       - 'MaaAssistantArknights/**'
-      - .github/workflows/deploy.yml
+      - .github/workflows/deploy.yaml
   workflow_dispatch:
 
 jobs:
