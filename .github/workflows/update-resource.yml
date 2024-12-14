@@ -3,7 +3,7 @@ name: update-resource
 on:
   push:
     paths:
-      - .github/workflows/update-resource.yaml
+      - .github/workflows/update-resource.yml
   workflow_dispatch:
 
 concurrency:

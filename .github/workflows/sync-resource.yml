@@ -8,7 +8,7 @@ on:
     paths:
       - 'MaaAssistantArknights/api/resource/**'
       - 'MaaAssistantArknights/api/gui/StageActivity.json'
-      - '.github/workflows/sync-resource.yaml'
+      - '.github/workflows/sync-resource.yml'
 
 jobs:
   sync-reource:
