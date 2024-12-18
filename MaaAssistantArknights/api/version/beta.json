@@ -640,6 +640,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v5.11.0-beta.2",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v5.11.0-beta.2",
     "body": "## v5.11.0-beta.2\n\n### 新增 | New\n\n* 为选择线索添加判定 (#11323) @Alan-Charred\n* enhance MAA website animation for a more elegant appearance (#11303) @chisato2233\n\n### 改进 | Improved\n\n* WpfGui重构 部分拆分`设置-关于` (#11330) @status102\n* WpfGui重构 拆分`设置-性能设置` (#11329) @status102\n* 更新保全派驻荒地群兽音乐厅，多索雷斯在建地块新作业 (#11318) @Saratoga-Official\n* WpfGui重构 拆分`一键长草-公招任务` (#11311) @status102\n* 优化仓库识别显示，减少读取文件次数，优化文件占用 @ABA2396\n\n### 修复 | Fix\n\n* YostarKR improved StageBoskyPassageEnter recognition score (#11351) @HX3N\n* CheckComboBox 初始化报错 @ABA2396\n* SSS recruitment flag EN @Constrat\n* YostarKR improved StageMysteriousPresageEnter recognition score (#11336) @HX3N\n* 网络卡顿导致领邮件失败 (#11333) @Daydreamer114\n* 进入去伪存真后识别太快导致错过 close collection 识别 @Daydreamer114\n* 小工具-公招识别 绑定失效 @status102\n* 增加 Tales@RA@ResourceGained 任务的 roi (#11322) @Alan-Charred\n* YostarJP MedicineExpiringTime ocr fix (#11307) @Manicsteiner\n* 将萨卡兹肉鸽 CloseCollection 的 Continue 和 Close 改为 RGBCount (#11302) @Daydreamer114\n* 仓库识别无法识别 ”万“ @ABA2396\n* 移除多余的阻止休眠设置选项 (#11301) @Rbqwow\n\n### 文档 | Docs\n\n* 新手上路增加非 Windows 指引；macOS 和 Android 实体设备添加说明 (#11227) @Daydreamer114 @ABA2396 @Rbqwow\n* 增加Mac模拟器：蓝叠模拟器air版 (#11349) @MikeQu223\n\n### 其他 | Other\n\n* Revert \"refactor: yml -> yaml standardization\" @Constrat\n* yml -> yaml standardization @Constrat\n* add YostarJP ocrReplace 黑角 (#11350) @liang36176381\n* Reapply \"style: 修改变量以符合项目风格\" @status102\n* Revert \"style: 修改变量以符合项目风格\" @status102\n* ci/nightly-schedule (#11317) @Constrat\n* 简化完成后动作UI绑定 (#11316) @status102\n\n**Full Changelog**: [v5.11.0-beta.1 -> v5.11.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.11.0-beta.1...v5.11.0-beta.2)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/190819924/reactions",
+      "total_count": 1,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 1,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 12
   }
 }
