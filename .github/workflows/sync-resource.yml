@@ -16,18 +16,21 @@ jobs:
     
     steps:
       - name: Checkout MaaRelease
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
+
       - name: Setup Git
         run: |
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git show -s
+
       - name: Checkout MaaResource
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
         with:
           repository: MaaAssistantArknights/MaaResource
           ssh-key: ${{secrets.MAA_RESOURCE_DEPLOY}}
           path: MaaResource
+
       - name: Update MaaResource
         run: |
           export commit_msg=$(git show -s --format=%s)
