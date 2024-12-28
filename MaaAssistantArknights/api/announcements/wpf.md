@@ -1,3 +1,17 @@
+# 企鹅物流C105参展公告
+
+企鹅物流数据统计C105品书公开！
+
+这次我们使用新工艺制作了5周年纪念图的谷子，「罗德岛基建BETA」的合作谷子也有很多更新。欢迎大家12月29日来 東v-21ab 摊位找我们玩！
+
+*这次我们的所有收益也会用于网站的运营维护上
+
+[![list](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_1200w.jpg)](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_3000w.jpg)
+
+[点击前往企鹅物流B站相关动态](https://www.bilibili.com/opus/1016014740539834374)
+
+~~别问为什么MAA会发企鹅物流的广告，问就是gg卖屁股换的~~
+
 # 停止资源版本自动更新
 
 现停止提供资源版本自动更新，手动更新可前往 `设置`-`软件更新` 点击 `资源更新`，如长时间无法更新或频繁失败，请参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)。
