@@ -1,12 +1,12 @@
-# 企鹅物流C105参展公告
+# 企鹅物流 C105 Day 1 参展！
 
-企鹅物流数据统计C105品书公开！
+企鹅物流数据统计 コミケ105 / C105 品书公开！
 
-这次我们使用新工艺制作了5周年纪念图的谷子，「罗德岛基建BETA」的合作谷子也有很多更新。欢迎大家12月29日来 東v-21ab 摊位找我们玩！
+这次我们使用新工艺制作了 5 周年纪念图的谷子，「罗德岛基建BETA」的合作谷子也有很多更新。欢迎大家于 C105 1日目（12月29日）来「東ｖ-21ab」摊位找我们玩！
 
-*这次我们的所有收益也会用于网站的运营维护上
+* 这次我们的所有收益也会用于网站的运营维护上！
 
-[![list](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_1200w.jpg)](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_3000w.jpg)
+[![C105 品书/お品書き](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_1200w.jpg)](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_3000w.jpg)
 
 [点击前往企鹅物流B站相关动态](https://www.bilibili.com/opus/1016014740539834374)
 
