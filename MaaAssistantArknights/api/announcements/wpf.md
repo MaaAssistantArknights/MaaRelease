@@ -4,7 +4,7 @@
 
 这次我们使用新工艺制作了 5 周年纪念图的谷子，「罗德岛基建BETA」的合作谷子也有很多更新。欢迎大家于 C105 1日目（12月29日）来「東ｖ-21ab」摊位找我们玩！
 
-* 这次我们的所有收益也会用于网站的运营维护上！
+※这次我们的所有收益也会用于网站的运营维护上！
 
 [![C105 品书/お品書き](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_1200w.jpg)](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_3000w.jpg)
 
