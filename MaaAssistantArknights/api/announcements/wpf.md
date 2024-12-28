@@ -6,9 +6,11 @@
 
 *这次我们的所有收益也会用于网站的运营维护上
 
-[点击前往企鹅物流B站动态查看商品列表](https://www.bilibili.com/opus/1016014740539834374)
+[![list](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_1200w.jpg)](https://penguin.upyun.galvincdn.com/activities/comiket105/shinagaki_3000w.jpg)
 
-~~别问为什么MAA会发企鹅物流的广告，问就是某人卖**换的~~
+[点击前往企鹅物流B站相关动态](https://www.bilibili.com/opus/1016014740539834374)
+
+~~别问为什么MAA会发企鹅物流的广告，问就是gg卖屁股换的~~
 
 # 停止资源版本自动更新
 
