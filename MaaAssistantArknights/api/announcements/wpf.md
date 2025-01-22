@@ -12,6 +12,8 @@
 
 另，【刷理智】功能已支持 SideStory「相见欢」。
 
+----
+
 # 停止资源版本自动更新
 
 现停止提供资源版本自动更新，手动更新可前往 `设置`-`软件更新` 点击 `资源更新`，如长时间无法更新或频繁失败，请参考 [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)。
