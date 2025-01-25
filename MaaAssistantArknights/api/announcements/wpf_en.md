@@ -1,5 +1,5 @@
 # Temporary Announcement
-## Recent base update on Official and Bilibili server 
+### Recent base update on Official and Bilibili server 
 
 The latest official version v5.12.0 already includes the fix for this content. Please update to the latest official version. If there are still infrastructure issues, please report them on Github.
 
