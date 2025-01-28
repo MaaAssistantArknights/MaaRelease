@@ -2,7 +2,7 @@
 ### Official MAA Discord server is now open!
 
 Announcements, Releases, Support and a friendly community!
-Invite link: https://discord.gg/23DfZ9uA4V
+Invite link: [https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ----
 

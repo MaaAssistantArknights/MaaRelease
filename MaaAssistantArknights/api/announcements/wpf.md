@@ -2,7 +2,7 @@
 ### MAA Discord 官方服务器现已开放！
 
 公告、新版本、支持和友好社区！
-邀请链接：https://discord.gg/23DfZ9uA4V 
+邀请链接：[https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ----
 
