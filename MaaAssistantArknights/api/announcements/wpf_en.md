@@ -1,4 +1,11 @@
 # Temporary Announcement
+### Official MAA Discord server is now open!
+
+Announcements, Releases, Support and a friendly community!
+Invite link: https://discord.gg/23DfZ9uA4V
+
+----
+
 ### Recent base update on Official and Bilibili server 
 
 The latest official version v5.12.0 already includes the fix for this content. Please update to the latest official version. If there are still infrastructure issues, please report them on Github.
