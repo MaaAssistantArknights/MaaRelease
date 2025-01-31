@@ -24,6 +24,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Get Version
+        id: version_name
+        run: |
+          version=$(date --utc +%Y%m%d%H%M%S)
+          lastUpdateTime=$(echo $version | jq '{timestamp:.}')
+          echo "version=$version" | tee -a "$GITHUB_OUTPUT"
+          echo "lastUpdateTime=$lastUpdateTime" | tee -a "$GITHUB_OUTPUT"
+
       - name: Sync repository
         run: |
           ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
@@ -39,5 +47,5 @@ jobs:
 
               echo Generating lastUpdateTime.json
               mkdir -p MaaAssistantArknights/api/
-              date --utc +%Y%m%d%H%M%S | jq '{timestamp:.}' | tee MaaAssistantArknights/api/lastUpdateTime.json
+              echo ${{ steps.version_name.outputs.lastUpdateTime }} | tee MaaAssistantArknights/api/lastUpdateTime.json
             "
