@@ -21,16 +21,14 @@ jobs:
         id: version_name
         run: |
           version=$(date --utc +%Y%m%d%H%M%S)
-          lastUpdateTime=$(echo $version | jq -c '{timestamp:.}')
           echo "version=$version" | tee -a "$GITHUB_OUTPUT"
-          echo "lastUpdateTime=$lastUpdateTime" | tee -a "$GITHUB_OUTPUT"
 
       - name: Zip MirrorChyan
         id: zip
         run: |
           mkdir MirrorChyan
           cd MaaAssistantArknights/api
-          echo ${{ steps.version_name.outputs.lastUpdateTime }} > lastUpdateTime.json
+          echo ${{ steps.version_name.outputs.version }} | jq -c '{timestamp:.}' | tee lastUpdateTime.json
           zip -r ../../MirrorChyan/MaaResourceCache.zip gui resource lastUpdateTime.json
 
       - uses: actions/upload-artifact@v4
@@ -69,5 +67,5 @@ jobs:
 
               echo Generating lastUpdateTime.json
               mkdir -p MaaAssistantArknights/api/
-              echo ${{ steps.version_name.outputs.lastUpdateTime }} | tee MaaAssistantArknights/api/lastUpdateTime.json
+              echo ${{ steps.version_name.outputs.version }} | jq -c '{timestamp:.}' | tee MaaAssistantArknights/api/lastUpdateTime.json
             "
