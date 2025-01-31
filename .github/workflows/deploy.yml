@@ -15,14 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Setup ssh key
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
+      - uses: actions/checkout@v4
 
       - name: Get Version
         id: version_name
@@ -51,6 +44,15 @@ jobs:
             --header 'Authorization:${{ secrets.MirrorChyanUploadToken }}' \
             --form 'name="${{ steps.version_name.outputs.version }}"' \
             --form 'file=@"MirrorChyan/MaaResourceCache.zip"'
+      
+      - name: Setup ssh key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
 
       - name: Sync repository
         run: |
