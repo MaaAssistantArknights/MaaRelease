@@ -28,7 +28,7 @@ jobs:
         id: version_name
         run: |
           version=$(date --utc +%Y%m%d%H%M%S)
-          lastUpdateTime=$(echo $version | jq '{timestamp:.}')
+          lastUpdateTime=$(echo $version | jq -c '{timestamp:.}')
           echo "version=$version" | tee -a "$GITHUB_OUTPUT"
           echo "lastUpdateTime=$lastUpdateTime" | tee -a "$GITHUB_OUTPUT"
 
