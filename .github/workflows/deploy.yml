@@ -36,8 +36,8 @@ jobs:
         id: zip
         run: |
           mkdir MirrorChyan
-          echo ${{ steps.version_name.outputs.lastUpdateTime }} | tee MaaAssistantArknights/api/lastUpdateTime.json
           cd MaaAssistantArknights/api
+          echo ${{ steps.version_name.outputs.lastUpdateTime }} > lastUpdateTime.json
           zip -r ../../MirrorChyan/MaaResourceCache.zip gui resource lastUpdateTime.json
 
       - uses: actions/upload-artifact@v4
