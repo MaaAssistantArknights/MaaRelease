@@ -32,6 +32,26 @@ jobs:
           echo "version=$version" | tee -a "$GITHUB_OUTPUT"
           echo "lastUpdateTime=$lastUpdateTime" | tee -a "$GITHUB_OUTPUT"
 
+      - name: Zip MirrorChyan
+        id: zip
+        run: |
+          mkdir MirrorChyan
+          echo ${{ steps.version_name.outputs.lastUpdateTime }} | tee MaaAssistantArknights/api/lastUpdateTime.json
+          cd MaaAssistantArknights/api
+          zip -r ../../MirrorChyan/MaaResourceCache.zip gui resource lastUpdateTime.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MirrorChyan-MaaResourceCache
+          path: MirrorChyan
+
+      - name: Upload to MirrorChyan
+        run: |
+          curl --location --request POST 'https://mirrorc.top/api/resources/MaaResourceCache/versions' \
+            --header 'Authorization:${{ secrets.MirrorChyanUploadToken }}' \
+            --form 'name="${{ steps.version_name.outputs.version }}"' \
+            --form 'file=@"MirrorChyan/MaaResourceCache.zip"'
+
       - name: Sync repository
         run: |
           ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
