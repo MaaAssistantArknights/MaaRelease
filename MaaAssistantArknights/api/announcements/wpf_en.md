@@ -9,6 +9,8 @@ Invite link: [https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ### Automatic Resource Update is back! (Really?)
 
+We have reached a cooperation with the third-party distribution platform [MirrorChyan](https://mirrorc.top/).
+
 Now, when the resources need to be updated, a notification will pop up.
 
 ---
