@@ -1,4 +1,3 @@
-# Temporary Announcement
 ### Official MAA Discord server is now open!
 
 Announcements, Releases, Support and a friendly community!
@@ -19,7 +18,7 @@ To avoid the situation of **feedback without reading the announcement**, the ann
 
 ----
 
-# Long-term Announcement
+### Long-term Announcement
 
 Please do not discuss any MAA content under the official channels of Arknights, Hypergryph and Yostar on various platforms (including but not limited to: Discord, YouTube, Twitter, Weibo, BiliBili).
 
