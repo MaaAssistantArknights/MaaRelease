@@ -23,7 +23,7 @@ jobs:
           version=$(date --utc +%Y%m%d%H%M%S)
           echo "version=$version" | tee -a "$GITHUB_OUTPUT"
 
-      - name: Zip MirrorChyan
+      - name: Zip for MirrorChyan
         id: zip
         run: |
           mkdir MirrorChyan
@@ -31,18 +31,13 @@ jobs:
           echo ${{ steps.version_name.outputs.version }} | jq -c '{timestamp:.}' | tee lastUpdateTime.json
           zip -r ../../MirrorChyan/MaaResourceCache.zip gui resource lastUpdateTime.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: MirrorChyan/uploading-action@v1
         with:
-          name: MirrorChyan-MaaResourceCache
-          path: MirrorChyan
+          filetype: local
+          filename: "MirrorChyan/MaaResourceCache.zip"
+          mirrorchyan_rid: MaaResourceCache
+          upload_token: ${{ secrets.MirrorChyanUploadToken }}
 
-      - name: Upload to MirrorChyan
-        run: |
-          curl --location --request POST 'https://mirrorc.top/api/resources/MaaResourceCache/versions' \
-            --header 'Authorization:${{ secrets.MirrorChyanUploadToken }}' \
-            --form 'name="${{ steps.version_name.outputs.version }}"' \
-            --form 'file=@"MirrorChyan/MaaResourceCache.zip"'
-      
       - name: Setup ssh key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
