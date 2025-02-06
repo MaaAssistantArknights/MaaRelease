@@ -35,6 +35,7 @@ jobs:
         with:
           filetype: local
           filename: "MirrorChyan/MaaResourceCache.zip"
+          version_name: ${{ steps.version_name.outputs.version }}
           mirrorchyan_rid: MaaResourceCache
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
 
