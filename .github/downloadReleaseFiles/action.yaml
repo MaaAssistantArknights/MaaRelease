@@ -71,7 +71,7 @@ runs:
                 export PATTERN="$PATTERN --pattern *-macos-universal.dmg"
             fi
             if [ "$OS" = "macos-ota" ]; then
-                export PATTERN="$PATTERN --pattern *.delta --pattern appcast.xml"
+                export PATTERN="$PATTERN --pattern *-macos-universal.dmg --pattern *.delta --pattern appcast.xml"
             fi
             if [ "$OS" = "macos-runtime" ]; then
                 export PATTERN="$PATTERN --pattern *-macos-runtime-universal.zip"
