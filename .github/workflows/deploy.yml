@@ -17,17 +17,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get Version
+      - name: Version Name
         id: version_name
         run: |
           version=$(date --utc +%Y%m%d%H%M%S)
           echo "version=$version" | tee -a "$GITHUB_OUTPUT"
+          
+          cd MaaAssistantArknights/api
+          echo $version | jq -c '{timestamp:.}' | tee lastUpdateTime.json
 
       - uses: MirrorChyan/uploading-action@v1
         with:
           filetype: local
           mirrorchyan_rid: MaaResourceCache
-          pick_files: '["MaaAssistantArknights/api/gui", "MaaAssistantArknights/api/resource", "MaaAssistantArknights/api/lastUpdateTime.json"]'
+          working-directory: "MaaAssistantArknights/api/"
+          pick_files: '["gui", "resource", "lastUpdateTime.json"]'
           version_name: ${{ steps.version_name.outputs.version }}
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
 
