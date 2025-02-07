@@ -26,8 +26,8 @@ jobs:
       - uses: MirrorChyan/uploading-action@v1
         with:
           filetype: local
-          mirrorchyan_rid: MaaResource
-          pick_files: '["resource"]'
+          mirrorchyan_rid: MaaResourceCache
+          pick_files: '["MaaAssistantArknights/api/gui", "MaaAssistantArknights/api/resource", "MaaAssistantArknights/api/lastUpdateTime.json"]'
           version_name: ${{ steps.version_name.outputs.version }}
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
 
