@@ -54,7 +54,7 @@ jobs:
           cache: npm
           cache-dependency-path: MaaRelease/scripts/package-lock.json
       - name: Installing the dependencies
-        uses: AnnAngela/cached_node-modules@v2
+        uses: AnnAngela/cached_node-modules@v3
         with:
           command: npm run ciInCI
           cwd: MaaRelease/scripts
