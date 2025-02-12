@@ -9,7 +9,7 @@ Invite link: [https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ### Automatic Resource Update is back! (Really?)
 
-We have reached a cooperation with the third-party distribution platform [MirrorChyan](https://mirrorc.top/).
+We have reached a cooperation with the third-party distribution platform [MirrorChyan](https://mirrorchyan.com/).
 
 Now, when the resources need to be updated, a notification will pop up. And if you buy its service and fill in the CDK, the resources will be automatically updated.
 
