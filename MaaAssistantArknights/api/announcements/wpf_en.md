@@ -13,7 +13,7 @@ We have reached a cooperation with the third-party distribution platform [Mirror
 
 Now, when the resources need to be updated, a notification will pop up.
 
-If you buy its service and fill in the CDK, the resources will be automatically updated. And MAA itself will also get updates from MirrorChyan.
+If you buy their service and fill in the CDK, the resources will be automatically updated. And MAA itself will also get updates from MirrorChyan.
 
 ---
 
