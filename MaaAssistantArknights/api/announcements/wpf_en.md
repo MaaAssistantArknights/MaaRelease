@@ -9,7 +9,7 @@ Invite link: [https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ### MAA Update Service Integration
 
-MAA has integrated with the third-party service [MirrorChyan](https://mirrorchyan.com), a platform that provides paid content distribution for the open-source community. MirrorChyan offers us a free update-checking interface, but its download service requires a fee.
+MAA has integrated with the third-party service [MirrorChyan](https://mirrorchyan.com), a platform that provides paid content distribution for the open-source community. MirrorChyan offers us a free update-checking interface, but its download service requires a paid subscription.
 
 However, even if you choose not to purchase MirrorChyan’s download service, MAA can still utilize its free update-checking feature. You can then manually select to download updates from global sources in the settings.
 
