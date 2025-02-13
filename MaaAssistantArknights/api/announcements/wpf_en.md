@@ -17,7 +17,7 @@ If you purchase and enter a CDK, the resource update process will be fully autom
 
 We have also reached a partnership with MirrorChyan, where a portion of the revenue generated from MAA on its platform will be shared to support future development, including the MAA official website, maa prts.plus services, and other infrastructure.
 
-**Your support through purchasing MirrorChyan will help us continue to improve and grow.**
+**Supporting MirrorChyan through your purchase enables us to keep improving and evolving.**
 
 ---
 
