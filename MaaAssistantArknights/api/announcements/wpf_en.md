@@ -15,7 +15,9 @@ However, even if you choose not to purchase MirrorChyan’s download service, MA
 
 If you purchase and enter a CDK, the resource update process will be fully automated as before—eliminating the need for manual operations and avoiding network-related issues. Additionally, MAA itself will prioritize downloads through MirrorChyan, ensuring faster updates.
 
-We have also reached a partnership with MirrorChyan, where a portion of the revenue generated from MAA on its platform will be shared to support future development, including the MAA official website, maa prts.plus services, and other infrastructure. Your support through purchasing MirrorChyan will help us continue to improve and grow.
+We have also reached a partnership with MirrorChyan, where a portion of the revenue generated from MAA on its platform will be shared to support future development, including the MAA official website, maa prts.plus services, and other infrastructure.
+
+**Your support through purchasing MirrorChyan will help us continue to improve and grow.**
 
 ---
 
