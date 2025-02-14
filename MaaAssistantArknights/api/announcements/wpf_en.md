@@ -6,9 +6,17 @@ Invite link: [https://discord.gg/23DfZ9uA4V](https://discord.gg/23DfZ9uA4V)
 
 ---
 
-### Automatic Resource Update is back! (Really?)
+### MAA Update Service Integration
 
-Now, when the resources need to be updated, a notification will pop up.
+MAA has integrated with the third-party service [MirrorChyan](https://mirrorchyan.com), a platform that provides paid content distribution for the open-source community. MirrorChyan offers us a free update-checking interface, but its download service requires a paid subscription.
+
+However, even if you choose not to purchase MirrorChyan’s download service, MAA can still utilize its free update-checking feature. You can then manually select to download updates from global sources in the settings.
+
+If you purchase and enter a CDK, the resource update process will be fully automated as before—eliminating the need for manual operations and avoiding network-related issues. Additionally, MAA itself will prioritize downloads through MirrorChyan, ensuring faster updates.
+
+We have also reached a partnership with MirrorChyan, where a portion of the revenue generated from MAA on its platform will be shared to support future development, including the MAA official website, maa prts.plus services, and other infrastructure.
+
+**Supporting MirrorChyan through your purchase enables us to keep improving and evolving.**
 
 ---
 
