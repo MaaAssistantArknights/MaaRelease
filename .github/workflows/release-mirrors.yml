@@ -73,12 +73,6 @@ jobs:
           - ota_server
         runs-on:
           - ubuntu-latest
-
-        include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
-          - repo: MaaRelease
-            os: macos-ota
-            target: R2_MAC
-            runs-on: macos-14
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@v4
