@@ -69,20 +69,15 @@ jobs:
           - MaaRelease
         os: # 必须为逗号分隔格式
           - windows,linux,macos,macos-runtime
-        target: # 必须为逗号分隔格式
-          - ota_server
-        runs-on:
-          - ubuntu-latest
-    runs-on: ${{ matrix.runs-on }}
+        target:
+          - "123.57.29.114"
+          - "47.96.89.232"
+          - "8.134.254.74"
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           show-progress: false
-      - id: generateTargetList
-        name: Generate target list
-        uses: ./.github/commaSplitter
-        with:
-          input: ${{ matrix.target }}
       - name: Download release files from ${{ matrix.repo }}
         id: downloadReleaseFiles
         uses: ./.github/downloadReleaseFiles
@@ -93,7 +88,6 @@ jobs:
           repo: ${{ matrix.repo }}
 
       - name: Upload to OTA Server
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(steps.generateTargetList.outputs.output), 'ota_server') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'ota_server'))
         continue-on-error: true
         run: |
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ${{ runner.temp }}/tmp
@@ -107,7 +101,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "${{ secrets.OTA_SERVER_SSH_KEY }}" > ~/.ssh/$KEY_NAME
           chmod 600 ~/.ssh/$KEY_NAME
-          ssh-keyscan -H 8.134.254.74 >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ matrix.target }} >> ~/.ssh/known_hosts
           echo "::group::rsync version"
           rsync --version
           echo "::endgroup::"
@@ -120,7 +114,7 @@ jobs:
             echo "Trying rsync #$i..."
             cd ${{ steps.downloadReleaseFiles.outputs.dir }}
             echo "::group::rsync #$i output"
-            rsync -e "ssh -o StrictHostKeyChecking=no" -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@8.134.254.74:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}/
+            rsync -e "ssh -o StrictHostKeyChecking=no" -vvcrRtzmhhh --mkpath --info=STATS3 --ignore-errors --delete ${{ needs.getReleaseTag.outputs.release_tag }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ matrix.target }}:OTA/${{ format('{0}/{1}/{2}', 'MaaAssistantArknights', matrix.repo, 'releases/download') }}/
             RC=$?
             i=$((i+1))
             echo "::endgroup::"
