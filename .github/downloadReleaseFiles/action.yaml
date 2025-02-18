@@ -78,7 +78,7 @@ runs:
             fi
         done
 
-        echo "pattern: $PATTERN"
+        echo "pattern:$PATTERN" # $PATTERN 有前导空格
 
         logDivider
 
