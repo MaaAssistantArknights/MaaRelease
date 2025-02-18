@@ -13,7 +13,6 @@ MIRRORS = [
     # ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
     ("https://github.com", "http://123.57.29.114:8666"), # 临时措施
     ("https://github.com", "http://47.96.89.232:8666"), # 临时措施
-    ("https://github.com", "http://8.134.254.74:8666"), # 临时措施
     ("https://github.com", "http://47.90.155.18:8666"), # 临时措施
     # ("github.com", "maa.r2.imgg.dev"),
     # ("github.com", "agent.imgg.dev"),
