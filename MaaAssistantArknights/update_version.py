@@ -7,6 +7,23 @@ import re
 import time
 import http.client
 
+# Config Start
+
+MIRRORS = [
+    ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
+    # ("github.com", "maa.r2.imgg.dev"),
+    # ("github.com", "agent.imgg.dev"),
+    # ("github.com", "agent.chingc.cc"),
+]
+
+ANNANGELA_MIRRORS = {
+    'raw': "github.com",
+    'rep': "maa-ota.annangela.cn"
+}
+
+ANNANGELA_MIRRORS_STATUS = False
+
+# Config End
 
 def retry_urlopen(*args, **kwargs):
     for _ in range(5):
@@ -31,19 +48,6 @@ def retry_urlopen(*args, **kwargs):
             raise
 
 
-MIRRORS = [
-    ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
-    # ("github.com", "maa.r2.imgg.dev"),
-    # ("github.com", "agent.imgg.dev"),
-    ("github.com", "agent.chingc.cc"),
-]
-
-ANNANGELA_MIRRORS = {
-    'raw': "github.com",
-    'rep': "maa-ota.annangela.cn"
-}
-
-
 def extract_integers(string):
     pattern = r'\b\d+\b'
     integers = re.findall(pattern, string)
@@ -51,7 +55,8 @@ def extract_integers(string):
 
 
 def get_annangela_mirror(rel):
-    return False
+    if not ANNANGELA_MIRRORS_STATUS:
+        return False
 
     name = rel['name']
     url = rel["browser_download_url"]
