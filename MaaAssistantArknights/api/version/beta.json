@@ -651,13 +651,13 @@
     "body": "## v5.14.0-beta.1\n\n### 强调 | Highlight\n\n#### Sarkaz I.S. for Global!\nYostarEN, YostarJP and YostarKR receive the update for Sarkaz I.S.\nIssues may be present, so please submit issues on Github patiently.\n\n### 新增 | New\n\n* YoStarEN Sarkaz roguelike (#11921) @Constrat @Daydreamer114\n* YostarJP Sarkaz roguelike (#11914) @Manicsteiner @Daydreamer114\n* YostarKR Sarkaz roguelike (#11920) @HX3N @Daydreamer114\n* SimpleEncryptionHelper 支持默认字符串 @ABA2396\n* Sarkaz extend II 专业人士分队 (#11938) @Daydreamer114\n\n### 改进 | Improved\n\n* remove spaces for all ocrReplaces for KR + various optimizations (#11926) @Constrat\n* 调整IS4作战、招募 @Daydreamer114\n* 肉鸽为识别错误的事件也添加 callback (#11946) @Daydreamer114 @HX3N\n* Wpf重构自动公招任务序列化 (#11951) @status102\n* Wpf重构生息演算任务参数序列化 (#11916) @status102\n* 肉鸽难度选项降到18个 (#11934) @Daydreamer114\n* IS4 调整公害ew部署 (#11935) @Daydreamer114\n* 优化日志输出 @ABA2396\n* 热键支持 Windows 键 @ABA2396\n\n### 修复 | Fix\n\n* YostarEN I.S. modes (#11956) @Constrat\n* YostarKR updated the StartUpConnectingFlag template (#11960) @HX3N\n* Fix hidden floor Sarkaz EN @Constrat\n* EN 服 IS2 导航失效 (#11955) @Daydreamer114\n* 傀影肉鸽可以选择在第五层 BOSS 前暂停 @Daydreamer114\n* StartupUpdateCheck 不生效 @ABA2396\n* 外服重复检查资源 (#11927) @ABA2396\n* 支持肉鸽特定模式下跳过选队直接选人 (#11915) @BxFS\n* Log Rotate 临时性检查措施 (#11835) @status102\n* 3星招募逻辑修复 (#11913) @Roland125\n\n### 文档 | Docs\n\n* 调整肉鸽文档 skill_usage 描述，尝试 json5 @Daydreamer114\n\n### 其他 | Other\n\n* 加解密失败时通知 @ABA2396\n* TaskData增加OcrTask的ocrReplace合法性检查 (#11878) @status102\n* 使用RecruitData代替ocrReplace的外服适配 (#11879) @status102\n* tools: ImageCoordinate cursor tweak @Constrat\n* 允许commit message以Reapply开始 (#11967) @Daydreamer114\n\n**Full Changelog**: [v5.13.1 -> v5.14.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.13.1...v5.14.0-beta.1)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/200883806/reactions",
-      "total_count": 3,
+      "total_count": 4,
       "+1": 0,
       "-1": 0,
       "laugh": 0,
       "hooray": 3,
       "confused": 0,
-      "heart": 0,
+      "heart": 1,
       "rocket": 0,
       "eyes": 0
     },
