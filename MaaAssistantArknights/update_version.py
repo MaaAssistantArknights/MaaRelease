@@ -11,9 +11,6 @@ import http.client
 
 MIRRORS = [
     # ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
-    ("github.com", "maa_bj.mirrorchyan.com"), # 临时措施
-    ("github.com", "maa_hz.mirrorchyan.com"), # 临时措施
-    ("github.com", "maa_va.mirrorchyan.com"), # 临时措施
     # ("github.com", "maa.r2.imgg.dev"),
     # ("github.com", "agent.imgg.dev"),
     # ("github.com", "agent.chingc.cc"),
