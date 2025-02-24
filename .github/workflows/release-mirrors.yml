@@ -70,10 +70,9 @@ jobs:
         os: # 必须为逗号分隔格式
           - windows,linux,macos,macos-runtime
         target:
-          - ${{ secrets.OTA_SERVER_SSH_HOST }}
-          - "maa_bj.mirrorchyan.com"
-          - "maa_va.mirrorchyan.com"
-          - "maa_hz.mirrorchyan.com"
+          - maa_bj.mirrorchyan.com
+          - maa_va.mirrorchyan.com
+          - maa_hz.mirrorchyan.com
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
