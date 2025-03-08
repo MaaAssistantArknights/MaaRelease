@@ -1,8 +1,12 @@
 {
-    "CV-Open": {
-        "text": ["부정축재", "이벤트", "개방중"]
+    "DT-Open": {
+        "text": ["테라", "이벤트", "개방중"]
     },
-    "CVChapterToCV": {
-        "text": ["하얀", "플랫폼"]
+    "DT-OpenOcr": {
+        "text": ["테라", "이벤트", "개방중"]
+    },
+    "DTChapterToDT": {
+        "ocrReplace": [["(아|마)(물|울)", "마물"]],
+        "text": ["마물", "맛"]
     }
 }
