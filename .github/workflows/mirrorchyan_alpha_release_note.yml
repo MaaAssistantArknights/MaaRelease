@@ -1,0 +1,38 @@
+name: mirrorchyan_release_note
+
+on:
+  workflow_dispatch:
+  release:
+    types: [edited]
+
+jobs:
+  mirrorchyan:
+    runs-on: macos-latest
+
+    steps:
+      - id: latest-release
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: information
+        shell: bash
+        run: |
+          if [[ ${{ steps.latest-release.outputs.release }} =~ ".g" ]]; then
+            is_alpha=1
+          else
+            is_alpha=0
+          fi
+
+          echo "is_alpha=$is_alpha" | tee -a "$GITHUB_OUTPUT"
+
+      - id: uploading
+        uses: MirrorChyan/release-note-action@v1
+        if: ${{ steps.information.outputs.is_alpha == 1 }}
+        with:
+          mirrorchyan_rid: MAA
+
+          upload_token: ${{ secrets.MirrorChyanUploadToken }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
