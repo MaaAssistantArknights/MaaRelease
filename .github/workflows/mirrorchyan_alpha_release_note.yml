@@ -36,3 +36,5 @@ jobs:
 
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          auto_channel: false
+          channel: alpha
