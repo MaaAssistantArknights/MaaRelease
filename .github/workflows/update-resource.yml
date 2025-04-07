@@ -23,7 +23,7 @@ jobs:
          node-version: lts/*
          check-latest: true
      - name: Fire the webhook of MAA_S3
-       if: github.repository == 'MaaAssistantArknights/MaaRelease'
+       if: github.repository == 'MaaAssistantArknights/MaaRelease' && false
        run: |
          node scripts/AnnAngela/webhookForCC_n8n.js
        env:
