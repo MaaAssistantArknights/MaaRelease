@@ -1,27 +1,38 @@
-### 国服导航更新
+### 📢 [MAA × Mirror酱] 资源更新升级 & 社区资助计划
 
-[官方动态](https://www.bilibili.com/opus/1052289926969688064)
+MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 
-5.15.0 版本导航系统更新说明：
-1. 国服新版UI导航系统已全面实装适配
-2. 当前支持内容：  
-   ✅ 主线关卡（1-7、R8-11、12-17-HARD 等）  
-   ✅ 资源收集关卡  
-3. 暂不支持内容：  
-   ⚠️ 第 15 章主线（待收录后更新，现在可用 当前/上次 代理）  
-   ⚠️ OF-1 关卡  
+🤝 **收益共享**：Mirror酱 分成将用于 MAA 官网、作业站及服务器维护
+
+❤️ **社区资助计划扩展**  
+作为非营利组织，MAA项目组 与 Mirror酱 经友好协商后，决定联合启动社区资助计划，将来自 Mirror酱 的收益分成及专项赞助资金，在扣除必要运营成本后，全部用于为优质方舟社区项目承担运营成本。
+
+**目前已为以下方舟社区项目承担服务器成本**：
+
+1.[企鹅物流数据统计](https://penguin-stats.cn/)  
+2.[明日方舟一图流](https://ark.yituliu.cn/)  
+3.[明日方舟少人 WIKI](https://wiki.arkrec.com/)  
+4.[影语集](https://arkrog.com/)  
+5.[PRTS.Map](https://map.ark-nights.com/)  
+6.[AmiyaBot](https://www.amiyabot.com/)  
+7.[明日方舟工具箱](https://arkntools.app/)
+
+**资助原则**：  
+· 清偿历史赤字  
+· 持续支付服务器/CDN费用  
+· 绝不干涉项目自主运营
+
+📜 **公告原文**: [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/12328)
 
 ----
 
-### 资源更新堂堂复活！（真的吗）
+现行更新方式：
 
-MAA 接入了第三方服务 [Mirror酱](https://mirrorchyan.com/)（一个给开源社区做有偿内容分发的平台）
+🌏 **使用海外源**：  
+· 软件版本：由 MAA Team 提供 API 检查更新，从 GitHub 拉取更新包（国内提供镜像）  
+· 资源版本：由 Mirror酱 提供免费的更新检测，可手动在设置中点击 `资源更新` 从 GitHub 下载
 
-如果你在设置里选择了海外源（GitHub），那么牛牛可以白嫖他们的服务自动检查到更新~
-
-如果你购买并填写了 CDK，则资源更新和 MAA 本体更新会优先走 Mirror 酱，下载更快！
-
-同时我们也与 Mirror 酱达成了合作，其在 MAA 上的收益会共享一部分用于后续 MAA 官网、作业站及其他服务器建设。双赢（确信
+🔑 **购买并填写** [Mirror酱 CDK](https://mirrorchyan.com/)：优先通过 Mirror酱 高速下载，提供软件版本与资源版本的自动更新
 
 ----
 
