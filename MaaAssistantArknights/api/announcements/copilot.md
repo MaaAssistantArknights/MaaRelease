@@ -5,6 +5,18 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 作业站网络优化啦
+
+```json
+{
+  "time": "2025-04-18T02:06:00.000Z"
+}
+```
+
+现在访问嘎嘎快，大伙可以试试关掉代理直接打开作业站了~
+
+近期可能会拉黑一批机房 IP
+
 ## 迷宫饭主题活动部分关卡不支持使用战斗列表
 
 ```json
