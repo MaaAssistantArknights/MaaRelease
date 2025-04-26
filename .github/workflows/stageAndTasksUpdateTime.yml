@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'MaaAssistantArknights/api/gui/StageActivity.json'
-      - '/MaaAssistantArknights/api/resource/**'
+      - 'MaaAssistantArknights/api/resource/**'
   workflow_dispatch:
 
 jobs:
