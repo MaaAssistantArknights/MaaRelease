@@ -1,32 +1,32 @@
 {
-  "version": "v5.16.3-alpha.1.d017.ge579d2c68",
+  "version": "v5.16.3-alpha.1.d025.ga3ac79d99",
   "details": {
-    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/216883748",
-    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/216883748/assets",
-    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaRelease/releases/216883748/assets{?name,label}",
-    "html_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/tag/v5.16.3-alpha.1.d017.ge579d2c68",
-    "id": 216883748,
-    "node_id": "RE_kwDOIUyZWc4M7WIk",
-    "tag_name": "v5.16.3-alpha.1.d017.ge579d2c68",
+    "url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/217186668",
+    "assets_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/releases/217186668/assets",
+    "upload_url": "https://uploads.github.com/repos/MaaAssistantArknights/MaaRelease/releases/217186668/assets{?name,label}",
+    "html_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/tag/v5.16.3-alpha.1.d025.ga3ac79d99",
+    "id": 217186668,
+    "node_id": "RE_kwDOIUyZWc4M8gFs",
+    "tag_name": "v5.16.3-alpha.1.d025.ga3ac79d99",
     "target_commitish": "main",
     "name": "",
     "draft": false,
     "prerelease": true,
-    "created_at": "2025-05-06T22:16:58Z",
-    "published_at": "2025-05-06T22:17:14Z",
+    "created_at": "2025-05-07T22:17:57Z",
+    "published_at": "2025-05-07T22:18:19Z",
     "assets": [
       {
-        "name": "MAA-v5.16.3-alpha.1.d017.ge579d2c68-win-x64.zip",
-        "size": 176154109,
-        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.16.3-alpha.1.d017.ge579d2c68/MAA-v5.16.3-alpha.1.d017.ge579d2c68-win-x64.zip",
+        "name": "MAA-v5.16.3-alpha.1.d025.ga3ac79d99-win-x64.zip",
+        "size": 176168913,
+        "browser_download_url": "https://github.com/MaaAssistantArknights/MaaRelease/releases/download/v5.16.3-alpha.1.d025.ga3ac79d99/MAA-v5.16.3-alpha.1.d025.ga3ac79d99-win-x64.zip",
         "mirrors": [
-          "https://s3.maa-org.net:25240/maaassistantarknights/MaaAssistantArknights/MaaRelease/releases/download/v5.16.3-alpha.1.d017.ge579d2c68/MAA-v5.16.3-alpha.1.d017.ge579d2c68-win-x64.zip"
+          "https://s3.maa-org.net:25240/maaassistantarknights/MaaAssistantArknights/MaaRelease/releases/download/v5.16.3-alpha.1.d025.ga3ac79d99/MAA-v5.16.3-alpha.1.d025.ga3ac79d99-win-x64.zip"
         ]
       }
     ],
-    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v5.16.3-alpha.1.d017.ge579d2c68",
-    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v5.16.3-alpha.1.d017.ge579d2c68",
-    "body": "### 新增 | New\r\n\r\n* 连战新增 -1 表示禁用切换 @ABA2396\r\n\r\n### 改进 | Improved\r\n\r\n* 移除过旧的任务参数 @status102\r\n* 优化提示 @ABA2396\r\n\r\n### 修复 | Fix\r\n\r\n* 连战次数修复, 减少hard code @status102\r\n\r\n### 文档 | Docs\r\n\r\n* 连战次数auto 文档 @status102\r\n* 补上之前漏改的 tasks 路径修改 @ABA2396\r\n* 更正保全派驻协议文档中的拼写错误 (#12578) @lucienshawls\r\n* 更正主文档和中文文档中的两处错别字 (#12577) @lucienshawls\r\n\r\n### 其他 | Other\r\n\r\n* 理智识别 @status102\r\n* Reapply \"feat:实现自适应调整连战次数 (#12555)\" @Yoak3n @ABA2396\r\n\n\n**Full Changelog**: [v5.16.2 -> alpha/v5.16.3-alpha.1.d017.ge579d2c68](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.16.2...alpha/v5.16.3-alpha.1.d017.ge579d2c68)",
+    "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/tarball/v5.16.3-alpha.1.d025.ga3ac79d99",
+    "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaRelease/zipball/v5.16.3-alpha.1.d025.ga3ac79d99",
+    "body": "### 新增 | New\r\n\r\n* 指定次数联动连战, 修复连战导致指定次数失效 (#12592) @status102 @ABA2396\r\n* 更新 243 极限效率一天四换排班表（20250507 修订） (#12598) @bodayw\r\n* AUTO连续作战 @hguandl\r\n\r\n### 修复 | Fix\r\n\r\n* 移除肉鸽难度hard code (#12587) @status102\r\n\r\n### 其他 | Other\r\n\r\n* 好像提示了也没人看 @ABA2396\r\n* 加点常用的进来 @status102\r\n* 调整超时提醒输出 @ABA2396\r\n\n\n**Full Changelog**: [v5.16.2 -> alpha/v5.16.3-alpha.1.d025.ga3ac79d99](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.16.2...alpha/v5.16.3-alpha.1.d025.ga3ac79d99)",
     "mentions_count": 4
   }
 }
