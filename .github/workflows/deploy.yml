@@ -27,6 +27,7 @@ jobs:
           echo $version | jq -c '{timestamp:.}' | tee lastUpdateTime.json
 
       - uses: MirrorChyan/uploading-action@v1
+        if: false
         with:
           filetype: local
           mirrorchyan_rid: MaaResourceCache
