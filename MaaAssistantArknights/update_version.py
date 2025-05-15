@@ -199,15 +199,15 @@ def main():
     summary_json = {
         "alpha": {
             "version": alpha_json["version"],
-            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/alpha.json"
+            "detail": "https://api.maa.plus/MaaAssistantArknights/api/version/alpha.json"
         },
         "beta": {
             "version": beta_json["version"],
-            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/beta.json"
+            "detail": "https://api.maa.plus/MaaAssistantArknights/api/version/beta.json"
         },
         "stable": {
             "version": stable_json["version"],
-            "detail": "https://ota.maa.plus/MaaAssistantArknights/api/version/stable.json"
+            "detail": "https://api.maa.plus/MaaAssistantArknights/api/version/stable.json"
         }
     }
 
