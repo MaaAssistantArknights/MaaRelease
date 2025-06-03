@@ -9,13 +9,13 @@ MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 
 **目前已为以下方舟社区项目承担服务器成本**：
 
-1.[企鹅物流数据统计](https://penguin-stats.cn/)  
-2.[明日方舟一图流](https://ark.yituliu.cn/)  
-3.[明日方舟少人 WIKI](https://wiki.arkrec.com/)  
-4.[影语集](https://arkrog.com/)  
-5.[PRTS.Map](https://map.ark-nights.com/)  
-6.[AmiyaBot](https://www.amiyabot.com/)  
-7.[明日方舟工具箱](https://arkntools.app/)
+1. [企鹅物流数据统计](https://penguin-stats.cn/)  
+2. [明日方舟一图流](https://ark.yituliu.cn/)  
+3. [明日方舟少人 WIKI](https://wiki.arkrec.com/)  
+4. [影语集](https://arkrog.com/)  
+5. [PRTS.Map](https://map.ark-nights.com/)  
+6. [AmiyaBot](https://www.amiyabot.com/)  
+7. [明日方舟工具箱](https://arkntools.app/)
 
 **资助原则**：  
 · 清偿历史赤字  
