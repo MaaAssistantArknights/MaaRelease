@@ -32,7 +32,7 @@ MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 · 软件版本：由 MAA Team 提供 API 检查更新，从 GitHub 拉取更新包（国内提供镜像）  
 · 资源版本：由 Mirror酱 提供免费的更新检测，可手动在设置中点击 `资源更新` 从 GitHub 下载
 
-🔑 **购买并填写** [Mirror酱 CDK](https://mirrorchyan.com/)：优先通过 Mirror酱 高速下载，提供软件版本与资源版本的自动更新
+🔑 **购买并填写** [Mirror酱 CDK](https://mirrorchyan.com/?source=maa-anno)：优先通过 Mirror酱 高速下载，提供软件版本与资源版本的自动更新
 
 ----
 
