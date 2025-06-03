@@ -9,13 +9,13 @@ As non-profit organizations, the MAA team and MirrorChyan, after discussions wit
 
 **Server costs have been covered for the following Ark community projects**:
 
-1.[Penguin Statistics](https://penguin-stats.cn/)
-2.[Arknights Yituliu](https://ark.yituliu.cn/)
-3.[ARKREC WIKI](https://wiki.arkrec.com/)
-4.[Arknights Roguelike Tactics](https://arkrog.com/)
-5.[PRTS.Map](https://map.ark-nights.com/)
-6.[AmiyaBot](https://www.amiyabot.com/)  
-7.[Arknights Toolbox](https://arkntools.app/)
+1. [Penguin Statistics](https://penguin-stats.cn/)
+2. [Arknights Yituliu](https://ark.yituliu.cn/)
+3. [ARKREC WIKI](https://wiki.arkrec.com/)
+4. [Arknights Roguelike Tactics](https://arkrog.com/)
+5. [PRTS.Map](https://map.ark-nights.com/)
+6. [AmiyaBot](https://www.amiyabot.com/)  
+7. [Arknights Toolbox](https://arkntools.app/)
 
 **Our Principles**:  
 · Clear all existing server debts  
@@ -32,7 +32,7 @@ As non-profit organizations, the MAA team and MirrorChyan, after discussions wit
 · Client Updates: MAA Team provides API checks with downloads from GitHub (mirrors available in China)
 · Resource Updates: MirrorChyan provides update checks. You can manually download it from GitHub by clicking `Resource Update` in the Settings
 
-🔑 **Purchase and fill** [MirrorChyan CDK](https://mirrorchyan.com/): Priority high-speed downloads via MirrorChyan (for both version and resources)
+🔑 **Purchase and fill** [MirrorChyan CDK](https://mirrorchyan.com/?source=maa-anno-en): Priority high-speed downloads via MirrorChyan (for both version and resources)
 
 ----
 
