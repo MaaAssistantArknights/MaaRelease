@@ -1,3 +1,11 @@
+### ⚠️ Important
+
+The **v5.17.0** update changes the directory of the resource files. If you are **manually** updating to this version or later from v5.16.x or earlier, **please do not directly unzip and overwrite the old version folder**. Otherwise, some files may not be updated correctly, and leading to errors.
+
+There are two recommended update methods:
+1. Use the automatic update function (recommended): Automatic updates will handle everything.
+2. Manual update: Unzip the new version to a new folder, then copy the original config and data folders to preserve the config.
+
 ### 📢 [MAA × MirrorChyan] Update System Upgrade & Community Sponsorship Program
 
 MAA has integrated **MirrorChyan** (a paid content distribution platform for open-source communities)
@@ -32,7 +40,7 @@ As non-profit organizations, the MAA team and MirrorChyan, after discussions wit
 · Client Updates: MAA Team provides API checks with downloads from GitHub (mirrors available in China)
 · Resource Updates: MirrorChyan provides update checks. You can manually download it from GitHub by clicking `Resource Update` in the Settings
 
-🔑 **Purchase and fill** [MirrorChyan CDK](https://mirrorchyan.com/): Priority high-speed downloads via MirrorChyan (for both version and resources)
+🔑 **Purchase and fill** [MirrorChyan CDK](https://mirrorchyan.com/?source=maa-anno-en): Priority high-speed downloads via MirrorChyan (for both version and resources)
 
 ----
 
