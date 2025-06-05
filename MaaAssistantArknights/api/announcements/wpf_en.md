@@ -1,10 +1,10 @@
 ### ⚠️ Important reminder
 
-This **v5.17.0** update adjusts the directory structure of the template image. If you are **manually** updating from v5.16.x and below to this version, **do not directly overwrite the old version folder**, otherwise some old files may not be deleted correctly, causing recognition problems.
+The **v5.17.0** update changes the directory of the resource files. If you are **manually** updating to this version or later from v5.16.x or earlier, **please do not directly unzip and overwrite the old version folder**. Otherwise, some files may not be updated correctly, and leading to errors.
 
 There are two recommended update methods:
-1. Use the automatic update function (recommended): Automatic update will correctly clean up old files.
-2. When manually updating: Please unzip the new version to a new folder, and then copy the original config and data folders to preserve your configuration.
+1. Use the automatic update function (recommended): Automatic updates will handle everything.
+2. Manual update: Unzip the new version to a new folder, then copy the original config and data folders to preserve the config.
 
 ### 📢 [MAA × MirrorChyan] Update System Upgrade & Community Sponsorship Program
 
