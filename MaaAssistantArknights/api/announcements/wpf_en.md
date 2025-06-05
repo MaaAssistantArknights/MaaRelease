@@ -1,4 +1,4 @@
-### ⚠️ Important reminder
+### ⚠️ Important
 
 The **v5.17.0** update changes the directory of the resource files. If you are **manually** updating to this version or later from v5.16.x or earlier, **please do not directly unzip and overwrite the old version folder**. Otherwise, some files may not be updated correctly, and leading to errors.
 
