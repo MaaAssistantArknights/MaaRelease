@@ -1,3 +1,11 @@
+### ⚠️ Important reminder
+
+This **v5.17.0** update adjusts the directory structure of the template image. If you are **manually** updating from v5.16.x and below to this version, **do not directly overwrite the old version folder**, otherwise some old files may not be deleted correctly, causing recognition problems.
+
+There are two recommended update methods:
+1. Use the automatic update function (recommended): Automatic update will correctly clean up old files.
+2. When manually updating: Please unzip the new version to a new folder, and then copy the original config and data folders to preserve your configuration.
+
 ### 📢 [MAA × MirrorChyan] Update System Upgrade & Community Sponsorship Program
 
 MAA has integrated **MirrorChyan** (a paid content distribution platform for open-source communities)
