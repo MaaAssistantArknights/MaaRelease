@@ -46,10 +46,3 @@ jobs:
         if: steps.commit.outputs.working_tree_clean != 'true'
         run: |
           git push
-
-      - name: Deploy
-        if: steps.commit.outputs.working_tree_clean != 'true'
-        run: |
-          gh workflow run deploy
-        env:
-          GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
