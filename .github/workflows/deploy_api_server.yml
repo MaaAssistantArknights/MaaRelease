@@ -1,0 +1,37 @@
+name: deploy_api_server
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync-repo:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup ssh key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Sync repository
+        run: |
+          ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
+            "
+              set -e
+              mkdir -p ~/MaaRelease
+              cd ~/MaaRelease
+              git init
+              git fetch --force --no-tags --prune --update-head-ok --progress  \
+                'https://github.com/${{ github.repository }}' \
+                '+HEAD:refs/remotes/origin/HEAD'
+              git checkout --force --progress refs/remotes/origin/HEAD
+            "
