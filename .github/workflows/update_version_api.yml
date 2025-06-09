@@ -23,4 +23,10 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'chore: auto update version API ${date}'
+          message: 'chore: auto update version API'
+
+      - name: Deploy API Server
+        run: |
+          gh workflow run deploy_api_server
+        env:
+          GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}

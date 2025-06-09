@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync-repo:
+  update_time_json:
     runs-on: ubuntu-latest
     
     steps:
@@ -29,4 +29,10 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'chore: auto update time json ${date}'
+          message: 'chore: auto update time json'
+
+      - name: Deploy API Server
+        run: |
+          gh workflow run deploy_api_server
+        env:
+          GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
