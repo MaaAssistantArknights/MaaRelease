@@ -557,8 +557,8 @@
     "body": "## v5.18.0-beta.1\n\n### 新增 | New\n\n* 成就系统 (#12823) @ABA2396 @Constrat @status102 @HX3N\n\n### 改进 | Improved\n\n* 刷理智增加未耗尽战斗次数提示输出 @status102\n* 优化导航逻辑 @ABA2396\n* 合并Tooltip @status102\n* 肉鸽战斗使用费用、击杀数缓存, 优化性能占用 @status102\n* wpf属性监听简化 (#12725) @status102\n* remove unneccesary InfrastTrainingTime from EN @Constrat\n* use text ocr instead of template for battlequick @Constrat\n\n### 修复 | Fix\n\n* 繁中服 傀影肉鴿 卡在通關劇情 (#12952) @momomochi987\n* 未进入战斗期间检测技能使用 @status102\n* 还原外服的StageDrops-TimesRec @status102\n* 代理次数 @ABA2396\n* 编译兼容Swift 6.0 @hguandl\n* MacOs 资源更新改进 @hguandl\n* 高分辨率下无法进入特定关卡（虽然修了但还是不建议用 2k 4k @ABA2396\n* 使用传入的httpService代替全局引用 @status102\n* 刷理智掉落识别-代理倍率roi @status102\n* 基建训练室技能专精剩余时间Ocr错误 @status102\n* 基建专精干员名及技能Ocr使用原图以提高ocr成功率 @status102\n* 在招募干员的过程中闪退导致死循环 @ABA2396\n* 刷理智战斗后掉落识别代理倍率次数中文关键词使用原图, 以避免阈值过滤造成的边缘细节丢失 @status102\n* rect width & height = 0 @status102\n* StageDrops-Item warning @status102\n* YostarKR changed EnterInfrastSami due to low recognition score @HX3N\n* EPChapterToEP for EN @Constrat\n* microseconds -> milliseconds @ABA2396\n* YostarKR add ReceptionMessageBoard and update templates @HX3N\n\n### 文档 | Docs\n\n* 高分辨率滑动修复文档 @ABA2396\n* 调整描述 @ABA2396\n* 调整镜像下载失败描述 @ABA2396\n\n### 其他 | Other\n\n* copyright @soundofautumn\n* wpf TooltipBlock文本为空时, 不显示 Tooltip 文本框 @status102\n* wpf 各种提示 (#12930) @status102 @HX3N @Constrat @ABA2396\n* 基建技能专精状态分析 @status102\n* 调整依赖库安装脚本输出 @ABA2396\n* 怎么真有人看到 Y 确认 是用鼠标去点而不是输入 Y 回车 @ABA2396\n* update infrast training room @momomochi987 @HX3N @Constrat\n\n**Full Changelog**: [v5.17.2 -> v5.18.0-beta.1](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.17.2...v5.18.0-beta.1)\n\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MAA&source=maagh-release)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/224391157/reactions",
-      "total_count": 7,
-      "+1": 0,
+      "total_count": 9,
+      "+1": 2,
       "-1": 0,
       "laugh": 0,
       "hooray": 6,
