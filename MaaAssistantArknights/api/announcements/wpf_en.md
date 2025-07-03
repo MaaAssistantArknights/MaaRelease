@@ -17,13 +17,15 @@ As non-profit organizations, the MAA team and MirrorChyan, after discussions wit
 
 **Server costs have been covered for the following Ark community projects**:
 
-1.[Penguin Statistics](https://penguin-stats.cn/)
-2.[Arknights Yituliu](https://ark.yituliu.cn/)
-3.[ARKREC WIKI](https://wiki.arkrec.com/)
-4.[Arknights Roguelike Tactics](https://arkrog.com/)
-5.[PRTS.Map](https://map.ark-nights.com/)
+1.[Penguin Statistics](https://penguin-stats.cn/)  
+2.[Arknights Yituliu](https://ark.yituliu.cn/)  
+3.[ARKREC WIKI](https://wiki.arkrec.com/)  
+4.[Arknights Roguelike Tactics](https://arkrog.com/)  
+5.[PRTS.Map](https://map.ark-nights.com/)  
 6.[AmiyaBot](https://www.amiyabot.com/)  
-7.[Arknights Toolbox](https://arkntools.app/)
+7.[Arknights Toolbox](https://arkntools.app/)  
+8.[Lungmen Dragons](https://lungmendragons.com/)  
+9.[ak-roster](https://www.krooster.com/)  
 
 **Our Principles**:  
 · Clear all existing server debts  

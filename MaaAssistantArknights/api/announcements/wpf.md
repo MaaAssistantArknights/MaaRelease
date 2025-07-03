@@ -32,7 +32,9 @@ MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 4.[影语集](https://arkrog.com/)  
 5.[PRTS.Map](https://map.ark-nights.com/)  
 6.[AmiyaBot](https://www.amiyabot.com/)  
-7.[明日方舟工具箱](https://arkntools.app/)
+7.[明日方舟工具箱](https://arkntools.app/)  
+8.[Lungmen Dragons](https://lungmendragons.com/)  
+9.[ak-roster](https://www.krooster.com/)  
 
 **资助原则**：  
 · 清偿历史赤字  
