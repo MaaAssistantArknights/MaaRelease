@@ -11,7 +11,9 @@
 原路径：{安装目录}\shell\MuMuPlayer.exe  
 新路径：{安装目录}\nx_device\12.0\shell\MuMuNxDevice.exe
 
-若 MuMu 截图增强失效，可尝试取消并重新勾选截图增强开关。确认 MuMu 安装路径正确后仍然失效请发 Issue。
+若 MuMu 截图增强失效，可尝试取消并重新勾选截图增强开关。
+确认 MuMu 安装路径正确后仍然失效，请关闭 MAA，找到 MuMu 的安装路径，删除根目录的 shell 文件夹。
+若截图增强仍然失效，请发 Issue。
 
 ### 📢 [MAA × Mirror酱] 资源更新升级 & 社区资助计划
 
