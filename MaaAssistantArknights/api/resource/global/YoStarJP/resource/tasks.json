@@ -30,33 +30,6 @@
     "OrundumActivitiesConfirm": {
         "text": ["引く", "引<"]
     },
-    "HS-Open": {
-        "baseTask": "SS-Open",
-        "template": ["StageSideStory.png", "StageActivity.png"],
-        "next": ["HSChapterToHS"]
-    },
-    "HS-9": {
-        "sub": ["HS-OpenOpt"]
-    },
-    "HS-8": {
-        "sub": ["HS-OpenOpt"]
-    },
-    "HS-7": {
-        "sub": ["HS-OpenOpt"]
-    },
-    "HS-5": {
-        "sub": ["HS-OpenOpt"]
-    },
-    "HS-OpenOpt": {
-        "algorithm": "JustReturn",
-        "next": ["HS-OpenOcr", "HS-Open"]
-    },
-    "HS-OpenOcr": {
-        "text": ["懐黍離", "イベント復刻開催中", "懐素離"]
-    },
-    "HSChapterToHS": {
-        "text": ["栽培区画", "栽培", "区画"]
-    },
     "OR-OpenOcr": {
         "text": ["相見歓", "相見", "ステージ開放中", "閲世情", "世情", "悵別離", "別離"]
     },
