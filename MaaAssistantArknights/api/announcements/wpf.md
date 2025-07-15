@@ -1,6 +1,6 @@
 ### 界园肉鸽适配？
 
-别急，别问，来参与[适配](https://github.com/MaaAssistantArknights/MaaAssistantArknights/pull/13183)。
+别急，别问，别催。快来[参与适配](https://www.bilibili.com/opus/1086315632846176263)，查看[适配进度](https://github.com/MaaAssistantArknights/MaaAssistantArknights/pull/13183)。
 
 ### MuMu 5.0
 
