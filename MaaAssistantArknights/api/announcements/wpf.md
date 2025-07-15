@@ -1,3 +1,7 @@
+### 界园肉鸽适配？
+
+别急，别问，来参与[适配](https://github.com/MaaAssistantArknights/MaaAssistantArknights/pull/13183)。
+
 ### MuMu 5.0
 
 近期 MuMu 模拟器 5.0 正式版已发布。此次 MuMu 5.0 修改了 adb 路径、模拟器程序名和安装路径，需要重新配置某些功能。
