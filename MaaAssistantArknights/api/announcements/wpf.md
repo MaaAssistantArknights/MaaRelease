@@ -1,6 +1,8 @@
 ### 界园肉鸽适配？
 
-别急，别问，别催。快来[参与适配](https://www.bilibili.com/opus/1086315632846176263)，查看[适配进度](https://github.com/MaaAssistantArknights/MaaAssistantArknights/pull/13183)。
+目前刷钱模式已经初步适配完毕，可以开始存钱了（使用维什戴尔+狙医分队/指挥分队最稳）
+
+指挥分队快速刷钱，刷等级，刷开局等功能正在适配中...
 
 ### MuMu 5.0
 
