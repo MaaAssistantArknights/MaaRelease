@@ -556,6 +556,18 @@
     "tarball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/tarball/v5.20.0-beta.2",
     "zipball_url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/zipball/v5.20.0-beta.2",
     "body": "## v5.20.0-beta.2\n\n### 主要更新 | Highlight\n\n#### ⚠️ 重要提醒\n\n本次更新调整了模板图的目录结构，若您正在从 v5.19.x 及以下版本**手动**更新至该版本，那么**请勿直接覆盖旧版本文件夹**，否则可能导致部分旧文件未被正确删除，从而引发识别问题。\n\n推荐的更新方式有两种：\n1. 使用自动更新功能（推荐）：自动更新将会正确清理旧文件。\n2. 手动更新时：请将新版本解压到一个全新的文件夹，再将原有的 config 与 data 文件夹复制过去，以保留您的配置。\n\n#### 界园肉鸽来咯～(∠・ω< )⌒★ | Highlight\n\n牛牛火速为大家适配了界园肉鸽的刷钱模式！v5.20.0-beta.1 中存在的部分刷钱卡死问题已经被修复，现在大家可以愉快的给坎诺特上供啦~\n\n至于刷等级模式，各位博士还请耐心等待 ~~，我们已经在压榨帕鲁干活了（划掉~~\n\n---\n\n以下是详细内容：\n\n## v5.20.0-beta.2\n\n### 新增 | New\n\n* 界园肉鸽烧水支持票券 @SherkeyXD\n\n### 修复 | Fix\n\n* 修复界园主题选择问题 @DavidWang19\n* 卡得偿所愿 @ABA2396\n* 更新退出事件模板图 @DavidWang19\n* 去掉界园没有的刷2希望开局 @DavidWang19\n\n### 其他 | Other\n\n* 刷开局精二仅为水月和萨米显示 @SherkeyXD\n* 移除未被使用的wpf文本 @SherkeyXD\n* 删除界园多余的模板图和task @DavidWang19\n* EN IS5 squads @Constrat\n\n## v5.20.0-beta.1\n\n### 新增 | New\n\n* 初步适配界园肉鸽 @DavidWang19 @SherkeyXD @status102 @HYY1116 @Saratoga-Official @ABA2396 @weinibuliu @Daydreamer114 @SweetSmellFox\n* 干员因模组不可选中时, 增加提示输出 (#13230) @status102\n\n### 改进 | Improved\n\n* 改进水月肉鸽干员部署逻辑 (#12671) @linlucath @Saratoga-Official\n\n### 修复 | Fix\n\n* 移除ClientType未选择, 统一变更为官服 (#13220) @status102\n* ComboBox 剪贴板异常 @ABA2396\n* 公告及更新日志背景颜色异常 @ABA2396\n\n### 其他 | Other\n\n* 刷理智界面设计器error @status102\n* 基建任务枚举引用路径统一, 修复设计器error @status102\n* 启动时成就打包 (#13221) @status102\n* 移动所有主题的模板图 @SherkeyXD\n* bump dependencies (#13121) @SherkeyXD\n* KR JieGarden translation @HX3N\n\n\n**Full Changelog**: [v5.20.0-beta.1 -> v5.20.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v5.20.0-beta.1...v5.20.0-beta.2)\n\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MAA&source=maagh-release)\n",
+    "reactions": {
+      "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/232932820/reactions",
+      "total_count": 6,
+      "+1": 6,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
     "mentions_count": 12
   }
 }
