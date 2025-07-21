@@ -27,6 +27,16 @@ jobs:
             out-file-path: 'downloads'
             token: ${{ secrets.GITHUB_TOKEN }}
 
+        - uses: robinraju/release-downloader@v1
+          # 内测版本主仓库可能没有，没有就拉到
+          continue-on-error: true
+          with:
+            repository: 'MaaAssistantArknights/MaaAssistantArknights'
+            tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
+            fileName: '*'
+            out-file-path: 'downloads'
+            token: ${{ secrets.GITHUB_TOKEN }}
+
         - name: Setup ssh key
           env:
             SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
