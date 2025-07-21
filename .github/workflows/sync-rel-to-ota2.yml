@@ -9,7 +9,7 @@ on:
 
 jobs:
   sync_release_to_ota2:
-    runs-on: macos-latest
+    runs-on: linux-latest
     steps:
         - id: latest-release
           if: ${{ inputs.tag == '' }}
@@ -37,7 +37,7 @@ jobs:
             out-file-path: 'downloads'
             token: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Upload COS
+        - name: Upload to COS
           uses: zkqiang/tencent-cos-action@v0.1.0
           with:
             args: upload -r downloads ${{ inputs.tag || steps.latest-release.outputs.release }}
