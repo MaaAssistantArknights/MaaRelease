@@ -1,0 +1,41 @@
+name: sync_release_to_ota2
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: false
+        default: ""
+
+jobs:
+  sync_release_to_ota2:
+    runs-on: macos-latest
+    steps:
+        - id: latest-release
+          if: ${{ inputs.tag == '' }}
+          uses: pozetroninc/github-action-get-latest-release@master
+          with:
+            # repository: 'MaaAssistantArknights/MaaRelease'
+            excludes: "draft"
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+        - uses: robinraju/release-downloader@v1
+          with:
+            # repository: 'MaaAssistantArknights/MaaRelease'
+            tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
+            fileName: '*'
+            out-file-path: 'downloads'
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Setup ssh key
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
+          run: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
+
+        - name: Sync repository
+          run: |
+            scp -r downloads ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/${{ secrets.OTA_SERVER_SSH_USER }}/ota2.maa.plus/MaaRelease/${{ inputs.tag || steps.latest-release.outputs.release }}

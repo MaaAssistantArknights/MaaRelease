@@ -158,7 +158,7 @@ jobs:
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(steps.generateTargetList.outputs.output), 'ota2')
         continue-on-error: true
         run: |
-            gh workflow --repo MaaAssistantArknights/MaaRelPkg run sync_release.yml -f tag=${{ needs.getReleaseTag.outputs.release_tag }}
+            gh workflow run sync-rel-to-ota2.yml -f tag=${{ needs.getReleaseTag.outputs.release_tag }}
         env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
