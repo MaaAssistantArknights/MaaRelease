@@ -67,6 +67,8 @@ def get_tag_info(repo: str, tag: str, tagType: str):
 
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
+            if m == url:    # no change
+                continue
             mirrors.append(m)
 
         new_rel = {
