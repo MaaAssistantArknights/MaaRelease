@@ -11,6 +11,7 @@ import http.client
 
 MIRRORS = [
     ("github.com", "s3.maa-org.net:25240/maaassistantarknights"),
+    ("github.com/MaaAssistantArknights/MaaRelease/releases/download", "ota2.maa.plus/MaaRelease"),
     # ("github.com", "maa.r2.imgg.dev"),
     # ("github.com", "agent.imgg.dev"),
     # ("github.com", "agent.chingc.cc"),
