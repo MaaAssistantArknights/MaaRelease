@@ -17,13 +17,6 @@ MIRRORS = [
     # ("github.com", "agent.chingc.cc"),
 ]
 
-ANNANGELA_MIRRORS = {
-    'raw': "github.com",
-    'rep': "maa-ota.annangela.cn"
-}
-
-ANNANGELA_MIRRORS_STATUS = False
-
 # Config End
 
 def retry_urlopen(*args, **kwargs):
@@ -55,34 +48,6 @@ def extract_integers(string):
     return [int(num) for num in integers[:2]]
 
 
-def get_annangela_mirror(rel):
-    if not ANNANGELA_MIRRORS_STATUS:
-        return False
-
-    name = rel['name']
-    url = rel["browser_download_url"]
-
-    if "-win-" not in rel['name']:
-        return False
-
-    if "MAAComponent-OTA-v" not in rel['name']:
-        return False
-
-    pattern = r"(?<=MAAComponent-OTA-v)(\d+(?:\.\d+)*)(?:-[^-_]+)?_v(\d+(?:\.\d+)*)(?=-)"
-    matches = re.search(pattern, name)
-    if matches:
-        before = matches.group(1)
-        after = matches.group(2)
-        beforeMajor, beforeMinor, *rest = extract_integers(before)
-        afterMajor, afterMinor, *rest = extract_integers(after)
-        if beforeMajor != afterMajor or afterMinor - beforeMinor > 3:
-            return False
-    else:
-        return False
-
-    return url.replace(ANNANGELA_MIRRORS['raw'], ANNANGELA_MIRRORS['rep'])
-
-
 def get_tag_info(repo: str, tag: str, tagType: str):
     url = f"https://api.github.com/repos/MaaAssistantArknights/{repo}/releases/tags/{tag}"
     print(url)
@@ -106,11 +71,6 @@ def get_tag_info(repo: str, tag: str, tagType: str):
         for (raw, rep) in MIRRORS:
             m = url.replace(raw, rep)
             mirrors.append(m)
-
-        if tagType != "alpha":
-            result = get_annangela_mirror(rel)
-            if result != False:
-                mirrors.append(result)
 
         new_rel = {
             "name": rel["name"],
