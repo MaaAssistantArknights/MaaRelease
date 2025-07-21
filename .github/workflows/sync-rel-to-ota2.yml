@@ -38,4 +38,4 @@ jobs:
 
         - name: Upload
           run: |
-            scp -r downloads ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/maarelease/ota2.maa.plus/MaaRelease/${{ inputs.tag || steps.latest-release.outputs.release }}
+            scp -r downloads ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/${{ secrets.OTA_SERVER_SSH_USER }}/ota2.maa.plus/MaaRelease/${{ inputs.tag || steps.latest-release.outputs.release }}
