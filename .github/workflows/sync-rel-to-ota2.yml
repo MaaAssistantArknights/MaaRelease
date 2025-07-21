@@ -15,13 +15,13 @@ jobs:
           if: ${{ inputs.tag == '' }}
           uses: pozetroninc/github-action-get-latest-release@master
           with:
-            # repository: 'MaaAssistantArknights/MaaRelease'
+            repository: 'MaaAssistantArknights/MaaRelease'
             excludes: "draft"
             token: ${{ secrets.GITHUB_TOKEN }}
 
         - uses: robinraju/release-downloader@v1
           with:
-            # repository: 'MaaAssistantArknights/MaaRelease'
+            repository: 'MaaAssistantArknights/MaaRelease'
             tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
             fileName: '*'
             out-file-path: ${{ inputs.tag || steps.latest-release.outputs.release }}
