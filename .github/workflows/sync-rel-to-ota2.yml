@@ -24,7 +24,7 @@ jobs:
             repository: 'MaaAssistantArknights/MaaRelease'
             tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
             fileName: '*'
-            out-file-path: ${{ inputs.tag || steps.latest-release.outputs.release }}
+            out-file-path: 'downloads'
             token: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Setup ssh key
@@ -36,6 +36,6 @@ jobs:
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
 
-        - name: Sync repository
+        - name: Upload
           run: |
-            scp -r ${{ inputs.tag || steps.latest-release.outputs.release }} ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/${{ secrets.OTA_SERVER_SSH_USER }}/ota2.maa.plus/MaaRelease/
+            scp -r downloads ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/maarelease/ota2.maa.plus/MaaRelease/${{ inputs.tag || steps.latest-release.outputs.release }}
