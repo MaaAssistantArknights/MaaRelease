@@ -9,7 +9,7 @@ on:
 
 jobs:
   sync_release_to_ota2:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     steps:
         - id: latest-release
           if: ${{ inputs.tag == '' }}
