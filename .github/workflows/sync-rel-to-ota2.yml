@@ -37,15 +37,11 @@ jobs:
             out-file-path: 'downloads'
             token: ${{ secrets.GITHUB_TOKEN }}
 
-        - name: Setup ssh key
-          env:
-            SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
-          run: |
-            mkdir -p ~/.ssh
-            echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
-
-        - name: Upload
-          run: |
-            scp -r downloads ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }}:/home/${{ secrets.OTA_SERVER_SSH_USER }}/ota2.maa.plus/MaaRelease/${{ inputs.tag || steps.latest-release.outputs.release }}
+        - name: Upload COS
+          uses: zkqiang/tencent-cos-action@v0.1.0
+          with:
+            args: upload -r downloads ${{ inputs.tag || steps.latest-release.outputs.release }}
+            secret_id: ${{ secrets.MISTEO_MAARELEASE_COS_SECRET_ID }}
+            secret_key: ${{ secrets.MISTEO_MAARELEASE_COS_SECRET_KEY }}
+            bucket: ${{ secrets.MISTEO_MAARELEASE_COS_BUCKET }}
+            region: ${{ secrets.MISTEO_MAARELEASE_COS_REG }}
