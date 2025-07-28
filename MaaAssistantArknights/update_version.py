@@ -169,6 +169,16 @@ def main():
         "stable": {
             "version": stable_json["version"],
             "detail": "https://api.maa.plus/MaaAssistantArknights/api/version/stable.json"
+        },
+        ### 有猪在 v5.21.0 版本读错字段了，服务端兼容一下
+        "version/alpha.json": {
+            "version": alpha_json["version"]
+        },
+        "version/beta.json": {
+            "version": beta_json["version"]
+        },
+        "version/stable.json": {
+            "version": stable_json["version"]
         }
     }
 
