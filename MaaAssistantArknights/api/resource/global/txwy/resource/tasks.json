@@ -1,8 +1,12 @@
 {
-    "GO-OpenOcr": {
-        "text": ["追跡日落以西", "未了", "往昔"]
+    "ZT-OpenOpt": {
+        "algorithm": "JustReturn",
+        "next": ["ZT-OpenOcr", "ZT-Open"]
     },
-    "GOChapterToGO": {
-        "text": ["無名之勛", "名之", "之", "名"]
+    "ZT-OpenOcr": {
+        "text": ["特爾", "梅之", "之金"]
+    },
+    "ZTChapterToZT": {
+        "text": ["朝見", "雙塔"]
     }
 }
