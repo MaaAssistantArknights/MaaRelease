@@ -7,11 +7,11 @@
         "@octokit/rest": "^22.0.0",
         "byte-size": "^9.0.1",
         "cron": "^4.3.3",
-        "eslint": "^9.33.0",
+        "eslint": "^9.34.0",
         "minimatch": "^10.0.3",
         "minio": "^8.0.5",
         "simple-git": "^3.28.0",
-        "undici": "^7.14.0"
+        "undici": "^7.15.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
