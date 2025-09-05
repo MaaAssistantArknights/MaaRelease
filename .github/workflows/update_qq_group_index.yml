@@ -21,11 +21,11 @@ jobs:
           python-version: '3.x'
 
       - name: Generate index.html
-        working-directory: MaaRelease/MaaAssistantArknights/api/qqgroup
+        working-directory: MaaAssistantArknights/api/qqgroup
         run: python gen_index.py ${{ github.event.inputs.group_number }}
 
       - name: Commit and push
-        working-directory: MaaRelease/MaaAssistantArknights/api/qqgroup
+        working-directory: MaaAssistantArknights/api/qqgroup
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
