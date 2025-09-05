@@ -1,43 +1,52 @@
-### 小游戏发个小公告
+## SS -> AveMujica
 
-位置：小工具 → 小游戏 → 争锋频道：青草城  
-~~v5.24.0-beta.1 及更新版本有 争锋频道：蜜果城，但其实是一样的~~
+由于本次活动代号 `SS` 与 `SideStory` 的内部代号冲突，关卡命名统一采用 `AveMujica-x` 格式（例如 `AveMujica-8`），请使用 `手动输入关卡名` / `cli` 的博士使用此代号。
 
 ----
 
-### 界园肉鸽适配？？
+### 小游戏发个小公告
 
-指挥分队快速刷钱/刷开局功能堂堂公开！请使用指挥分队并将 MAA 中的肉鸽难度设置为 3 或以上（当然游戏里也得解锁，没到 n3 别选 n3 以上或者 MAX），以体验快速刷钱/刷开局。
-
-刷等级也能用了 ~~但真的比指挥分队跳层快吗~~
+位置：小工具 → 小游戏 → 争锋频道：蜜果城
 
 ----
 
 ### 📢 [MAA × Mirror酱] 社区资助计划
 
-MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
+MAA 现已接入 [Mirror酱](https://mirrorchyan.com/?source=maa-anno) —— 一个面向开源社区的有偿分发平台：
 
-🤝 **收益共享**：Mirror酱 分成将用于 MAA 官网、作业站及服务器维护
+🤝 **收益共享**
 
-❤️ **社区资助计划扩展**  
-作为非营利组织，MAA 项目组 与 Mirror酱 经友好协商后，决定联合启动社区资助计划，将来自 Mirror酱 的收益分成及专项赞助资金，在扣除必要运营成本后，全部用于为优质方舟社区项目承担运营成本。
+来自 [Mirror酱](https://mirrorchyan.com/?source=maa-anno) 的分成将用于 [MAA 官网](https://maa.plus/)、[作业站](https://zoot.plus/)及服务器维护。
 
-**目前已为以下方舟社区项目承担服务器成本**：
+❤️ **社区资助计划扩展**
 
-1.[企鹅物流数据统计](https://penguin-stats.cn/)  
-2.[明日方舟一图流](https://ark.yituliu.cn/)  
-3.[明日方舟少人 WIKI](https://wiki.arkrec.com/)  
-4.[影语集](https://arkrog.com/)  
-5.[PRTS.Map](https://map.ark-nights.com/)  
-6.[AmiyaBot](https://www.amiyabot.com/)  
-7.[明日方舟工具箱](https://arkntools.app/)  
-8.[Lungmen Dragons](https://lungmendragons.com/)  
-9.[ak-roster](https://www.krooster.com/)  
+作为非营利组织，**MAA 项目组** 与 **Mirror酱** 经友好协商后，决定联合启动 **社区资助计划**，将来自 **Mirror酱** 的收益分成及专项赞助资金，在扣除必要运营成本后，**全部** 用于为优质方舟社区项目承担运营成本。
+
+<table>
+  <tr>
+    <td colspan="3">目前已为以下方舟社区项目承担服务器成本：</td>
+  </tr>
+  <tr>
+    <td><a href="https://penguin-stats.cn/">企鹅物流数据统计</a></td>
+    <td><a href="https://ark.yituliu.cn/">明日方舟一图流</a></td>
+    <td><a href="https://wiki.arkrec.com/">明日方舟少人 WIKI</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://arkrog.com/">影语集</a></td>
+    <td><a href="https://map.ark-nights.com/">PRTS.Map</a></td>
+    <td><a href="https://www.amiyabot.com/">AmiyaBot</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://arkntools.app/">明日方舟工具箱</a></td>
+    <td><a href="https://lungmendragons.com/">Lungmen Dragons</a></td>
+    <td><a href="https://www.krooster.com/">ak-roster</a></td>
+  </tr>
+</table>
 
 **资助原则**：  
 · 清偿历史赤字  
-· 持续支付服务器/CDN费用  
-· 绝不干涉项目自主运营
+· 持续支付服务器 / CDN 费用  
+· 不参与项目内部运营，仅提供后勤支持
 
 📜 **公告原文**: [链接](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/12328)
 
@@ -47,18 +56,18 @@ MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 
 🌏 **海外源**
 
-· **软件版本**：由 `MAA Team` 提供更新检测，从 `GitHub` 拉取更新包，国内同步提供直连镜像（带宽有限，高峰期可能受限）  
-· **资源版本**：由 `Mirror酱` 提供免费的更新检测，可手动在设置中点击 `资源更新` 从 `GitHub` 下载
+· **软件版本**：由 **MAA Team** 提供更新检测，从 **GitHub** 拉取更新包，国内同步提供直连镜像（由于带宽和连接数限制，访问可能会受到影响）  
+· **资源版本**：由 **Mirror酱** 提供免费的更新检测，可手动在设置中点击 `资源更新` 从 **GitHub** 下载
 
 🔑 **Mirror酱**
 
-填写 [CDK](https://mirrorchyan.com/?source=maa-anno) 后，支持**软件与资源的自动更新**，优先通过 `Mirror酱` 高速 CDN 下载，更稳定快速
+填写 [CDK](https://mirrorchyan.com/?source=maa-anno) 后，支持**软件与资源的自动更新**，优先通过 **Mirror酱** 高速 CDN 下载，更稳定快速
 
-📦 **手动更新**
+📦 [**手动更新**](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
 
 · **软件版本**：解压完整包至**新**文件夹，可复制旧文件夹里的 `config` 和 `data` 文件夹来保留数据  
   ⚠️ 请勿直接覆盖，部分版本需清理旧文件，而手动覆盖不会执行这一步骤，错误操作可能会报资源损坏 ⚠️  
-· **资源版本**：下载[资源包](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip)后，直接覆盖现有的 `resource` 文件夹  
+· **资源版本**：下载 [资源包](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip) 后，直接覆盖现有的 `resource` 文件夹  
   ⚠️ 资源包为增量内容，**请勿删除原文件夹**，会报资源损坏 ⚠️
 
 ----
@@ -75,6 +84,6 @@ MAA 现已接入 **Mirror酱**（开源社区有偿分发平台）：
 
 ### 长期公告
 
-请不要在明日方舟及鹰角在各平台（包括不限于：森空岛、B 站、微博）的官方动态下讨论任何关于 MAA 内容。  
+请不要在明日方舟及鹰角在各平台（包括不限于：森空岛、B 站、微博）的 **官方动态** 下讨论任何关于 MAA 内容。  
 
-请勿参加内鬼消息的传播，禁止将内鬼消息发送至任何 MAA 群。
+请勿参加内鬼消息的传播，**禁止** 将内鬼消息发送至任何 MAA 群。
