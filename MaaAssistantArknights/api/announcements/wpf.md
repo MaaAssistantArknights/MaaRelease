@@ -1,4 +1,4 @@
-## SS -> AveMujica
+### SS -> AveMujica
 
 由于本次活动代号 `SS` 与 `SideStory` 的内部代号冲突，关卡命名统一采用 `AveMujica-x` 格式（例如 `AveMujica-8`），请使用 `手动输入关卡名` / `cli` 的博士使用此代号。
 
