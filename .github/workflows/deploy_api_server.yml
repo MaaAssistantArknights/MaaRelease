@@ -5,6 +5,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+  workflow_run:
+    workflows: ["update_qq_group_index"]
+    types:
+      - completed
 
 jobs:
   sync-repo:
