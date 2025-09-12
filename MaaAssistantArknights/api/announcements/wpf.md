@@ -27,12 +27,6 @@
 
 ----
 
-### 小游戏发个小公告
-
-位置：小工具 → 小游戏 → 争锋频道：蜜果城
-
-----
-
 ### 📢 [MAA × Mirror酱] 社区资助计划
 
 MAA 现已接入 [Mirror酱](https://mirrorchyan.com/?source=maa-anno) —— 一个面向开源社区的有偿分发平台：
