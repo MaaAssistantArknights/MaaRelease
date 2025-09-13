@@ -11,7 +11,7 @@
         "minimatch": "^10.0.3",
         "minio": "^8.0.5",
         "simple-git": "^3.28.0",
-        "undici": "^7.15.0"
+        "undici": "^7.16.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
