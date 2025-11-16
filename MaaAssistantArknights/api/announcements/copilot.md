@@ -5,6 +5,16 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 作业站停机升级公告
+
+```json
+{
+  "time": "2025-11-16T19:00:00.000Z"
+}
+```
+
+由于作业站需要迁移数据库，故需要在 2025-11-23 的9:00到13:00停机维护更新。更新后如果有遇到问题请在作业作者群/作业站开发群 @dragove 或者在 Github 上留下 issue
+
 ## 作业站网络再次大幅优化啦
 
 ```json
