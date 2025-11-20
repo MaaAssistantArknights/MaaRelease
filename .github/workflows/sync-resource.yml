@@ -16,7 +16,7 @@ jobs:
     
     steps:
       - name: Checkout MaaRelease
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Git
         run: |
@@ -25,7 +25,7 @@ jobs:
           git show -s
 
       - name: Checkout MaaResource
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: MaaAssistantArknights/MaaResource
           ssh-key: ${{secrets.MAA_RESOURCE_DEPLOY}}
