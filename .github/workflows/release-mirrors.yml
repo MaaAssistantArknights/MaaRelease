@@ -19,7 +19,7 @@ jobs:
     name: Get release tag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           show-progress: false
       - name: Fetch release info
@@ -81,7 +81,7 @@ jobs:
             runs-on: macos-14
     runs-on: ${{ matrix.runs-on }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           show-progress: false
       - id: generateTargetList
@@ -182,7 +182,7 @@ jobs:
     needs: getReleaseTag
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           show-progress: false
       - name: Setup Node.js

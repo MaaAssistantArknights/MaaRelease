@@ -33,7 +33,7 @@ jobs:
       github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           show-progress: false
       - name: Initialize CodeQL
