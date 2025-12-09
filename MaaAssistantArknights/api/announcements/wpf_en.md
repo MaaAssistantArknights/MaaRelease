@@ -1,10 +1,13 @@
-### ⚠️ Important
+### Important Notice
 
-The **v5.17.0** update changes the directory of the resource files. If you are **manually** updating to this version or later from v5.16.x or earlier, **please do not directly unzip and overwrite the old version folder**. Otherwise, some files may not be updated correctly, and leading to errors.
+Our software will be upgraded to .NET 10 in the **next Stable Release (v6.0.0)**.
 
-There are two recommended update methods:
-1. Use the automatic update function (recommended): Automatic updates will handle everything.
-2. Manual update: Unzip the new version to a new folder, then copy the original config and data folders to preserve the config.
+To ensure a smooth experience with the new version, we **strongly recommend** that you install the .NET Desktop Runtime 10 x64 in advance:
+https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe
+
+Installing the runtime beforehand will prevent issues where the software cannot start due to a missing runtime after the update. Once installed, the software will automatically use the new runtime without any additional steps.
+
+----
 
 ### 📢 [MAA × MirrorChyan] Update System Upgrade & Community Sponsorship Program
 
