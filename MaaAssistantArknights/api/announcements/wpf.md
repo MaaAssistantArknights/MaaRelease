@@ -3,7 +3,7 @@
 我们的软件将在 **下一正式版 (v6.0.0)** 升级至 .NET 10
 
 为确保您在新版本发布后能够顺利使用软件，我们 **强烈建议** 您提前安装 .NET 桌面运行时 10 x64：  
-https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe 
+[https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe](https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe)  
 
 提前安装运行库可避免在更新软件后因缺少运行库而无法启动。安装完成后，软件将自动使用新的运行库，无需额外操作。
 
