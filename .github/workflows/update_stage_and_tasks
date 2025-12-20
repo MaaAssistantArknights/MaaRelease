@@ -1,0 +1,23 @@
+name: update_stage_and_tasks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'MaaAssistantArknights/api/gui/**'
+      - 'MaaAssistantArknights/api/resource/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Deploy API Server
+        run: |
+          gh workflow run deploy_api_server
+        env:
+          GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
