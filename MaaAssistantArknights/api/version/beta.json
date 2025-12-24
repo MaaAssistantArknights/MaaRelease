@@ -535,11 +535,11 @@
     "body": "## v6.1.0-beta.2\n\n### Highlights\n\n#### 界园导游持续完善 | Roguelike IS6 Refinement\n\n感谢各位玩家的反馈！\n这个版本主要修复了界园肉鸽的遭遇识别和通宝/铜币兑换识别问题。\n针对 EN/KR/JP 服务器优化了大量 OCR 正则表达式，提升遭遇节点与商店流程的稳定性。\n如遇问题请通过 Discord 服务器或直接在 GitHub 上反馈给我们。\n\n----\n\n#### IS6 Encounter & Tongbao / Copper Detection Fixes\n\nThanks for your feedback!\nThis version focuses on fixing IS6 encounter recognition and Tongbao/Copper exchange detection issues.\nMultiple OCR regex improvements for EN/KR/JP servers enhance stability in encounter nodes and shop flows.\nPlease continue reporting issues to us via the Discord Server or directly on GitHub.\n\n----\n\n### 新增 | New\n\n* 满线索再一键置入 @ABA2396\n\n### 修复 | Fix\n\n* more tongbao EN regex @Constrat\n* SendClues for txwy (#15178) @momomochi987\n* 通宝识别失败时放弃通宝 (#15167) @travellerse @HX3N\n* more Coppers EN regexes @Constrat\n* missing Special Squad for EN @Constrat\n* more regex for CoppersNameOcrReplace EN @Constrat\n* SendClues for Yostar server (#15168) @HX3N\n* Missing GetDropSelectRecruit for EN @Constrat\n* missing CoppersAbandonExchange for EN @Constrat\n* tonbgbao regex for EN @Constrat\n* 完善通宝识别失败时的分支处理 (#15180) @travellerse\n\n### 其他 | Other\n\n* 繁中服保全派駐 8 清音安保派駐 (#15110) @momomochi987\n* YostarJP roguelike JieGarden ocr edit @Manicsteiner\n* YostarKR JieGarden Encounter ocr @HX3N\n* 更新 macos.cmake (#15173) @Alan-Charred\n* KR tweak InvestmentReach @HX3N\n\n**Full Changelog**: [v6.1.0-beta.1 -> v6.1.0-beta.2](https://github.com/MaaAssistantArknights/MaaAssistantArknights/compare/v6.1.0-beta.1...v6.1.0-beta.2)\n\n[已有 Mirror酱 CDK？前往 Mirror酱 高速下载](https://mirrorchyan.com/zh/projects?rid=MAA&source=maagh-release)\n",
     "reactions": {
       "url": "https://api.github.com/repos/MaaAssistantArknights/MaaAssistantArknights/releases/272274904/reactions",
-      "total_count": 1,
+      "total_count": 2,
       "+1": 0,
       "-1": 0,
       "laugh": 0,
-      "hooray": 1,
+      "hooray": 2,
       "confused": 0,
       "heart": 0,
       "rocket": 0,
