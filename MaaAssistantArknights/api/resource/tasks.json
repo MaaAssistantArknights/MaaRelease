@@ -1,4 +1,18 @@
 {
+    "SSSStageNameOCR": {
+        "algorithm": "OcrDetect",
+        "text": [],
+        "isAscii": true,
+        "withoutDet": true,
+        "useRaw": false,
+        "binThreshold": [180, 255],
+        "roi": [33, 272, 85, 36],
+        "ocrReplace": [
+            ["LT(?=\\d)", "LT-"],
+            ["Lt", "LT"],
+            ["LT\\+", "LT-"]
+        ]
+    },
     "UR-8": {
         "algorithm": "JustReturn",
         "sub": ["UR-8@UR-OpenOpt"],
@@ -83,6 +97,7 @@
         "postDelay": 1000
     }
 }
+
 
 
 
