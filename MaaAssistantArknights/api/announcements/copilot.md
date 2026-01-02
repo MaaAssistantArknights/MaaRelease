@@ -9,7 +9,7 @@ https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/
 
 ```json
 {
-  "time": "2025-01-02T18:00:00.000Z"
+  "time": "2026-01-02T18:00:00.000Z"
 }
 ```
 
