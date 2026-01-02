@@ -5,6 +5,18 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 引航者试炼#6地图更新公告
+
+```json
+{
+  "time": "2025-1-2T18:00:00.000Z"
+}
+```
+
+由于引航者试炼#6地图最近进行了修复，之前用老地图写的作业可能会部署不了干员。将老作业的关卡名修改成act6bossrush_tm0X，点使用自定义关卡名即可继续使用老地图，例如act6bossrush_tm02
+
+另外MAA在6.1.1版本修复了引航者试炼的技能和撤退，需要使用技能和撤退的作业必须更新版本才能用哦~
+
 ## 作业站停机升级公告
 
 ```json
