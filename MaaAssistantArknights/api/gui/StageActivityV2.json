@@ -189,17 +189,20 @@
   },
   "txwy": {
     "sideStoryStage": {
-      "巴别塔 復刻": {
+      "生路 復刻": {
         "MinimumRequired": "v6.0.0-beta.1",
         "Activity": {
-          "Tip": "SideStory「巴别塔」復刻",
-          "StageName": "巴别塔 復刻",
-          "UtcStartTime": "2025/11/14 16:00:00",
-          "UtcExpireTime": "2025/11/24 03:59:59",
+          "Tip": "SideStory「生路」復刻",
+          "StageName": "生路 復刻",
+          "UtcStartTime": "2026/01/12 16:00:00",
+          "UtcExpireTime": "2026/01/22 03:59:59",
           "TimeZone": 8
         },
         "Stages": [
-          { "Display": "SSReopen-BB", "Value": "SSReopen-BB", "Drop": "代理1~8" }
+          { "Display": "SSReopen-BP", "Value": "SSReopen-BP", "Drop": "代理1~9" },
+          { "Display": "BP-5", "Value": "BP-5", "Drop": "31033" },
+          { "Display": "BP-6", "Value": "BP-6", "Drop": "30023" },
+          { "Display": "BP-7", "Value": "BP-7", "Drop": "30073" }
         ]
       },
       "紅絲絨": {
