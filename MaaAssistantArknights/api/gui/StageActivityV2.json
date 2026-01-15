@@ -57,22 +57,6 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "AD": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "サイドストーリー「緋染めのビロード」",
-          "StageName": "AD",
-          "UtcStartTime": "2025/11/13 16:00:00",
-          "UtcExpireTime": "2025/11/27 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "AD-6", "Value": "AD-6", "Drop": "30063" },
-          { "Display": "AD-7", "Value": "AD-7", "Drop": "30033" },
-          { "Display": "AD-8", "Value": "AD-8", "Drop": "31023" },
-          { "Display": "AD-3", "Value": "AD-3", "Drop": "合成玉効率 89%" }
-        ]
-      },
       "AS": {
         "MinimumRequired": "v6.0.0-beta.1",
         "Activity": {
@@ -89,6 +73,22 @@
           { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
           { "Display": "AS-6", "Value": "AS-6", "Drop": "初級源岩、初級糖原（合成玉効率 82%）" }
         ]
+      },
+      "AT": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "サイドストーリー「墟」",
+          "StageName": "AT",
+          "UtcStartTime": "2026/01/16 16:00:00",
+          "UtcExpireTime": "2026/02/06 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
+          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
+          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
+          { "Display": "AT-4", "Value": "AT-4", "Drop": "合成玉効率 83%" }
+        ]
       }
     },
     "resourceCollection": {
@@ -97,26 +97,22 @@
       "UtcExpireTime": "2025/11/20 03:59:59",
       "TimeZone": 9,
       "IsResourceCollection": true
-    }
+    },
+    "miniGame": [
+      {
+        "MinimumRequired": "v6.2.2",
+        "DisplayKey": "MiniGame@AT@ConversationRoom",
+        "Display": "墟: 相談室・御影",
+        "Value": "MiniGame@AT@ConversationRoom",
+        "TipKey": "MiniGame@AT@ConversationRoomTip",
+        "UtcStartTime": "2026/01/16 16:00:00",
+        "UtcExpireTime": "2026/02/13 03:59:59",
+        "TimeZone": 9
+      }
+    ]
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "AD": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "SideStory - 붉게 물든 벨벳",
-          "StageName": "AD",
-          "UtcStartTime": "2025/11/13 16:00:00",
-          "UtcExpireTime": "2025/11/27 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "AD-6", "Value": "AD-6", "Drop": "30063" },
-          { "Display": "AD-7", "Value": "AD-7", "Drop": "30033" },
-          { "Display": "AD-8", "Value": "AD-8", "Drop": "31023" },
-          { "Display": "AD-3", "Value": "AD-3", "Drop": "합성옥 효율 89%" }
-        ]
-      },
       "AS": {
         "MinimumRequired": "v6.0.0-beta.1",
         "Activity": {
@@ -133,6 +129,22 @@
           { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
           { "Display": "AS-6", "Value": "AS-6", "Drop": "합성옥 효율 82%" }
         ]
+      },
+      "AT": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "SideStory - 폐허",
+          "StageName": "AT",
+          "UtcStartTime": "2026/01/16 16:00:00",
+          "UtcExpireTime": "2026/02/06 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
+          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
+          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
+          { "Display": "AT-4", "Value": "AT-4", "Drop": "합성옥 효율 83%" }
+        ]
       }
     },
     "resourceCollection": {
@@ -141,26 +153,22 @@
       "UtcExpireTime": "2025/11/20 03:59:59",
       "TimeZone": 9,
       "IsResourceCollection": true
-    }
+    },
+    "miniGame": [
+      {
+        "MinimumRequired": "v6.2.2",
+        "DisplayKey": "MiniGame@AT@ConversationRoom",
+        "Display": "폐허: 미카게 상담실",
+        "Value": "MiniGame@AT@ConversationRoom",
+        "TipKey": "MiniGame@AT@ConversationRoomTip",
+        "UtcStartTime": "2026/01/16 16:00:00",
+        "UtcExpireTime": "2026/02/13 03:59:59",
+        "TimeZone": 9
+      }
+    ]
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "AD": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "Act or Die",
-          "StageName": "AD",
-          "UtcStartTime": "2025/11/13 08:00:00",
-          "UtcExpireTime": "2025/11/27 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          { "Display": "AD-6", "Value": "AD-6", "Drop": "30063" },
-          { "Display": "AD-7", "Value": "AD-7", "Drop": "30033" },
-          { "Display": "AD-8", "Value": "AD-8", "Drop": "31023" },
-          { "Display": "AD-3", "Value": "AD-3", "Drop": "Orundum efficiency 89%" }
-        ]
-      },
       "AS": {
         "MinimumRequired": "v6.0.0-beta.1",
         "Activity": {
@@ -177,6 +185,22 @@
           { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
           { "Display": "AS-6", "Value": "AS-6", "Drop": "Orundum efficiency 82%" }
         ]
+      },
+      "AT": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "Ato",
+          "StageName": "AT",
+          "UtcStartTime": "2026/01/16 08:00:00",
+          "UtcExpireTime": "2026/02/06 03:59:59",
+          "TimeZone": -7
+        },
+        "Stages": [
+          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
+          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
+          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
+          { "Display": "AT-4", "Value": "AT-4", "Drop": "Orundum efficiency 83%" }
+        ]
       }
     },
     "resourceCollection": {
@@ -185,7 +209,19 @@
       "UtcExpireTime": "2025/11/20 03:59:59",
       "TimeZone": -7,
       "IsResourceCollection": true
-    }
+    },
+    "miniGame": [
+      {
+        "MinimumRequired": "v6.2.2",
+        "DisplayKey": "MiniGame@AT@ConversationRoom",
+        "Display": "Ato: Soudanshitsu Mikage",
+        "Value": "MiniGame@AT@ConversationRoom",
+        "TipKey": "MiniGame@AT@ConversationRoomTip",
+        "UtcStartTime": "2026/01/16 08:00:00",
+        "UtcExpireTime": "2026/02/13 03:59:59",
+        "TimeZone": -7
+      }
+    ]
   },
   "txwy": {
     "sideStoryStage": {
@@ -243,3 +279,4 @@
     ]
   }
 }
+
