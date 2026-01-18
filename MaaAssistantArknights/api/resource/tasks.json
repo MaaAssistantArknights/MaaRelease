@@ -1,39 +1,29 @@
 {
-    "GetFriendClue": {
-        "postDelay": 2000
+    "BattleQuickFormationSkillLevel-Swipe": {
+        "Doc": "v6.3.0 delete",
+        "algorithm": "JustReturn",
+        "action": "Swipe",
+        "specificRect": [15, 650, 10, 10],
+        "rectMove": [15, 550, 10, 10],
+        "postDelay": 600
     },
-    "BattleHasStarted": {
-        "roi": [1178, 33, 53, 39],
-        "specialParams": [235, 200]
+    "BattleQuickFormationSkill-SwipeToTheUp": {
+        "Doc": "v6.3.0 delete",
+        "algorithm": "JustReturn",
+        "action": "Swipe",
+        "postDelay": 600,
+        "specificRect": [15, 400, 80, 10],
+        "rectMove": [15, 700, 80, 20],
+        "specialParams": [150, 0, 1, 1]
     },
-    "Roguelike@InBattleFlag": {
-        "roi": [1165, 20, 75, 65]
-    },
-    "BattleOfficiallyBegin": {
-        "roi": [1165, 20, 75, 65]
-    },
-    "BattlePauseCancelCheck": {
-        "roi": [1165, 20, 75, 65]
-    },
-    "PRTS1": {
-        "roi": [1165, 20, 75, 65]
-    },
-    "Formation-AddSupportUnit-EnterSupportList": {
-        "roi": [1023, 314, 100, 100]
-    },
-    "SSSStageNameOCR": {
-        "algorithm": "OcrDetect",
-        "text": [],
-        "isAscii": true,
-        "withoutDet": true,
-        "useRaw": false,
-        "binThreshold": [180, 255],
-        "roi": [33, 272, 85, 36],
-        "ocrReplace": [
-            ["LT(?=\\d)", "LT-"],
-            ["Lt", "LT"],
-            ["LT\\+", "LT-"]
-        ]
+    "BattleQuickFormationSkill-SwipeToTheDown": {
+        "Doc": "v6.3.0 delete",
+        "algorithm": "JustReturn",
+        "action": "Swipe",
+        "postDelay": 600,
+        "specificRect": [15, 525, 80, 10],
+        "rectMove": [15, 200, 80, 100],
+        "specialParams": [150, 0, 1, 1]
     },
     "ME-5": {
         "algorithm": "JustReturn",
@@ -92,6 +82,7 @@
         "next": ["#self", "SideStoryStage", "ChapterSwipeToTheRight"]
     }
 }
+
 
 
 
