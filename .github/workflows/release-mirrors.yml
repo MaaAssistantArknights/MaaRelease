@@ -77,7 +77,7 @@ jobs:
         include: # 跟上方必须有属性冲突，并且需要将其他需要继承的属性复制下来，否则不会继承
           - repo: MaaRelease
             os: macos-ota
-            target: R2_MAC,ota2
+            target: R2_MAC
             runs-on: macos-14
     runs-on: ${{ matrix.runs-on }}
     steps:
@@ -153,14 +153,6 @@ jobs:
           RSYNC_RETRYABLE_REASON_12: Error in rsync protocol data stream
           RSYNC_RETRYABLE_REASON_23: Error in partial transfer
           RSYNC_RETRYABLE_REASON_30: Timeout in data send/receive
-
-      - name: Upload to MaaRelPkg (ota2.maa.plus)
-        if: github.repository == 'MaaAssistantArknights/MaaRelease' && contains(fromJSON(steps.generateTargetList.outputs.output), 'ota2')
-        continue-on-error: true
-        run: |
-            gh workflow run sync-rel-to-ota2.yml -f tag=${{ needs.getReleaseTag.outputs.release_tag }}
-        env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Appcast Packages for macos-ota
         if: github.repository == 'MaaAssistantArknights/MaaRelease' && !contains(needs.getReleaseTag.outputs.release_tag, '.g') && contains(fromJSON(steps.generateTargetList.outputs.output), 'R2_MAC') && (!inputs.DEBUG_JOBS || contains(fromJson(needs.getReleaseTag.outputs.debug_jobs), 'R2_MAC'))
