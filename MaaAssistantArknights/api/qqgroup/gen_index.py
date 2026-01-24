@@ -1,18 +1,41 @@
 import sys
 
-# 使用： python gen_index.py 26
-group_index = int(sys.argv[1]) - 1 if len(sys.argv) > 1 else 0
+# 使用：
+#   python gen_index.py 26       - 生成群模式页面（推荐第26群）
+#   python gen_index.py channel  - 生成频道模式页面
+
+# QQ 频道信息
+qq_channel_url = "https://pd.qq.com/s/8d3h265zd?b=9"
+qq_channel_name = "MAA QQ 频道"
 
 with open("content_summary.txt", "r", encoding="utf-8") as f:
     lines = [line.strip() for line in f if line.strip()]
 
-if group_index < 0 or group_index >= len(lines):
-    raise ValueError("群编号超出范围")
+# 解析参数：channel 为频道模式，数字为群模式
+arg = sys.argv[1] if len(sys.argv) > 1 else "1"
+is_channel_mode = arg.lower() == "channel"
 
-url, name, gid = lines[group_index].split("|")
+if is_channel_mode:
+    # 频道模式：推荐跳转到 QQ 频道
+    url = qq_channel_url
+    name = qq_channel_name
+    gid = ""
+    group_index = -1  # 无当前推荐群
+else:
+    # 群模式：推荐跳转到指定群
+    group_index = int(arg) - 1
+    if group_index < 0 or group_index >= len(lines):
+        raise ValueError("群编号超出范围")
+    url, name, gid = lines[group_index].split("|")
 
 groups_list_html = ""
 valid_groups_count = 0
+
+# QQ 频道条目（频道模式下标记为当前推荐）
+if is_channel_mode:
+    qq_channel_html = f'<li class="channel"><strong><span class="current">{qq_channel_name} - 当前推荐</span></strong></li>\n'
+else:
+    qq_channel_html = f'<li class="channel"><a href="{qq_channel_url}" onclick="handleLinkClick(event)">{qq_channel_name}</a></li>\n'
 
 for i, line in enumerate(lines):
     parts = line.split("|")
@@ -60,6 +83,12 @@ index_html = f"""
         .cancel-btn:hover {{ background: #cc5555; }}
         #countdown {{ color: #ff6600; font-weight: bold; }}
         .disabled {{ color: #999; }}
+        .channel {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); border-left: 4px solid #7c4dff; }}
+        .channel a {{ color: #7c4dff; }}
+        .channel a:hover {{ color: #5e35b1; }}
+        .channel-header {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }}
+        .channel-header .primary-link {{ background: #7c4dff; }}
+        .channel-header .primary-link:hover {{ background: #5e35b1; }}
     </style>
     <script>
         let redirectEnabled = true;
@@ -103,15 +132,20 @@ index_html = f"""
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header{' channel-header' if is_channel_mode else ''}">
             <h2>欢迎加入【{name}】</h2>
-            <p>群号: <strong>{gid}</strong></p>
-            <p><a href="{url}" class="primary-link" onclick="handlePrimaryLinkClick(event)">立即加入当前推荐群组</a></p>
+            {'<p>群号: <strong>' + gid + '</strong></p>' if gid else ''}
+            <p><a href="{url}" class="primary-link" onclick="handlePrimaryLinkClick(event)">{'立即加入 QQ 频道' if is_channel_mode else '立即加入当前推荐群组'}</a></p>
             <p id="redirectText">
                 页面将在 <span id="countdown">8</span> 秒后自动跳转……
                 <button id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>
             </p>
         </div>
+        
+        <h3>QQ 频道:</h3>
+        <ul>
+            {qq_channel_html}
+        </ul>
         
         <h3>可用群组列表 (共 {valid_groups_count} 个):</h3>
         <ul>
@@ -127,4 +161,5 @@ index_html = f"""
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(index_html)
 
-print(f"index.html 已更新为 {name}")
+mode_str = "频道模式" if is_channel_mode else f"群模式 (推荐: {name})"
+print(f"index.html 已更新为 {mode_str}")

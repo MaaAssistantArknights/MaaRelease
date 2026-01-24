@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       group_number:
-        description: '群编号'
+        description: '群编号（输入 0 表示 QQ 频道模式）'
         required: true
 
 jobs:
@@ -22,7 +22,12 @@ jobs:
 
       - name: Generate index.html
         working-directory: MaaAssistantArknights/api/qqgroup
-        run: python gen_index.py ${{ github.event.inputs.group_number }}
+        run: |
+          if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
+            python gen_index.py channel
+          else
+            python gen_index.py ${{ github.event.inputs.group_number }}
+          fi
 
       - name: Commit and push
         working-directory: MaaAssistantArknights/api/qqgroup
@@ -30,5 +35,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Update index.html to group ${{ github.event.inputs.group_number }}" || echo "No changes to commit"
+          if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
+            git commit -m "Update index.html to QQ channel" || echo "No changes to commit"
+          else
+            git commit -m "Update index.html to group ${{ github.event.inputs.group_number }}" || echo "No changes to commit"
+          fi
           git push

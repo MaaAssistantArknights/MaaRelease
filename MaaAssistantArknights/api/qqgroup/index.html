@@ -28,6 +28,12 @@
         .cancel-btn:hover { background: #cc5555; }
         #countdown { color: #ff6600; font-weight: bold; }
         .disabled { color: #999; }
+        .channel { background: linear-gradient(135deg, #e8f0fe, #f0e6ff); border-left: 4px solid #7c4dff; }
+        .channel a { color: #7c4dff; }
+        .channel a:hover { color: #5e35b1; }
+        .channel-header { background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }
+        .channel-header .primary-link { background: #7c4dff; }
+        .channel-header .primary-link:hover { background: #5e35b1; }
     </style>
     <script>
         let redirectEnabled = true;
@@ -80,6 +86,12 @@
                 <button id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>
             </p>
         </div>
+        
+        <h3>QQ 频道:</h3>
+        <ul>
+            <li class="channel"><a href="https://pd.qq.com/s/8d3h265zd?b=9" onclick="handleLinkClick(event)">MAA QQ 频道</a></li>
+
+        </ul>
         
         <h3>可用群组列表 (共 28 个):</h3>
         <ul>
