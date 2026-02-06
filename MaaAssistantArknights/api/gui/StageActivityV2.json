@@ -140,20 +140,20 @@
           { "Display": "AS-6", "Value": "AS-6", "Drop": "합성옥 효율 82%" }
         ]
       },
-      "AT": {
+      "AveMujica": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "SideStory - 폐허",
-          "StageName": "AT",
-          "UtcStartTime": "2026/01/16 16:00:00",
-          "UtcExpireTime": "2026/02/06 03:59:59",
+          "Tip": "SideStory '편안한 잠꼬대'",
+          "StageName": "AveMujica",
+          "UtcStartTime": "2026/02/10 16:00:00",
+          "UtcExpireTime": "2026/02/24 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
-          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
-          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
-          { "Display": "AT-4", "Value": "AT-4", "Drop": "합성옥 효율 83%" }
+          { "Display": "AveMujica-8", "Value": "AveMujica-8", "Drop": "31073" },
+          { "Display": "AveMujica-7", "Value": "AveMujica-7", "Drop": "31063" },
+          { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
+          { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "합성옥 효율 32%" }
         ]
       }
     },
@@ -199,7 +199,11 @@
           "TimeZone": -7
         },
         "Stages": [
-          { "Display": "SSReopen-AS", "Value": "SSReopen-AS", "Drop": "Adventure That Cannot Wait for the Sun - Rerun Auto-Deploy 1~9" },
+          {
+            "Display": "SSReopen-AS",
+            "Value": "SSReopen-AS",
+            "Drop": "Adventure That Cannot Wait for the Sun - Rerun Auto-Deploy 1~9"
+          },
           { "Display": "AS-7", "Value": "AS-7", "Drop": "30043" },
           { "Display": "AS-8", "Value": "AS-8", "Drop": "30093" },
           { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
