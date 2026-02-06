@@ -57,23 +57,6 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "AS": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "サイドストーリー「太陽すらも追い越して」復刻",
-          "StageName": "AS",
-          "UtcStartTime": "2026/01/06 04:00:00",
-          "UtcExpireTime": "2026/01/16 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "SSReopen-AS", "Value": "SSReopen-AS", "Drop": "SS「太陽すらも追い越して」復刻代理 1~9" },
-          { "Display": "AS-7", "Value": "AS-7", "Drop": "30043" },
-          { "Display": "AS-8", "Value": "AS-8", "Drop": "30093" },
-          { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
-          { "Display": "AS-6", "Value": "AS-6", "Drop": "初級源岩、初級糖原（合成玉効率 82%）" }
-        ]
-      },
       "AveMujica": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -123,23 +106,6 @@
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "AS": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "SideStory '태양을 뿌리쳐라' 재개방",
-          "StageName": "AS",
-          "UtcStartTime": "2026/01/06 04:00:00",
-          "UtcExpireTime": "2026/01/16 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "SSReopen-AS", "Value": "SSReopen-AS", "Drop": "재개방 대리지휘 1~9" },
-          { "Display": "AS-7", "Value": "AS-7", "Drop": "30043" },
-          { "Display": "AS-8", "Value": "AS-8", "Drop": "30093" },
-          { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
-          { "Display": "AS-6", "Value": "AS-6", "Drop": "합성옥 효율 82%" }
-        ]
-      },
       "AveMujica": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -189,43 +155,6 @@
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "AS": {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "Activity": {
-          "Tip": "Adventure That Cannot Wait for the Sun - Rerun",
-          "StageName": "AS",
-          "UtcStartTime": "2026/01/06 04:00:00",
-          "UtcExpireTime": "2026/01/16 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          {
-            "Display": "SSReopen-AS",
-            "Value": "SSReopen-AS",
-            "Drop": "Adventure That Cannot Wait for the Sun - Rerun Auto-Deploy 1~9"
-          },
-          { "Display": "AS-7", "Value": "AS-7", "Drop": "30043" },
-          { "Display": "AS-8", "Value": "AS-8", "Drop": "30093" },
-          { "Display": "AS-9", "Value": "AS-9", "Drop": "31083" },
-          { "Display": "AS-6", "Value": "AS-6", "Drop": "Orundum efficiency 82%" }
-        ]
-      },
-      "AT": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "Ato",
-          "StageName": "AT",
-          "UtcStartTime": "2026/01/16 08:00:00",
-          "UtcExpireTime": "2026/02/06 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
-          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
-          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
-          { "Display": "AT-4", "Value": "AT-4", "Drop": "Orundum efficiency 83%" }
-        ]
-      },
       "AveMujica": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
