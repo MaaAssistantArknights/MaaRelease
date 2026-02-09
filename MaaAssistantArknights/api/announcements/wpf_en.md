@@ -1,3 +1,7 @@
+### 🎉 PC version of Arknights (CN only)
+
+MAA now supports the PC version of Arknights. However, due to limited maintenance resources, the PC version may remain unstable for an extended period, with some features potentially malfunctioning or temporarily unavailable. We warmly welcome community developers to assist in adaptation and submit improvements to collectively enhance PC support.
+
 ### 📢 [MAA × MirrorChyan] Community Sponsorship Program
 
 MAA has officially integrated **[MirrorChyan](https://mirrorchyan.com/?source=maa-anno-en)** — a paid distribution platform designed for open-source communities.
