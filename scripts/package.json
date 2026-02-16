@@ -10,8 +10,8 @@
         "eslint": "^10.0.0",
         "minimatch": "^10.2.0",
         "minio": "^8.0.6",
-        "simple-git": "^3.30.0",
-        "undici": "^7.21.0"
+        "simple-git": "^3.31.1",
+        "undici": "^7.22.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
