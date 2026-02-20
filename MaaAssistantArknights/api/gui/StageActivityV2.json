@@ -72,6 +72,23 @@
           { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
           { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "合成玉効率 32%" }
         ]
+      },
+      "GO": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "サイドストーリー「落日の向こうへ」復刻",
+          "StageName": "GO",
+          "UtcStartTime": "2026/02/24 04:00:00",
+          "UtcExpireTime": "2026/03/06 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "復刻代理 1~9" },
+          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
+          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
+          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
+          { "Display": "GO-4", "Value": "GO-4", "Drop": "合成玉効率 69%" }
+        ]
       }
     },
     "resourceCollection": {
@@ -121,6 +138,23 @@
           { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
           { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "합성옥 효율 32%" }
         ]
+      },
+      "GO": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "재개방 SideStory '위대한 서곡의 끝'",
+          "StageName": "GO",
+          "UtcStartTime": "2026/02/24 04:00:00",
+          "UtcExpireTime": "2026/03/06 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "재개방 대리지휘 1~9" },
+          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
+          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
+          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
+          { "Display": "GO-4", "Value": "GO-4", "Drop": "합성옥 효율 69%" }
+        ]
       }
     },
     "resourceCollection": {
@@ -169,6 +203,23 @@
           { "Display": "AveMujica-7", "Value": "AveMujica-7", "Drop": "31063" },
           { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
           { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "Orundum efficiency 32%" }
+        ]
+      },
+      "GO": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "Ending a Grand Overture - Rerun",
+          "StageName": "GO",
+          "UtcStartTime": "2026/02/24 04:00:00",
+          "UtcExpireTime": "2026/03/06 03:59:59",
+          "TimeZone": -7
+        },
+        "Stages": [
+          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "Auto-Deploy 1~9" },
+          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
+          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
+          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
+          { "Display": "GO-4", "Value": "GO-4", "Drop": "Orundum efficiency 69%" }
         ]
       }
     },
@@ -259,4 +310,3 @@
     ]
   }
 }
-
