@@ -272,20 +272,20 @@
           { "Display": "AS-6", "Value": "AS-6", "Drop": "搓玉用" }
         ]
       },
-      "紅絲絨": {
+      "墟": {
         "MinimumRequired": "v6.0.0-beta.1",
         "Activity": {
-          "Tip": "SideStory「紅絲絨」",
-          "StageName": "紅絲絨",
-          "UtcStartTime": "2025/12/29 16:00:00",
-          "UtcExpireTime": "2026/01/12 03:59:59",
+          "Tip": "SideStory「墟」",
+          "StageName": "墟",
+          "UtcStartTime": "2026/02/26 16:00:00",
+          "UtcExpireTime": "2026/03/19 03:59:59",
           "TimeZone": 8
         },
         "Stages": [
-          { "Display": "AD-8", "Value": "AD-8", "Drop": "31023" },
-          { "Display": "AD-7", "Value": "AD-7", "Drop": "30033" },
-          { "Display": "AD-6", "Value": "AD-6", "Drop": "30063" },
-          { "Display": "AD-3", "Value": "AD-3", "Drop": "搓玉用" }
+          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
+          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
+          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
+          { "Display": "AT-4", "Value": "AT-4", "Drop": "搓玉用" }
         ]
       }
     },
@@ -298,13 +298,13 @@
     },
     "miniGame": [
       {
-        "MinimumRequired": "v6.0.0-beta.1",
-        "DisplayKey": "MiniGame@ALL@GreenGrass",
-        "Display": "爭鋒頻道：青草城",
-        "Value": "MiniGame@ALL@GreenGrass@DuelChannel@Begin",
-        "TipKey": "MiniGame@ALL@GreenGrassTip",
-        "UtcStartTime": "2025/11/28 16:00:00",
-        "UtcExpireTime": "2025/12/14 03:59:59",
+        "MinimumRequired": "v6.2.2",
+        "DisplayKey": "MiniGame@AT@ConversationRoom",
+        "Display": "墟：相談室·御影",
+        "Value": "MiniGame@AT@ConversationRoom",
+        "TipKey": "MiniGame@AT@ConversationRoomTip",
+        "UtcStartTime": "2026/02/26 16:00:00",
+        "UtcExpireTime": "2026/03/19 03:59:59",
         "TimeZone": 8
       }
     ]
