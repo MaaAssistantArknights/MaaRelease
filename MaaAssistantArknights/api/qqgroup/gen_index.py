@@ -66,6 +66,7 @@ index_html = f"""
         li {{ margin: 12px 0; padding: 8px; background: #f9f9f9; border-radius: 5px; }}
         a {{ text-decoration: none; color: #0066cc; font-weight: bold; }}
         a:hover {{ text-decoration: underline; }}
+        li > a:hover {{ color: #004499; }}
         .container {{ max-width: 800px; margin: 0 auto; }}
         .header {{ background: #eef5ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
         .primary-link {{ display: inline-block; padding: 10px 20px; background: #0066cc; color: white; border-radius: 5px; margin: 10px 0; }}
