@@ -1,8 +1,4 @@
 {
-    "BattleKills": {
-        "Doc": "v6.4.0 delete",
-        "roi": [50, -20, 100, 40]
-    },
     "BattleQuickFormationSkillLevel-Check": {
         "Doc": "v6.4.0 delete",
         "rectMove": [-5, 0, 50, 70]
@@ -25,8 +21,8 @@
         "Doc": "v6.4.0 delete",
         "ocrReplace": [
             ["—{1,2}", "-"],
-            ["-[IiLl\\|]", "1"],
-            ["-\\d+[Oo]", "0"],
+            ["-[IiLl\\|]", "-1"],
+            ["-(\\d+)[Oo]", "-${1}0"],
             ["^.+-EX-?\\d+.*$", "_INVALID_"],
             ["^.+-S-?\\d+.*$", "_INVALID_"],
             ["^.+-MO-?\\d+.*$", "_INVALID_"],
