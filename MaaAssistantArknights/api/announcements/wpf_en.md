@@ -1,3 +1,13 @@
+### Notice: Older Versions of MAA Can No Longer Be Used (NEW!!!)
+
+Hypergryph has mysteriously added 4 stages whose `code` and `name` are both `null`.
+
+Older versions of MAA do not handle this case, so **all versions before v6.4.2 will report corrupted resources and then crash at runtime**.
+
+In practice this means **an update is effectively required**. Please update to the latest version as soon as possible.
+
+~~And older versions probably can't see this announcement anyway~~
+
 ### 💻 PC version of Arknights (CN only)
 
 🎉 MAA now supports the PC version of Arknights (CN only). However, due to limited maintenance resources, the PC version may remain unstable for an extended period, with some features potentially malfunctioning or temporarily unavailable. We warmly welcome community developers to assist in adaptation and submit improvements to collectively enhance PC support.
