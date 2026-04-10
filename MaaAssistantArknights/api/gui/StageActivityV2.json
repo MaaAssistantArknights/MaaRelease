@@ -56,37 +56,20 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "AveMujica": {
+      "OS": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "サイドストーリー「安らかな譫言」",
-          "StageName": "AveMujica",
-          "UtcStartTime": "2026/02/10 16:00:00",
-          "UtcExpireTime": "2026/02/24 03:59:59",
+          "Tip": "サイドストーリー「聖山降臨1101」",
+          "StageName": "OS",
+          "UtcStartTime": "2026/04/14 16:00:00",
+          "UtcExpireTime": "2026/05/05 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "AveMujica-8", "Value": "AveMujica-8", "Drop": "31073" },
-          { "Display": "AveMujica-7", "Value": "AveMujica-7", "Drop": "31063" },
-          { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
-          { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "合成玉効率 32%" }
-        ]
-      },
-      "GO": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "サイドストーリー「落日の向こうへ」復刻",
-          "StageName": "GO",
-          "UtcStartTime": "2026/02/24 04:00:00",
-          "UtcExpireTime": "2026/03/06 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "復刻代理 1~9" },
-          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
-          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
-          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
-          { "Display": "GO-4", "Value": "GO-4", "Drop": "合成玉効率 69%" }
+          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
+          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
+          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
+          { "Display": "OS-4", "Value": "OS-4", "Drop": "合成玉効率 69%" }
         ]
       }
     },
@@ -99,60 +82,33 @@
     },
     "miniGame": [
       {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-TR-1",
-        "Display": "再建画策 RM-TR-1",
-        "Value": "MiniGame@RM-TR-1@Begin",
-        "TipKey": "MiniGame@RM-TR-1Tip",
-        "UtcStartTime": "2026/03/06 16:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
-        "TimeZone": 9
-      },
-      {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-1",
-        "Display": "再建画策 RM-1",
-        "Value": "MiniGame@RM-1@Begin",
-        "TipKey": "MiniGame@RM-1Tip",
-        "UtcStartTime": "2026/03/06 16:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
+        "MinimumRequired": "v6.7.2",
+        "DisplayKey": "MiniGame@OS",
+        "Display": "カランド貿易 研究開発部",
+        "Value": "MiniGame@OS@Begin",
+        "TipKey": "MiniGame@OSTip",
+        "UtcStartTime": "2026/04/14 16:00:00",
+        "UtcExpireTime": "2026/05/12 03:59:59",
         "TimeZone": 9
       }
     ]
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "AveMujica": {
+      "OS": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "SideStory '편안한 잠꼬대'",
-          "StageName": "AveMujica",
-          "UtcStartTime": "2026/02/10 16:00:00",
-          "UtcExpireTime": "2026/02/24 03:59:59",
+          "Tip": "SideStory '설산 강림 1101'",
+          "StageName": "OS",
+          "UtcStartTime": "2026/04/14 16:00:00",
+          "UtcExpireTime": "2026/05/05 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "AveMujica-8", "Value": "AveMujica-8", "Drop": "31073" },
-          { "Display": "AveMujica-7", "Value": "AveMujica-7", "Drop": "31063" },
-          { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
-          { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "합성옥 효율 32%" }
-        ]
-      },
-      "GO": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "재개방 SideStory '위대한 서곡의 끝'",
-          "StageName": "GO",
-          "UtcStartTime": "2026/02/24 04:00:00",
-          "UtcExpireTime": "2026/03/06 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "재개방 대리지휘 1~9" },
-          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
-          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
-          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
-          { "Display": "GO-4", "Value": "GO-4", "Drop": "합성옥 효율 69%" }
+          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
+          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
+          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
+          { "Display": "OS-4", "Value": "OS-4", "Drop": "합성옥 효율 69%" }
         ]
       }
     },
@@ -165,60 +121,33 @@
     },
     "miniGame": [
       {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-TR-1",
-        "Display": "재건 계획 RM-TR-1",
-        "Value": "MiniGame@RM-TR-1@Begin",
-        "TipKey": "MiniGame@RM-TR-1Tip",
-        "UtcStartTime": "2026/03/06 16:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
-        "TimeZone": 9
-      },
-      {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-1",
-        "Display": "재건 계획 RM-1",
-        "Value": "MiniGame@RM-1@Begin",
-        "TipKey": "MiniGame@RM-1Tip",
-        "UtcStartTime": "2026/03/06 16:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
+        "MinimumRequired": "v6.7.2",
+        "DisplayKey": "MiniGame@OS",
+        "Display": "카란 무역 연구개발부",
+        "Value": "MiniGame@OS@Begin",
+        "TipKey": "MiniGame@OSTip",
+        "UtcStartTime": "2026/04/14 16:00:00",
+        "UtcExpireTime": "2026/05/12 03:59:59",
         "TimeZone": 9
       }
     ]
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "AveMujica": {
+      "OS": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "Somniloquium Serenum",
-          "StageName": "AveMujica",
-          "UtcStartTime": "2026/02/10 08:00:00",
-          "UtcExpireTime": "2026/02/24 03:59:59",
+          "Tip": "Retracing Our Steps",
+          "StageName": "OS",
+          "UtcStartTime": "2026/04/14 08:00:00",
+          "UtcExpireTime": "2026/05/05 03:59:59",
           "TimeZone": -7
         },
         "Stages": [
-          { "Display": "AveMujica-8", "Value": "AveMujica-8", "Drop": "31073" },
-          { "Display": "AveMujica-7", "Value": "AveMujica-7", "Drop": "31063" },
-          { "Display": "AveMujica-6", "Value": "AveMujica-6", "Drop": "30033" },
-          { "Display": "AveMujica-5", "Value": "AveMujica-5", "Drop": "Orundum efficiency 32%" }
-        ]
-      },
-      "GO": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "Ending a Grand Overture - Rerun",
-          "StageName": "GO",
-          "UtcStartTime": "2026/02/24 04:00:00",
-          "UtcExpireTime": "2026/03/06 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          { "Display": "SSReopen-GO", "Value": "SSReopen-GO", "Drop": "Auto-Deploy 1~9" },
-          { "Display": "GO-9", "Value": "GO-9", "Drop": "31043" },
-          { "Display": "GO-8", "Value": "GO-8", "Drop": "31013" },
-          { "Display": "GO-7", "Value": "GO-7", "Drop": "30013" },
-          { "Display": "GO-4", "Value": "GO-4", "Drop": "Orundum efficiency 69%" }
+          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
+          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
+          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
+          { "Display": "OS-4", "Value": "OS-4", "Drop": "Orundum efficiency 69%" }
         ]
       }
     },
@@ -231,23 +160,13 @@
     },
     "miniGame": [
       {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-TR-1",
-        "Display": "Rebuilding Mandate RM-TR-1",
-        "Value": "MiniGame@RM-TR-1@Begin",
-        "TipKey": "MiniGame@RM-TR-1Tip",
-        "UtcStartTime": "2026/03/06 16:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
-        "TimeZone": -7
-      },
-      {
-        "MinimumRequired": "v6.4.0",
-        "DisplayKey": "MiniGame@RM-1",
-        "Display": "Rebuilding Mandate RM-1",
-        "Value": "MiniGame@RM-1@Begin",
-        "TipKey": "MiniGame@RM-1Tip",
-        "UtcStartTime": "2026/03/06 08:00:00",
-        "UtcExpireTime": "2026/03/27 03:59:59",
+        "MinimumRequired": "v6.7.2",
+        "DisplayKey": "MiniGame@OS",
+        "Display": "Karlan Trade R&D",
+        "Value": "MiniGame@OS@Begin",
+        "TipKey": "MiniGame@OSTip",
+        "UtcStartTime": "2026/04/14 08:00:00",
+        "UtcExpireTime": "2026/05/12 03:59:59",
         "TimeZone": -7
       }
     ]
