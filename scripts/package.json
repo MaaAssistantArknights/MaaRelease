@@ -1,7 +1,7 @@
 {
     "type": "module",
     "dependencies": {
-        "@annangela/eslint-config": "^10.0.0",
+        "@annangela/eslint-config": "^11.0.0",
         "@octokit/auth-unauthenticated": "^7.0.3",
         "@octokit/plugin-retry": "^8.1.0",
         "@octokit/rest": "^22.0.1",
@@ -11,7 +11,7 @@
         "minimatch": "^10.2.5",
         "minio": "^8.0.7",
         "simple-git": "^3.36.0",
-        "undici": "^8.0.3"
+        "undici": "^8.1.0"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
