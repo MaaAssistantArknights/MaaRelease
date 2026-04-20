@@ -1,13 +1,3 @@
-### Notice: Older Versions of MAA Can No Longer Be Used (NEW!!!)
-
-Hypergryph has mysteriously added 4 stages whose `code` and `name` are both `null`.
-
-Older versions of MAA do not handle this case, so **all versions before v6.4.2 will report corrupted resources and then crash at runtime**.
-
-In practice this means **an update is effectively required**. Please update to the latest version as soon as possible.
-
-~~And older versions probably can't see this announcement anyway~~
-
 ### 💻 PC version of Arknights (CN only)
 
 🎉 MAA now supports the PC version of Arknights (CN only). However, due to limited maintenance resources, the PC version may remain unstable for an extended period, with some features potentially malfunctioning or temporarily unavailable. We warmly welcome community developers to assist in adaptation and submit improvements to collectively enhance PC support.
@@ -19,9 +9,9 @@ MAA has officially integrated **[MirrorChyan](https://mirrorchyan.com/?source=ma
 🤝 **Revenue Sharing**
 
 Revenue generated via **MirrorChyan** will be used to support:
-- The **MAA Official Website**
-- The **Copilot / Strategy Station**
-- Ongoing **server and infrastructure maintenance**
+· The **MAA Official Website**
+· The **Copilot / Strategy Station**
+· Ongoing **server and infrastructure maintenance**
 
 ❤️ **Expanded Community Sponsorship Program**
 
@@ -84,21 +74,26 @@ By using MAA, you agree to comply with the **User Agreement**. The full agreemen
 
 🌍 **Global Distribution**
 
-- **Client Version**  
+· **Client Version**  
   Update checks are provided by the **MAA Team**, with downloads from **GitHub**.
 
-- **Resource Version**  
+· **Resource Version**  
   Update checks are provided for free by **MirrorChyan**.  
   You can manually update via `Resource Update` in settings, which downloads from GitHub.
 
 🔑 **MirrorChyan (Optional)**
 
 By purchasing and entering a **[MirrorChyan CDK](https://mirrorchyan.com/?source=maa-anno-en)**, you can enable:
-- Automatic updates for both **client** and **resources**
-- Priority downloads via **MirrorChyan high-speed CDN**, offering better stability and speed
+· Automatic updates for both **client** and **resources**
+· Priority downloads via **MirrorChyan high-speed CDN**, offering better stability and speed
 
-📦 **Manual Update Guide**  
-https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033
+📦 [**Manual Update**](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
+
+· **Application version**: Extract the full package into a **new** folder. You may copy the `config` and `data` folders from the old folder to preserve your data  
+⚠️ Please do not overwrite the existing folder directly. Some versions require old files to be cleaned up, and manual overwriting will not perform this step. Incorrect operation may result in resource corruption ⚠️  
+🆕 v6.8.0-beta.2 and later support dragging the full application package or the corresponding version’s OTA update zip package directly into the application window for automatic update, and the old-file cleanup step will be performed properly  
+· **Resource version**: Download the [resource package](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip) and directly overwrite the existing `resource` folder  
+⚠️ The resource package contains incremental content. **Do not delete the original folder**, or it may result in resource corruption ⚠️
 
 ----
 
