@@ -55,22 +55,6 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "OS": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "サイドストーリー「聖山降臨1101」",
-          "StageName": "OS",
-          "UtcStartTime": "2026/04/14 16:00:00",
-          "UtcExpireTime": "2026/05/05 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
-          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
-          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
-          { "Display": "OS-4", "Value": "OS-4", "Drop": "合成玉効率 69%" }
-        ]
-      },
       "PV": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -86,6 +70,22 @@
           { "Display": "PV-9", "Value": "PV-9", "Drop": "30103" },
           { "Display": "PV-8", "Value": "PV-8", "Drop": "30083" },
           { "Display": "PV-5", "Value": "PV-5", "Drop": "合成玉効率 32%" }
+        ]
+      },
+      "UR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "サイドストーリー「約束されざる地」",
+          "StageName": "UR",
+          "UtcStartTime": "2026/05/21 16:00:00",
+          "UtcExpireTime": "2026/06/04 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "UR-8", "Value": "UR-8", "Drop": "31033" },
+          { "Display": "UR-7", "Value": "UR-7", "Drop": "31023" },
+          { "Display": "UR-6", "Value": "UR-6", "Drop": "30033" },
+          { "Display": "UR-5", "Value": "UR-5", "Drop": "1理性あたり0.7合成玉" }
         ]
       }
     },
@@ -131,22 +131,6 @@
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "OS": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "SideStory '설산 강림 1101'",
-          "StageName": "OS",
-          "UtcStartTime": "2026/04/14 16:00:00",
-          "UtcExpireTime": "2026/05/05 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
-          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
-          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
-          { "Display": "OS-4", "Value": "OS-4", "Drop": "합성옥 효율 69%" }
-        ]
-      },
       "PV": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -162,6 +146,22 @@
           { "Display": "PV-9", "Value": "PV-9", "Drop": "30103" },
           { "Display": "PV-8", "Value": "PV-8", "Drop": "30083" },
           { "Display": "PV-5", "Value": "PV-5", "Drop": "합성옥 효율 32%" }
+        ]
+      },
+      "UR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "SideStory '허락받지 못한 땅'",
+          "StageName": "UR",
+          "UtcStartTime": "2026/05/21 16:00:00",
+          "UtcExpireTime": "2026/06/04 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "UR-8", "Value": "UR-8", "Drop": "31033" },
+          { "Display": "UR-7", "Value": "UR-7", "Drop": "31023" },
+          { "Display": "UR-6", "Value": "UR-6", "Drop": "30033" },
+          { "Display": "UR-5", "Value": "UR-5", "Drop": "이성 당 0.7 합성옥" }
         ]
       }
     },
@@ -207,22 +207,6 @@
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "OS": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "Retracing Our Steps",
-          "StageName": "OS",
-          "UtcStartTime": "2026/04/14 08:00:00",
-          "UtcExpireTime": "2026/05/05 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
-          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
-          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
-          { "Display": "OS-4", "Value": "OS-4", "Drop": "Orundum efficiency 69%" }
-        ]
-      },
       "PV": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -238,6 +222,22 @@
           { "Display": "PV-9", "Value": "PV-9", "Drop": "30103" },
           { "Display": "PV-8", "Value": "PV-8", "Drop": "30083" },
           { "Display": "PV-5", "Value": "PV-5", "Drop": "Orundum efficiency 32%" }
+        ]
+      },
+      "UR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "Unrealized Realities",
+          "StageName": "UR",
+          "UtcStartTime": "2026/05/21 08:00:00",
+          "UtcExpireTime": "2026/06/04 03:59:59",
+          "TimeZone": -7
+        },
+        "Stages": [
+          { "Display": "UR-8", "Value": "UR-8", "Drop": "31033" },
+          { "Display": "UR-7", "Value": "UR-7", "Drop": "31023" },
+          { "Display": "UR-6", "Value": "UR-6", "Drop": "30033" },
+          { "Display": "UR-5", "Value": "UR-5", "Drop": "0.7 Orundum per Sanity" }
         ]
       }
     },
