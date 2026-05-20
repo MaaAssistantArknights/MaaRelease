@@ -10,32 +10,61 @@ on:
     types:
       - completed
 
+permissions: {}
+
+concurrency:
+  group: deploy-api-server
+  cancel-in-progress: true
+
 jobs:
   sync-repo:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v6
+    timeout-minutes: 10
 
-      - name: Setup ssh key
+    steps:
+      - name: Setup SSH
+        shell: bash
         env:
           SSH_PRIVATE_KEY: ${{ secrets.OTA_SERVER_SSH_KEY }}
+          SSH_HOST: ${{ secrets.OTA_SERVER_SSH_HOST }}
+          SSH_USER: ${{ secrets.OTA_SERVER_SSH_USER }}
         run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa -H ${{ secrets.OTA_SERVER_SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H "$SSH_HOST" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
-      - name: Sync repository
+          cat > ~/.ssh/config <<EOF
+          Host ota-server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/id_rsa
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+          EOF
+          chmod 600 ~/.ssh/config
+
+      - name: Sync repository on server
+        shell: bash
         run: |
-          ssh ${{ secrets.OTA_SERVER_SSH_USER }}@${{ secrets.OTA_SERVER_SSH_HOST }} \
-            "
-              set -e
-              mkdir -p ~/MaaRelease
-              cd ~/MaaRelease
+          set -euo pipefail
+          ssh ota-server '
+            set -euo pipefail
+            mkdir -p ~/MaaRelease
+            cd ~/MaaRelease
+
+            if [ ! -d .git ]; then
               git init
-              git fetch --force --no-tags --prune --update-head-ok --progress  \
-                'https://github.com/${{ github.repository }}' \
-                '+HEAD:refs/remotes/origin/HEAD'
-              git checkout --force --progress refs/remotes/origin/HEAD
-            "
+              git remote add origin "https://github.com/${{ github.repository }}.git"
+            else
+              git remote set-url origin "https://github.com/${{ github.repository }}.git"
+            fi
+
+            git fetch --force --no-tags --prune --progress origin main
+            git checkout --force --progress -B main origin/main
+            git reset --hard origin/main
+            git clean -fdx
+          '
