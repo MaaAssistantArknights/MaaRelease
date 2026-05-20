@@ -4,7 +4,7 @@ from pathlib import Path
 
 if len(sys.argv) < 3:
     print("Usage: python3 list.py <resource> <output>")
-    exit(1)
+    sys.exit(1)
 
 resource = Path(sys.argv[1])
 output = Path(sys.argv[2])
