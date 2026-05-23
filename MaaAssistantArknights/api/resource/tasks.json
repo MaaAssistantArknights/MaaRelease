@@ -7,14 +7,8 @@
         "rectMove": [955, 300, 1, 1],
         "specialParams": [500, 0, 3, 0]
     },
-    "RelaunchAnchor@RA@RA4-ClickStone": {
-        "specificRect": [1110, 350, 1, 1]
-    },
-    "RelaunchAnchor@RA@RA4-ClickStone2": {
-        "specificRect": [250, 450, 1, 1]
-    },
-    "RelaunchAnchor@RA@RA4-ClickStone3": {
-        "specificRect": [710, 250, 1, 1]
+    "RelaunchAnchor@RA@RA4-WaitSwipeMap": {
+        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap*3"]
     },
     "RelaunchAnchor@RA@RA4-WaitSwipeMap4": {
         "sub": ["RelaunchAnchor@RA@RA4-SwipeMap3*4"]
