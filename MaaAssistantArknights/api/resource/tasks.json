@@ -7,6 +7,16 @@
         "rectMove": [955, 300, 1, 1],
         "specialParams": [500, 0, 3, 0]
     },
+    "RelaunchAnchor@RA@RA4-Cost": {
+        "doc": "步骤 20：OCR 识别部署费用 ≥20",
+        "algorithm": "OcrDetect",
+        "action": "DoNothing",
+        "text": ["20+"],
+        "ocrReplace": [["[2-9]\\d+", "20+"]],
+        "roi": [1200, 490, 80, 50],
+        "postDelay": 500,
+        "next": ["RelaunchAnchor@RA@RA4-ClickStone2"]
+    },
     "RelaunchAnchor@RA@RA4-WaitSwipeMap4": {
         "doc": "步骤 32：前过剧情准备滑动地图",
         "algorithm": "JustReturn",
