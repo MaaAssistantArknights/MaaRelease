@@ -7,19 +7,26 @@
         "rectMove": [955, 300, 1, 1],
         "specialParams": [500, 0, 3, 0]
     },
-    "RelaunchAnchor@RA@RA4-ClickStone": {
-        "specificRect": [1110, 350, 1, 1]
-    },
-    "RelaunchAnchor@RA@RA4-ClickStone2": {
-        "specificRect": [250, 450, 1, 1]
-    },
-    "RelaunchAnchor@RA@RA4-ClickStone3": {
-        "specificRect": [710, 250, 1, 1]
+    "RelaunchAnchor@RA@RA4-Cost": {
+        "doc": "步骤 20：OCR 识别部署费用 ≥20",
+        "algorithm": "OcrDetect",
+        "action": "DoNothing",
+        "text": ["20+"],
+        "ocrReplace": [["[2-9]\\d+", "20+"]],
+        "roi": [1200, 490, 80, 50],
+        "postDelay": 500,
+        "next": ["RelaunchAnchor@RA@RA4-ClickStone2"]
     },
     "RelaunchAnchor@RA@RA4-WaitSwipeMap4": {
-        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap3*4"]
+        "doc": "步骤 32：前过剧情准备滑动地图",
+        "algorithm": "JustReturn",
+        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap3*4"],
+        "next": ["RelaunchAnchor@RA@RA4-DeployOperatorSwipe"]
     },
     "RelaunchAnchor@RA@RA4-SwipeMap3": {
+        "doc": "步骤 32：滑动地图",
+        "baseTask": "RelaunchAnchor@RA@RA1-AlignMap",
+        "specificRect": [800, 550, 10, 10],
         "rectMove": [790, 50, 1, 1]
     },
     "Annihilation": {
