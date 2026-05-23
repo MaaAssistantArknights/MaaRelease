@@ -7,12 +7,6 @@
         "rectMove": [955, 300, 1, 1],
         "specialParams": [500, 0, 3, 0]
     },
-    "RelaunchAnchor@RA@RA4-WaitSwipeMap4": {
-        "doc": "步骤 32：前过剧情准备滑动地图",
-        "algorithm": "JustReturn",
-        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap3*4"],
-        "next": ["RelaunchAnchor@RA@RA4-DeployOperatorSwipe"]
-    },
     "RelaunchAnchor@RA@RA4-SwipeMap3": {
         "doc": "步骤 32：滑动地图",
         "baseTask": "RelaunchAnchor@RA@RA1-AlignMap",
