@@ -8,12 +8,19 @@
         "specialParams": [500, 0, 3, 0]
     },
     "RelaunchAnchor@RA@RA4-WaitSwipeMap": {
-        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap*3"]
+        "doc": "6.10.6删除",
+        "algorithm": "MatchTemplate",
+        "template": "RelaunchAnchor@RA@ManufactureIcon.png",
+        "roi": [10, 486, 96, 96]
     },
     "RelaunchAnchor@RA@RA4-WaitSwipeMap4": {
-        "sub": ["RelaunchAnchor@RA@RA4-SwipeMap3*4"]
+        "doc": "6.10.6删除",
+        "algorithm": "MatchTemplate",
+        "template": "RelaunchAnchor@RA@ManufactureIcon.png",
+        "roi": [10, 486, 96, 96]
     },
     "RelaunchAnchor@RA@RA4-SwipeMap3": {
+        "doc": "6.10.6删除",
         "rectMove": [790, 50, 1, 1]
     },
     "Annihilation": {
