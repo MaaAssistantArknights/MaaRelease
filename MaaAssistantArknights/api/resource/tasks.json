@@ -1,25 +1,7 @@
 {
-    "MTChapterToMT": {
-        "text": ["瞻望", "圣堂"],
-    },
-    "RelaunchAnchor@RA@RA1-DeployGatheringBaseSwipe": {
-        "doc": "步骤 10：JustReturn Swipe，占位部署采集基站",
-        "algorithm": "JustReturn",
-        "action": "Swipe",
-        "specificRect": [530, 630, 10, 10],
-        "rectMove": [955, 300, 1, 1],
-        "specialParams": [500, 0, 3, 0]
-    },
-    "Annihilation": {
-        "templThreshold": 0.8
-    },
-    "StageTheme": {
-        "templThreshold": 0.7
-    },
-    "StageResource": {
-        "templThreshold": 0.65
-    },
-    "GoTerminalStopflag": {
-        "templThreshold": 0.65
+    "TD-OpenOcr": {
+        "baseTask": "SS-OpenOcr",
+        "text": ["泡影苍霆", "泡影", "苍霆"],
+        "postDelay": 5000
     }
 }
