@@ -5,6 +5,19 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
 -->
 
+## 泡影苍霆活动关卡不支持使用多作业模式
+
+```json
+{
+  "time": "2026-06-08T22:19:07.351Z"
+}
+```
+
+由于活动UI特殊，MAA无法使用多作业模式或作业集，请关掉多作业模式并在干员编队界面开始
+
+![](img/capoo1.gif)
+
+
 ## 引航者试炼#6地图更新公告
 
 ```json
