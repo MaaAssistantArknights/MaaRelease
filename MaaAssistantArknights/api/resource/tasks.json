@@ -1,2 +1,23 @@
 {
+    "CF-8": {
+        "algorithm": "JustReturn",
+        "sub": ["CF-8@CF-OpenOpt"],
+        "next": ["CF-8@SideStoryStage", "CF-8@SwipeToStage"]
+    },
+    "CF-OpenOpt": {
+        "algorithm": "JustReturn",
+        "next": ["CF-OpenOcr", "CF-Open"]
+    },
+    "CF-Open": {
+        "baseTask": "SS-Open",
+        "postDelay": 3000,
+        "template": ["StageSideStory.png", "StageActivity.png"],
+        "next": ["CFChapterToCF"]
+    },
+    "CF-OpenOcr": {
+        "baseTask": "SS-OpenOcr",
+        "postDelay": 3000,
+        "text": ["落叶", "逐火", "活动", "开放"],
+        "next": ["CFChapterToCF"]
+    }
 }
