@@ -4,18 +4,15 @@
       "SSReopen": {
         "MinimumRequired": "v6.10.0",
         "Activity": {
-          "Tip": "SideStory「众生行记」复刻",
-          "StageName": "众生行记",
-          "UtcStartTime": "2026/05/22 16:00:00",
-          "UtcExpireTime": "2026/06/01 03:59:59",
+          "Tip": "SideStory「落叶逐火」复刻",
+          "StageName": "落叶逐火",
+          "UtcStartTime": "2026/06/15 16:00:00",
+          "UtcExpireTime": "2026/06/25 03:59:59",
           "TimeZone": 8
         },
         "Stages": [
-          { "Display": "SSReopen-MT", "Value": "SSReopen-MT", "Drop": "本期不推荐使用，因为活动任务需要到指定关卡完成", "MinimumRequired": "v6.10.5" },
-          { "Display": "MT-10", "Value": "MT-10", "Drop": "31053" },
-          { "Display": "MT-9", "Value": "MT-9", "Drop": "30093" },
-          { "Display": "MT-8", "Value": "MT-8", "Drop": "30053" },
-          { "Display": "MT-6", "Value": "MT-6", "Drop": "搓玉效率0.69" }
+          { "Display": "SSReopen-CF", "Value": "SSReopen-CF", "Drop": "代理1~8关", "MinimumRequired": "v6.10.5" },
+          { "Display": "CF-8", "Value": "CF-8", "Drop": "本关效率最高" }
         ]
       },
       "TD": {
