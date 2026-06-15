@@ -19,5 +19,13 @@
         "postDelay": 3000,
         "text": ["落叶", "逐火", "活动", "开放"],
         "next": ["CFChapterToCF"]
+    },
+    "CFChapterToCF": {
+        "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "text": ["苍暮", "山地"],
+        "roi": [1026, 499, 218, 142],
+        "postDelay": 2000,
+        "next": ["#self", "CFChapterToCF", "ChapterSwipeToTheRight"]
     }
 }
