@@ -53,6 +53,23 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
+      "OR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "サイドストーリー「相見歓」復刻",
+          "StageName": "OR",
+          "UtcStartTime": "2026/07/06 16:00:00",
+          "UtcExpireTime": "2026/07/16 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "復刻代理1~9" },
+          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
+          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
+          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
+          { "Display": "OR-5", "Value": "OR-5", "Drop": "合成玉効率51%" }
+        ]
+      },
       "ME": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -112,6 +129,23 @@
   },
   "YoStarKR": {
     "sideStoryStage": {
+      "OR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "재개방 SideStory '상견환'",
+          "StageName": "OR",
+          "UtcStartTime": "2026/07/06 16:00:00",
+          "UtcExpireTime": "2026/07/16 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "재개방 대리지휘 1~9" },
+          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
+          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
+          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
+          { "Display": "OR-5", "Value": "OR-5", "Drop": "합성옥 효율 51%" }
+        ]
+      },
       "ME": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
@@ -171,6 +205,23 @@
   },
   "YoStarEN": {
     "sideStoryStage": {
+      "OR": {
+        "MinimumRequired": "v6.0.1",
+        "Activity": {
+          "Tip": "Such is the Joy of Our Reunion - Rerun",
+          "StageName": "OR",
+          "UtcStartTime": "2026/07/06 08:00:00",
+          "UtcExpireTime": "2026/07/16 03:59:59",
+          "TimeZone": 9
+        },
+        "Stages": [
+          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "Auto-Deploy 1~9" },
+          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
+          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
+          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
+          { "Display": "OR-5", "Value": "OR-5", "Drop": "Orundum efficiency 51%" }
+        ]
+      },
       "ME": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
