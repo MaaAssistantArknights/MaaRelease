@@ -13,7 +13,7 @@ https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/
 }
 ```
 
-由于活动UI特殊，MAA无法使用多作业模式或作业集，请关掉多作业模式并在干员编队界面开始
+由于活动UI特殊，客户端无法使用多作业模式或作业集，请关掉多作业模式并在干员编队界面开始
 
 ![](img/capoo1.gif)
 
@@ -28,7 +28,7 @@ https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/
 
 由于引航者试炼#6地图最近进行了修复，之前用老地图写的作业可能会部署不了干员。将老作业的关卡名修改成act6bossrush_tm0X，点使用自定义关卡名即可继续使用老地图，例如act6bossrush_tm02
 
-另外MAA在6.1.1版本修复了引航者试炼的技能和撤退，需要使用技能和撤退的作业必须更新版本才能用哦~
+另外客户端在6.1.1版本修复了引航者试炼的技能和撤退，需要使用技能和撤退的作业必须更新版本才能用哦~
 
 ## 作业站停机升级公告
 
