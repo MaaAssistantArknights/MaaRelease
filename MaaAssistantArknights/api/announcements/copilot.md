@@ -2,33 +2,8 @@
 time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 
 具体格式请参考:
-https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/mock/announcements.md
+https://github.com/ZOOT-Plus/zoot-plus-frontend/blob/dev/src/apis/mock/announcements.md
 -->
-
-## 泡影苍霆活动关卡不支持使用多作业模式
-
-```json
-{
-  "time": "2026-06-08T21:16:05.908Z"
-}
-```
-
-由于活动UI特殊，客户端无法使用多作业模式或作业集，请关掉多作业模式并在干员编队界面开始
-
-![](img/capoo1.gif)
-
-
-## 引航者试炼#6地图更新公告
-
-```json
-{
-  "time": "2026-01-02T18:00:00.000Z"
-}
-```
-
-由于引航者试炼#6地图最近进行了修复，之前用老地图写的作业可能会部署不了干员。将老作业的关卡名修改成act6bossrush_tm0X，点使用自定义关卡名即可继续使用老地图，例如act6bossrush_tm02
-
-另外客户端在6.1.1版本修复了引航者试炼的技能和撤退，需要使用技能和撤退的作业必须更新版本才能用哦~
 
 ## 作业站停机升级公告
 
@@ -71,20 +46,6 @@ https://github.com/MaaAssistantArknights/maa-copilot-frontend/tree/dev/src/apis/
 现在访问嘎嘎快，大伙可以试试关掉代理直接打开作业站了~
 
 近期可能会拉黑一批机房 IP
-
-## 迷宫饭主题活动部分关卡不支持使用战斗列表
-
-```json
-{
-  "time": "2024-09-10T01:19:07.351Z"
-}
-```
-
-* **“品尝魔物”**（普通关）：不支持
-* **“走遍泰拉”**（ＥＸ关）：支持哦~
-
-![](img/capoo1.gif)
-
 
 ## 暂停评论区邮件通知
 
