@@ -5,6 +5,21 @@ time: 可以通过浏览器控制台运行 new Date().toISOString() 以生成
 https://github.com/ZOOT-Plus/zoot-plus-frontend/blob/dev/src/apis/mock/announcements.md
 -->
 
+## 作业代码格式更新
+
+```json
+{
+  "time": "2026-07-11T09:00:00.000Z"
+}
+```
+
+PRTS.plus 将于 2026-07-20 起全面启用新版作业代码格式。新格式如下：
+
+- 作业：prts://12345
+- 作业集：prts://s12345
+
+切换后旧版代码将不再支持搜索，请及时更新已分享的代码。
+
 ## 作业站停机升级公告
 
 ```json
