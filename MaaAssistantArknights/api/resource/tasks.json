@@ -197,6 +197,7 @@
         "action": "ClickSelf",
         "text": ["出发前往"],
         "roi": [1140, 520, 120, 55],
+        "postDelay": 1000,
         "next": ["BlackFlowTemporary@InvestSystem", "BlackFlowTemporary@ExitThenAbandon"]
     },
     "BlackFlowTemporary@InvestSystem": {
