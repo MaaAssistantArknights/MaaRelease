@@ -67,7 +67,7 @@
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["重装招募券"],
-        "roi": [0, 300, 1280, 50],
+        "roi": [270, 300, 160, 50],
         "next": ["BlackFlowTemporary@ChooseMechanic", "#self"]
     },
     "BlackFlowTemporary@ChooseMechanic": {
@@ -106,7 +106,7 @@
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["术师招募券"],
-        "roi": [0, 300, 1280, 50],
+        "roi": [570, 300, 160, 50],
         "next": ["BlackFlowTemporary@GiveUpRecruit", "#self"]
     },
     "BlackFlowTemporary@GiveUpRecruit": {
@@ -130,7 +130,7 @@
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["狙击招募券"],
-        "roi": [0, 300, 1280, 50],
+        "roi": [850, 300, 160, 50],
         "next": ["BlackFlowTemporary@GiveUpSniperRecruit", "#self"]
     },
     "BlackFlowTemporary@GiveUpSniperRecruit": {
