@@ -36,7 +36,7 @@
         "action": "ClickSelf",
         "text": ["特勤分队"],
         "roi": [0, 385, 1280, 110],
-        "next": ["BlackFlowTemporary@ChooseSpecialSquad-Confirm", "#self"]
+        "next": ["BlackFlowTemporary@ChooseSpecialSquad-Confirm", "#self", "BlackFlowTemporary@ChooseStrategy", "BlackFlowTemporary@ChooseRecruitVoucher", "BlackFlowTemporary@ChooseMechanic"]
     },
     "BlackFlowTemporary@ChooseSpecialSquad-Confirm": {
         "doc": "识别 <你确定要这么做> 确认弹窗并点击；如果网络卡顿可能存在二次点击触发分队的选择界面，而且两个确认按钮是相同的，扩大识别范围并回到识别上一步骤",
@@ -44,7 +44,7 @@
         "action": "ClickSelf",
         "text": ["你确定要这么做"],
         "roi": [380, 535, 150, 30],
-        "next": ["BlackFlowTemporary@ChooseStrategy", "BlackFlowTemporary@ChooseSpecialSquad"]
+        "next": ["BlackFlowTemporary@ChooseStrategy", "BlackFlowTemporary@ChooseSpecialSquad", "BlackFlowTemporary@ChooseRecruitVoucher", "BlackFlowTemporary@ChooseMechanic"]
     },
     "BlackFlowTemporary@ChooseStrategy": {
         "doc": "识别 <稳扎稳打> 并点击；未出现确认弹窗则重复点击",
@@ -52,7 +52,7 @@
         "action": "ClickSelf",
         "text": ["稳扎稳打"],
         "roi": [0, 385, 1280, 110],
-        "next": ["BlackFlowTemporary@ChooseStrategy-Confirm", "#self"]
+        "next": ["BlackFlowTemporary@ChooseStrategy-Confirm", "#self", "BlackFlowTemporary@ChooseRecruitVoucher", "BlackFlowTemporary@ChooseMechanic"]
     },
     "BlackFlowTemporary@ChooseStrategy-Confirm": {
         "doc": "识别 <你确定要这么做> 确认弹窗并点击；同理，如果网络卡顿可能直接点进招募券，但重装的位置刚好在这里，因为该模式为临时使用所以不考虑后续兼容",
