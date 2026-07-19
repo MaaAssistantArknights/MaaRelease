@@ -44,6 +44,7 @@
         "action": "ClickSelf",
         "text": ["你确定要这么做"],
         "roi": [380, 535, 150, 30],
+        "postDelay": 1000,
         "next": ["BlackFlowTemporary@ChooseStrategy", "BlackFlowTemporary@ChooseSpecialSquad", "BlackFlowTemporary@ChooseRecruitVoucher", "BlackFlowTemporary@ChooseMechanic"]
     },
     "BlackFlowTemporary@ChooseStrategy": {
@@ -60,6 +61,7 @@
         "action": "ClickSelf",
         "text": ["你确定要这么做"],
         "roi": [380, 535, 150, 30],
+        "postDelay": 1000,
         "next": ["BlackFlowTemporary@ChooseRecruitVoucher", "BlackFlowTemporary@ChooseStrategy", "BlackFlowTemporary@ChooseMechanic"]
     },
     "BlackFlowTemporary@ChooseRecruitVoucher": {
