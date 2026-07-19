@@ -159,11 +159,11 @@
         "next": ["BlackFlowTemporary@ActionPoint", "#self"]
     },
     "BlackFlowTemporary@ActionPoint": {
-        "doc": "识别 <行动> 并点击",
+        "doc": "识别 <行动力> 并点击",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
-        "text": ["行动"],
-        "roi": [1125, 70, 50, 40],
+        "text": ["行动力", "行动", "动力"],
+        "roi": [1125, 70, 60, 40],
         "next": ["BlackFlowTemporary@StructuralPrinciple", "#self"]
     },
     "BlackFlowTemporary@StructuralPrinciple": {
