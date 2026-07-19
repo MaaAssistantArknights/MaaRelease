@@ -279,12 +279,12 @@
         ]
     },
     "BlackFlowTemporary@WaitInitializing": {
-        "doc": "识别到 <正在初始化>，等待 5s 后继续",
+        "doc": "识别到 <正在初始化>，等待 1s 后继续",
         "algorithm": "OcrDetect",
         "action": "DoNothing",
         "text": ["正在初始化"],
         "roi": [1075, 590, 120, 45],
-        "postDelay": 5000,
+        "postDelay": 1000,
         "next": ["#self", "BlackFlowTemporary@WaitForExploreRestart"]
     }
 }
