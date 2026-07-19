@@ -8,7 +8,7 @@
         ]
     },
     "BlackFlowTemporary@StartExplore": {
-        "doc": "识别 <开始探索> 并点击，进入肉鸽流程；点击后将 WaitForExploreRestart 的剩余次数重置回 10",
+        "doc": "识别 <开始探索> 并点击，进入肉鸽流程；点击后将 WaitForExploreRestart 的剩余次数重置回 20",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["开始探索"],
@@ -257,11 +257,11 @@
         "next": ["#self", "BlackFlowTemporary@WaitForExploreRestart"]
     },
     "BlackFlowTemporary@WaitForExploreRestart": {
-        "doc": "放弃后持续点击 [600,610] 最多 10 次，直到识别到 <开始探索> 回到入口；若出现 <正在初始化> 则等待 5s；超过 10 次仍未回到入口则强制放弃",
+        "doc": "放弃后持续点击 [600,610] 最多 10 次，直到识别到 <开始探索> 回到入口；若出现 <正在初始化> 则等待 5s；超过 20 次仍未回到入口则强制放弃",
         "algorithm": "JustReturn",
         "action": "ClickRect",
         "specificRect": [600, 610, 1, 1],
-        "maxTimes": 10,
+        "maxTimes": 20,
         "exceededNext": ["Stop"],
         "next": [
             "BlackFlowTemporary@StartExplore",
