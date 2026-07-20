@@ -180,8 +180,8 @@
         "doc": "识别 <玻利瓦尔肤层> 并点击，等 1s；若未出现 <未知的诡秘> 则直接放弃本次探索",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
-        "text": ["玻利瓦尔肤层"],
-        "roi": [555, 0, 165, 35],
+        "text": ["玻利", "瓦尔", "肤层"],
+        "roi": [555, 0, 250, 35],
         "postDelay": 1000,
         "next": ["BlackFlowTemporary@UnknownMystery", "BlackFlowTemporary@ExitThenAbandon"]
     },
@@ -199,7 +199,7 @@
         "action": "ClickSelf",
         "text": ["出发前往"],
         "roi": [1140, 520, 120, 55],
-        "postDelay": 1000,
+        "postDelay": 2000,
         "next": ["BlackFlowTemporary@InvestSystem", "BlackFlowTemporary@ExitThenAbandon"]
     },
     "BlackFlowTemporary@InvestSystem": {
@@ -219,12 +219,12 @@
         "next": ["BlackFlowTemporary@InvestConfirmLoop", "#self"]
     },
     "BlackFlowTemporary@InvestConfirmLoop": {
-        "doc": "识别 <确认投资> 并点击；同位置出现 <源石锭不足> 或出现 <投资受限> 均结束循环",
+        "doc": "识别 <确认投资> 并点击；同位置出现 <源石锭不足> 或出现 <投资受限> 均结束循环，若出现 <已达上限> 则结束任务",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["确认投资"],
         "roi": [920, 460, 145, 55],
-        "next": ["BlackFlowTemporary@InvestLimited", "BlackFlowTemporary@InvestShortMoney", "#self"]
+        "next": ["BlackFlowTemporary@InvestLimited", "BlackFlowTemporary@InvestShortMoney", "BlackFlowTemporary@InvestMax", "#self"]
     },
     "BlackFlowTemporary@InvestShortMoney": {
         "doc": "识别到 <源石锭不足>，结束投资循环并放弃本次探索",
@@ -241,6 +241,14 @@
         "text": ["投资受限"],
         "roi": [700, 280, 160, 50],
         "next": ["BlackFlowTemporary@ExitThenAbandon", "#self"]
+    },
+    "BlackFlowTemporary@InvestMax": {
+        "doc": "识别到 <已达上限> 即结束任务",
+        "algorithm": "OcrDetect",
+        "action": "DoNothing",
+        "text": ["已达上限"],
+        "roi": [1150, 95, 120, 45],
+        "next": ["Stop"]
     },
     "BlackFlowTemporary@ExitThenAbandon": {
         "doc": "模板匹配退出按钮并点击",
