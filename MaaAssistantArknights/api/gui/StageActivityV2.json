@@ -2,17 +2,19 @@
   "Official": {
     "sideStoryStage": {
       "SSReopen": {
-        "MinimumRequired": "v6.10.0",
+        "MinimumRequired": "v6.14.0",
         "Activity": {
-          "Tip": "SideStory「落叶逐火」复刻",
-          "StageName": "落叶逐火",
-          "UtcStartTime": "2026/06/15 16:00:00",
-          "UtcExpireTime": "2026/06/25 03:59:59",
+          "Tip": "SideStory「红丝绒」复刻",
+          "StageName": "红丝绒",
+          "UtcStartTime": "2026/07/20 04:00:00",
+          "UtcExpireTime": "2026/08/03 03:59:59",
           "TimeZone": 8
         },
         "Stages": [
-          { "Display": "SSReopen-CF", "Value": "SSReopen-CF", "Drop": "代理1~8关", "MinimumRequired": "v6.10.5" },
-          { "Display": "CF-8", "Value": "CF-8", "Drop": "本关效率最高" }
+          { "Display": "SSReopen-AD", "Value": "SSReopen-AD", "Drop": "代理1~8关" },
+          { "Display": "AD-8", "Value": "AD-8", "Drop": "30063" },
+          { "Display": "AD-7", "Value": "AD-7", "Drop": "30033" },
+          { "Display": "AD-6", "Value": "AD-6", "Drop": "31023" },
         ]
       },
       "TD": {
