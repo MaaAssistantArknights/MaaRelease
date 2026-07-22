@@ -191,6 +191,7 @@
         "action": "ClickSelf",
         "text": ["未知的诡秘"],
         "roi": [888, 380, 200, 45],
+        "postDelay": 1000,
         "next": ["BlackFlowTemporary@DepartFor", "BlackFlowTemporary@ExitThenAbandon"]
     },
     "BlackFlowTemporary@DepartFor": {
