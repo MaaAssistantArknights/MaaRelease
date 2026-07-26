@@ -220,7 +220,7 @@
         "next": ["BlackFlowTemporary@InvestConfirmLoop", "#self"]
     },
     "BlackFlowTemporary@InvestConfirmLoop": {
-        "doc": "识别 <确认投资> 并点击；同位置出现 <源石锭不足> 或出现 <投资受限> 均结束循环，若出现 <已达上限> 则结束任务",
+        "doc": "识别 <确认投资> 并点击；同位置出现 <源石锭不足> 或出现 <投资受限> 或出现 <已达上限>均结束循环",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
         "text": ["确认投资"],
@@ -244,12 +244,12 @@
         "next": ["BlackFlowTemporary@ExitThenAbandon", "#self"]
     },
     "BlackFlowTemporary@InvestMax": {
-        "doc": "识别到 <已达上限> 即结束任务",
+        "doc": "识别到 <已达上限> 结束投资循环并放弃本次探索",
         "algorithm": "OcrDetect",
         "action": "DoNothing",
         "text": ["已达上限"],
         "roi": [1150, 95, 120, 45],
-        "next": ["Stop"]
+        "next": ["BlackFlowTemporary@ExitThenAbandon", "#self"]
     },
     "BlackFlowTemporary@ExitThenAbandon": {
         "doc": "模板匹配退出按钮并点击",
