@@ -1,66 +1,263 @@
+import json
 import sys
+from pathlib import Path
 
 # 使用：
-#   python gen_index.py 26       - 生成群模式页面（推荐第26群）
-#   python gen_index.py channel  - 生成频道模式页面
+#   python gen_index.py                          - 各平台默认推荐第 1 群
+#   python gen_index.py 28 2 1                   - Windows/Android/Mac 推荐群编号
+#   python gen_index.py windows 28 android 2 mac 1
+#   python gen_index.py channel                  - 有频道的平台推荐频道，否则仍推荐群
+#
+# 运营配置：
+#   content_windows.txt / content_android.txt / content_mac.txt
+#     每行: 加群链接|群名称|群号
+#   content_channels.txt
+#     每行: 平台|频道链接|频道名称   （# 开头为注释）
 
-# QQ 频道信息
-qq_channel_url = "https://pd.qq.com/s/8d3h265zd?b=9"
-qq_channel_name = "MAA QQ 频道"
+CHANNELS_FILE = "content_channels.txt"
 
-with open("content_summary.txt", "r", encoding="utf-8") as f:
-    lines = [line.strip() for line in f if line.strip()]
+PLATFORMS = ("windows", "android", "mac")
+PLATFORM_FILES = {
+    "windows": "content_windows.txt",
+    "android": "content_android.txt",
+    "mac": "content_mac.txt",
+}
+PLATFORM_LABELS = {
+    "windows": "Windows",
+    "android": "Android",
+    "mac": "Mac",
+}
+# 兼容别名
+PLATFORM_ALIASES = {
+    "win": "windows",
+    "windows": "windows",
+    "android": "android",
+    "mac": "mac",
+    "macos": "mac",
+}
 
-# 解析参数：channel 为频道模式，数字为群模式
-arg = sys.argv[1] if len(sys.argv) > 1 else "1"
-is_channel_mode = arg.lower() == "channel"
 
-if is_channel_mode:
-    # 频道模式：推荐跳转到 QQ 频道
-    url = qq_channel_url
-    name = qq_channel_name
-    gid = ""
-    group_index = -1  # 无当前推荐群
-else:
-    # 群模式：推荐跳转到指定群
-    group_index = int(arg) - 1
-    if group_index < 0 or group_index >= len(lines):
-        raise ValueError("群编号超出范围")
-    url, name, gid = lines[group_index].split("|")
+def load_groups(path: Path) -> list[dict]:
+    if not path.is_file():
+        raise FileNotFoundError(f"找不到群配置文件: {path}")
+    groups = []
+    with path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("|")
+            if len(parts) < 3:
+                raise ValueError(f"配置行格式错误 ({path.name}): {line!r}")
+            url, name, gid = parts[0], parts[1], parts[2]
+            groups.append(
+                {
+                    "url": url,
+                    "name": name,
+                    "gid": gid,
+                    "active": url.startswith("http"),
+                }
+            )
+    return groups
 
-groups_list_html = ""
-valid_groups_count = 0
 
-# QQ 频道条目（频道模式下标记为当前推荐）
-if is_channel_mode:
-    qq_channel_html = f'<li class="channel"><strong><span class="current">{qq_channel_name} - 当前推荐</span></strong></li>\n'
-else:
-    qq_channel_html = f'<li class="channel"><a href="{qq_channel_url}" onclick="handleLinkClick(event)">{qq_channel_name}</a></li>\n'
+def load_channels(path: Path) -> dict[str, dict]:
+    """返回 platform -> {url, name}。文件不存在则空 dict。"""
+    channels: dict[str, dict] = {}
+    if not path.is_file():
+        return channels
+    with path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("|")
+            if len(parts) < 3:
+                raise ValueError(f"频道配置行格式错误 ({path.name}): {line!r}")
+            platform_raw, url, name = parts[0].strip().lower(), parts[1].strip(), parts[2].strip()
+            platform = PLATFORM_ALIASES.get(platform_raw)
+            if not platform:
+                raise ValueError(
+                    f"未知平台 {platform_raw!r}，应为: {', '.join(PLATFORMS)}"
+                )
+            if not url.startswith("http"):
+                raise ValueError(f"频道链接无效: {url!r}")
+            channels[platform] = {"url": url, "name": name}
+    return channels
 
-for i, line in enumerate(lines):
-    parts = line.split("|")
-    if len(parts) < 3:
-        continue  # 跳过格式不正确的行
-        
-    u, n, g = parts
-    if u.startswith('http'):
-        valid_groups_count += 1
-        if i == group_index:
-            groups_list_html += f'<li><strong><span class="current">{n} ({g}) - 当前推荐</span></strong></li>\n'
+
+def parse_args(argv: list[str]) -> tuple[dict[str, int], bool]:
+    """返回 (各平台 1-based 推荐编号, 是否频道模式)。"""
+    recommends = {p: 1 for p in PLATFORMS}
+    is_channel = False
+
+    if not argv:
+        return recommends, False
+
+    if len(argv) == 1 and argv[0].lower() == "channel":
+        return recommends, True
+
+    # 位置参数：windows android mac 编号
+    if all(a.isdigit() for a in argv) and 1 <= len(argv) <= 3:
+        for i, p in enumerate(PLATFORMS[: len(argv)]):
+            recommends[p] = int(argv[i])
+        return recommends, False
+
+    # 关键字参数：windows 28 android 2 mac 1 [channel]
+    i = 0
+    while i < len(argv):
+        token = argv[i].lower()
+        if token == "channel":
+            is_channel = True
+            i += 1
+            continue
+        if token in PLATFORM_ALIASES:
+            if i + 1 >= len(argv) or not argv[i + 1].isdigit():
+                raise SystemExit(f"需要为 {token} 指定群编号，例如: {token} 1")
+            recommends[PLATFORM_ALIASES[token]] = int(argv[i + 1])
+            i += 2
+            continue
+        raise SystemExit(
+            "用法:\n"
+            "  python gen_index.py [win编号] [android编号] [mac编号]\n"
+            "  python gen_index.py windows 28 android 2 mac 1\n"
+            "  python gen_index.py channel"
+        )
+
+    return recommends, is_channel
+
+
+def pick_recommend(groups: list[dict], index_1based: int, platform: str) -> dict:
+    idx = index_1based - 1
+    if idx < 0 or idx >= len(groups):
+        raise ValueError(
+            f"{PLATFORM_LABELS[platform]} 推荐群编号超出范围: "
+            f"{index_1based}（共 {len(groups)} 个）"
+        )
+    return groups[idx]
+
+
+def main() -> None:
+    base = Path(__file__).resolve().parent
+    recommends, is_channel_mode = parse_args(sys.argv[1:])
+    channels = load_channels(base / CHANNELS_FILE)
+
+    platforms_data: dict[str, dict] = {}
+    for platform in PLATFORMS:
+        groups = load_groups(base / PLATFORM_FILES[platform])
+        rec = pick_recommend(groups, recommends[platform], platform)
+        ch = channels.get(platform)
+        # 频道模式且该平台有频道 → 推荐频道；否则推荐群
+        use_channel = is_channel_mode and ch is not None
+        if use_channel:
+            recommend = {"url": ch["url"], "name": ch["name"], "gid": "", "kind": "channel"}
         else:
-            groups_list_html += f'<li><a href="{u}" onclick="handleLinkClick(event)">{n} ({g})</a></li>\n'
-    else:
-        # 不合规 → 灰色禁用显示
-        groups_list_html += f'<li><span class="disabled">{n} ({g})</span></li>\n'
+            recommend = {
+                "url": rec["url"],
+                "name": rec["name"],
+                "gid": rec["gid"],
+                "kind": "group",
+            }
+        platforms_data[platform] = {
+            "label": PLATFORM_LABELS[platform],
+            "recommendIndex": recommends[platform] - 1,
+            "recommend": recommend,
+            "groups": groups,
+            "validCount": sum(1 for g in groups if g["active"]),
+            "channel": ch,
+        }
 
-index_html = f"""
-<!DOCTYPE html>
-<html>
+    def esc(s: str) -> str:
+        return (
+            s.replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace('"', "&quot;")
+        )
+
+    def render_group_items(platform: str) -> str:
+        data = platforms_data[platform]
+        items = []
+        for i, g in enumerate(data["groups"]):
+            name, gid, url = g["name"], g["gid"], g["url"]
+            label = f"{esc(name)} ({esc(gid)})"
+            # 仅「群推荐」时才标 data-recommend；选平台后由 JS 高亮
+            is_rec = data["recommend"]["kind"] == "group" and i == data["recommendIndex"]
+            rec_attr = ' data-recommend="1"' if is_rec else ""
+            if not g["active"]:
+                items.append(
+                    f'<li class="group-item" data-platform="{platform}" '
+                    f'data-label="{label}"{rec_attr}>'
+                    f'<span class="disabled">{label}</span></li>'
+                )
+            else:
+                items.append(
+                    f'<li class="group-item" data-platform="{platform}" '
+                    f'data-label="{label}" data-href="{esc(url)}"{rec_attr}>'
+                    f'<a href="{esc(url)}" onclick="handleLinkClick(event)">{label}</a></li>'
+                )
+        return "\n".join(items)
+
+    groups_sections_html = ""
+    for platform in PLATFORMS:
+        data = platforms_data[platform]
+        groups_sections_html += f"""
+        <section class="group-section" id="section-{platform}" data-platform="{platform}">
+            <h3 class="group-section-title">{esc(data["label"])} 群组
+                <span class="group-count">共 {data["validCount"]} 个</span>
+            </h3>
+            <ul class="group-list">
+                {render_group_items(platform)}
+            </ul>
+        </section>
+"""
+
+    # 频道：按平台渲染，默认隐藏，选平台后只显示对应项
+    channel_items_html = ""
+    for platform in PLATFORMS:
+        ch = channels.get(platform)
+        if not ch:
+            continue
+        label = esc(ch["name"])
+        url = esc(ch["url"])
+        is_ch_rec = platforms_data[platform]["recommend"]["kind"] == "channel"
+        rec_attr = ' data-recommend="1"' if is_ch_rec else ""
+        channel_items_html += (
+            f'<li class="channel channel-item" data-platform="{platform}" '
+            f'data-label="{label}" data-href="{url}"{rec_attr}>'
+            f'<a href="{url}" onclick="handleLinkClick(event)">{label}</a></li>\n'
+        )
+
+    header_extra = " channel-header" if is_channel_mode else ""
+
+    # JS 用的推荐映射（平台 → 跳转目标）
+    recommend_map = {
+        p: {
+            "url": platforms_data[p]["recommend"]["url"],
+            "name": platforms_data[p]["recommend"]["name"],
+            "gid": platforms_data[p]["recommend"]["gid"],
+            "kind": platforms_data[p]["recommend"]["kind"],
+        }
+        for p in PLATFORMS
+    }
+    recommend_json = json.dumps(recommend_map, ensure_ascii=False)
+    # 各平台是否有频道（前端切换展示用）
+    channels_meta = {
+        p: ({"url": ch["url"], "name": ch["name"]} if (ch := channels.get(p)) else None)
+        for p in PLATFORMS
+    }
+    channels_json = json.dumps(channels_meta, ensure_ascii=False)
+    has_any_channel = bool(channels)
+    channel_block_display = "" if has_any_channel else " style=\"display:none\""
+
+    index_html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <title>欢迎加入 {name}</title>
+    <title>欢迎加入 MAA 交流群</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body {{ font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }}
+        body {{ font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; color: #222; }}
         .current {{ color: #ff6600; }}
         ul {{ list-style-type: none; padding: 0; }}
         li {{ margin: 12px 0; padding: 8px; background: #f9f9f9; border-radius: 5px; }}
@@ -69,16 +266,172 @@ index_html = f"""
         li > a:hover {{ color: #004499; }}
         .container {{ max-width: 800px; margin: 0 auto; }}
         .header {{ background: #eef5ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
-        .primary-link {{ display: inline-block; padding: 10px 20px; background: #0066cc; color: white; border-radius: 5px; margin: 10px 0; }}
-        .primary-link:hover {{ background: #004499; text-decoration: none; }}
-        .cancel-btn {{ 
-            display: inline-block; 
-            padding: 8px 16px; 
-            background: #ff6666; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        .header.channel-header {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }}
+        .platform-row {{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 4px;
+        }}
+        .platform-label {{ color: #555; font-size: 0.95em; margin-right: 4px; }}
+        .platform-tabs {{
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }}
+        .platform-tab {{
+            padding: 8px 16px;
+            border: 2px solid #c5d8f5;
+            border-radius: 999px;
+            background: #fff;
+            color: #0066cc;
+            font-weight: bold;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: border-color .15s, background .15s, color .15s;
+        }}
+        .platform-tab:hover {{
+            border-color: #0066cc;
+            background: #f3f8ff;
+        }}
+        .platform-tab.active {{
+            border-color: #0066cc;
+            background: #0066cc;
+            color: #fff;
+        }}
+        .header.channel-header .platform-tab.active {{
+            border-color: #7c4dff;
+            background: #7c4dff;
+        }}
+        .primary-link {{
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            min-height: 44px;
+            background: #0066cc;
+            color: #fff;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            text-decoration: none;
+            overflow: hidden;
+            isolation: isolate;
+            z-index: 0;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.28);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }}
+        .primary-link .btn-text {{
+            position: relative;
+            z-index: 2;
+        }}
+        .primary-link.is-disabled {{
+            pointer-events: none;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.55;
+            background: #8aa8cc;
+        }}
+        .primary-link.is-disabled.chroma {{
+            background: #8aa8cc;
+        }}
+        .primary-link.is-disabled.chroma::before,
+        .primary-link.is-disabled.chroma::after {{
+            display: none;
+        }}
+        /* 无缝炫彩：色带重复两份，translateX 平移 50% 避免顿挫 */
+        .primary-link.chroma:not(.is-disabled) {{
+            background: transparent;
+        }}
+        .primary-link.chroma:not(.is-disabled)::before {{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 200%;
+            z-index: 0;
+            background: linear-gradient(
+                90deg,
+                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
+                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
+                #ff4d4f
+            );
+            animation: chroma-slide 3s linear infinite;
+            pointer-events: none;
+            will-change: transform;
+        }}
+        .primary-link.chroma:not(.is-disabled)::after {{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -40%;
+            width: 40%;
+            height: 100%;
+            z-index: 1;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.15) 40%,
+                rgba(255, 255, 255, 0.45) 50%,
+                rgba(255, 255, 255, 0.15) 60%,
+                transparent 100%
+            );
+            animation: chroma-shine 2.5s linear infinite;
+            pointer-events: none;
+            will-change: transform;
+        }}
+        .primary-link.chroma:not(.is-disabled):hover {{
+            filter: brightness(1.05);
+            box-shadow: 0 6px 16px rgba(114, 46, 209, 0.35);
+            text-decoration: none;
+            color: #fff;
+        }}
+        .primary-link.chroma:not(.is-disabled):active {{
+            filter: brightness(0.98);
+        }}
+        @keyframes chroma-slide {{
+            from {{ transform: translateX(0); }}
+            to {{ transform: translateX(-50%); }}
+        }}
+        @keyframes chroma-shine {{
+            from {{ transform: translateX(0); }}
+            to {{ transform: translateX(350%); }}
+        }}
+        @media (prefers-reduced-motion: reduce) {{
+            .primary-link.chroma:not(.is-disabled)::before,
+            .primary-link.chroma:not(.is-disabled)::after {{
+                animation: none;
+            }}
+            .primary-link.chroma:not(.is-disabled)::before {{
+                width: 100%;
+                background: #0066cc;
+                transform: none;
+            }}
+            .primary-link.chroma:not(.is-disabled)::after {{
+                display: none;
+            }}
+            .primary-link.chroma:not(.is-disabled) {{
+                box-shadow: none;
+            }}
+            .channel-header .primary-link.chroma:not(.is-disabled)::before {{
+                background: #7c4dff;
+            }}
+        }}
+        .cancel-btn {{
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             margin-left: 10px;
         }}
         .cancel-btn:hover {{ background: #cc5555; }}
@@ -87,80 +440,296 @@ index_html = f"""
         .channel {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); border-left: 4px solid #7c4dff; }}
         .channel a {{ color: #7c4dff; }}
         .channel a:hover {{ color: #5e35b1; }}
-        .channel-header {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }}
-        .channel-header .primary-link {{ background: #7c4dff; }}
-        .channel-header .primary-link:hover {{ background: #5e35b1; }}
+        .channel-item {{ display: none; }}
+        .channel-item.is-active {{ display: list-item; }}
+        .channel-item.is-recommend {{
+            background: #f3e8ff;
+            border-left: 4px solid #7c4dff;
+        }}
+        .tip {{ color: #666; font-size: 0.95em; }}
+        .hint {{ color: #555; margin: 8px 0 0; }}
+        /* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
+        .group-section {{
+            display: none;
+            margin: 18px 0 24px;
+            padding: 14px 16px 8px;
+            border: 1px solid #e3eaf5;
+            border-radius: 10px;
+            background: #fafcff;
+        }}
+        .group-section.is-active {{
+            display: block;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
+            background: #f3f8ff;
+        }}
+        .group-section-title {{
+            margin: 0 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e3eaf5;
+            font-size: 1.1em;
+        }}
+        .group-count {{
+            color: #888;
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-left: 6px;
+        }}
+        .group-list {{ margin: 0; }}
+        .group-item.is-recommend {{
+            background: #fff4e8;
+            border-left: 4px solid #ff6600;
+        }}
+        .lists-heading {{ margin: 24px 0 8px; font-size: 1.15em; }}
+        .lists-placeholder {{ color: #888; margin: 12px 0 24px; }}
+        .lists-placeholder.is-hidden {{ display: none; }}
+        .channel-placeholder {{ color: #888; margin: 8px 0; }}
+        .channel-placeholder.is-hidden {{ display: none; }}
+        .channel-block.is-empty .channel-list {{ display: none; }}
     </style>
     <script>
-        let redirectEnabled = true;
+        const RECOMMENDS = {recommend_json};
+        const CHANNELS = {channels_json};
+        const PLATFORM_LABELS = {{ windows: "Windows", android: "Android", mac: "Mac" }};
+
+        // 必须用户主动选择平台后，才启动自动跳转
+        let redirectEnabled = false;
         let countdown = 8;
         let countdownTimer = null;
-        
-        function cancelRedirect() {{
+        let currentJoinUrl = "";
+        let currentPlatform = "";
+        let userCancelled = false;
+
+        function stopCountdown() {{
             redirectEnabled = false;
             if (countdownTimer) {{
                 clearTimeout(countdownTimer);
+                countdownTimer = null;
             }}
-            document.getElementById('countdown').textContent = '0';
-            document.getElementById('redirectText').innerHTML = '自动跳转已取消';
-            document.getElementById('cancelBtn').style.display = 'none';
         }}
-        
+
+        function cancelRedirect() {{
+            userCancelled = true;
+            stopCountdown();
+            const text = document.getElementById("redirectText");
+            if (text) text.innerHTML = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+        }}
+
         function handleLinkClick(event) {{
-            cancelRedirect();
-            // 允许正常跳转
+            // 点了列表里的群：取消自动跳转，但保留已选平台与主按钮
+            if (currentPlatform) cancelRedirect();
         }}
-        
+
         function handlePrimaryLinkClick(event) {{
+            const primary = document.getElementById("primaryLink");
+            if (primary.classList.contains("is-disabled") || !currentJoinUrl) {{
+                event.preventDefault();
+                return;
+            }}
             cancelRedirect();
-            // 允许正常跳转
         }}
-        
+
+        function startRedirect(url) {{
+            if (userCancelled) {{
+                // 用户已取消过：只更新链接，不再自动跳
+                currentJoinUrl = url;
+                const text = document.getElementById("redirectText");
+                if (text) text.innerHTML = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+                return;
+            }}
+            currentJoinUrl = url;
+            redirectEnabled = true;
+            countdown = 8;
+            if (countdownTimer) clearTimeout(countdownTimer);
+
+            document.getElementById("redirectText").innerHTML =
+                '已选择平台，页面将在 <span id="countdown">' + countdown + '</span> 秒后自动跳转……' +
+                '<button type="button" id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>';
+            countdownTimer = setTimeout(updateCountdown, 1000);
+        }}
+
         function updateCountdown() {{
             if (redirectEnabled && countdown > 0) {{
                 countdown--;
-                document.getElementById('countdown').textContent = countdown;
+                const el = document.getElementById("countdown");
+                if (el) el.textContent = countdown;
                 countdownTimer = setTimeout(updateCountdown, 1000);
             }} else if (redirectEnabled && countdown === 0) {{
-                window.location.href = "{url}";
+                window.location.href = currentJoinUrl;
             }}
         }}
-        
-        window.onload = function() {{
-            updateCountdown();
-        }};
+
+        function resetListRecommendMarks(selector) {{
+            document.querySelectorAll(selector).forEach((li) => {{
+                li.classList.remove("is-recommend");
+                if (li.querySelector(".disabled")) return;
+                const href = li.getAttribute("data-href");
+                const label = li.getAttribute("data-label") || "";
+                if (!href) return;
+                li.innerHTML = '<a href="' + href + '" onclick="handleLinkClick(event)">' +
+                    label + "</a>";
+            }});
+        }}
+
+        function applyRecommendMark(li) {{
+            li.classList.add("is-recommend");
+            const label = li.getAttribute("data-label") || "";
+            li.innerHTML = '<strong><span class="current">' + label +
+                " - 当前推荐</span></strong>";
+        }}
+
+        function markPlatformRecommend(platform) {{
+            resetListRecommendMarks(".group-item");
+            resetListRecommendMarks(".channel-item");
+
+            const listsPlaceholder = document.getElementById("listsPlaceholder");
+            if (listsPlaceholder) listsPlaceholder.classList.add("is-hidden");
+
+            document.querySelectorAll(".group-section").forEach((sec) => {{
+                sec.classList.toggle("is-active", sec.getAttribute("data-platform") === platform);
+            }});
+
+            // 频道：只展示当前平台
+            const channelPlaceholder = document.getElementById("channelPlaceholder");
+            const channelBlock = document.getElementById("channelBlock");
+            let hasChannel = false;
+            document.querySelectorAll(".channel-item").forEach((li) => {{
+                const match = li.getAttribute("data-platform") === platform;
+                li.classList.toggle("is-active", match);
+                if (match) hasChannel = true;
+            }});
+            if (channelPlaceholder) {{
+                channelPlaceholder.classList.toggle("is-hidden", hasChannel);
+                if (!hasChannel) {{
+                    channelPlaceholder.textContent = "该平台暂无 QQ 频道";
+                }}
+            }}
+            if (channelBlock) {{
+                channelBlock.classList.toggle("is-empty", !hasChannel);
+            }}
+
+            // 高亮当前推荐（群或频道）
+            document.querySelectorAll(
+                '.group-item[data-platform="' + platform + '"][data-recommend="1"]'
+            ).forEach(applyRecommendMark);
+            document.querySelectorAll(
+                '.channel-item[data-platform="' + platform + '"][data-recommend="1"]'
+            ).forEach(applyRecommendMark);
+        }}
+
+        function selectPlatform(platform) {{
+            const rec = RECOMMENDS[platform];
+            if (!rec) return;
+
+            // 主动点选平台视为新意图：重新开启自动跳转
+            userCancelled = false;
+            currentPlatform = platform;
+
+            document.querySelectorAll(".platform-tab").forEach((btn) => {{
+                btn.classList.toggle("active", btn.getAttribute("data-platform") === platform);
+            }});
+
+            markPlatformRecommend(platform);
+
+            const title = document.getElementById("join-title");
+            const gidEl = document.getElementById("join-gid");
+            const primary = document.getElementById("primaryLink");
+            const btnText = primary.querySelector(".btn-text");
+            const label = PLATFORM_LABELS[platform] || platform;
+            const isChannel = rec.kind === "channel";
+
+            if (isChannel) {{
+                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
+                gidEl.style.display = "none";
+                if (btnText) btnText.textContent = "立即加入 QQ 频道";
+            }} else {{
+                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
+                if (rec.gid) {{
+                    gidEl.style.display = "";
+                    gidEl.innerHTML = '群号: <strong>' + rec.gid + "</strong>";
+                }} else {{
+                    gidEl.style.display = "none";
+                }}
+                if (btnText) btnText.textContent = "立即加入当前推荐群组";
+            }}
+
+            primary.href = rec.url;
+            primary.classList.remove("is-disabled");
+            primary.setAttribute("aria-disabled", "false");
+            startRedirect(rec.url);
+        }}
     </script>
 </head>
 <body>
     <div class="container">
-        <div class="header{' channel-header' if is_channel_mode else ''}">
-            <h2>欢迎加入【{name}】</h2>
-            {'<p>群号: <strong>' + gid + '</strong></p>' if gid else ''}
-            <p><a href="{url}" class="primary-link" onclick="handlePrimaryLinkClick(event)">{'立即加入 QQ 频道' if is_channel_mode else '立即加入当前推荐群组'}</a></p>
-            <p id="redirectText">
-                页面将在 <span id="countdown">8</span> 秒后自动跳转……
-                <button id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>
+        <div id="join-header" class="header{header_extra}">
+            <h2 id="join-title">欢迎加入 MAA 交流群</h2>
+            <p id="join-gid" style="display:none"></p>
+
+            <div class="platform-row">
+                <span class="platform-label">请先选择平台：</span>
+                <div class="platform-tabs" role="tablist" aria-label="客户端平台">
+                    <button type="button" class="platform-tab" data-platform="windows"
+                        onclick="selectPlatform('windows')">Windows</button>
+                    <button type="button" class="platform-tab" data-platform="android"
+                        onclick="selectPlatform('android')">Android</button>
+                    <button type="button" class="platform-tab" data-platform="mac"
+                        onclick="selectPlatform('mac')">Mac</button>
+                </div>
+            </div>
+            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。</p>
+
+            <p>
+                <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
+                   aria-disabled="true" onclick="handlePrimaryLinkClick(event)">
+                    <span class="btn-text">请先选择平台</span>
+                </a>
             </p>
+            <p id="redirectText">尚未选择平台，不会自动跳转</p>
         </div>
-        
-        <h3>QQ 频道:</h3>
-        <ul>
-            {qq_channel_html}
-        </ul>
-        
-        <h3>可用群组列表 (共 {valid_groups_count} 个):</h3>
-        <ul>
-            {groups_list_html}
-        </ul>
-        
-        <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）</p>
+
+        <div id="channelBlock" class="channel-block"{channel_block_display}>
+            <h3>QQ 频道</h3>
+            <p id="channelPlaceholder" class="channel-placeholder">请先选择平台，以查看对应频道。</p>
+            <ul class="channel-list">
+{channel_items_html}            </ul>
+        </div>
+
+        <h3 class="lists-heading">群组列表</h3>
+        <p id="listsPlaceholder" class="lists-placeholder">请先在上方选择平台，以查看对应群列表。</p>
+{groups_sections_html}
+        <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
     </div>
 </body>
 </html>
 """
 
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(index_html)
+    out = base / "index.html"
+    out.write_text(index_html, encoding="utf-8")
 
-mode_str = "频道模式" if is_channel_mode else f"群模式 (推荐: {name})"
-print(f"index.html 已更新为 {mode_str}")
+    # 清理旧的分平台页面
+    for stale in ("index_windows.html", "index_android.html", "index_mac.html"):
+        p = base / stale
+        if p.exists():
+            p.unlink()
+
+    parts = []
+    for p in PLATFORMS:
+        rec = platforms_data[p]["recommend"]
+        kind = "频道" if rec["kind"] == "channel" else f"#{recommends[p]}"
+        parts.append(f"{PLATFORM_LABELS[p]}{kind}({rec['name']})")
+    mode = " / ".join(parts)
+
+    print(f"已更新 {out.name} → {mode}")
+    for p in PLATFORMS:
+        ch = platforms_data[p]["channel"]
+        ch_info = f", 频道 {ch['name']}" if ch else ", 无频道"
+        print(
+            f"  - {PLATFORM_LABELS[p]}: {platforms_data[p]['validCount']} 个群"
+            f", 配置 {PLATFORM_FILES[p]}{ch_info}"
+        )
+    print(f"  - 频道配置: {CHANNELS_FILE} ({len(channels)} 个平台)")
+
+
+if __name__ == "__main__":
+    main()
