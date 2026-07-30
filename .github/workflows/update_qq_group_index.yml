@@ -1,10 +1,13 @@
 name: update_qq_group_index
 
+# Windows：与以往相同，人工指定推荐群编号（0 = Windows 推 QQ 频道）
+# Android / Mac：生成时自动选群（查询 groupinfo，优先空位多的；失败则第一个可用群）
+
 on:
   workflow_dispatch:
     inputs:
       group_number:
-        description: '群编号（输入 0 表示 QQ 频道模式）'
+        description: 'Windows 群编号（输入 0 表示 Windows 使用 QQ 频道；Android/Mac 始终自动选群）'
         required: true
 
 jobs:
@@ -22,6 +25,9 @@ jobs:
 
       - name: Generate index.html
         working-directory: MaaAssistantArknights/api/qqgroup
+        env:
+          # 自动选 Android/Mac 推荐群时用的人数接口
+          GROUPINFO_API: https://join.maameow.com/api/groupinfo
         run: |
           if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
             python gen_index.py channel
@@ -36,8 +42,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
-            git commit -m "Update index.html to QQ channel" || echo "No changes to commit"
+            git commit -m "Update index.html: Windows QQ channel; Android/Mac auto" || echo "No changes to commit"
           else
-            git commit -m "Update index.html to group ${{ github.event.inputs.group_number }}" || echo "No changes to commit"
+            git commit -m "Update index.html to Windows group ${{ github.event.inputs.group_number }} (Android/Mac auto)" || echo "No changes to commit"
           fi
           git push

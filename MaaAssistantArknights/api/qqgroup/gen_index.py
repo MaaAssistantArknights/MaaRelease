@@ -1,20 +1,33 @@
 import json
+import os
 import sys
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 # 使用：
-#   python gen_index.py                          - 各平台默认推荐第 1 群
-#   python gen_index.py 28 2 1                   - Windows/Android/Mac 推荐群编号
-#   python gen_index.py windows 28 android 2 mac 1
-#   python gen_index.py channel                  - 有频道的平台推荐频道，否则仍推荐群
+#   python gen_index.py 28                       - Windows 推荐第 28 群（CI 同款）
+#                                                  Android / Mac 自动选（人数有空位优先）
+#   python gen_index.py channel                  - Windows 推荐 QQ 频道；Android/Mac 仍自动选群
+#   python gen_index.py                          - Windows 默认第 1 群；Android/Mac 自动
+#   python gen_index.py windows 28               - 只指定 Windows
+#   python gen_index.py windows 28 android 2     - 可选：手动覆盖 Android/Mac（调试用）
 #
 # 运营配置：
 #   content_windows.txt / content_android.txt / content_mac.txt
 #     每行: 加群链接|群名称|群号
 #   content_channels.txt
 #     每行: 平台|频道链接|频道名称   （# 开头为注释）
+#
+# 环境变量 GROUPINFO_API 可覆盖自动选群用的接口（默认 join.maameow.com）
 
 CHANNELS_FILE = "content_channels.txt"
+GROUPINFO_API = os.environ.get(
+    "GROUPINFO_API", "https://join.maameow.com/api/groupinfo"
+).rstrip("/")
+# 仅 Windows 由 CI/参数指定推荐；Android、Mac 默认自动
+AUTO_PLATFORMS = frozenset({"android", "mac"})
 
 PLATFORMS = ("windows", "android", "mac")
 PLATFORM_FILES = {
@@ -86,29 +99,51 @@ def load_channels(path: Path) -> dict[str, dict]:
     return channels
 
 
-def parse_args(argv: list[str]) -> tuple[dict[str, int], bool]:
-    """返回 (各平台 1-based 推荐编号, 是否频道模式)。"""
-    recommends = {p: 1 for p in PLATFORMS}
+def parse_args(argv: list[str]) -> tuple[dict[str, int | None], bool]:
+    """返回 (各平台 1-based 推荐编号或 None=自动, 是否 Windows 频道模式)。
+
+    None 表示该平台用自动选群。CI 只传一个数字时仅设置 Windows。
+    """
+    # Windows 无参时默认第 1 群；Android/Mac 默认自动
+    recommends: dict[str, int | None] = {
+        "windows": 1,
+        "android": None,
+        "mac": None,
+    }
     is_channel = False
 
     if not argv:
         return recommends, False
 
     if len(argv) == 1 and argv[0].lower() == "channel":
+        # Windows 走频道；Android/Mac 仍自动选群
+        recommends["windows"] = None
         return recommends, True
 
-    # 位置参数：windows android mac 编号
-    if all(a.isdigit() for a in argv) and 1 <= len(argv) <= 3:
-        for i, p in enumerate(PLATFORMS[: len(argv)]):
-            recommends[p] = int(argv[i])
+    # 单个数字：兼容旧 CI → 只改 Windows
+    if len(argv) == 1 and argv[0].isdigit():
+        recommends["windows"] = int(argv[0])
         return recommends, False
 
-    # 关键字参数：windows 28 android 2 mac 1 [channel]
+    # 多个纯数字：仅第一个作为 Windows（Android/Mac 保持自动，避免误伤）
+    if all(a.isdigit() for a in argv) and 1 <= len(argv) <= 3:
+        recommends["windows"] = int(argv[0])
+        if len(argv) >= 2:
+            print(
+                "提示: 位置参数仅 Windows 生效；"
+                f"已忽略多余参数 {argv[1:]!r}。"
+                "若需手动指定 Android/Mac，请用: android 2 mac 1",
+                file=sys.stderr,
+            )
+        return recommends, False
+
+    # 关键字参数：windows 28 [android 2] [mac 1] [channel]
     i = 0
     while i < len(argv):
         token = argv[i].lower()
         if token == "channel":
             is_channel = True
+            recommends["windows"] = None
             i += 1
             continue
         if token in PLATFORM_ALIASES:
@@ -119,9 +154,10 @@ def parse_args(argv: list[str]) -> tuple[dict[str, int], bool]:
             continue
         raise SystemExit(
             "用法:\n"
-            "  python gen_index.py [win编号] [android编号] [mac编号]\n"
-            "  python gen_index.py windows 28 android 2 mac 1\n"
-            "  python gen_index.py channel"
+            "  python gen_index.py <Windows群编号>     # CI：只改 Windows，Android/Mac 自动\n"
+            "  python gen_index.py channel            # Windows 推频道，Android/Mac 自动选群\n"
+            "  python gen_index.py windows 28\n"
+            "  python gen_index.py windows 28 android 2 mac 1   # 调试可手动覆盖"
         )
 
     return recommends, is_channel
@@ -137,31 +173,157 @@ def pick_recommend(groups: list[dict], index_1based: int, platform: str) -> dict
     return groups[idx]
 
 
+def fetch_group_occupancy(gids: list[str]) -> dict[str, dict]:
+    """批量查询 groupinfo；失败返回空 dict（调用方走降级）。"""
+    out: dict[str, dict] = {}
+    if not gids:
+        return out
+    # API 单次最多 20
+    for i in range(0, len(gids), 20):
+        part = gids[i : i + 20]
+        url = f"{GROUPINFO_API}?ids={urllib.parse.quote(','.join(part))}"
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={"User-Agent": "MaaRelease-gen_index/1.0", "Accept": "application/json"},
+                method="GET",
+            )
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                body = json.loads(resp.read().decode("utf-8", errors="replace"))
+        except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, json.JSONDecodeError) as e:
+            print(f"自动选群: groupinfo 查询失败 ({e})，将降级", file=sys.stderr)
+            continue
+        if not isinstance(body, dict) or body.get("code") != 0:
+            continue
+        data = body.get("data")
+        if isinstance(data, dict) and "groups" in data:
+            items = data.get("groups") or []
+        elif isinstance(data, dict) and data.get("group_id"):
+            items = [data]
+        else:
+            items = []
+        for g in items:
+            if not isinstance(g, dict):
+                continue
+            gid = str(g.get("group_id") or "")
+            if gid:
+                out[gid] = g
+    return out
+
+
+def auto_recommend_index(groups: list[dict], platform: str) -> int:
+    """自动选推荐群（0-based）：有空位的优先，空位多者优先；失败则第一个可用群。"""
+    active = [(i, g) for i, g in enumerate(groups) if g.get("active")]
+    if not active:
+        print(f"自动选群[{PLATFORM_LABELS[platform]}]: 无可用群，回退索引 0", file=sys.stderr)
+        return 0
+
+    gids = [g["gid"] for _, g in active]
+    occ = fetch_group_occupancy(gids)
+
+    best_i = active[0][0]
+    best_key = (-1, -1)  # (has_info, free_slots) — 无数据时 has_info=0
+    detail = []
+    for i, g in active:
+        info = occ.get(str(g["gid"]))
+        if not info or not info.get("known"):
+            detail.append(f"#{i + 1} {g['name']}=未知")
+            continue
+        free = info.get("free_slots")
+        if free is None:
+            mx = int(info.get("max_member_count") or 0)
+            cur = int(info.get("member_count") or 0)
+            free = max(0, mx - cur) if mx > 0 else 0
+        free = int(free)
+        key = (1, free)
+        cur = info.get("member_count")
+        mx = info.get("max_member_count")
+        detail.append(
+            f"#{i + 1} {g['name']}="
+            f"{cur if cur is not None else '?'}/{mx if mx is not None else '?'} 余{free}"
+        )
+        if key > best_key:
+            best_key = key
+            best_i = i
+
+    if best_key[0] < 0:
+        print(
+            f"自动选群[{PLATFORM_LABELS[platform]}]: 人数均未知，使用第一个可用群 "
+            f"#{active[0][0] + 1} {active[0][1]['name']}",
+            file=sys.stderr,
+        )
+        return active[0][0]
+
+    print(
+        f"自动选群[{PLATFORM_LABELS[platform]}]: 选中 #{best_i + 1} {groups[best_i]['name']} "
+        f"(空位优先) | " + "; ".join(detail),
+        file=sys.stderr,
+    )
+    return best_i
+
+
+def resolve_recommend(
+    platform: str,
+    groups: list[dict],
+    specified_1based: int | None,
+    *,
+    windows_channel_mode: bool,
+    channel: dict | None,
+) -> tuple[dict, int, str]:
+    """返回 (recommend字典, recommendIndex 0-based, 来源说明)。"""
+    # Windows 频道模式
+    if platform == "windows" and windows_channel_mode and channel:
+        return (
+            {"url": channel["url"], "name": channel["name"], "gid": "", "kind": "channel"},
+            -1,
+            "channel",
+        )
+
+    if specified_1based is not None:
+        rec = pick_recommend(groups, specified_1based, platform)
+        return (
+            {"url": rec["url"], "name": rec["name"], "gid": rec["gid"], "kind": "group"},
+            specified_1based - 1,
+            f"manual#{specified_1based}",
+        )
+
+    # 自动（Android / Mac，或 Windows channel 模式下无频道时）
+    idx = auto_recommend_index(groups, platform)
+    rec = groups[idx]
+    return (
+        {"url": rec["url"], "name": rec["name"], "gid": rec["gid"], "kind": "group"},
+        idx,
+        f"auto#{idx + 1}",
+    )
+
+
 def main() -> None:
     base = Path(__file__).resolve().parent
-    recommends, is_channel_mode = parse_args(sys.argv[1:])
+    recommends, windows_channel_mode = parse_args(sys.argv[1:])
     channels = load_channels(base / CHANNELS_FILE)
 
     platforms_data: dict[str, dict] = {}
     for platform in PLATFORMS:
         groups = load_groups(base / PLATFORM_FILES[platform])
-        rec = pick_recommend(groups, recommends[platform], platform)
         ch = channels.get(platform)
-        # 频道模式且该平台有频道 → 推荐频道；否则推荐群
-        use_channel = is_channel_mode and ch is not None
-        if use_channel:
-            recommend = {"url": ch["url"], "name": ch["name"], "gid": "", "kind": "channel"}
-        else:
-            recommend = {
-                "url": rec["url"],
-                "name": rec["name"],
-                "gid": rec["gid"],
-                "kind": "group",
-            }
+        specified = recommends.get(platform)
+        # Android/Mac：除非关键字显式传入，否则强制自动（忽略误传）
+        if platform in AUTO_PLATFORMS and specified is not None:
+            # 仅当通过关键字 android N / mac N 传入时 keeps specified；
+            # parse_args 已保证单数字不会写入 android/mac
+            pass
+        recommend, rec_index, source = resolve_recommend(
+            platform,
+            groups,
+            specified,
+            windows_channel_mode=windows_channel_mode,
+            channel=ch,
+        )
         platforms_data[platform] = {
             "label": PLATFORM_LABELS[platform],
-            "recommendIndex": recommends[platform] - 1,
+            "recommendIndex": rec_index,
             "recommend": recommend,
+            "recommendSource": source,
             "groups": groups,
             "validCount": sum(1 for g in groups if g["active"]),
             "channel": ch,
@@ -239,7 +401,7 @@ def main() -> None:
             f'<a href="{url}" onclick="handleLinkClick(event)">{label}</a></li>\n'
         )
 
-    header_extra = " channel-header" if is_channel_mode else ""
+    header_extra = " channel-header" if windows_channel_mode else ""
 
     # JS 用的推荐映射（平台 → 跳转目标）
     recommend_map = {
@@ -1016,8 +1178,12 @@ def main() -> None:
     parts = []
     for p in PLATFORMS:
         rec = platforms_data[p]["recommend"]
-        kind = "频道" if rec["kind"] == "channel" else f"#{recommends[p]}"
-        parts.append(f"{PLATFORM_LABELS[p]}{kind}({rec['name']})")
+        src = platforms_data[p].get("recommendSource", "")
+        if rec["kind"] == "channel":
+            kind = f"频道/{src}"
+        else:
+            kind = src or f"#{platforms_data[p]['recommendIndex'] + 1}"
+        parts.append(f"{PLATFORM_LABELS[p]}:{kind}({rec['name']})")
     mode = " / ".join(parts)
 
     print(f"已更新 {out.name} → {mode}")
@@ -1026,6 +1192,7 @@ def main() -> None:
         ch_info = f", 频道 {ch['name']}" if ch else ", 无频道"
         print(
             f"  - {PLATFORM_LABELS[p]}: {platforms_data[p]['validCount']} 个群"
+            f", 推荐来源 {platforms_data[p].get('recommendSource')}"
             f", 配置 {PLATFORM_FILES[p]}{ch_info}"
         )
     print(f"  - 频道配置: {CHANNELS_FILE} ({len(channels)} 个平台)")
