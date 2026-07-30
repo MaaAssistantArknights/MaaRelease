@@ -184,17 +184,28 @@ def main() -> None:
             # 仅「群推荐」时才标 data-recommend；选平台后由 JS 高亮
             is_rec = data["recommend"]["kind"] == "group" and i == data["recommendIndex"]
             rec_attr = ' data-recommend="1"' if is_rec else ""
+            # 头像/人数由前端调 groupinfo API 填充；失败则保持隐藏
+            row_inner = (
+                f'<img class="group-avatar" alt="" width="40" height="40" hidden>'
+                f'<div class="group-body">'
+                f'<span class="group-title">{label}</span>'
+                f'<span class="group-meta" hidden></span>'
+                f"</div>"
+            )
             if not g["active"]:
                 items.append(
                     f'<li class="group-item" data-platform="{platform}" '
-                    f'data-label="{label}"{rec_attr}>'
-                    f'<span class="disabled">{label}</span></li>'
+                    f'data-gid="{esc(gid)}" data-label="{label}"{rec_attr}>'
+                    f'<div class="group-row disabled-row">'
+                    f'{row_inner}</div></li>'
                 )
             else:
                 items.append(
                     f'<li class="group-item" data-platform="{platform}" '
-                    f'data-label="{label}" data-href="{esc(url)}"{rec_attr}>'
-                    f'<a href="{esc(url)}" onclick="handleLinkClick(event)">{label}</a></li>'
+                    f'data-gid="{esc(gid)}" data-label="{label}" '
+                    f'data-href="{esc(url)}"{rec_attr}>'
+                    f'<a class="group-link" href="{esc(url)}" onclick="handleLinkClick(event)">'
+                    f'<div class="group-row">{row_inner}</div></a></li>'
                 )
         return "\n".join(items)
 
@@ -480,6 +491,67 @@ def main() -> None:
             background: #fff4e8;
             border-left: 4px solid #ff6600;
         }}
+        .group-link {{
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            font-weight: normal;
+        }}
+        .group-link:hover {{ text-decoration: none; }}
+        .group-link:hover .group-title {{ text-decoration: underline; color: #004499; }}
+        .group-row {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }}
+        .group-avatar {{
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #e8eef8;
+        }}
+        .group-body {{
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .group-title {{
+            font-weight: bold;
+            color: #0066cc;
+            word-break: break-all;
+        }}
+        .group-item.is-recommend .group-title {{ color: #ff6600; }}
+        .group-meta {{
+            color: #666;
+            font-size: 0.9em;
+        }}
+        .group-meta .full {{ color: #cc4444; }}
+        .group-meta .ok {{ color: #2a7a2a; }}
+        .disabled-row .group-title {{ color: #999; font-weight: normal; }}
+        .header-rec-row {{
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 4px;
+        }}
+        .header-rec-row.is-visible {{ display: flex; }}
+        .header-avatar {{
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #e8eef8;
+            flex-shrink: 0;
+        }}
+        .header-members {{
+            margin: 0;
+            color: #555;
+            font-size: 0.95em;
+        }}
         .lists-heading {{ margin: 24px 0 8px; font-size: 1.15em; }}
         .lists-placeholder {{ color: #888; margin: 12px 0 24px; }}
         .lists-placeholder.is-hidden {{ display: none; }}
@@ -491,6 +563,9 @@ def main() -> None:
         const RECOMMENDS = {recommend_json};
         const CHANNELS = {channels_json};
         const PLATFORM_LABELS = {{ windows: "Windows", android: "Android", mac: "Mac" }};
+        // 对外 groupinfo API（头像 + 人数）；失败则不展示
+        const GROUPINFO_API = "https://join.maameow.com/api/groupinfo";
+        const groupInfoCache = Object.create(null); // gid -> info | null(failed)
 
         // 必须用户主动选择平台后，才启动自动跳转
         let redirectEnabled = false;
@@ -559,8 +634,217 @@ def main() -> None:
             }}
         }}
 
-        function resetListRecommendMarks(selector) {{
-            document.querySelectorAll(selector).forEach((li) => {{
+        function formatMembers(info) {{
+            if (!info || !info.known) return "";
+            const cur = info.member_count;
+            const max = info.max_member_count;
+            if (!max || max <= 0) return "";
+            const free = typeof info.free_slots === "number" ? info.free_slots : Math.max(0, max - cur);
+            const cls = free <= 0 ? "full" : "ok";
+            const freeText = free <= 0 ? "已满" : ("余 " + free);
+            return '<span class="' + cls + '">' + cur + " / " + max + " · " + freeText + "</span>";
+        }}
+
+        function applyInfoToItem(li, info) {{
+            const avatar = li.querySelector(".group-avatar");
+            const meta = li.querySelector(".group-meta");
+            if (!info || !info.known) {{
+                if (avatar) {{
+                    avatar.hidden = true;
+                    avatar.removeAttribute("src");
+                }}
+                if (meta) {{
+                    meta.hidden = true;
+                    meta.innerHTML = "";
+                }}
+                return;
+            }}
+            if (avatar && info.avatar_url) {{
+                avatar.src = info.avatar_url;
+                avatar.alt = (info.group_name || "") + " 头像";
+                avatar.hidden = false;
+            }} else if (avatar) {{
+                avatar.hidden = true;
+            }}
+            const html = formatMembers(info);
+            if (meta) {{
+                if (html) {{
+                    meta.innerHTML = html;
+                    meta.hidden = false;
+                }} else {{
+                    meta.hidden = true;
+                    meta.innerHTML = "";
+                }}
+            }}
+        }}
+
+        function clearHeaderRecExtra() {{
+            const row = document.getElementById("headerRecRow");
+            const img = document.getElementById("headerAvatar");
+            const members = document.getElementById("headerMembers");
+            if (row) row.classList.remove("is-visible");
+            if (img) {{
+                img.hidden = true;
+                img.removeAttribute("src");
+            }}
+            if (members) {{
+                members.hidden = true;
+                members.innerHTML = "";
+            }}
+        }}
+
+        function applyHeaderRecExtra(info) {{
+            const row = document.getElementById("headerRecRow");
+            const img = document.getElementById("headerAvatar");
+            const members = document.getElementById("headerMembers");
+            if (!row || !info || !info.known) {{
+                clearHeaderRecExtra();
+                return;
+            }}
+            let show = false;
+            if (img && info.avatar_url) {{
+                img.src = info.avatar_url;
+                img.alt = (info.group_name || "推荐群") + " 头像";
+                img.hidden = false;
+                show = true;
+            }} else if (img) {{
+                img.hidden = true;
+            }}
+            const html = formatMembers(info);
+            if (members && html) {{
+                members.innerHTML = html;
+                members.hidden = false;
+                show = true;
+            }} else if (members) {{
+                members.hidden = true;
+                members.innerHTML = "";
+            }}
+            row.classList.toggle("is-visible", show);
+        }}
+
+        function chunk(arr, size) {{
+            const out = [];
+            for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+            return out;
+        }}
+
+        function applyPlatformInfoForIds(platform, ids, recGid) {{
+            // 只刷新本批相关 DOM，有结果就先展示
+            ids.forEach((id) => {{
+                if (!(id in groupInfoCache)) return;
+                document.querySelectorAll(
+                    '.group-item[data-platform="' + platform + '"][data-gid="' + id + '"]'
+                ).forEach((li) => {{
+                    applyInfoToItem(li, groupInfoCache[id]);
+                }});
+            }});
+            if (recGid && (recGid in groupInfoCache)) {{
+                applyHeaderRecExtra(groupInfoCache[recGid]);
+            }}
+        }}
+
+        async function fetchGroupInfoBatch(ids, onPartDone) {{
+            const missing = ids.filter((id) => !(id in groupInfoCache));
+            // 已有缓存的也回调，方便立刻上屏
+            const already = ids.filter((id) => id in groupInfoCache);
+            if (already.length && typeof onPartDone === "function") {{
+                onPartDone(already);
+            }}
+            if (!missing.length) return;
+
+            // 小批量串行；每批返回立刻 onPartDone，不用等全部
+            for (const part of chunk(missing, 5)) {{
+                try {{
+                    const url = GROUPINFO_API + "?ids=" + encodeURIComponent(part.join(","));
+                    const resp = await fetch(url, {{
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "omit",
+                        cache: "default",
+                    }});
+                    if (!resp.ok) {{
+                        part.forEach((id) => {{ groupInfoCache[id] = null; }});
+                        if (typeof onPartDone === "function") onPartDone(part);
+                        continue;
+                    }}
+                    const body = await resp.json();
+                    if (!body || body.code !== 0 || !body.data) {{
+                        part.forEach((id) => {{ groupInfoCache[id] = null; }});
+                        if (typeof onPartDone === "function") onPartDone(part);
+                        continue;
+                    }}
+                    const list = Array.isArray(body.data.groups)
+                        ? body.data.groups
+                        : (body.data.group_id ? [body.data] : []);
+                    const byId = Object.create(null);
+                    list.forEach((g) => {{
+                        if (g && g.group_id) byId[String(g.group_id)] = g;
+                    }});
+                    part.forEach((id) => {{
+                        const g = byId[id];
+                        groupInfoCache[id] = (g && g.known) ? g : null;
+                    }});
+                }} catch (e) {{
+                    part.forEach((id) => {{ groupInfoCache[id] = null; }});
+                }}
+                if (typeof onPartDone === "function") onPartDone(part);
+            }}
+        }}
+
+        async function loadPlatformGroupInfo(platform) {{
+            const items = document.querySelectorAll(
+                '.group-item[data-platform="' + platform + '"][data-gid]'
+            );
+            const ids = [];
+            items.forEach((li) => {{
+                const gid = li.getAttribute("data-gid");
+                if (gid) ids.push(gid);
+            }});
+            // 推荐群也查一下（可能与列表同一 gid）
+            const rec = RECOMMENDS[platform];
+            let recGid = "";
+            if (rec && rec.kind !== "channel" && rec.gid) {{
+                recGid = String(rec.gid);
+                ids.push(recGid);
+            }} else {{
+                clearHeaderRecExtra();
+            }}
+            // 推荐群优先拉取，顶部头像/人数更早出现
+            let unique = Array.from(new Set(ids));
+            if (recGid) {{
+                unique = [recGid].concat(unique.filter((id) => id !== recGid));
+            }}
+            if (!unique.length) {{
+                clearHeaderRecExtra();
+                return;
+            }}
+            // 已缓存的立刻上屏
+            const cachedNow = unique.filter((id) => id in groupInfoCache);
+            if (cachedNow.length) {{
+                applyPlatformInfoForIds(platform, cachedNow, recGid);
+            }}
+            // 逐批回调：哪批好了就先画哪批
+            await fetchGroupInfoBatch(unique, (partIds) => {{
+                // 平台已切换则丢弃过期回调
+                if (currentPlatform !== platform) return;
+                applyPlatformInfoForIds(platform, partIds, recGid);
+            }});
+        }}
+
+        function resetGroupRecommendMarks() {{
+            document.querySelectorAll(".group-item").forEach((li) => {{
+                li.classList.remove("is-recommend");
+                const title = li.querySelector(".group-title");
+                if (!title) return;
+                const label = li.getAttribute("data-label") || "";
+                // 去掉「 - 当前推荐」后缀
+                title.textContent = label;
+                title.classList.remove("current");
+            }});
+        }}
+
+        function resetChannelRecommendMarks() {{
+            document.querySelectorAll(".channel-item").forEach((li) => {{
                 li.classList.remove("is-recommend");
                 if (li.querySelector(".disabled")) return;
                 const href = li.getAttribute("data-href");
@@ -571,7 +855,17 @@ def main() -> None:
             }});
         }}
 
-        function applyRecommendMark(li) {{
+        function applyGroupRecommendMark(li) {{
+            li.classList.add("is-recommend");
+            const title = li.querySelector(".group-title");
+            const label = li.getAttribute("data-label") || "";
+            if (title) {{
+                title.textContent = label + " - 当前推荐";
+                title.classList.add("current");
+            }}
+        }}
+
+        function applyChannelRecommendMark(li) {{
             li.classList.add("is-recommend");
             const label = li.getAttribute("data-label") || "";
             li.innerHTML = '<strong><span class="current">' + label +
@@ -579,8 +873,8 @@ def main() -> None:
         }}
 
         function markPlatformRecommend(platform) {{
-            resetListRecommendMarks(".group-item");
-            resetListRecommendMarks(".channel-item");
+            resetGroupRecommendMarks();
+            resetChannelRecommendMarks();
 
             const listsPlaceholder = document.getElementById("listsPlaceholder");
             if (listsPlaceholder) listsPlaceholder.classList.add("is-hidden");
@@ -608,13 +902,12 @@ def main() -> None:
                 channelBlock.classList.toggle("is-empty", !hasChannel);
             }}
 
-            // 高亮当前推荐（群或频道）
             document.querySelectorAll(
                 '.group-item[data-platform="' + platform + '"][data-recommend="1"]'
-            ).forEach(applyRecommendMark);
+            ).forEach(applyGroupRecommendMark);
             document.querySelectorAll(
                 '.channel-item[data-platform="' + platform + '"][data-recommend="1"]'
-            ).forEach(applyRecommendMark);
+            ).forEach(applyChannelRecommendMark);
         }}
 
         function selectPlatform(platform) {{
@@ -630,6 +923,9 @@ def main() -> None:
             }});
 
             markPlatformRecommend(platform);
+            clearHeaderRecExtra();
+            // 异步拉头像/人数；失败静默，不展示
+            loadPlatformGroupInfo(platform);
 
             const title = document.getElementById("join-title");
             const gidEl = document.getElementById("join-gid");
@@ -664,6 +960,10 @@ def main() -> None:
     <div class="container">
         <div id="join-header" class="header{header_extra}">
             <h2 id="join-title">欢迎加入 MAA 交流群</h2>
+            <div id="headerRecRow" class="header-rec-row">
+                <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden>
+                <p id="headerMembers" class="header-members" hidden></p>
+            </div>
             <p id="join-gid" style="display:none"></p>
 
             <div class="platform-row">
