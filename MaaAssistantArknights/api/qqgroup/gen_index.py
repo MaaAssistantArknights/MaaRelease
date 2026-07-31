@@ -7,12 +7,19 @@ import urllib.request
 from pathlib import Path
 
 # 使用：
-#   python gen_index.py 28                       - Windows 推荐第 28 群（CI 同款）
-#                                                  Android / Mac 自动选（人数有空位优先）
-#   python gen_index.py channel                  - Windows 推荐 QQ 频道；Android/Mac 仍自动选群
-#   python gen_index.py                          - Windows 默认第 1 群；Android/Mac 自动
-#   python gen_index.py windows 28               - 只指定 Windows
-#   python gen_index.py windows 28 android 2     - 可选：手动覆盖 Android/Mac（调试用）
+#   python gen_index.py                          - 三平台粘性自动
+#   python gen_index.py auto                     - 同上
+#   python gen_index.py windows auto             - 只刷新 Windows（其它平台保持状态，不查人数）
+#   python gen_index.py android 2                - 手动钉 Android 第 2 群
+#   python gen_index.py windows channel          - Windows 推 QQ 频道
+#   python gen_index.py 28                       - 兼容：等同 windows 28
+#   python gen_index.py channel                  - 兼容：等同 windows channel
+#
+# 自动策略（粘性，仅对「本次操作的平台」生效）：
+#   1. 从现有 index.html 的 RECOMMENDS 读取上次推荐群
+#   2. 只查当前推荐是否满员；未满 / 查失败 → 保持
+#   3. 已满 / 已下架 → 按列表顺序选「第一个有空位」的群
+#   4. 写回 index.html（粘性状态就在 RECOMMENDS 里，无额外文件）
 #
 # 运营配置：
 #   content_windows.txt / content_android.txt / content_mac.txt
@@ -26,8 +33,8 @@ CHANNELS_FILE = "content_channels.txt"
 GROUPINFO_API = os.environ.get(
     "GROUPINFO_API", "https://join.maameow.com/api/groupinfo"
 ).rstrip("/")
-# 仅 Windows 由 CI/参数指定推荐；Android、Mac 默认自动
-AUTO_PLATFORMS = frozenset({"android", "mac"})
+# 换群时分批查人数，每批找到有空位的就停
+OCCUPANCY_BATCH = 5
 
 PLATFORMS = ("windows", "android", "mac")
 PLATFORM_FILES = {
@@ -99,68 +106,174 @@ def load_channels(path: Path) -> dict[str, dict]:
     return channels
 
 
-def parse_args(argv: list[str]) -> tuple[dict[str, int | None], bool]:
-    """返回 (各平台 1-based 推荐编号或 None=自动, 是否 Windows 频道模式)。
+def parse_args(argv: list[str]) -> dict:
+    """解析命令行，返回生成计划。
 
-    None 表示该平台用自动选群。CI 只传一个数字时仅设置 Windows。
+    返回 dict:
+      touch: 本次要刷新的平台集合（其它平台 freeze 保持状态、不查人数）
+      mode:  platform -> "auto" | "manual" | "channel" | "freeze"
+      manual: platform -> 1-based 群编号（仅 manual）
     """
-    # Windows 无参时默认第 1 群；Android/Mac 默认自动
-    recommends: dict[str, int | None] = {
-        "windows": 1,
-        "android": None,
-        "mac": None,
-    }
-    is_channel = False
+    usage = (
+        "用法:\n"
+        "  python gen_index.py                         # 三平台粘性自动\n"
+        "  python gen_index.py auto\n"
+        "  python gen_index.py windows auto            # 只刷新 Windows\n"
+        "  python gen_index.py android 2               # 手动钉 Android #2\n"
+        "  python gen_index.py windows channel         # 该平台推 QQ 频道\n"
+        "  python gen_index.py 28                      # 兼容：windows 手动 #28\n"
+        "  python gen_index.py channel                 # 兼容：windows channel"
+    )
+
+    def plan(
+        touch: set[str],
+        *,
+        mode_for_touch: str = "auto",
+        manual: dict[str, int] | None = None,
+        channel_platforms: set[str] | None = None,
+    ) -> dict:
+        modes = {p: "freeze" for p in PLATFORMS}
+        for p in touch:
+            modes[p] = mode_for_touch
+        if channel_platforms:
+            for p in channel_platforms:
+                modes[p] = "channel"
+                touch.add(p)
+        man = manual or {}
+        for p, n in man.items():
+            modes[p] = "manual"
+            touch.add(p)
+        return {"touch": set(touch), "mode": modes, "manual": man}
 
     if not argv:
-        return recommends, False
+        return plan(set(PLATFORMS), mode_for_touch="auto")
+
+    if len(argv) == 1 and argv[0].lower() in ("auto", "sticky"):
+        return plan(set(PLATFORMS), mode_for_touch="auto")
 
     if len(argv) == 1 and argv[0].lower() == "channel":
-        # Windows 走频道；Android/Mac 仍自动选群
-        recommends["windows"] = None
-        return recommends, True
+        return plan({"windows"}, mode_for_touch="channel", channel_platforms={"windows"})
 
-    # 单个数字：兼容旧 CI → 只改 Windows
+    # 单个数字：兼容旧习惯 → 只钉 Windows
     if len(argv) == 1 and argv[0].isdigit():
-        recommends["windows"] = int(argv[0])
-        return recommends, False
+        n = int(argv[0])
+        if n == 0:
+            return plan({"windows"}, mode_for_touch="channel", channel_platforms={"windows"})
+        return plan({"windows"}, mode_for_touch="manual", manual={"windows": n})
 
-    # 多个纯数字：仅第一个作为 Windows（Android/Mac 保持自动，避免误伤）
-    if all(a.isdigit() for a in argv) and 1 <= len(argv) <= 3:
-        recommends["windows"] = int(argv[0])
-        if len(argv) >= 2:
+    # 平台 + 动作：windows auto | android 2 | mac channel
+    if len(argv) == 2:
+        p_raw, action = argv[0].lower(), argv[1].lower()
+        if p_raw in ("all", "every"):
+            platform_set = set(PLATFORMS)
+        elif p_raw in PLATFORM_ALIASES:
+            platform_set = {PLATFORM_ALIASES[p_raw]}
+        else:
+            platform_set = set()
+        if platform_set:
+            if action in ("auto", "sticky"):
+                return plan(platform_set, mode_for_touch="auto")
+            if action == "channel":
+                return plan(platform_set, mode_for_touch="channel", channel_platforms=set(platform_set))
+            if action.isdigit():
+                n = int(action)
+                if n == 0:
+                    return plan(
+                        platform_set,
+                        mode_for_touch="channel",
+                        channel_platforms=set(platform_set),
+                    )
+                if len(platform_set) != 1:
+                    raise SystemExit("手动编号只能针对单个平台，例如: windows 28")
+                only = next(iter(platform_set))
+                return plan(platform_set, mode_for_touch="manual", manual={only: n})
+            raise SystemExit(usage)
+
+    # 关键字多段：windows 28 android auto mac channel
+    if argv:
+        touch: set[str] = set()
+        modes: dict[str, str] = {p: "freeze" for p in PLATFORMS}
+        manual: dict[str, int] = {}
+        i = 0
+        while i < len(argv):
+            token = argv[i].lower()
+            if token in ("auto", "sticky") and i == 0 and len(argv) == 1:
+                return plan(set(PLATFORMS), mode_for_touch="auto")
+            if token in PLATFORM_ALIASES:
+                p = PLATFORM_ALIASES[token]
+                if i + 1 >= len(argv):
+                    raise SystemExit(f"需要为 {token} 指定 auto / channel / 群编号")
+                action = argv[i + 1].lower()
+                touch.add(p)
+                if action in ("auto", "sticky"):
+                    modes[p] = "auto"
+                elif action == "channel":
+                    modes[p] = "channel"
+                elif action.isdigit():
+                    n = int(action)
+                    if n == 0:
+                        modes[p] = "channel"
+                    else:
+                        modes[p] = "manual"
+                        manual[p] = n
+                else:
+                    raise SystemExit(f"未知动作 {action!r}，应为 auto / channel / 数字")
+                i += 2
+                continue
+            if token == "channel":
+                touch.add("windows")
+                modes["windows"] = "channel"
+                i += 1
+                continue
+            raise SystemExit(usage)
+        if touch:
+            return {"touch": touch, "mode": modes, "manual": manual}
+
+    raise SystemExit(usage)
+
+
+def freeze_recommend(
+    groups: list[dict],
+    platform: str,
+    sticky_gid: str | None,
+) -> tuple[dict, int, str]:
+    """未选中的平台：沿用状态，不查人数。"""
+    label = PLATFORM_LABELS[platform]
+    if sticky_gid:
+        idx = index_of_gid(groups, sticky_gid)
+        if idx is not None and groups[idx].get("active"):
+            g = groups[idx]
             print(
-                "提示: 位置参数仅 Windows 生效；"
-                f"已忽略多余参数 {argv[1:]!r}。"
-                "若需手动指定 Android/Mac，请用: android 2 mac 1",
+                f"保持[{label}]: #{idx + 1} {g['name']}（本轮未选中，不查人数）",
                 file=sys.stderr,
             )
-        return recommends, False
-
-    # 关键字参数：windows 28 [android 2] [mac 1] [channel]
-    i = 0
-    while i < len(argv):
-        token = argv[i].lower()
-        if token == "channel":
-            is_channel = True
-            recommends["windows"] = None
-            i += 1
-            continue
-        if token in PLATFORM_ALIASES:
-            if i + 1 >= len(argv) or not argv[i + 1].isdigit():
-                raise SystemExit(f"需要为 {token} 指定群编号，例如: {token} 1")
-            recommends[PLATFORM_ALIASES[token]] = int(argv[i + 1])
-            i += 2
-            continue
-        raise SystemExit(
-            "用法:\n"
-            "  python gen_index.py <Windows群编号>     # CI：只改 Windows，Android/Mac 自动\n"
-            "  python gen_index.py channel            # Windows 推频道，Android/Mac 自动选群\n"
-            "  python gen_index.py windows 28\n"
-            "  python gen_index.py windows 28 android 2 mac 1   # 调试可手动覆盖"
-        )
-
-    return recommends, is_channel
+            return (
+                {"url": g["url"], "name": g["name"], "gid": g["gid"], "kind": "group"},
+                idx,
+                f"keep#{idx + 1}",
+            )
+        if idx is not None:
+            print(
+                f"保持[{label}]: 状态群已下架，改用第一个可用群",
+                file=sys.stderr,
+            )
+    for i, g in enumerate(groups):
+        if g.get("active"):
+            print(
+                f"保持[{label}]: 无有效粘性，回退 #{i + 1} {g['name']}",
+                file=sys.stderr,
+            )
+            return (
+                {"url": g["url"], "name": g["name"], "gid": g["gid"], "kind": "group"},
+                i,
+                f"keep-fallback#{i + 1}",
+            )
+    g = groups[0]
+    return (
+        {"url": g["url"], "name": g["name"], "gid": g["gid"], "kind": "group"},
+        0,
+        "keep-fallback#1",
+    )
 
 
 def pick_recommend(groups: list[dict], index_1based: int, platform: str) -> dict:
@@ -211,113 +324,262 @@ def fetch_group_occupancy(gids: list[str]) -> dict[str, dict]:
     return out
 
 
-def auto_recommend_index(groups: list[dict], platform: str) -> int:
-    """自动选推荐群（0-based）：有空位的优先，空位多者优先；失败则第一个可用群。"""
+def free_slots_of(info: dict | None) -> int | None:
+    """有 known 数据时返回空位数；否则 None。"""
+    if not info or not info.get("known"):
+        return None
+    free = info.get("free_slots")
+    if free is not None:
+        return max(0, int(free))
+    mx = int(info.get("max_member_count") or 0)
+    cur = int(info.get("member_count") or 0)
+    if mx <= 0:
+        return None
+    return max(0, mx - cur)
+
+
+def load_sticky_from_index(index_path: Path) -> dict[str, dict]:
+    """从现有 index.html 的 RECOMMENDS 读取粘性推荐（platform -> {gid, name}）。"""
+    if not index_path.is_file():
+        return {}
+    try:
+        text = index_path.read_text(encoding="utf-8")
+    except OSError:
+        return {}
+    marker = "const RECOMMENDS = "
+    start = text.find(marker)
+    if start < 0:
+        return {}
+    start += len(marker)
+    end = text.find(";", start)
+    if end < 0:
+        return {}
+    try:
+        data = json.loads(text[start:end].strip())
+    except json.JSONDecodeError as e:
+        print(f"解析 index.html RECOMMENDS 失败 ({e})，忽略粘性", file=sys.stderr)
+        return {}
+    out: dict[str, dict] = {}
+    if not isinstance(data, dict):
+        return out
+    for p, rec in data.items():
+        if p not in PLATFORMS or not isinstance(rec, dict):
+            continue
+        # 仅群推荐带 gid；频道模式没有可粘性的群号
+        if rec.get("kind") == "group" and rec.get("gid"):
+            out[p] = {
+                "gid": str(rec["gid"]),
+                "name": rec.get("name") or "",
+            }
+    return out
+
+
+def index_of_gid(groups: list[dict], gid: str) -> int | None:
+    gid = str(gid)
+    for i, g in enumerate(groups):
+        if str(g["gid"]) == gid:
+            return i
+    return None
+
+
+def first_with_free_slots(groups: list[dict], platform: str) -> int:
+    """按列表顺序找第一个有空位的 active 群；分批查询，找到即停。"""
     active = [(i, g) for i, g in enumerate(groups) if g.get("active")]
     if not active:
-        print(f"自动选群[{PLATFORM_LABELS[platform]}]: 无可用群，回退索引 0", file=sys.stderr)
-        return 0
-
-    gids = [g["gid"] for _, g in active]
-    occ = fetch_group_occupancy(gids)
-
-    best_i = active[0][0]
-    best_key = (-1, -1)  # (has_info, free_slots) — 无数据时 has_info=0
-    detail = []
-    for i, g in active:
-        info = occ.get(str(g["gid"]))
-        if not info or not info.get("known"):
-            detail.append(f"#{i + 1} {g['name']}=未知")
-            continue
-        free = info.get("free_slots")
-        if free is None:
-            mx = int(info.get("max_member_count") or 0)
-            cur = int(info.get("member_count") or 0)
-            free = max(0, mx - cur) if mx > 0 else 0
-        free = int(free)
-        key = (1, free)
-        cur = info.get("member_count")
-        mx = info.get("max_member_count")
-        detail.append(
-            f"#{i + 1} {g['name']}="
-            f"{cur if cur is not None else '?'}/{mx if mx is not None else '?'} 余{free}"
-        )
-        if key > best_key:
-            best_key = key
-            best_i = i
-
-    if best_key[0] < 0:
         print(
-            f"自动选群[{PLATFORM_LABELS[platform]}]: 人数均未知，使用第一个可用群 "
-            f"#{active[0][0] + 1} {active[0][1]['name']}",
+            f"自动选群[{PLATFORM_LABELS[platform]}]: 无可用群，回退索引 0",
             file=sys.stderr,
         )
-        return active[0][0]
+        return 0
 
+    label = PLATFORM_LABELS[platform]
+    checked = 0
+    for start in range(0, len(active), OCCUPANCY_BATCH):
+        batch = active[start : start + OCCUPANCY_BATCH]
+        occ = fetch_group_occupancy([g["gid"] for _, g in batch])
+        for i, g in batch:
+            checked += 1
+            free = free_slots_of(occ.get(str(g["gid"])))
+            if free is None:
+                print(
+                    f"自动选群[{label}]: #{i + 1} {g['name']} 人数未知，跳过",
+                    file=sys.stderr,
+                )
+                continue
+            if free > 0:
+                print(
+                    f"自动选群[{label}]: 选中第一个有空位 "
+                    f"#{i + 1} {g['name']} 余{free}"
+                    f"（已查 {checked} 个）",
+                    file=sys.stderr,
+                )
+                return i
+            print(
+                f"自动选群[{label}]: #{i + 1} {g['name']} 已满，继续",
+                file=sys.stderr,
+            )
+
+    fb = active[0][0]
     print(
-        f"自动选群[{PLATFORM_LABELS[platform]}]: 选中 #{best_i + 1} {groups[best_i]['name']} "
-        f"(空位优先) | " + "; ".join(detail),
+        f"自动选群[{label}]: 未找到确认有空位的群，回退第一个可用 "
+        f"#{fb + 1} {groups[fb]['name']}",
         file=sys.stderr,
     )
-    return best_i
+    return fb
+
+
+def sticky_auto_recommend_index(
+    groups: list[dict],
+    platform: str,
+    sticky_gid: str | None,
+) -> tuple[int, str]:
+    """粘性自动：未满保持；满了/下架则按序选第一个有空位。返回 (0-based, source)。"""
+    label = PLATFORM_LABELS[platform]
+    active = [(i, g) for i, g in enumerate(groups) if g.get("active")]
+    if not active:
+        return 0, "auto#1-empty"
+
+    sticky_i: int | None = None
+    if sticky_gid:
+        sticky_i = index_of_gid(groups, sticky_gid)
+        if sticky_i is None:
+            print(
+                f"粘性[{label}]: 状态群 {sticky_gid} 不在配置中，重新选群",
+                file=sys.stderr,
+            )
+        elif not groups[sticky_i].get("active"):
+            print(
+                f"粘性[{label}]: #{sticky_i + 1} {groups[sticky_i]['name']} 已下架，重新选群",
+                file=sys.stderr,
+            )
+            sticky_i = None
+
+    if sticky_i is not None:
+        g = groups[sticky_i]
+        occ = fetch_group_occupancy([g["gid"]])
+        free = free_slots_of(occ.get(str(g["gid"])))
+        if free is None:
+            # 查失败：保持旧推荐，避免乱跳
+            print(
+                f"粘性[{label}]: 保持 #{sticky_i + 1} {g['name']}（人数暂不可用）",
+                file=sys.stderr,
+            )
+            return sticky_i, f"sticky#{sticky_i + 1}-keep-unknown"
+        if free > 0:
+            print(
+                f"粘性[{label}]: 保持 #{sticky_i + 1} {g['name']} 余{free}",
+                file=sys.stderr,
+            )
+            return sticky_i, f"sticky#{sticky_i + 1}"
+        print(
+            f"粘性[{label}]: #{sticky_i + 1} {g['name']} 已满，按序选第一个有空位",
+            file=sys.stderr,
+        )
+
+    idx = first_with_free_slots(groups, platform)
+    return idx, f"auto-first-free#{idx + 1}"
 
 
 def resolve_recommend(
     platform: str,
     groups: list[dict],
-    specified_1based: int | None,
     *,
-    windows_channel_mode: bool,
+    mode: str,
+    manual_1based: int | None,
     channel: dict | None,
+    sticky_gid: str | None,
 ) -> tuple[dict, int, str]:
     """返回 (recommend字典, recommendIndex 0-based, 来源说明)。"""
-    # Windows 频道模式
-    if platform == "windows" and windows_channel_mode and channel:
-        return (
-            {"url": channel["url"], "name": channel["name"], "gid": "", "kind": "channel"},
-            -1,
-            "channel",
-        )
+    if mode == "freeze":
+        return freeze_recommend(groups, platform, sticky_gid)
 
-    if specified_1based is not None:
-        rec = pick_recommend(groups, specified_1based, platform)
+    if mode == "channel":
+        if channel:
+            return (
+                {
+                    "url": channel["url"],
+                    "name": channel["name"],
+                    "gid": "",
+                    "kind": "channel",
+                },
+                -1,
+                "channel",
+            )
+        print(
+            f"{PLATFORM_LABELS[platform]}: 无频道配置，回退粘性自动",
+            file=sys.stderr,
+        )
+        mode = "auto"
+
+    if mode == "manual":
+        if manual_1based is None:
+            raise ValueError(f"{PLATFORM_LABELS[platform]} manual 模式缺少群编号")
+        rec = pick_recommend(groups, manual_1based, platform)
         return (
             {"url": rec["url"], "name": rec["name"], "gid": rec["gid"], "kind": "group"},
-            specified_1based - 1,
-            f"manual#{specified_1based}",
+            manual_1based - 1,
+            f"manual#{manual_1based}",
         )
 
-    # 自动（Android / Mac，或 Windows channel 模式下无频道时）
-    idx = auto_recommend_index(groups, platform)
+    # auto：粘性
+    idx, source = sticky_auto_recommend_index(groups, platform, sticky_gid)
     rec = groups[idx]
     return (
         {"url": rec["url"], "name": rec["name"], "gid": rec["gid"], "kind": "group"},
         idx,
-        f"auto#{idx + 1}",
+        source,
     )
 
 
 def main() -> None:
     base = Path(__file__).resolve().parent
-    recommends, windows_channel_mode = parse_args(sys.argv[1:])
+    plan = parse_args(sys.argv[1:])
     channels = load_channels(base / CHANNELS_FILE)
+
+    index_path = base / "index.html"
+    sticky = load_sticky_from_index(index_path)
+    if sticky:
+        print(
+            "从 index.html RECOMMENDS 读取粘性: "
+            + ", ".join(f"{p}={sticky[p].get('gid')}" for p in sticky),
+            file=sys.stderr,
+        )
+    else:
+        print("无可用粘性状态（首次生成或尚无群推荐）", file=sys.stderr)
+
+    # 清理误留的旧状态文件（粘性已并入 index.html）
+    legacy_state = base / "recommend_state.json"
+    if legacy_state.is_file():
+        try:
+            legacy_state.unlink()
+            print("已删除遗留 recommend_state.json", file=sys.stderr)
+        except OSError as e:
+            print(f"删除 recommend_state.json 失败: {e}", file=sys.stderr)
+
+    touch = plan["touch"]
+    print(
+        "本轮操作平台: "
+        + (", ".join(PLATFORM_LABELS[p] for p in PLATFORMS if p in touch) or "(无)"),
+        file=sys.stderr,
+    )
 
     platforms_data: dict[str, dict] = {}
     for platform in PLATFORMS:
         groups = load_groups(base / PLATFORM_FILES[platform])
         ch = channels.get(platform)
-        specified = recommends.get(platform)
-        # Android/Mac：除非关键字显式传入，否则强制自动（忽略误传）
-        if platform in AUTO_PLATFORMS and specified is not None:
-            # 仅当通过关键字 android N / mac N 传入时 keeps specified；
-            # parse_args 已保证单数字不会写入 android/mac
-            pass
+        sticky_gid = None
+        entry = sticky.get(platform)
+        if entry:
+            sticky_gid = str(entry.get("gid") or "") or None
+        mode = plan["mode"].get(platform, "freeze")
+        manual_n = plan["manual"].get(platform)
         recommend, rec_index, source = resolve_recommend(
             platform,
             groups,
-            specified,
-            windows_channel_mode=windows_channel_mode,
+            mode=mode,
+            manual_1based=manual_n,
             channel=ch,
+            sticky_gid=sticky_gid,
         )
         platforms_data[platform] = {
             "label": PLATFORM_LABELS[platform],
@@ -401,7 +663,11 @@ def main() -> None:
             f'<a href="{url}" onclick="handleLinkClick(event)">{label}</a></li>\n'
         )
 
-    header_extra = " channel-header" if windows_channel_mode else ""
+    # 任一侧默认推荐是频道时，用频道风格头图（页面选平台后仍会切换文案）
+    any_channel_rec = any(
+        platforms_data[p]["recommend"]["kind"] == "channel" for p in PLATFORMS
+    )
+    header_extra = " channel-header" if any_channel_rec else ""
 
     # JS 用的推荐映射（平台 → 跳转目标）
     recommend_map = {
@@ -1072,9 +1338,54 @@ def main() -> None:
             ).forEach(applyChannelRecommendMark);
         }}
 
-        function selectPlatform(platform) {{
+        function normalizePlatform(raw) {{
+            if (!raw) return "";
+            const s = String(raw).trim().toLowerCase();
+            const map = {{
+                windows: "windows", win: "windows", win32: "windows", pc: "windows",
+                android: "android", and: "android",
+                mac: "mac", macos: "mac", osx: "mac", darwin: "mac",
+            }};
+            return map[s] || "";
+        }}
+
+        function platformFromUrl() {{
+            try {{
+                const params = new URLSearchParams(window.location.search);
+                const keys = ["platform", "os", "p", "client"];
+                for (let i = 0; i < keys.length; i++) {{
+                    const v = normalizePlatform(params.get(keys[i]));
+                    if (v && RECOMMENDS[v]) return v;
+                }}
+                // 兼容 #windows / #mac / #platform=android
+                const hash = (window.location.hash || "").replace(/^#/, "");
+                if (hash) {{
+                    let h = hash;
+                    const eq = hash.indexOf("=");
+                    if (eq >= 0) h = hash.slice(eq + 1);
+                    const v = normalizePlatform(h);
+                    if (v && RECOMMENDS[v]) return v;
+                }}
+            }} catch (e) {{}}
+            return "";
+        }}
+
+        function syncPlatformToUrl(platform) {{
+            try {{
+                const url = new URL(window.location.href);
+                url.searchParams.set("platform", platform);
+                ["os", "p", "client"].forEach((k) => url.searchParams.delete(k));
+                const next = url.pathname + url.search + (url.hash || "");
+                if (next !== window.location.pathname + window.location.search + window.location.hash) {{
+                    history.replaceState(null, "", next);
+                }}
+            }} catch (e) {{}}
+        }}
+
+        function selectPlatform(platform, options) {{
             const rec = RECOMMENDS[platform];
             if (!rec) return;
+            options = options || {{}};
 
             // 主动点选平台视为新意图：重新开启自动跳转
             userCancelled = false;
@@ -1114,7 +1425,22 @@ def main() -> None:
             primary.href = rec.url;
             primary.classList.remove("is-disabled");
             primary.setAttribute("aria-disabled", "false");
+            if (!options.skipUrlSync) {{
+                syncPlatformToUrl(platform);
+            }}
             startRedirect(rec.url);
+        }}
+
+        // URL 带平台时自动选中，无需手动点
+        // 例: ?platform=windows  ?os=android  ?p=mac  #windows
+        function initPlatformFromUrl() {{
+            const p = platformFromUrl();
+            if (p) selectPlatform(p, {{ skipUrlSync: true }});
+        }}
+        if (document.readyState === "loading") {{
+            document.addEventListener("DOMContentLoaded", initPlatformFromUrl);
+        }} else {{
+            initPlatformFromUrl();
         }}
     </script>
 </head>
@@ -1139,7 +1465,7 @@ def main() -> None:
                         onclick="selectPlatform('mac')">Mac</button>
                 </div>
             </div>
-            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。</p>
+            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。也可通过链接指定，例如 <code>?platform=windows</code>。</p>
 
             <p>
                 <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
@@ -1166,7 +1492,7 @@ def main() -> None:
 </html>
 """
 
-    out = base / "index.html"
+    out = index_path
     out.write_text(index_html, encoding="utf-8")
 
     # 清理旧的分平台页面
@@ -1196,6 +1522,7 @@ def main() -> None:
             f", 配置 {PLATFORM_FILES[p]}{ch_info}"
         )
     print(f"  - 频道配置: {CHANNELS_FILE} ({len(channels)} 个平台)")
+    print("  - 粘性状态: index.html RECOMMENDS")
 
 
 if __name__ == "__main__":

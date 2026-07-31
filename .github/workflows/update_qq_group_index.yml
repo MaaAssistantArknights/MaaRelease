@@ -1,14 +1,38 @@
 name: update_qq_group_index
 
-# Windows：与以往相同，人工指定推荐群编号（0 = Windows 推 QQ 频道）
-# Android / Mac：生成时自动选群（查询 groupinfo，优先空位多的；失败则第一个可用群）
+# 按平台更新加群页推荐：
+#   - platform 默认 windows（最常见）
+#   - mode=auto：粘性自动（未满保持，满了选第一个有空位）
+#   - mode=manual：用 group_number 钉死该平台推荐群
+#   - mode=channel：该平台推 QQ 频道（无配置则回退 auto）
+#   - 未选中的平台：保持 index.html 里上次推荐，不查人数
 
 on:
   workflow_dispatch:
     inputs:
-      group_number:
-        description: 'Windows 群编号（输入 0 表示 Windows 使用 QQ 频道；Android/Mac 始终自动选群）'
+      platform:
+        description: 操作平台（默认 Windows）
+        type: choice
         required: true
+        default: windows
+        options:
+          - windows
+          - android
+          - mac
+          - all
+      mode:
+        description: 推荐模式
+        type: choice
+        required: true
+        default: auto
+        options:
+          - auto
+          - manual
+          - channel
+      group_number:
+        description: mode=manual 时的群编号（从 1 开始，对应该平台 content 文件行序）
+        required: false
+        default: ""
 
 jobs:
   build:
@@ -21,29 +45,86 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Generate index.html
         working-directory: MaaAssistantArknights/api/qqgroup
         env:
-          # 自动选 Android/Mac 推荐群时用的人数接口
           GROUPINFO_API: https://join.maameow.com/api/groupinfo
+          PLATFORM: ${{ github.event.inputs.platform }}
+          MODE: ${{ github.event.inputs.mode }}
+          GROUP_NUMBER: ${{ github.event.inputs.group_number }}
         run: |
-          if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
-            python gen_index.py channel
-          else
-            python gen_index.py ${{ github.event.inputs.group_number }}
-          fi
+          set -e
+          PLATFORM="$(echo -n "$PLATFORM" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+          MODE="$(echo -n "$MODE" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')"
+          GROUP_NUMBER="$(echo -n "$GROUP_NUMBER" | tr -d '[:space:]')"
+
+          case "$PLATFORM" in
+            windows|android|mac|all) ;;
+            *)
+              echo "invalid platform: $PLATFORM"
+              exit 1
+              ;;
+          esac
+
+          case "$MODE" in
+            auto)
+              python gen_index.py "$PLATFORM" auto
+              ;;
+            channel)
+              python gen_index.py "$PLATFORM" channel
+              ;;
+            manual)
+              if [ -z "$GROUP_NUMBER" ]; then
+                echo "mode=manual 需要填写 group_number"
+                exit 1
+              fi
+              if ! [[ "$GROUP_NUMBER" =~ ^[0-9]+$ ]]; then
+                echo "group_number 必须是数字: $GROUP_NUMBER"
+                exit 1
+              fi
+              if [ "$PLATFORM" = "all" ]; then
+                echo "mode=manual 不能选 platform=all，请指定 windows/android/mac"
+                exit 1
+              fi
+              python gen_index.py "$PLATFORM" "$GROUP_NUMBER"
+              ;;
+            *)
+              echo "invalid mode: $MODE"
+              exit 1
+              ;;
+          esac
 
       - name: Commit and push
         working-directory: MaaAssistantArknights/api/qqgroup
+        env:
+          PLATFORM: ${{ github.event.inputs.platform }}
+          MODE: ${{ github.event.inputs.mode }}
+          GROUP_NUMBER: ${{ github.event.inputs.group_number }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          if [ "${{ github.event.inputs.group_number }}" = "0" ]; then
-            git commit -m "Update index.html: Windows QQ channel; Android/Mac auto" || echo "No changes to commit"
-          else
-            git commit -m "Update index.html to Windows group ${{ github.event.inputs.group_number }} (Android/Mac auto)" || echo "No changes to commit"
-          fi
+
+          PLATFORM="$(echo -n "$PLATFORM" | tr -d '[:space:]')"
+          MODE="$(echo -n "$MODE" | tr -d '[:space:]')"
+          GROUP_NUMBER="$(echo -n "$GROUP_NUMBER" | tr -d '[:space:]')"
+
+          case "$MODE" in
+            auto)
+              MSG="Update index.html: sticky auto (${PLATFORM})"
+              ;;
+            channel)
+              MSG="Update index.html: QQ channel (${PLATFORM})"
+              ;;
+            manual)
+              MSG="Update index.html: ${PLATFORM} group ${GROUP_NUMBER} (manual)"
+              ;;
+            *)
+              MSG="Update index.html (${PLATFORM}/${MODE})"
+              ;;
+          esac
+
+          git commit -m "$MSG" || echo "No changes to commit"
           git push

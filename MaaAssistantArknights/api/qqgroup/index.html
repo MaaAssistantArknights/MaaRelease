@@ -647,9 +647,54 @@
             ).forEach(applyChannelRecommendMark);
         }
 
-        function selectPlatform(platform) {
+        function normalizePlatform(raw) {
+            if (!raw) return "";
+            const s = String(raw).trim().toLowerCase();
+            const map = {
+                windows: "windows", win: "windows", win32: "windows", pc: "windows",
+                android: "android", and: "android",
+                mac: "mac", macos: "mac", osx: "mac", darwin: "mac",
+            };
+            return map[s] || "";
+        }
+
+        function platformFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const keys = ["platform", "os", "p", "client"];
+                for (let i = 0; i < keys.length; i++) {
+                    const v = normalizePlatform(params.get(keys[i]));
+                    if (v && RECOMMENDS[v]) return v;
+                }
+                // 兼容 #windows / #mac / #platform=android
+                const hash = (window.location.hash || "").replace(/^#/, "");
+                if (hash) {
+                    let h = hash;
+                    const eq = hash.indexOf("=");
+                    if (eq >= 0) h = hash.slice(eq + 1);
+                    const v = normalizePlatform(h);
+                    if (v && RECOMMENDS[v]) return v;
+                }
+            } catch (e) {}
+            return "";
+        }
+
+        function syncPlatformToUrl(platform) {
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.set("platform", platform);
+                ["os", "p", "client"].forEach((k) => url.searchParams.delete(k));
+                const next = url.pathname + url.search + (url.hash || "");
+                if (next !== window.location.pathname + window.location.search + window.location.hash) {
+                    history.replaceState(null, "", next);
+                }
+            } catch (e) {}
+        }
+
+        function selectPlatform(platform, options) {
             const rec = RECOMMENDS[platform];
             if (!rec) return;
+            options = options || {};
 
             // 主动点选平台视为新意图：重新开启自动跳转
             userCancelled = false;
@@ -689,7 +734,22 @@
             primary.href = rec.url;
             primary.classList.remove("is-disabled");
             primary.setAttribute("aria-disabled", "false");
+            if (!options.skipUrlSync) {
+                syncPlatformToUrl(platform);
+            }
             startRedirect(rec.url);
+        }
+
+        // URL 带平台时自动选中，无需手动点
+        // 例: ?platform=windows  ?os=android  ?p=mac  #windows
+        function initPlatformFromUrl() {
+            const p = platformFromUrl();
+            if (p) selectPlatform(p, { skipUrlSync: true });
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initPlatformFromUrl);
+        } else {
+            initPlatformFromUrl();
         }
     </script>
 </head>
@@ -714,7 +774,7 @@
                         onclick="selectPlatform('mac')">Mac</button>
                 </div>
             </div>
-            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。</p>
+            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。也可通过链接指定，例如 <code>?platform=windows</code>。</p>
 
             <p>
                 <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
