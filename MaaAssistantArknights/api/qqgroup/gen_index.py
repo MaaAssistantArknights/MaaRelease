@@ -1286,19 +1286,15 @@ def main() -> None:
         }}
 
         function resetChannelRecommendMarks() {{
+            // 不重建 <a>、不写回 href（CodeQL 会把 getAttribute→setAttribute(href) 判为 DOM XSS）
+            // 静态 HTML 里已有安全的 <a href=...>，只恢复文案与样式
             document.querySelectorAll(".channel-item").forEach((li) => {{
                 li.classList.remove("is-recommend");
-                if (li.querySelector(".disabled")) return;
-                const href = li.getAttribute("data-href");
+                const a = li.querySelector("a");
+                if (!a) return;
                 const label = li.getAttribute("data-label") || "";
-                if (!href) return;
-                // 用 createElement，避免 DOM 属性拼进 innerHTML（CodeQL: DOM text reinterpreted as HTML）
-                li.replaceChildren();
-                const a = document.createElement("a");
-                a.setAttribute("href", href);
                 a.textContent = label;
-                a.addEventListener("click", handleLinkClick);
-                li.appendChild(a);
+                a.classList.remove("current");
             }});
         }}
 
@@ -1313,15 +1309,14 @@ def main() -> None:
         }}
 
         function applyChannelRecommendMark(li) {{
+            // 保留原有 <a href>，只改 textContent，避免从 data-* 回写 URL
             li.classList.add("is-recommend");
+            const a = li.querySelector("a");
             const label = li.getAttribute("data-label") || "";
-            li.replaceChildren();
-            const strong = document.createElement("strong");
-            const span = document.createElement("span");
-            span.className = "current";
-            span.textContent = label + " - 当前推荐";
-            strong.appendChild(span);
-            li.appendChild(strong);
+            if (a) {{
+                a.textContent = label + " - 当前推荐";
+                a.classList.add("current");
+            }}
         }}
 
         function markPlatformRecommend(platform) {{
