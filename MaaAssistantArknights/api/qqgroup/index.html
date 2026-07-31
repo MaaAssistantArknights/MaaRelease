@@ -1,11 +1,11 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>欢迎加入 MAA 二十八裙</title>
+    <title>欢迎加入 MAA 交流群</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; color: #222; }
         .current { color: #ff6600; }
         ul { list-style-type: none; padding: 0; }
         li { margin: 12px 0; padding: 8px; background: #f9f9f9; border-radius: 5px; }
@@ -14,16 +14,207 @@
         li > a:hover { color: #004499; }
         .container { max-width: 800px; margin: 0 auto; }
         .header { background: #eef5ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .primary-link { display: inline-block; padding: 10px 20px; background: #0066cc; color: white; border-radius: 5px; margin: 10px 0; }
-        .primary-link:hover { background: #004499; text-decoration: none; }
-        .cancel-btn { 
-            display: inline-block; 
-            padding: 8px 16px; 
-            background: #ff6666; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+        .header.channel-header { background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }
+        .platform-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0 4px;
+        }
+        .platform-label { color: #555; font-size: 0.95em; margin-right: 4px; }
+        .platform-tabs {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .platform-tab {
+            padding: 8px 16px;
+            border: 2px solid #c5d8f5;
+            border-radius: 999px;
+            background: #fff;
+            color: #0066cc;
+            font-weight: bold;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: border-color .15s, background .15s, color .15s;
+        }
+        .platform-tab:hover {
+            border-color: #0066cc;
+            background: #f3f8ff;
+        }
+        .platform-tab.active {
+            border-color: #0066cc;
+            background: #0066cc;
+            color: #fff;
+        }
+        .header.channel-header .platform-tab.active {
+            border-color: #7c4dff;
+            background: #7c4dff;
+        }
+        .primary-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            min-height: 44px;
+            background: #0066cc;
+            color: #fff;
+            border-radius: 8px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            text-decoration: none;
+            overflow: hidden;
+            isolation: isolate;
+            z-index: 0;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.28);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .primary-link .btn-text {
+            position: relative;
+            z-index: 2;
+            border-radius: 8px;
+        }
+        .primary-link.is-disabled {
+            pointer-events: none;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.55;
+            background: #8aa8cc;
+        }
+        .primary-link.is-disabled.chroma {
+            background: #8aa8cc;
+        }
+        .primary-link.is-disabled.chroma::before,
+        .primary-link.is-disabled.chroma::after {
+            display: none;
+        }
+        /* 满幅流动炫彩（中等明度）；文字胶囊偏实，保证可读 */
+        .primary-link.chroma:not(.is-disabled) {
+            background: #2a2048;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(114, 46, 209, 0.3);
+        }
+        .primary-link.chroma:not(.is-disabled) .btn-text {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 8px;
+            background: rgba(16, 12, 32, 0.8);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+                0 2px 8px rgba(0, 0, 0, 0.22);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.02em;
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+        }
+        .primary-link.chroma:not(.is-disabled)::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 200%;
+            z-index: 0;
+            opacity: 0.88;
+            background: linear-gradient(
+                90deg,
+                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
+                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
+                #ff4d4f
+            );
+            animation: chroma-slide 3s linear infinite;
+            pointer-events: none;
+            will-change: transform;
+        }
+        .primary-link.chroma:not(.is-disabled)::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%),
+                linear-gradient(
+                    100deg,
+                    transparent 0%,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    transparent 60%,
+                    transparent 100%
+                );
+            background-size: 100% 100%, 42% 100%;
+            background-repeat: no-repeat, no-repeat;
+            background-position: 0 0, -42% 0;
+            animation: chroma-shine 2.8s linear infinite;
+            pointer-events: none;
+            will-change: background-position;
+        }
+        .primary-link.chroma:not(.is-disabled):hover {
+            filter: brightness(1.05) saturate(1.04);
+            box-shadow: 0 6px 20px rgba(114, 46, 209, 0.38);
+            text-decoration: none;
+            color: #fff;
+        }
+        .primary-link.chroma:not(.is-disabled):hover .btn-text {
+            background: rgba(16, 12, 32, 0.86);
+        }
+        .primary-link.chroma:not(.is-disabled):active {
+            filter: brightness(0.97);
+        }
+        .primary-link.chroma:not(.is-disabled):active .btn-text {
+            background: rgba(16, 12, 32, 0.9);
+        }
+        @keyframes chroma-slide {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        @keyframes chroma-shine {
+            from { background-position: 0 0, -42% 0; }
+            to { background-position: 0 0, 142% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .primary-link.chroma:not(.is-disabled)::before,
+            .primary-link.chroma:not(.is-disabled)::after {
+                animation: none;
+            }
+            .primary-link.chroma:not(.is-disabled)::before {
+                width: 100%;
+                opacity: 0.92;
+                background: linear-gradient(135deg, #1677ff 0%, #722ed1 55%, #eb2f96 100%);
+                transform: none;
+            }
+            .primary-link.chroma:not(.is-disabled)::after {
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%);
+                animation: none;
+            }
+            .primary-link.chroma:not(.is-disabled) {
+                box-shadow: 0 4px 12px rgba(114, 46, 209, 0.3);
+            }
+            .primary-link.chroma:not(.is-disabled) .btn-text {
+                background: rgba(16, 12, 32, 0.8);
+                text-shadow: none;
+                -webkit-backdrop-filter: none;
+                backdrop-filter: none;
+            }
+            .header.channel-header .primary-link.chroma:not(.is-disabled)::before {
+                background: linear-gradient(135deg, #722ed1 0%, #b37feb 100%);
+            }
+        }
+        .cancel-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             margin-left: 10px;
         }
         .cancel-btn:hover { background: #cc5555; }
@@ -32,112 +223,700 @@
         .channel { background: linear-gradient(135deg, #e8f0fe, #f0e6ff); border-left: 4px solid #7c4dff; }
         .channel a { color: #7c4dff; }
         .channel a:hover { color: #5e35b1; }
-        .channel-header { background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }
-        .channel-header .primary-link { background: #7c4dff; }
-        .channel-header .primary-link:hover { background: #5e35b1; }
+        .channel-item { display: none; }
+        .channel-item.is-active { display: list-item; }
+        .channel-item.is-recommend {
+            background: #f3e8ff;
+            border-left: 4px solid #7c4dff;
+        }
+        .tip { color: #666; font-size: 0.95em; }
+        /* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
+        .group-section {
+            display: none;
+            margin: 18px 0 24px;
+            padding: 14px 16px 8px;
+            border: 1px solid #e3eaf5;
+            border-radius: 10px;
+            background: #fafcff;
+        }
+        .group-section.is-active {
+            display: block;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
+            background: #f3f8ff;
+        }
+        .group-section-title {
+            margin: 0 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e3eaf5;
+            font-size: 1.1em;
+        }
+        .group-count {
+            color: #888;
+            font-weight: normal;
+            font-size: 0.9em;
+            margin-left: 6px;
+        }
+        .group-list { margin: 0; }
+        .group-item.is-recommend {
+            background: #fff4e8;
+            border-left: 4px solid #ff6600;
+        }
+        .group-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            font-weight: normal;
+        }
+        .group-link:hover { text-decoration: none; }
+        .group-link:hover .group-title { text-decoration: underline; color: #004499; }
+        .group-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .group-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #e8eef8;
+        }
+        .group-body {
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .group-title {
+            font-weight: bold;
+            color: #0066cc;
+            word-break: break-all;
+        }
+        .group-item.is-recommend .group-title { color: #ff6600; }
+        .group-meta {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .group-meta .full { color: #cc4444; }
+        .group-meta .ok { color: #2a7a2a; }
+        .disabled-row .group-title { color: #999; font-weight: normal; }
+        .header-rec-row {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 4px;
+        }
+        .header-rec-row.is-visible { display: flex; }
+        .header-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #e8eef8;
+            flex-shrink: 0;
+        }
+        .header-members {
+            margin: 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .lists-heading { margin: 24px 0 8px; font-size: 1.15em; }
+        .lists-placeholder { color: #888; margin: 12px 0 24px; }
+        .lists-placeholder.is-hidden { display: none; }
+        .channel-placeholder { color: #888; margin: 8px 0; }
+        .channel-placeholder.is-hidden { display: none; }
+        .channel-block.is-empty .channel-list { display: none; }
     </style>
     <script>
-        let redirectEnabled = true;
+        const RECOMMENDS = {"windows": {"url": "https://qm.qq.com/q/SZilizX7SW", "name": "MAA 二十八裙", "gid": "739772723", "kind": "group"}, "android": {"url": "https://qm.qq.com/q/ptPGw0wcEw", "name": "安卓版MAA 交流3群", "gid": "764534097", "kind": "group"}, "mac": {"url": "https://qm.qq.com/q/2uhPXiNOR0", "name": "Mac版MAA 交流群", "gid": "1091086083", "kind": "group"}};
+        const CHANNELS = {"windows": {"url": "https://pd.qq.com/s/8d3h265zd?b=9", "name": "MAA QQ 频道"}, "android": {"url": "https://pd.qq.com/s/4w4kgi4s4", "name": "安卓版 MAA QQ 频道"}, "mac": null};
+        const PLATFORM_LABELS = { windows: "Windows", android: "Android", mac: "Mac" };
+        // 与 gen_index.py 同一 GROUPINFO_API（可由环境变量覆盖后注入）
+        const GROUPINFO_API = "https://join.maameow.com/api/groupinfo";
+        const groupInfoCache = Object.create(null); // gid -> info | null(failed)
+
+        // 未选平台不自动跳转；URL/?platform= 指定时等同已选并启动跳转
+        let redirectEnabled = false;
         let countdown = 8;
         let countdownTimer = null;
-        
-        function cancelRedirect() {
+        let currentJoinUrl = "";
+        let currentPlatform = "";
+        let userCancelled = false;
+
+        function stopCountdown() {
             redirectEnabled = false;
             if (countdownTimer) {
                 clearTimeout(countdownTimer);
+                countdownTimer = null;
             }
-            document.getElementById('countdown').textContent = '0';
-            document.getElementById('redirectText').innerHTML = '自动跳转已取消';
-            document.getElementById('cancelBtn').style.display = 'none';
         }
-        
+
+        function cancelRedirect() {
+            userCancelled = true;
+            stopCountdown();
+            const text = document.getElementById("redirectText");
+            if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+        }
+
         function handleLinkClick(event) {
-            cancelRedirect();
-            // 允许正常跳转
+            // 点了列表里的群：取消自动跳转，但保留已选平台与主按钮
+            if (currentPlatform) cancelRedirect();
         }
-        
+
         function handlePrimaryLinkClick(event) {
+            const primary = document.getElementById("primaryLink");
+            if (primary.classList.contains("is-disabled") || !currentJoinUrl) {
+                event.preventDefault();
+                return;
+            }
             cancelRedirect();
-            // 允许正常跳转
         }
-        
+
+        function startRedirect(url) {
+            if (userCancelled) {
+                // 用户已取消过：只更新链接，不再自动跳
+                currentJoinUrl = url;
+                const text = document.getElementById("redirectText");
+                if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+                return;
+            }
+            currentJoinUrl = url;
+            redirectEnabled = true;
+            countdown = 8;
+            if (countdownTimer) clearTimeout(countdownTimer);
+
+            const text = document.getElementById("redirectText");
+            if (text) {
+                text.replaceChildren();
+                text.appendChild(document.createTextNode("已选择平台，页面将在 "));
+                const cd = document.createElement("span");
+                cd.id = "countdown";
+                cd.textContent = String(countdown);
+                text.appendChild(cd);
+                text.appendChild(document.createTextNode(" 秒后自动跳转……"));
+                const cancelBtn = document.createElement("button");
+                cancelBtn.type = "button";
+                cancelBtn.id = "cancelBtn";
+                cancelBtn.className = "cancel-btn";
+                cancelBtn.textContent = "取消自动跳转";
+                cancelBtn.addEventListener("click", cancelRedirect);
+                text.appendChild(cancelBtn);
+            }
+            countdownTimer = setTimeout(updateCountdown, 1000);
+        }
+
         function updateCountdown() {
             if (redirectEnabled && countdown > 0) {
                 countdown--;
-                document.getElementById('countdown').textContent = countdown;
+                const el = document.getElementById("countdown");
+                if (el) el.textContent = countdown;
                 countdownTimer = setTimeout(updateCountdown, 1000);
             } else if (redirectEnabled && countdown === 0) {
-                window.location.href = "https://qm.qq.com/q/SZilizX7SW";
+                window.location.href = currentJoinUrl;
             }
         }
-        
-        window.onload = function() {
-            updateCountdown();
-        };
+
+        function renderMembersInto(el, info) {
+            // 用 DOM API 写人数，避免 innerHTML + 外部字段触发 XSS 告警
+            if (!el) return false;
+            el.replaceChildren();
+            if (!info || !info.known) {
+                el.hidden = true;
+                return false;
+            }
+            const cur = info.member_count;
+            const max = info.max_member_count;
+            if (!max || max <= 0) {
+                el.hidden = true;
+                return false;
+            }
+            const free = typeof info.free_slots === "number"
+                ? info.free_slots
+                : Math.max(0, max - cur);
+            const span = document.createElement("span");
+            span.className = free <= 0 ? "full" : "ok";
+            const freeText = free <= 0 ? "已满" : ("余 " + free);
+            span.textContent = cur + " / " + max + " · " + freeText;
+            el.appendChild(span);
+            el.hidden = false;
+            return true;
+        }
+
+        function applyInfoToItem(li, info) {
+            const avatar = li.querySelector(".group-avatar");
+            const meta = li.querySelector(".group-meta");
+            if (!info || !info.known) {
+                if (avatar) {
+                    avatar.hidden = true;
+                    avatar.removeAttribute("src");
+                }
+                if (meta) {
+                    meta.hidden = true;
+                    meta.replaceChildren();
+                }
+                return;
+            }
+            if (avatar && info.avatar_url) {
+                avatar.src = info.avatar_url;
+                avatar.alt = (info.group_name || "") + " 头像";
+                avatar.hidden = false;
+            } else if (avatar) {
+                avatar.hidden = true;
+            }
+            renderMembersInto(meta, info);
+        }
+
+        function clearHeaderRecExtra() {
+            const row = document.getElementById("headerRecRow");
+            const img = document.getElementById("headerAvatar");
+            const members = document.getElementById("headerMembers");
+            if (row) row.classList.remove("is-visible");
+            if (img) {
+                img.hidden = true;
+                img.removeAttribute("src");
+            }
+            if (members) {
+                members.hidden = true;
+                members.replaceChildren();
+            }
+        }
+
+        function applyHeaderRecExtra(info) {
+            const row = document.getElementById("headerRecRow");
+            const img = document.getElementById("headerAvatar");
+            const members = document.getElementById("headerMembers");
+            if (!row || !info || !info.known) {
+                clearHeaderRecExtra();
+                return;
+            }
+            let show = false;
+            if (img && info.avatar_url) {
+                img.src = info.avatar_url;
+                img.alt = (info.group_name || "推荐群") + " 头像";
+                img.hidden = false;
+                show = true;
+            } else if (img) {
+                img.hidden = true;
+            }
+            if (renderMembersInto(members, info)) {
+                show = true;
+            }
+            row.classList.toggle("is-visible", show);
+        }
+
+        function chunk(arr, size) {
+            const out = [];
+            for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+            return out;
+        }
+
+        function applyPlatformInfoForIds(platform, ids, recGid) {
+            // 只刷新本批相关 DOM，有结果就先展示
+            ids.forEach((id) => {
+                if (!(id in groupInfoCache)) return;
+                document.querySelectorAll(
+                    '.group-item[data-platform="' + platform + '"][data-gid="' + id + '"]'
+                ).forEach((li) => {
+                    applyInfoToItem(li, groupInfoCache[id]);
+                });
+            });
+            if (recGid && (recGid in groupInfoCache)) {
+                applyHeaderRecExtra(groupInfoCache[recGid]);
+            }
+        }
+
+        async function fetchGroupInfoBatch(ids, onPartDone) {
+            const missing = ids.filter((id) => !(id in groupInfoCache));
+            // 已有缓存的也回调，方便立刻上屏
+            const already = ids.filter((id) => id in groupInfoCache);
+            if (already.length && typeof onPartDone === "function") {
+                onPartDone(already);
+            }
+            if (!missing.length) return;
+
+            // 小批量串行；每批返回立刻 onPartDone，不用等全部
+            for (const part of chunk(missing, 5)) {
+                try {
+                    const url = GROUPINFO_API + "?ids=" + encodeURIComponent(part.join(","));
+                    const resp = await fetch(url, {
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "omit",
+                        cache: "default",
+                    });
+                    if (!resp.ok) {
+                        part.forEach((id) => { groupInfoCache[id] = null; });
+                        if (typeof onPartDone === "function") onPartDone(part);
+                        continue;
+                    }
+                    const body = await resp.json();
+                    if (!body || body.code !== 0 || !body.data) {
+                        part.forEach((id) => { groupInfoCache[id] = null; });
+                        if (typeof onPartDone === "function") onPartDone(part);
+                        continue;
+                    }
+                    const list = Array.isArray(body.data.groups)
+                        ? body.data.groups
+                        : (body.data.group_id ? [body.data] : []);
+                    const byId = Object.create(null);
+                    list.forEach((g) => {
+                        if (g && g.group_id) byId[String(g.group_id)] = g;
+                    });
+                    part.forEach((id) => {
+                        const g = byId[id];
+                        groupInfoCache[id] = (g && g.known) ? g : null;
+                    });
+                } catch (e) {
+                    part.forEach((id) => { groupInfoCache[id] = null; });
+                }
+                if (typeof onPartDone === "function") onPartDone(part);
+            }
+        }
+
+        async function loadPlatformGroupInfo(platform) {
+            const items = document.querySelectorAll(
+                '.group-item[data-platform="' + platform + '"][data-gid]'
+            );
+            const ids = [];
+            items.forEach((li) => {
+                const gid = li.getAttribute("data-gid");
+                if (gid) ids.push(gid);
+            });
+            // 推荐群也查一下（可能与列表同一 gid）
+            const rec = RECOMMENDS[platform];
+            let recGid = "";
+            if (rec && rec.kind !== "channel" && rec.gid) {
+                recGid = String(rec.gid);
+                ids.push(recGid);
+            } else {
+                clearHeaderRecExtra();
+            }
+            // 推荐群优先拉取，顶部头像/人数更早出现
+            let unique = Array.from(new Set(ids));
+            if (recGid) {
+                unique = [recGid].concat(unique.filter((id) => id !== recGid));
+            }
+            if (!unique.length) {
+                clearHeaderRecExtra();
+                return;
+            }
+            // 已缓存的立刻上屏
+            const cachedNow = unique.filter((id) => id in groupInfoCache);
+            if (cachedNow.length) {
+                applyPlatformInfoForIds(platform, cachedNow, recGid);
+            }
+            // 逐批回调：哪批好了就先画哪批
+            await fetchGroupInfoBatch(unique, (partIds) => {
+                // 平台已切换则丢弃过期回调
+                if (currentPlatform !== platform) return;
+                applyPlatformInfoForIds(platform, partIds, recGid);
+            });
+        }
+
+        function resetGroupRecommendMarks() {
+            document.querySelectorAll(".group-item").forEach((li) => {
+                li.classList.remove("is-recommend");
+                const title = li.querySelector(".group-title");
+                if (!title) return;
+                const label = li.getAttribute("data-label") || "";
+                // 去掉「 - 当前推荐」后缀
+                title.textContent = label;
+                title.classList.remove("current");
+            });
+        }
+
+        function resetChannelRecommendMarks() {
+            // 不重建 <a>、不写回 href（CodeQL 会把 getAttribute→setAttribute(href) 判为 DOM XSS）
+            // 静态 HTML 里已有安全的 <a href=...>，只恢复文案与样式
+            document.querySelectorAll(".channel-item").forEach((li) => {
+                li.classList.remove("is-recommend");
+                const a = li.querySelector("a");
+                if (!a) return;
+                const label = li.getAttribute("data-label") || "";
+                a.textContent = label;
+                a.classList.remove("current");
+            });
+        }
+
+        function applyGroupRecommendMark(li) {
+            li.classList.add("is-recommend");
+            const title = li.querySelector(".group-title");
+            const label = li.getAttribute("data-label") || "";
+            if (title) {
+                title.textContent = label + " - 当前推荐";
+                title.classList.add("current");
+            }
+        }
+
+        function applyChannelRecommendMark(li) {
+            // 保留原有 <a href>，只改 textContent，避免从 data-* 回写 URL
+            li.classList.add("is-recommend");
+            const a = li.querySelector("a");
+            const label = li.getAttribute("data-label") || "";
+            if (a) {
+                a.textContent = label + " - 当前推荐";
+                a.classList.add("current");
+            }
+        }
+
+        function markPlatformRecommend(platform) {
+            resetGroupRecommendMarks();
+            resetChannelRecommendMarks();
+
+            const listsPlaceholder = document.getElementById("listsPlaceholder");
+            if (listsPlaceholder) listsPlaceholder.classList.add("is-hidden");
+
+            document.querySelectorAll(".group-section").forEach((sec) => {
+                sec.classList.toggle("is-active", sec.getAttribute("data-platform") === platform);
+            });
+
+            // 频道：只展示当前平台
+            const channelPlaceholder = document.getElementById("channelPlaceholder");
+            const channelBlock = document.getElementById("channelBlock");
+            let hasChannel = false;
+            document.querySelectorAll(".channel-item").forEach((li) => {
+                const match = li.getAttribute("data-platform") === platform;
+                li.classList.toggle("is-active", match);
+                if (match) hasChannel = true;
+            });
+            if (channelPlaceholder) {
+                channelPlaceholder.classList.toggle("is-hidden", hasChannel);
+                if (!hasChannel) {
+                    channelPlaceholder.textContent = "该平台暂无 QQ 频道";
+                }
+            }
+            if (channelBlock) {
+                channelBlock.classList.toggle("is-empty", !hasChannel);
+            }
+
+            document.querySelectorAll(
+                '.group-item[data-platform="' + platform + '"][data-recommend="1"]'
+            ).forEach(applyGroupRecommendMark);
+            document.querySelectorAll(
+                '.channel-item[data-platform="' + platform + '"][data-recommend="1"]'
+            ).forEach(applyChannelRecommendMark);
+        }
+
+        function normalizePlatform(raw) {
+            if (!raw) return "";
+            const s = String(raw).trim().toLowerCase();
+            const map = {
+                windows: "windows", win: "windows", win32: "windows", pc: "windows",
+                android: "android", and: "android",
+                mac: "mac", macos: "mac", osx: "mac", darwin: "mac",
+            };
+            return map[s] || "";
+        }
+
+        function platformFromUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const keys = ["platform", "os", "p", "client"];
+                for (let i = 0; i < keys.length; i++) {
+                    const v = normalizePlatform(params.get(keys[i]));
+                    if (v && RECOMMENDS[v]) return v;
+                }
+                // 兼容 #windows / #mac / #platform=android
+                const hash = (window.location.hash || "").replace(/^#/, "");
+                if (hash) {
+                    let h = hash;
+                    const eq = hash.indexOf("=");
+                    if (eq >= 0) h = hash.slice(eq + 1);
+                    const v = normalizePlatform(h);
+                    if (v && RECOMMENDS[v]) return v;
+                }
+            } catch (e) {}
+            return "";
+        }
+
+        function syncPlatformToUrl(platform) {
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.set("platform", platform);
+                ["os", "p", "client"].forEach((k) => url.searchParams.delete(k));
+                const next = url.pathname + url.search + (url.hash || "");
+                if (next !== window.location.pathname + window.location.search + window.location.hash) {
+                    history.replaceState(null, "", next);
+                }
+            } catch (e) {}
+        }
+
+        function selectPlatform(platform, options) {
+            const rec = RECOMMENDS[platform];
+            if (!rec) return;
+            options = options || {};
+
+            // 主动点选平台视为新意图：重新开启自动跳转
+            userCancelled = false;
+            currentPlatform = platform;
+
+            document.querySelectorAll(".platform-tab").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-platform") === platform);
+            });
+
+            markPlatformRecommend(platform);
+            clearHeaderRecExtra();
+            // 异步拉头像/人数；失败静默，不展示
+            loadPlatformGroupInfo(platform);
+
+            const title = document.getElementById("join-title");
+            const gidEl = document.getElementById("join-gid");
+            const primary = document.getElementById("primaryLink");
+            const btnText = primary.querySelector(".btn-text");
+            const label = PLATFORM_LABELS[platform] || platform;
+            const isChannel = rec.kind === "channel";
+
+            if (isChannel) {
+                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
+                gidEl.style.display = "none";
+                if (btnText) btnText.textContent = "立即加入 QQ 频道";
+            } else {
+                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
+                if (rec.gid) {
+                    gidEl.style.display = "";
+                    gidEl.replaceChildren();
+                    gidEl.appendChild(document.createTextNode("群号: "));
+                    const strong = document.createElement("strong");
+                    strong.textContent = String(rec.gid);
+                    gidEl.appendChild(strong);
+                } else {
+                    gidEl.style.display = "none";
+                }
+                if (btnText) btnText.textContent = "立即加入当前推荐群组";
+            }
+
+            primary.href = rec.url;
+            primary.classList.remove("is-disabled");
+            primary.setAttribute("aria-disabled", "false");
+            if (!options.skipUrlSync) {
+                syncPlatformToUrl(platform);
+            }
+            startRedirect(rec.url);
+        }
+
+        // URL 带平台时自动选中，无需手动点
+        // 例: ?platform=windows  ?os=android  ?p=mac  #windows
+        function initPlatformFromUrl() {
+            const p = platformFromUrl();
+            if (p) selectPlatform(p, { skipUrlSync: true });
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initPlatformFromUrl);
+        } else {
+            initPlatformFromUrl();
+        }
     </script>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h2>欢迎加入【MAA 二十八裙】</h2>
-            <p>群号: <strong>739772723</strong></p>
-            <p><a href="https://qm.qq.com/q/SZilizX7SW" class="primary-link" onclick="handlePrimaryLinkClick(event)">立即加入当前推荐群组</a></p>
-            <p id="redirectText">
-                页面将在 <span id="countdown">8</span> 秒后自动跳转……
-                <button id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>
+        <div id="join-header" class="header">
+            <h2 id="join-title">欢迎加入 MAA 交流群</h2>
+            <div id="headerRecRow" class="header-rec-row">
+                <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden>
+                <p id="headerMembers" class="header-members" hidden></p>
+            </div>
+            <p id="join-gid" style="display:none"></p>
+
+            <div class="platform-row">
+                <span class="platform-label">请先选择平台：</span>
+                <div class="platform-tabs" role="group" aria-label="客户端平台">
+                    <button type="button" class="platform-tab" data-platform="windows"
+                        onclick="selectPlatform('windows')">Windows</button>
+                    <button type="button" class="platform-tab" data-platform="android"
+                        onclick="selectPlatform('android')">Android</button>
+                    <button type="button" class="platform-tab" data-platform="mac"
+                        onclick="selectPlatform('mac')">Mac</button>
+                </div>
+            </div>
+
+            <p>
+                <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
+                   aria-disabled="true" onclick="handlePrimaryLinkClick(event)">
+                    <span class="btn-text">请先选择平台</span>
+                </a>
             </p>
+            <p id="redirectText">尚未选择平台，不会自动跳转</p>
         </div>
-        
-        <h3>QQ 频道:</h3>
-        <ul>
-            <li class="channel"><a href="https://pd.qq.com/s/8d3h265zd?b=9" onclick="handleLinkClick(event)">MAA QQ 频道</a></li>
 
-        </ul>
-        
-        <h3>可用群组列表 (共 38 个):</h3>
-        <ul>
-            <li><a href="https://qm.qq.com/q/brtJGf5h2o" onclick="handleLinkClick(event)">MAA 一裙 (791704225)</a></li>
-<li><a href="https://qm.qq.com/q/qLl7QgcxQ4" onclick="handleLinkClick(event)">MAA 避难所 (875959402)</a></li>
-<li><a href="https://qm.qq.com/q/yo4UYi3SIS" onclick="handleLinkClick(event)">MAA 三裙 (954069034)</a></li>
-<li><a href="https://qm.qq.com/q/Xy1STSCJWK" onclick="handleLinkClick(event)">MAA 四裙 (645852443)</a></li>
-<li><a href="https://qm.qq.com/q/R3w7RQIZIy" onclick="handleLinkClick(event)">MAA 五裙 (399375745)</a></li>
-<li><a href="https://qm.qq.com/q/mDj4OY07mg" onclick="handleLinkClick(event)">MAA 六裙 (704746719)</a></li>
-<li><a href="https://qm.qq.com/q/aK0SnYsWGc" onclick="handleLinkClick(event)">MAA 七裙 (285898225)</a></li>
-<li><a href="https://qm.qq.com/q/pNCuptVPhK" onclick="handleLinkClick(event)">MAA 八裙 (290949547)</a></li>
-<li><a href="https://qm.qq.com/q/sDBm8wDowo" onclick="handleLinkClick(event)">MAA 九裙 (764034517)</a></li>
-<li><a href="https://qm.qq.com/q/ekeuIR4ZvU" onclick="handleLinkClick(event)">MAA 十裙 (362529812)</a></li>
-<li><a href="https://qm.qq.com/q/hVjtFOkyeQ" onclick="handleLinkClick(event)">MAA 十一裙 (536038978)</a></li>
-<li><a href="https://qm.qq.com/q/m7nBOkijOE" onclick="handleLinkClick(event)">MAA 十二裙 (577460690)</a></li>
-<li><a href="https://qm.qq.com/q/k0KlwMhrpe" onclick="handleLinkClick(event)">MAA 十三裙 (518779858)</a></li>
-<li><a href="https://qm.qq.com/q/Ehh5ouuopy" onclick="handleLinkClick(event)">MAA 十四裙 (1105335749)</a></li>
-<li><a href="https://qm.qq.com/q/dOy0JcI7ew" onclick="handleLinkClick(event)">MAA 十五裙 (821474369)</a></li>
-<li><a href="https://qm.qq.com/q/eVv3ZHFPPO" onclick="handleLinkClick(event)">MAA 十六裙 (756840093)</a></li>
-<li><a href="https://qm.qq.com/q/WA16EHmPGc" onclick="handleLinkClick(event)">MAA 十七裙 (130793607)</a></li>
-<li><a href="https://qm.qq.com/q/HtWF3F9csu" onclick="handleLinkClick(event)">MAA 十八裙 (1019089084)</a></li>
-<li><a href="https://qm.qq.com/q/VZziwrFio4" onclick="handleLinkClick(event)">MAA 十九裙 (1037746358)</a></li>
-<li><a href="https://qm.qq.com/q/r8QSte9pf2" onclick="handleLinkClick(event)">MAA 二十裙 (811923437)</a></li>
-<li><a href="https://qm.qq.com/q/Ly0mxKm9Cs" onclick="handleLinkClick(event)">MAA 二十一裙 (147682068)</a></li>
-<li><a href="https://qm.qq.com/q/fxL5QSX53a" onclick="handleLinkClick(event)">MAA 二十二裙 (1018167389)</a></li>
-<li><a href="https://qm.qq.com/q/wgwWha2QiA" onclick="handleLinkClick(event)">MAA 二十三裙 (744379789)</a></li>
-<li><a href="https://qm.qq.com/q/U6hTfcjxa8" onclick="handleLinkClick(event)">MAA 二十四裙 (1017931295)</a></li>
-<li><a href="https://qm.qq.com/q/MUeqpeXu8M" onclick="handleLinkClick(event)">MAA 二十五裙 (978314648)</a></li>
-<li><a href="https://qm.qq.com/q/34CZxNGeCc" onclick="handleLinkClick(event)">MAA 二十六裙 (475886359)</a></li>
-<li><a href="https://qm.qq.com/q/JebChwBSUu" onclick="handleLinkClick(event)">MAA 二十七裙 (1037257260)</a></li>
-<li><strong><span class="current">MAA 二十八裙 (739772723) - 当前推荐</span></strong></li>
-<li><a href="https://qm.qq.com/q/YV1bCw5CKK" onclick="handleLinkClick(event)">MAA 二十九裙 (514134954)</a></li>
-<li><a href="https://qm.qq.com/q/6EHIjpxUBy" onclick="handleLinkClick(event)">MAA 三十裙 (596196146)</a></li>
-<li><a href="https://qm.qq.com/q/sW8LlaNMME" onclick="handleLinkClick(event)">MAA 三十一裙 (545928846)</a></li>
-<li><a href="https://qm.qq.com/q/pt47DXsH2E" onclick="handleLinkClick(event)">MAA 三十二裙 (216314927)</a></li>
-<li><a href="https://qm.qq.com/q/ZsMmM5IX2A" onclick="handleLinkClick(event)">MAA 三十三裙 (1003478193)</a></li>
-<li><a href="https://qm.qq.com/q/ImsUweGc8i" onclick="handleLinkClick(event)">MAA 三十四裙 (1009052305)</a></li>
-<li><a href="https://qm.qq.com/q/hfisRrMmnC" onclick="handleLinkClick(event)">MAA 三十五裙 (774683898)</a></li>
-<li><a href="https://qm.qq.com/q/L8Tyfs268E" onclick="handleLinkClick(event)">安卓版MAA 交流1群 (1074855131)</a></li>
-<li><a href="https://qm.qq.com/q/hWvDx6cNag" onclick="handleLinkClick(event)">安卓版MAA 交流2群 (1092878305)</a></li>
-<li><a href="https://qm.qq.com/q/2uhPXiNOR0" onclick="handleLinkClick(event)">Mac版MAA 交流群 (1091086083)</a></li>
+        <div id="channelBlock" class="channel-block">
+            <h3>QQ 频道</h3>
+            <p id="channelPlaceholder" class="channel-placeholder">请先选择平台，以查看对应频道。</p>
+            <ul class="channel-list">
+<li class="channel channel-item" data-platform="windows" data-label="MAA QQ 频道" data-href="https://pd.qq.com/s/8d3h265zd?b=9"><a href="https://pd.qq.com/s/8d3h265zd?b=9" onclick="handleLinkClick(event)">MAA QQ 频道</a></li>
+<li class="channel channel-item" data-platform="android" data-label="安卓版 MAA QQ 频道" data-href="https://pd.qq.com/s/4w4kgi4s4"><a href="https://pd.qq.com/s/4w4kgi4s4" onclick="handleLinkClick(event)">安卓版 MAA QQ 频道</a></li>
+            </ul>
+        </div>
 
-        </ul>
-        
-        <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）</p>
+        <h3 class="lists-heading">群组列表</h3>
+        <p id="listsPlaceholder" class="lists-placeholder">请先在上方选择平台，以查看对应群列表。</p>
+
+        <section class="group-section" id="section-windows" data-platform="windows">
+            <h3 class="group-section-title">Windows 群组
+                <span class="group-count">共 35 个</span>
+            </h3>
+            <ul class="group-list">
+                <li class="group-item" data-platform="windows" data-gid="791704225" data-label="MAA 一裙 (791704225)" data-href="https://qm.qq.com/q/brtJGf5h2o"><a class="group-link" href="https://qm.qq.com/q/brtJGf5h2o" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 一裙 (791704225)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="875959402" data-label="MAA 避难所 (875959402)" data-href="https://qm.qq.com/q/qLl7QgcxQ4"><a class="group-link" href="https://qm.qq.com/q/qLl7QgcxQ4" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 避难所 (875959402)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="954069034" data-label="MAA 三裙 (954069034)" data-href="https://qm.qq.com/q/yo4UYi3SIS"><a class="group-link" href="https://qm.qq.com/q/yo4UYi3SIS" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三裙 (954069034)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="645852443" data-label="MAA 四裙 (645852443)" data-href="https://qm.qq.com/q/Xy1STSCJWK"><a class="group-link" href="https://qm.qq.com/q/Xy1STSCJWK" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 四裙 (645852443)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="399375745" data-label="MAA 五裙 (399375745)" data-href="https://qm.qq.com/q/R3w7RQIZIy"><a class="group-link" href="https://qm.qq.com/q/R3w7RQIZIy" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 五裙 (399375745)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="704746719" data-label="MAA 六裙 (704746719)" data-href="https://qm.qq.com/q/mDj4OY07mg"><a class="group-link" href="https://qm.qq.com/q/mDj4OY07mg" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 六裙 (704746719)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="285898225" data-label="MAA 七裙 (285898225)" data-href="https://qm.qq.com/q/aK0SnYsWGc"><a class="group-link" href="https://qm.qq.com/q/aK0SnYsWGc" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 七裙 (285898225)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="290949547" data-label="MAA 八裙 (290949547)" data-href="https://qm.qq.com/q/pNCuptVPhK"><a class="group-link" href="https://qm.qq.com/q/pNCuptVPhK" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 八裙 (290949547)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="764034517" data-label="MAA 九裙 (764034517)" data-href="https://qm.qq.com/q/sDBm8wDowo"><a class="group-link" href="https://qm.qq.com/q/sDBm8wDowo" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 九裙 (764034517)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="362529812" data-label="MAA 十裙 (362529812)" data-href="https://qm.qq.com/q/ekeuIR4ZvU"><a class="group-link" href="https://qm.qq.com/q/ekeuIR4ZvU" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十裙 (362529812)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="536038978" data-label="MAA 十一裙 (536038978)" data-href="https://qm.qq.com/q/hVjtFOkyeQ"><a class="group-link" href="https://qm.qq.com/q/hVjtFOkyeQ" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十一裙 (536038978)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="577460690" data-label="MAA 十二裙 (577460690)" data-href="https://qm.qq.com/q/m7nBOkijOE"><a class="group-link" href="https://qm.qq.com/q/m7nBOkijOE" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十二裙 (577460690)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="518779858" data-label="MAA 十三裙 (518779858)" data-href="https://qm.qq.com/q/k0KlwMhrpe"><a class="group-link" href="https://qm.qq.com/q/k0KlwMhrpe" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十三裙 (518779858)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1105335749" data-label="MAA 十四裙 (1105335749)" data-href="https://qm.qq.com/q/Ehh5ouuopy"><a class="group-link" href="https://qm.qq.com/q/Ehh5ouuopy" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十四裙 (1105335749)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="821474369" data-label="MAA 十五裙 (821474369)" data-href="https://qm.qq.com/q/dOy0JcI7ew"><a class="group-link" href="https://qm.qq.com/q/dOy0JcI7ew" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十五裙 (821474369)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="756840093" data-label="MAA 十六裙 (756840093)" data-href="https://qm.qq.com/q/eVv3ZHFPPO"><a class="group-link" href="https://qm.qq.com/q/eVv3ZHFPPO" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十六裙 (756840093)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="130793607" data-label="MAA 十七裙 (130793607)" data-href="https://qm.qq.com/q/WA16EHmPGc"><a class="group-link" href="https://qm.qq.com/q/WA16EHmPGc" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十七裙 (130793607)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1019089084" data-label="MAA 十八裙 (1019089084)" data-href="https://qm.qq.com/q/HtWF3F9csu"><a class="group-link" href="https://qm.qq.com/q/HtWF3F9csu" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十八裙 (1019089084)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1037746358" data-label="MAA 十九裙 (1037746358)" data-href="https://qm.qq.com/q/VZziwrFio4"><a class="group-link" href="https://qm.qq.com/q/VZziwrFio4" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 十九裙 (1037746358)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="811923437" data-label="MAA 二十裙 (811923437)" data-href="https://qm.qq.com/q/r8QSte9pf2"><a class="group-link" href="https://qm.qq.com/q/r8QSte9pf2" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十裙 (811923437)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="147682068" data-label="MAA 二十一裙 (147682068)" data-href="https://qm.qq.com/q/Ly0mxKm9Cs"><a class="group-link" href="https://qm.qq.com/q/Ly0mxKm9Cs" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十一裙 (147682068)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1018167389" data-label="MAA 二十二裙 (1018167389)" data-href="https://qm.qq.com/q/fxL5QSX53a"><a class="group-link" href="https://qm.qq.com/q/fxL5QSX53a" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十二裙 (1018167389)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="744379789" data-label="MAA 二十三裙 (744379789)" data-href="https://qm.qq.com/q/wgwWha2QiA"><a class="group-link" href="https://qm.qq.com/q/wgwWha2QiA" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十三裙 (744379789)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1017931295" data-label="MAA 二十四裙 (1017931295)" data-href="https://qm.qq.com/q/U6hTfcjxa8"><a class="group-link" href="https://qm.qq.com/q/U6hTfcjxa8" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十四裙 (1017931295)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="978314648" data-label="MAA 二十五裙 (978314648)" data-href="https://qm.qq.com/q/MUeqpeXu8M"><a class="group-link" href="https://qm.qq.com/q/MUeqpeXu8M" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十五裙 (978314648)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="475886359" data-label="MAA 二十六裙 (475886359)" data-href="https://qm.qq.com/q/34CZxNGeCc"><a class="group-link" href="https://qm.qq.com/q/34CZxNGeCc" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十六裙 (475886359)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1037257260" data-label="MAA 二十七裙 (1037257260)" data-href="https://qm.qq.com/q/JebChwBSUu"><a class="group-link" href="https://qm.qq.com/q/JebChwBSUu" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十七裙 (1037257260)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="739772723" data-label="MAA 二十八裙 (739772723)" data-href="https://qm.qq.com/q/SZilizX7SW" data-recommend="1"><a class="group-link" href="https://qm.qq.com/q/SZilizX7SW" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十八裙 (739772723)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="514134954" data-label="MAA 二十九裙 (514134954)" data-href="https://qm.qq.com/q/YV1bCw5CKK"><a class="group-link" href="https://qm.qq.com/q/YV1bCw5CKK" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 二十九裙 (514134954)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="596196146" data-label="MAA 三十裙 (596196146)" data-href="https://qm.qq.com/q/6EHIjpxUBy"><a class="group-link" href="https://qm.qq.com/q/6EHIjpxUBy" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十裙 (596196146)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="545928846" data-label="MAA 三十一裙 (545928846)" data-href="https://qm.qq.com/q/sW8LlaNMME"><a class="group-link" href="https://qm.qq.com/q/sW8LlaNMME" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十一裙 (545928846)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="216314927" data-label="MAA 三十二裙 (216314927)" data-href="https://qm.qq.com/q/pt47DXsH2E"><a class="group-link" href="https://qm.qq.com/q/pt47DXsH2E" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十二裙 (216314927)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1003478193" data-label="MAA 三十三裙 (1003478193)" data-href="https://qm.qq.com/q/ZsMmM5IX2A"><a class="group-link" href="https://qm.qq.com/q/ZsMmM5IX2A" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十三裙 (1003478193)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="1009052305" data-label="MAA 三十四裙 (1009052305)" data-href="https://qm.qq.com/q/ImsUweGc8i"><a class="group-link" href="https://qm.qq.com/q/ImsUweGc8i" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十四裙 (1009052305)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="windows" data-gid="774683898" data-label="MAA 三十五裙 (774683898)" data-href="https://qm.qq.com/q/hfisRrMmnC"><a class="group-link" href="https://qm.qq.com/q/hfisRrMmnC" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">MAA 三十五裙 (774683898)</span><span class="group-meta" hidden></span></div></div></a></li>
+            </ul>
+        </section>
+
+        <section class="group-section" id="section-android" data-platform="android">
+            <h3 class="group-section-title">Android 群组
+                <span class="group-count">共 3 个</span>
+            </h3>
+            <ul class="group-list">
+                <li class="group-item" data-platform="android" data-gid="1074855131" data-label="安卓版MAA 交流1群 (1074855131)" data-href="https://qm.qq.com/q/L8Tyfs268E"><a class="group-link" href="https://qm.qq.com/q/L8Tyfs268E" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">安卓版MAA 交流1群 (1074855131)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="android" data-gid="1092878305" data-label="安卓版MAA 交流2群 (1092878305)" data-href="https://qm.qq.com/q/hWvDx6cNag"><a class="group-link" href="https://qm.qq.com/q/hWvDx6cNag" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">安卓版MAA 交流2群 (1092878305)</span><span class="group-meta" hidden></span></div></div></a></li>
+<li class="group-item" data-platform="android" data-gid="764534097" data-label="安卓版MAA 交流3群 (764534097)" data-href="https://qm.qq.com/q/ptPGw0wcEw" data-recommend="1"><a class="group-link" href="https://qm.qq.com/q/ptPGw0wcEw" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">安卓版MAA 交流3群 (764534097)</span><span class="group-meta" hidden></span></div></div></a></li>
+            </ul>
+        </section>
+
+        <section class="group-section" id="section-mac" data-platform="mac">
+            <h3 class="group-section-title">Mac 群组
+                <span class="group-count">共 1 个</span>
+            </h3>
+            <ul class="group-list">
+                <li class="group-item" data-platform="mac" data-gid="1091086083" data-label="Mac版MAA 交流群 (1091086083)" data-href="https://qm.qq.com/q/2uhPXiNOR0" data-recommend="1"><a class="group-link" href="https://qm.qq.com/q/2uhPXiNOR0" onclick="handleLinkClick(event)"><div class="group-row"><img class="group-avatar" alt="" width="40" height="40" hidden><div class="group-body"><span class="group-title">Mac版MAA 交流群 (1091086083)</span><span class="group-meta" hidden></span></div></div></a></li>
+            </ul>
+        </section>
+
+        <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
     </div>
 </body>
 </html>
