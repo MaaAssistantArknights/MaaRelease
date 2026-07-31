@@ -769,6 +769,7 @@ def main() -> None:
         .primary-link .btn-text {{
             position: relative;
             z-index: 2;
+            border-radius: 8px;
         }}
         .primary-link.is-disabled {{
             pointer-events: none;
@@ -784,9 +785,26 @@ def main() -> None:
         .primary-link.is-disabled.chroma::after {{
             display: none;
         }}
-        /* 无缝炫彩：色带重复两份，translateX 平移 50% 避免顿挫 */
+        /* 满幅流动炫彩（中等明度）；文字胶囊偏实，保证可读 */
         .primary-link.chroma:not(.is-disabled) {{
-            background: transparent;
+            background: #2a2048;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(114, 46, 209, 0.3);
+        }}
+        .primary-link.chroma:not(.is-disabled) .btn-text {{
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 8px;
+            background: rgba(16, 12, 32, 0.8);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+                0 2px 8px rgba(0, 0, 0, 0.22);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.02em;
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
         }}
         .primary-link.chroma:not(.is-disabled)::before {{
             content: "";
@@ -796,6 +814,7 @@ def main() -> None:
             height: 100%;
             width: 200%;
             z-index: 0;
+            opacity: 0.88;
             background: linear-gradient(
                 90deg,
                 #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
@@ -809,39 +828,47 @@ def main() -> None:
         .primary-link.chroma:not(.is-disabled)::after {{
             content: "";
             position: absolute;
-            top: 0;
-            left: -40%;
-            width: 40%;
-            height: 100%;
+            inset: 0;
             z-index: 1;
-            background: linear-gradient(
-                100deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.15) 40%,
-                rgba(255, 255, 255, 0.45) 50%,
-                rgba(255, 255, 255, 0.15) 60%,
-                transparent 100%
-            );
-            animation: chroma-shine 2.5s linear infinite;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%),
+                linear-gradient(
+                    100deg,
+                    transparent 0%,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    transparent 60%,
+                    transparent 100%
+                );
+            background-size: 100% 100%, 42% 100%;
+            background-repeat: no-repeat, no-repeat;
+            background-position: 0 0, -42% 0;
+            animation: chroma-shine 2.8s linear infinite;
             pointer-events: none;
-            will-change: transform;
+            will-change: background-position;
         }}
         .primary-link.chroma:not(.is-disabled):hover {{
-            filter: brightness(1.05);
-            box-shadow: 0 6px 16px rgba(114, 46, 209, 0.35);
+            filter: brightness(1.05) saturate(1.04);
+            box-shadow: 0 6px 20px rgba(114, 46, 209, 0.38);
             text-decoration: none;
             color: #fff;
         }}
+        .primary-link.chroma:not(.is-disabled):hover .btn-text {{
+            background: rgba(16, 12, 32, 0.86);
+        }}
         .primary-link.chroma:not(.is-disabled):active {{
-            filter: brightness(0.98);
+            filter: brightness(0.97);
+        }}
+        .primary-link.chroma:not(.is-disabled):active .btn-text {{
+            background: rgba(16, 12, 32, 0.9);
         }}
         @keyframes chroma-slide {{
             from {{ transform: translateX(0); }}
             to {{ transform: translateX(-50%); }}
         }}
         @keyframes chroma-shine {{
-            from {{ transform: translateX(0); }}
-            to {{ transform: translateX(350%); }}
+            from {{ background-position: 0 0, -42% 0; }}
+            to {{ background-position: 0 0, 142% 0; }}
         }}
         @media (prefers-reduced-motion: reduce) {{
             .primary-link.chroma:not(.is-disabled)::before,
@@ -850,17 +877,25 @@ def main() -> None:
             }}
             .primary-link.chroma:not(.is-disabled)::before {{
                 width: 100%;
-                background: #0066cc;
+                opacity: 0.92;
+                background: linear-gradient(135deg, #1677ff 0%, #722ed1 55%, #eb2f96 100%);
                 transform: none;
             }}
             .primary-link.chroma:not(.is-disabled)::after {{
-                display: none;
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%);
+                animation: none;
             }}
             .primary-link.chroma:not(.is-disabled) {{
-                box-shadow: none;
+                box-shadow: 0 4px 12px rgba(114, 46, 209, 0.3);
             }}
-            .channel-header .primary-link.chroma:not(.is-disabled)::before {{
-                background: #7c4dff;
+            .primary-link.chroma:not(.is-disabled) .btn-text {{
+                background: rgba(16, 12, 32, 0.8);
+                text-shadow: none;
+                -webkit-backdrop-filter: none;
+                backdrop-filter: none;
+            }}
+            .header.channel-header .primary-link.chroma:not(.is-disabled)::before {{
+                background: linear-gradient(135deg, #722ed1 0%, #b37feb 100%);
             }}
         }}
         .cancel-btn {{
@@ -886,7 +921,6 @@ def main() -> None:
             border-left: 4px solid #7c4dff;
         }}
         .tip {{ color: #666; font-size: 0.95em; }}
-        .hint {{ color: #555; margin: 8px 0 0; }}
         /* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
         .group-section {{
             display: none;
@@ -1488,7 +1522,6 @@ def main() -> None:
                         onclick="selectPlatform('mac')">Mac</button>
                 </div>
             </div>
-            <p class="hint">选择平台后才会开始自动跳转，并显示该平台群列表。也可通过链接指定，例如 <code>?platform=windows</code>。</p>
 
             <p>
                 <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
