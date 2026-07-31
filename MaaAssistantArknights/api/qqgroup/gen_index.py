@@ -1015,7 +1015,7 @@ def main() -> None:
             userCancelled = true;
             stopCountdown();
             const text = document.getElementById("redirectText");
-            if (text) text.innerHTML = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+            if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
         }}
 
         function handleLinkClick(event) {{
@@ -1037,7 +1037,7 @@ def main() -> None:
                 // 用户已取消过：只更新链接，不再自动跳
                 currentJoinUrl = url;
                 const text = document.getElementById("redirectText");
-                if (text) text.innerHTML = "自动跳转已取消，可点击上方按钮或下方群链接加入";
+                if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
                 return;
             }}
             currentJoinUrl = url;
@@ -1045,9 +1045,23 @@ def main() -> None:
             countdown = 8;
             if (countdownTimer) clearTimeout(countdownTimer);
 
-            document.getElementById("redirectText").innerHTML =
-                '已选择平台，页面将在 <span id="countdown">' + countdown + '</span> 秒后自动跳转……' +
-                '<button type="button" id="cancelBtn" class="cancel-btn" onclick="cancelRedirect()">取消自动跳转</button>';
+            const text = document.getElementById("redirectText");
+            if (text) {{
+                text.replaceChildren();
+                text.appendChild(document.createTextNode("已选择平台，页面将在 "));
+                const cd = document.createElement("span");
+                cd.id = "countdown";
+                cd.textContent = String(countdown);
+                text.appendChild(cd);
+                text.appendChild(document.createTextNode(" 秒后自动跳转……"));
+                const cancelBtn = document.createElement("button");
+                cancelBtn.type = "button";
+                cancelBtn.id = "cancelBtn";
+                cancelBtn.className = "cancel-btn";
+                cancelBtn.textContent = "取消自动跳转";
+                cancelBtn.addEventListener("click", cancelRedirect);
+                text.appendChild(cancelBtn);
+            }}
             countdownTimer = setTimeout(updateCountdown, 1000);
         }}
 
@@ -1062,15 +1076,30 @@ def main() -> None:
             }}
         }}
 
-        function formatMembers(info) {{
-            if (!info || !info.known) return "";
+        function renderMembersInto(el, info) {{
+            // 用 DOM API 写人数，避免 innerHTML + 外部字段触发 XSS 告警
+            if (!el) return false;
+            el.replaceChildren();
+            if (!info || !info.known) {{
+                el.hidden = true;
+                return false;
+            }}
             const cur = info.member_count;
             const max = info.max_member_count;
-            if (!max || max <= 0) return "";
-            const free = typeof info.free_slots === "number" ? info.free_slots : Math.max(0, max - cur);
-            const cls = free <= 0 ? "full" : "ok";
+            if (!max || max <= 0) {{
+                el.hidden = true;
+                return false;
+            }}
+            const free = typeof info.free_slots === "number"
+                ? info.free_slots
+                : Math.max(0, max - cur);
+            const span = document.createElement("span");
+            span.className = free <= 0 ? "full" : "ok";
             const freeText = free <= 0 ? "已满" : ("余 " + free);
-            return '<span class="' + cls + '">' + cur + " / " + max + " · " + freeText + "</span>";
+            span.textContent = cur + " / " + max + " · " + freeText;
+            el.appendChild(span);
+            el.hidden = false;
+            return true;
         }}
 
         function applyInfoToItem(li, info) {{
@@ -1083,7 +1112,7 @@ def main() -> None:
                 }}
                 if (meta) {{
                     meta.hidden = true;
-                    meta.innerHTML = "";
+                    meta.replaceChildren();
                 }}
                 return;
             }}
@@ -1094,16 +1123,7 @@ def main() -> None:
             }} else if (avatar) {{
                 avatar.hidden = true;
             }}
-            const html = formatMembers(info);
-            if (meta) {{
-                if (html) {{
-                    meta.innerHTML = html;
-                    meta.hidden = false;
-                }} else {{
-                    meta.hidden = true;
-                    meta.innerHTML = "";
-                }}
-            }}
+            renderMembersInto(meta, info);
         }}
 
         function clearHeaderRecExtra() {{
@@ -1117,7 +1137,7 @@ def main() -> None:
             }}
             if (members) {{
                 members.hidden = true;
-                members.innerHTML = "";
+                members.replaceChildren();
             }}
         }}
 
@@ -1138,14 +1158,8 @@ def main() -> None:
             }} else if (img) {{
                 img.hidden = true;
             }}
-            const html = formatMembers(info);
-            if (members && html) {{
-                members.innerHTML = html;
-                members.hidden = false;
+            if (renderMembersInto(members, info)) {{
                 show = true;
-            }} else if (members) {{
-                members.hidden = true;
-                members.innerHTML = "";
             }}
             row.classList.toggle("is-visible", show);
         }}
@@ -1278,8 +1292,13 @@ def main() -> None:
                 const href = li.getAttribute("data-href");
                 const label = li.getAttribute("data-label") || "";
                 if (!href) return;
-                li.innerHTML = '<a href="' + href + '" onclick="handleLinkClick(event)">' +
-                    label + "</a>";
+                // 用 createElement，避免 DOM 属性拼进 innerHTML（CodeQL: DOM text reinterpreted as HTML）
+                li.replaceChildren();
+                const a = document.createElement("a");
+                a.setAttribute("href", href);
+                a.textContent = label;
+                a.addEventListener("click", handleLinkClick);
+                li.appendChild(a);
             }});
         }}
 
@@ -1296,8 +1315,13 @@ def main() -> None:
         function applyChannelRecommendMark(li) {{
             li.classList.add("is-recommend");
             const label = li.getAttribute("data-label") || "";
-            li.innerHTML = '<strong><span class="current">' + label +
-                " - 当前推荐</span></strong>";
+            li.replaceChildren();
+            const strong = document.createElement("strong");
+            const span = document.createElement("span");
+            span.className = "current";
+            span.textContent = label + " - 当前推荐";
+            strong.appendChild(span);
+            li.appendChild(strong);
         }}
 
         function markPlatformRecommend(platform) {{
@@ -1415,7 +1439,11 @@ def main() -> None:
                 title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
                 if (rec.gid) {{
                     gidEl.style.display = "";
-                    gidEl.innerHTML = '群号: <strong>' + rec.gid + "</strong>";
+                    gidEl.replaceChildren();
+                    gidEl.appendChild(document.createTextNode("群号: "));
+                    const strong = document.createElement("strong");
+                    strong.textContent = String(rec.gid);
+                    gidEl.appendChild(strong);
                 }} else {{
                     gidEl.style.display = "none";
                 }}
