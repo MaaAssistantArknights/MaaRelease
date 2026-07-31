@@ -78,6 +78,8 @@ def load_groups(path: Path) -> list[dict]:
                     "active": url.startswith("http"),
                 }
             )
+    if not groups:
+        raise ValueError(f"群配置文件没有任何有效群行: {path.name}")
     return groups
 
 
@@ -686,6 +688,8 @@ def main() -> None:
         for p in PLATFORMS
     }
     channels_json = json.dumps(channels_meta, ensure_ascii=False)
+    # 与生成期 Python 侧同一 GROUPINFO_API（含环境变量覆盖）
+    groupinfo_api_json = json.dumps(GROUPINFO_API)
     has_any_channel = bool(channels)
     channel_block_display = "" if has_any_channel else " style=\"display:none\""
 
@@ -1025,11 +1029,11 @@ def main() -> None:
         const RECOMMENDS = {recommend_json};
         const CHANNELS = {channels_json};
         const PLATFORM_LABELS = {{ windows: "Windows", android: "Android", mac: "Mac" }};
-        // 对外 groupinfo API（头像 + 人数）；失败则不展示
-        const GROUPINFO_API = "https://join.maameow.com/api/groupinfo";
+        // 与 gen_index.py 同一 GROUPINFO_API（可由环境变量覆盖后注入）
+        const GROUPINFO_API = {groupinfo_api_json};
         const groupInfoCache = Object.create(null); // gid -> info | null(failed)
 
-        // 必须用户主动选择平台后，才启动自动跳转
+        // 未选平台不自动跳转；URL/?platform= 指定时等同已选并启动跳转
         let redirectEnabled = false;
         let countdown = 8;
         let countdownTimer = null;
@@ -1513,7 +1517,7 @@ def main() -> None:
 
             <div class="platform-row">
                 <span class="platform-label">请先选择平台：</span>
-                <div class="platform-tabs" role="tablist" aria-label="客户端平台">
+                <div class="platform-tabs" role="group" aria-label="客户端平台">
                     <button type="button" class="platform-tab" data-platform="windows"
                         onclick="selectPlatform('windows')">Windows</button>
                     <button type="button" class="platform-tab" data-platform="android"

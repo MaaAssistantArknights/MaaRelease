@@ -334,11 +334,11 @@
         const RECOMMENDS = {"windows": {"url": "https://qm.qq.com/q/SZilizX7SW", "name": "MAA 二十八裙", "gid": "739772723", "kind": "group"}, "android": {"url": "https://qm.qq.com/q/ptPGw0wcEw", "name": "安卓版MAA 交流3群", "gid": "764534097", "kind": "group"}, "mac": {"url": "https://qm.qq.com/q/2uhPXiNOR0", "name": "Mac版MAA 交流群", "gid": "1091086083", "kind": "group"}};
         const CHANNELS = {"windows": {"url": "https://pd.qq.com/s/8d3h265zd?b=9", "name": "MAA QQ 频道"}, "android": {"url": "https://pd.qq.com/s/4w4kgi4s4", "name": "安卓版 MAA QQ 频道"}, "mac": null};
         const PLATFORM_LABELS = { windows: "Windows", android: "Android", mac: "Mac" };
-        // 对外 groupinfo API（头像 + 人数）；失败则不展示
+        // 与 gen_index.py 同一 GROUPINFO_API（可由环境变量覆盖后注入）
         const GROUPINFO_API = "https://join.maameow.com/api/groupinfo";
         const groupInfoCache = Object.create(null); // gid -> info | null(failed)
 
-        // 必须用户主动选择平台后，才启动自动跳转
+        // 未选平台不自动跳转；URL/?platform= 指定时等同已选并启动跳转
         let redirectEnabled = false;
         let countdown = 8;
         let countdownTimer = null;
@@ -822,7 +822,7 @@
 
             <div class="platform-row">
                 <span class="platform-label">请先选择平台：</span>
-                <div class="platform-tabs" role="tablist" aria-label="客户端平台">
+                <div class="platform-tabs" role="group" aria-label="客户端平台">
                     <button type="button" class="platform-tab" data-platform="windows"
                         onclick="selectPlatform('windows')">Windows</button>
                     <button type="button" class="platform-tab" data-platform="android"
