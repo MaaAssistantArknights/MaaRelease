@@ -16,7 +16,7 @@
     },
     "TO-5": {
         "algorithm": "JustReturn",
-        "sub": ["TO-OpenOpt"],
+        "sub": ["TO-5@TO-OpenOpt"],
         "next": ["TO-5@SideStoryStage", "TO-5@SwipeToStage"]
     },
     "TO-7@SideStoryStage": {
