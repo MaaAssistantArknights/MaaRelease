@@ -1,17 +1,17 @@
 {
     "TO-7": {
         "algorithm": "JustReturn",
-        "sub": ["TO-OpenOpt"],
+        "sub": ["TO-7@TO-OpenOpt"],
         "next": ["TO-7@SideStoryStage", "TO-7@SwipeToStage"]
     },
     "TO-8": {
         "algorithm": "JustReturn",
-        "sub": ["TO-OpenOpt"],
+        "sub": ["TO-8@TO-OpenOpt"],
         "next": ["TO-8@SideStoryStage", "TO-8@SwipeToStage"]
     },
     "TO-9": {
         "algorithm": "JustReturn",
-        "sub": ["TO-OpenOpt"],
+        "sub": ["TO-9@TO-OpenOpt"],
         "next": ["TO-9@SideStoryStage", "TO-9@SwipeToStage"]
     },
     "TO-5": {
