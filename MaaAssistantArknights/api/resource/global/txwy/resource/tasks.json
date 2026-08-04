@@ -1,4 +1,10 @@
 {
+    "FightSeries-Close": {
+        "baseTask": "FightSeries-Icon",
+        "template": "FightSeries-Icon.png",
+        "action": "ClickSelf",
+        "next": ["FightSeries-CloseList"]
+    },
     "ME-OpenOcr": {
         "text": ["雅賽", "努斯", "復仇記", "街頭", "戲劇"]
     },

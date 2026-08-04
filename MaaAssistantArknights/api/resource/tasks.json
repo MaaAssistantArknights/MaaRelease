@@ -1,4 +1,10 @@
 {
+    "FightSeries-Close": {
+        "baseTask": "FightSeries-Opened",
+        "template": "FightSeries-Indicator.png",
+        "action": "ClickSelf",
+        "next": ["FightSeries-CloseList"]
+    },
     "TO-7": {
         "algorithm": "JustReturn",
         "sub": ["TO-7@TO-OpenOpt"],

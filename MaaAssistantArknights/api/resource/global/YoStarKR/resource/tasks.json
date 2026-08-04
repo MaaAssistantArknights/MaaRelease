@@ -1,4 +1,10 @@
 {
+    "FightSeries-Close": {
+        "baseTask": "FightSeries-Icon",
+        "template": "FightSeries-Icon.png",
+        "action": "ClickSelf",
+        "next": ["FightSeries-CloseList"]
+    },
     "OrundumActivities": {
         "text": ["용문", "복권방", "소원", "벽", "인연", "점괘"]
     },

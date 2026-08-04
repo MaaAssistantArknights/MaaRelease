@@ -1,4 +1,10 @@
 {
+    "FightSeries-Close": {
+        "baseTask": "FightSeries-Icon",
+        "template": "FightSeries-Icon.png",
+        "action": "ClickSelf",
+        "next": ["FightSeries-CloseList"]
+    },
     "CF-Open": {
     },
     "OrundumActivities": {
