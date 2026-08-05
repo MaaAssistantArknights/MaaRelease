@@ -96,9 +96,9 @@ Enter a CDK to enable automatic updates for both client and resources, with prio
 📦 [**Manual Update**](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)
 
 · **Client version**: Extract the full package into a **new** folder. Copy `config` and `data` from the old folder to preserve data (⚠️ Do not overwrite directly - incorrect operation may cause resource corruption)  
-  🆕 v6.8.0-beta.2 and later support dragging the full package or OTA zip into the window for automatic update  
+`🆕 v6.8.0-beta.2 and later support dragging the full package or OTA zip into the window for automatic update`  
 · **Resource version**: Download the [resource package](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip) and overwrite the existing `resource` folder (⚠️ Incremental content - do not delete the original folder)  
-  🆕 v6.16.5 and later support dragging the resource zip into the window for automatic update  
+`🆕 v6.16.5 and later support dragging the resource zip into the window for automatic update`  
 
 ----
 
