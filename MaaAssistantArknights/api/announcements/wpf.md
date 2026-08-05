@@ -88,7 +88,7 @@ MAA Team 仅受理通过 [GitHub](https://github.com/MaaAssistantArknights/MaaAs
 📦 [**手动更新**](https://github.com/MaaAssistantArknights/MaaAssistantArknights/issues/10033)  
 • **软件版本**：解压完整包至**新**文件夹，可复制旧目录的 `config` 和 `data` 保留数据（⚠️ 请勿直接覆盖，错误操作可能导致资源损坏）  
   🆕 v6.8.0-beta.2 起支持将完整包或 OTA zip 拖入窗口自动更新  
-• **资源版本**：下载 [资源包](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip) 后直接覆盖 `resource` 文件夹（⚠️ 增量内容，请勿删除原文件夹）
+• **资源版本**：下载 [资源包](https://github.com/MaaAssistantArknights/MaaResource/archive/refs/heads/main.zip) 后直接覆盖 `resource` 文件夹（⚠️ 增量内容，请勿删除原文件夹）  
   🆕 v6.16.5 起支持将资源包拖入窗口自动更新  
 
 ----
