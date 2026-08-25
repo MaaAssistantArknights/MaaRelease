@@ -87,37 +87,21 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "OR": {
+      "EA": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "サイドストーリー「相見歓」復刻",
-          "StageName": "OR",
-          "UtcStartTime": "2026/07/06 16:00:00",
-          "UtcExpireTime": "2026/07/16 03:59:59",
+          "Tip": "サイドストーリー「挽歌が灰に還る時」復刻",
+          "StageName": "EA",
+          "UtcStartTime": "2026/08/27 04:00:00",
+          "UtcExpireTime": "2026/09/06 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "復刻代理1~9" },
-          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
-          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
-          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
-          { "Display": "OR-5", "Value": "OR-5", "Drop": "合成玉効率51%" }
-        ]
-      },
-      "TA": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "サイドストーリー「辞歳行」",
-          "StageName": "TA",
-          "UtcStartTime": "2026/07/16 16:00:00",
-          "UtcExpireTime": "2026/08/06 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "TA-9", "Value": "TA-9", "Drop": "31083" },
-          { "Display": "TA-8", "Value": "TA-8", "Drop": "31073" },
-          { "Display": "TA-7", "Value": "TA-7", "Drop": "31013" },
-          { "Display": "TA-5", "Value": "TA-5", "Drop": "理性1あたり0.35合成玉" }
+          { "Display": "SSReopen-EA", "Value": "SSReopen-EA", "Drop": "復刻代理1~8" },
+          { "Display": "EA-8", "Value": "EA-8", "Drop": "31073" },
+          { "Display": "EA-7", "Value": "EA-7", "Drop": "31043" },
+          { "Display": "EA-6", "Value": "EA-6", "Drop": "30093" },
+          { "Display": "EA-3", "Value": "EA-3", "Drop": "合成玉効率64%" }
         ]
       }
     },
@@ -163,37 +147,21 @@
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "OR": {
+      "EA": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "재개방 SideStory '상견환'",
-          "StageName": "OR",
-          "UtcStartTime": "2026/07/06 16:00:00",
-          "UtcExpireTime": "2026/07/16 03:59:59",
+          "Tip": "재개방 SideStory '불타버린 엘레지여'",
+          "StageName": "EA",
+          "UtcStartTime": "2026/08/27 04:00:00",
+          "UtcExpireTime": "2026/09/06 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "재개방 대리지휘 1~9" },
-          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
-          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
-          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
-          { "Display": "OR-5", "Value": "OR-5", "Drop": "합성옥 효율 51%" }
-        ]
-      },
-      "TA": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "SideStory '사세행'",
-          "StageName": "TA",
-          "UtcStartTime": "2026/07/16 16:00:00",
-          "UtcExpireTime": "2026/08/06 03:59:59",
-          "TimeZone": 9
-        },
-        "Stages": [
-          { "Display": "TA-9", "Value": "TA-9", "Drop": "31083" },
-          { "Display": "TA-8", "Value": "TA-8", "Drop": "31073" },
-          { "Display": "TA-7", "Value": "TA-7", "Drop": "31013" },
-          { "Display": "TA-5", "Value": "TA-5", "Drop": "이성당 0.35 합성옥" }
+          { "Display": "SSReopen-EA", "Value": "SSReopen-EA", "Drop": "재개방 대리지휘 1~8" },
+          { "Display": "EA-8", "Value": "EA-8", "Drop": "31073" },
+          { "Display": "EA-7", "Value": "EA-7", "Drop": "31043" },
+          { "Display": "EA-6", "Value": "EA-6", "Drop": "30093" },
+          { "Display": "EA-3", "Value": "EA-3", "Drop": "합성옥 효율 64%" }
         ]
       }
     },
@@ -239,37 +207,21 @@
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "OR": {
+      "EA": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "Such is the Joy of Our Reunion - Rerun",
-          "StageName": "OR",
-          "UtcStartTime": "2026/07/06 08:00:00",
-          "UtcExpireTime": "2026/07/16 03:59:59",
+          "Tip": "When Elegies Are Ashes - Rerun",
+          "StageName": "EA",
+          "UtcStartTime": "2026/08/27 04:00:00",
+          "UtcExpireTime": "2026/09/06 03:59:59",
           "TimeZone": -7
         },
         "Stages": [
-          { "Display": "SSReopen-OR", "Value": "SSReopen-OR", "Drop": "Auto-Deploy 1~9" },
-          { "Display": "OR-9", "Value": "OR-9", "Drop": "31063" },
-          { "Display": "OR-8", "Value": "OR-8", "Drop": "31023" },
-          { "Display": "OR-7", "Value": "OR-7", "Drop": "30063" },
-          { "Display": "OR-5", "Value": "OR-5", "Drop": "Orundum efficiency 51%" }
-        ]
-      },
-      "TA": {
-        "MinimumRequired": "v6.0.1",
-        "Activity": {
-          "Tip": "First of A Thousand Autumns",
-          "StageName": "TA",
-          "UtcStartTime": "2026/07/16 08:00:00",
-          "UtcExpireTime": "2026/08/06 03:59:59",
-          "TimeZone": -7
-        },
-        "Stages": [
-          { "Display": "TA-9", "Value": "TA-9", "Drop": "31083" },
-          { "Display": "TA-8", "Value": "TA-8", "Drop": "31073" },
-          { "Display": "TA-7", "Value": "TA-7", "Drop": "31013" },
-          { "Display": "TA-5", "Value": "TA-5", "Drop": "0.35 Orundum per Sanity" }
+          { "Display": "SSReopen-EA", "Value": "SSReopen-EA", "Drop": "Auto-Deploy 1~8" },
+          { "Display": "EA-8", "Value": "EA-8", "Drop": "31073" },
+          { "Display": "EA-7", "Value": "EA-7", "Drop": "31043" },
+          { "Display": "EA-6", "Value": "EA-6", "Drop": "30093" },
+          { "Display": "EA-3", "Value": "EA-3", "Drop": "Orundum efficiency 64%" }
         ]
       }
     },
