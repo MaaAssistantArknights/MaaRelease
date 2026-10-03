@@ -1,11 +1,16 @@
 name: update_qq_group_index
 
-# 按平台更新加群页推荐：
-#   - platform 默认 windows（最常见）
+# 按平台更新加群页推荐（推荐群在构建期决定，所有访客看到同一个）：
+#   - platform 默认 windows（最常见），all = 三个平台
 #   - mode=auto：粘性自动（未满保持，满了选第一个有空位）
 #   - mode=manual：用 group_number 钉死该平台推荐群
 #   - mode=channel：该平台推 QQ 频道（无配置则回退 auto）
-#   - 未选中的平台：保持 index.html 里上次推荐，不查人数
+#   - 未选中的平台：保持 recommend.json 里上次推荐，不查人数
+#
+# 流程：pnpm run gen（选群，写 src/data/recommend.json）→ pnpm run build
+#      → 提交 recommend.json 与 index.html（产物是单文件，JS/CSS/数据全内联）
+# 也可以不经本 workflow：改 src/data/content_*.txt 或 recommend.json 后本地
+# pnpm run gen / pnpm run build 再提交。
 
 on:
   workflow_dispatch:
@@ -37,19 +42,36 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: MaaAssistantArknights/api/qqgroup
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
         with:
-          python-version: "3.x"
+          # uses: 步骤的路径相对仓库根解析（defaults.run.working-directory 只影响 run: 步骤），
+          # 所以必须显式指向 qqgroup 目录，版本从该 package.json 的 packageManager 字段读取
+          package_json_file: MaaAssistantArknights/api/qqgroup/package.json
 
-      - name: Generate index.html
-        working-directory: MaaAssistantArknights/api/qqgroup
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          # Node 24 = 当前 LTS；setup-node 从 v7 起内部也用现代 Node 运行时，
+          # 顺带消除 v4 的 "Node.js 20 is deprecated" 警告
+          node-version: "24"
+          cache: pnpm
+          cache-dependency-path: MaaAssistantArknights/api/qqgroup/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Select recommend group
         env:
+          # 可覆盖查人数用的接口
           GROUPINFO_API: https://join.maameow.com/api/groupinfo
           PLATFORM: ${{ github.event.inputs.platform }}
           MODE: ${{ github.event.inputs.mode }}
@@ -70,10 +92,10 @@ jobs:
 
           case "$MODE" in
             auto)
-              python gen_index.py "$PLATFORM" auto
+              pnpm run gen -- "$PLATFORM" auto
               ;;
             channel)
-              python gen_index.py "$PLATFORM" channel
+              pnpm run gen -- "$PLATFORM" channel
               ;;
             manual)
               if [ -z "$GROUP_NUMBER" ]; then
@@ -88,7 +110,7 @@ jobs:
                 echo "mode=manual 不能选 platform=all，请指定 windows/android/mac"
                 exit 1
               fi
-              python gen_index.py "$PLATFORM" "$GROUP_NUMBER"
+              pnpm run gen -- "$PLATFORM" "$GROUP_NUMBER"
               ;;
             *)
               echo "invalid mode: $MODE"
@@ -96,8 +118,10 @@ jobs:
               ;;
           esac
 
+      - name: Build index.html
+        run: pnpm run build
+
       - name: Commit and push
-        working-directory: MaaAssistantArknights/api/qqgroup
         env:
           PLATFORM: ${{ github.event.inputs.platform }}
           MODE: ${{ github.event.inputs.mode }}
@@ -105,7 +129,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add src/data/recommend.json index.html
 
           PLATFORM="$(echo -n "$PLATFORM" | tr -d '[:space:]')"
           MODE="$(echo -n "$MODE" | tr -d '[:space:]')"
@@ -113,18 +137,22 @@ jobs:
 
           case "$MODE" in
             auto)
-              MSG="Update index.html: sticky auto (${PLATFORM})"
+              MSG="Update qqgroup recommend: sticky auto (${PLATFORM})"
               ;;
             channel)
-              MSG="Update index.html: QQ channel (${PLATFORM})"
+              MSG="Update qqgroup recommend: QQ channel (${PLATFORM})"
               ;;
             manual)
-              MSG="Update index.html: ${PLATFORM} group ${GROUP_NUMBER} (manual)"
+              MSG="Update qqgroup recommend: ${PLATFORM} group ${GROUP_NUMBER} (manual)"
               ;;
             *)
-              MSG="Update index.html (${PLATFORM}/${MODE})"
+              MSG="Update qqgroup recommend (${PLATFORM}/${MODE})"
               ;;
           esac
 
-          git commit -m "$MSG" || echo "No changes to commit"
+          if git diff --cached --quiet; then
+            echo "recommend.json / index.html 无变化，无需提交"
+            exit 0
+          fi
+          git commit -m "$MSG"
           git push

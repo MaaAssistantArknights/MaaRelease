@@ -1,0 +1,16 @@
+{
+  "name": "qqgroup-page",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "gen": "node scripts/gen-recommend.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  },
+  "packageManager": "pnpm@12.8.1"
+}

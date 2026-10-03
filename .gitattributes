@@ -1,0 +1,10 @@
+# 统一文本换行符
+#
+# qqgroup 的 content_*.txt 会被 Vite 用 ?raw 原样内联进 index.html。
+# 没有这条规则时，Windows 工作区（core.autocrlf=true）检出的是 CRLF，
+# 而 Linux CI 检出的是 LF，两边构建出的 index.html 就不一致（每次提交都有几行 diff 噪音）。
+# 显式声明 eol=lf，让工作区与 CI 保持同一套换行符。
+*.txt text eol=lf
+
+# 规则文件自身同样固定为 LF，避免被 core.autocrlf 改成 CRLF
+.gitattributes text eol=lf
