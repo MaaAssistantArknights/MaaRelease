@@ -311,7 +311,6 @@ li > a:hover {
     color: #666;
     font-size: 0.95em;
 }
-/* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
 .group-section {
     display: none;
     margin: 18px 0 24px;
@@ -386,7 +385,6 @@ li > a:hover {
 .group-item.is-recommend .group-title {
     color: #ff6600;
 }
-/* 「 - 当前推荐」后缀由 CSS 生成，JS 只负责切 is-recommend 类 */
 .group-item.is-recommend .group-title::after {
     content: " - 当前推荐";
 }

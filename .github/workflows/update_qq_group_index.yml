@@ -1,17 +1,5 @@
 name: update_qq_group_index
 
-# 按平台更新加群页推荐（推荐群在构建期决定，所有访客看到同一个）：
-#   - platform 默认 windows（最常见），all = 三个平台
-#   - mode=auto：粘性自动（未满保持，满了选第一个有空位）
-#   - mode=manual：用 group_number 钉死该平台推荐群
-#   - mode=channel：该平台推 QQ 频道（无配置则回退 auto）
-#   - 未选中的平台：保持 recommend.json 里上次推荐，不查人数
-#
-# 流程：pnpm run gen（选群，写 src/data/recommend.json）→ pnpm run build
-#      → 提交 recommend.json 与 index.html（产物是单文件，JS/CSS/数据全内联）
-# 也可以不经本 workflow：改 src/data/content_*.txt 或 recommend.json 后本地
-# pnpm run gen / pnpm run build 再提交。
-
 on:
   workflow_dispatch:
     inputs:
@@ -53,15 +41,13 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
         with:
-          # uses: 步骤的路径相对仓库根解析（defaults.run.working-directory 只影响 run: 步骤），
-          # 所以必须显式指向 qqgroup 目录，版本从该 package.json 的 packageManager 字段读取
+          # uses: 的路径相对仓库根，不受上面的 working-directory 影响
           package_json_file: MaaAssistantArknights/api/qqgroup/package.json
 
       - name: Set up Node
         uses: actions/setup-node@v7
         with:
-          # Node 24 = 当前 LTS；setup-node 从 v7 起内部也用现代 Node 运行时，
-          # 顺带消除 v4 的 "Node.js 20 is deprecated" 警告
+          # 24 = 当前 LTS；顺带消除 v4 的 "Node.js 20 is deprecated" 警告
           node-version: "24"
           cache: pnpm
           cache-dependency-path: MaaAssistantArknights/api/qqgroup/pnpm-lock.yaml
@@ -71,7 +57,6 @@ jobs:
 
       - name: Select recommend group
         env:
-          # 可覆盖查人数用的接口
           GROUPINFO_API: https://join.maameow.com/api/groupinfo
           PLATFORM: ${{ github.event.inputs.platform }}
           MODE: ${{ github.event.inputs.mode }}

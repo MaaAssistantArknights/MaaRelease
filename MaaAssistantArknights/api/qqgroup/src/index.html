@@ -5,9 +5,6 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="./styles.css" />
-        <!-- Vite 入口模板：pnpm run build 后产物（index.html/main.js/styles.css）
-         生成到上级目录并提交；群组/频道数据来自 src/data/content_*.txt，
-         构建期打进 bundle，推荐群由浏览器实时选择 -->
         <script type="module" src="./main.js"></script>
     </head>
 
@@ -19,7 +16,7 @@
                     <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden />
                     <p id="headerMembers" class="header-members" hidden></p>
                 </div>
-                <p id="join-gid" style="display: none"></p>
+                <p id="join-gid" style="display: none">群号: <strong id="join-gid-value"></strong></p>
 
                 <div class="platform-row">
                     <span class="platform-label">请先选择平台：</span>
@@ -49,5 +46,58 @@
             <div id="groupSections"></div>
             <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
         </div>
+
+        <template id="tplGroupItemActive">
+            <li class="group-item">
+                <a class="group-link">
+                    <div class="group-row">
+                        <img class="group-avatar" alt="" width="40" height="40" hidden />
+                        <div class="group-body">
+                            <span class="group-title"></span>
+                            <span class="group-meta" hidden></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </template>
+
+        <template id="tplGroupItemDisabled">
+            <li class="group-item">
+                <div class="group-row disabled-row">
+                    <img class="group-avatar" alt="" width="40" height="40" hidden />
+                    <div class="group-body">
+                        <span class="group-title"></span>
+                        <span class="group-meta" hidden></span>
+                    </div>
+                </div>
+            </li>
+        </template>
+
+        <template id="tplChannelItem">
+            <li class="channel channel-item"><a></a></li>
+        </template>
+
+        <template id="tplGroupSection">
+            <section class="group-section">
+                <!-- 换行缩进会渲染成空格，两个 span 必须紧挨着；.group-count 自带 margin-left -->
+                <h3 class="group-section-title"><span class="group-label"></span><span class="group-count"></span></h3>
+                <ul class="group-list"></ul>
+            </section>
+        </template>
+
+        <template id="tplMemberChip">
+            <span class="ok"></span>
+        </template>
+
+        <!-- 按钮内换行会产生多余空白，由 JS 克隆后 trim -->
+        <template id="tplRedirectText">
+            已选择平台，页面将在 <span id="countdown">8</span> 秒后自动跳转……<button
+                type="button"
+                class="cancel-btn"
+                id="cancelBtn"
+            >
+                取消自动跳转
+            </button>
+        </template>
     </body>
 </html>

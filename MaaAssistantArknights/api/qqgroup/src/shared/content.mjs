@@ -1,10 +1,6 @@
-// src/data/*.txt 的解析：浏览器（main.js）与 Node（scripts/gen-recommend.mjs）共用
-//
-// 通用行解析（parseRows）不涉及业务：去空行/# 注释、行首 * 记为 pin、其余按 | 切分。
-// 业务解释（parseGroups / parseChannels / buildPlatforms）定义各文件的含义：
-//   content_<platform>.txt : 加群链接|群名称|群号    行首 * = 钉死推荐该群
-//   content_channels.txt   : 平台|频道链接|频道名称   行首 * = 该平台推荐改为频道
-
+// src/data/*.txt 的解析。行首 * 记为 pin，其余按 | 切分：
+//   content_<platform>.txt : 加群链接|群名称|群号
+//   content_channels.txt   : 平台|频道链接|频道名称
 export const PLATFORMS = ["windows", "android", "mac"];
 
 export const PLATFORM_LABELS = {
@@ -13,7 +9,6 @@ export const PLATFORM_LABELS = {
     mac: "Mac",
 };
 
-// 平台 → 群列表数据文件名（去扩展名）
 export const PLATFORM_FILES = {
     windows: "content_windows",
     android: "content_android",
@@ -75,7 +70,6 @@ export function parseChannels(rows) {
     return channels;
 }
 
-// rawRows: { "<文件名去扩展名>": parseRows 的结果 } → { platforms: {...} }
 export function buildPlatforms(rawRows) {
     const platforms = {};
     for (const platform of PLATFORMS) {
@@ -92,7 +86,6 @@ export function buildPlatforms(rawRows) {
     return platforms;
 }
 
-// texts: { "<文件名去扩展名>": 文本内容 }（浏览器侧用 ?raw 导入 txt 后传入）
 export function buildPlatformsFromTexts(texts) {
     const rawRows = {};
     for (const [key, text] of Object.entries(texts)) {

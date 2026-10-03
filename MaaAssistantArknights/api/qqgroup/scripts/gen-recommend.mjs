@@ -1,25 +1,8 @@
-// 构建期选群：更新 src/data/recommend.json（= 原来的 gen_index.py，逻辑移植到 Node）
-//
-// 用法：
-//   pnpm run gen                          - 三平台粘性自动
-//   pnpm run gen auto                     - 同上
-//   pnpm run gen all auto                 - 三个平台都刷（all / every 等价）
-//   pnpm run gen windows auto             - 只刷新 Windows（其它平台保持状态，不查人数）
-//   pnpm run gen android 2                - 手动钉 Android 第 2 群
-//   pnpm run gen windows channel          - Windows 推 QQ 频道
-//   pnpm run gen 28                       - 兼容：等同 windows 28
-//   pnpm run gen channel                  - 兼容：等同 windows channel
-//
-// 自动策略（粘性，仅对「本次操作的平台」生效）：
-//   1. 从 recommend.json 读取上次推荐
-//   2. 只查当前推荐是否满员；未满 / 查失败 → 保持
-//   3. 已满 / 已下架 → 按列表顺序选「第一个有空位」的群
-//   4. 写回 recommend.json（构建时由 main.js 打包进 index.html，所有访客一致）
-//
-// 钉死：群列表行首 * 表示该群固定推荐；频道行首 * 表示该平台固定推频道，
-//       优先级高于粘性（等价于旧 CI 的 manual / channel 模式）。
-//
-// 环境变量 GROUPINFO_API 可覆盖查人数用的接口（默认 join.maameow.com）
+// 构建期选群，结果写入 src/data/recommend.json
+//   pnpm run gen [平台] [auto|channel|群号]，平台省略即三平台齐刷
+// 粘性只作用于本轮操作的平台：上次推荐没满 / 查失败 → 保持，满了或已下架 → 取第一个有空位的。
+// 群列表行首 * = 钉死该群；频道行首 * = 该平台固定推频道，优先级高于粘性。
+// GROUPINFO_API 可覆盖查人数的接口，默认 join.maameow.com。
 
 import fs from "node:fs";
 import path from "node:path";
@@ -40,7 +23,6 @@ const STATE_FILE = path.join(dataDir, "recommend.json");
 const GROUPINFO_API = (
     process.env.GROUPINFO_API || "https://join.maameow.com/api/groupinfo"
 ).replace(/\/+$/, "");
-// 换群时分批查人数，每批找到有空位的就停
 const OCCUPANCY_BATCH = 5;
 
 function loadPlatforms() {
@@ -70,8 +52,6 @@ function indexOfGid(groups, gid) {
 function groupRec(g) {
     return { url: g.url, name: g.name, gid: String(g.gid), kind: "group" };
 }
-
-// ---- 查人数 ----
 
 async function fetchGroupOccupancy(gids) {
     const out = {};
@@ -110,7 +90,6 @@ function freeSlotsOf(info) {
     return Math.max(0, max - cur);
 }
 
-// 选「第一个有空位」的群：分批查，找到即停
 async function firstWithFreeSlots(groups, platform) {
     const active = groups.filter((g) => g.active);
     if (!active.length) {
@@ -141,8 +120,6 @@ async function firstWithFreeSlots(groups, platform) {
     console.error(`自动选群[${label}]: 未找到确认有空位的群，回退第一个可用`);
     return indexOfGid(groups, active[0].gid);
 }
-
-// ---- 选群 ----
 
 async function stickyAutoIndex(groups, platform, stickyGid) {
     const label = PLATFORM_LABELS[platform];
@@ -181,7 +158,6 @@ async function stickyAutoIndex(groups, platform, stickyGid) {
     return { index, source: `auto-first-free#${index + 1}` };
 }
 
-// 未选中的平台：沿用上次状态，不查人数
 function freezeRecommend(platform, groups, stickyGid) {
     const label = PLATFORM_LABELS[platform];
     if (stickyGid) {
@@ -205,14 +181,11 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
     const prev = state[platform];
     const stickyGid = prev && prev.kind === "group" ? prev.gid : null;
 
-    // 0. freeze：本轮未选中的平台 —— 沿用上次推荐，不查人数
-    //    （与旧 gen_index.py 的 freeze_recommend 一致；漏掉这一步会导致未选中平台
-    //     也去查人数、甚至在推荐群满员时被自动换掉）
+    // 漏掉 freeze 分支会导致未选中平台在推荐群满员时被自动换掉
     if (mode === "freeze") {
         return freezeRecommend(platform, groups, stickyGid);
     }
 
-    // 1. 频道钉死
     if (channel && channel.pinned) {
         return {
             rec: {
@@ -224,13 +197,12 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
             source: "channel",
         };
     }
-    // 2. 群钉死
+
     const pinned = groups.find((g) => g.pinned && g.active);
     if (pinned) {
         return { rec: groupRec(pinned), source: `pinned#${indexOfGid(groups, pinned.gid) + 1}` };
     }
 
-    // 3. channel 模式：该平台改推频道；无频道配置则回退粘性自动
     if (mode === "channel") {
         if (channel) {
             return {
@@ -241,7 +213,6 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
         console.error(`${PLATFORM_LABELS[platform]}: 无频道配置，回退粘性自动`);
     }
 
-    // 4. manual 模式：钉死 content 文件里的第 N 行
     if (mode === "manual") {
         const idx = manualNumber - 1;
         if (idx < 0 || idx >= groups.length) {
@@ -251,7 +222,7 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
         }
         const g = groups[idx];
         if (!g.active) {
-            // 与旧 pick_recommend 一致：manual 允许钉已下架的群，仅提示
+            // 允许钉已下架的群，仅提示
             console.error(
                 `警告[${PLATFORM_LABELS[platform]}]: manual#${manualNumber}「${g.name}」已下架（${g.url}），仍按旧行为钉住该行`
             );
@@ -259,14 +230,11 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
         return { rec: groupRec(g), source: `manual#${manualNumber}` };
     }
 
-    // 5. auto：粘性
     const { index, source } = await stickyAutoIndex(groups, platform, stickyGid);
     return { rec: groupRec(groups[index]), source };
 }
 
-// ---- 参数解析（用法见文件头；这里只列与直觉不同的两点）----
-//   - all / every 是平台别名，等于三个平台一起刷
-//   - 「平台 + 0」等价于 channel（沿用旧 gen_index.py 的隐式行为）
+// all / every 等价于三平台齐刷；「平台 + 0」等价于 channel
 const ALIASES = {
     win: "windows",
     windows: "windows",
@@ -278,7 +246,6 @@ const ALIASES = {
 };
 
 function parseArgs(argv) {
-    // 返回 { touch: Set<platform>, mode: platform->mode, manual: platform->number }
     const modes = {};
     for (const p of PLATFORMS) modes[p] = "auto";
     const manual = {};
@@ -297,7 +264,6 @@ function parseArgs(argv) {
                 modes[p] = "auto";
             }
         }
-        // 手动编号只对单个平台有意义（与旧脚本一致）
         if (targets.length > 1 && /^\d+$/.test(action) && Number(action) > 0) {
             throw new Error("手动编号只能针对单个平台，例如: windows 28");
         }
@@ -308,7 +274,7 @@ function parseArgs(argv) {
         return { touch, modes, manual };
     }
 
-    // 兼容旧习惯：单个 channel / 数字都作用于 Windows；0 按 channel 处理
+    // 兼容旧习惯：单个 channel / 数字作用于 Windows；0 按 channel 处理
     if (argv.length === 1) {
         const a = argv[0].toLowerCase();
         if (a === "channel" || /^\d+$/.test(a)) {
@@ -317,7 +283,7 @@ function parseArgs(argv) {
         }
     }
 
-    // 平台 + 动作（支持多组串联，如 windows auto mac channel）
+    // 支持多组串联，如 windows auto mac channel
     for (let i = 0; i < argv.length; i += 2) {
         const raw = String(argv[i]).toLowerCase();
         const platform = ALIASES[raw];
@@ -329,8 +295,6 @@ function parseArgs(argv) {
     }
     return { touch, modes, manual };
 }
-
-// ---- 主流程 ----
 
 async function main() {
     // pnpm 可能把分隔符 -- 也传进来

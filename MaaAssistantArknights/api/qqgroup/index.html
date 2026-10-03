@@ -4,9 +4,6 @@
         <title>欢迎加入 MAA 交流群</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Vite 入口模板：pnpm run build 后产物（index.html/main.js/styles.css）
-         生成到上级目录并提交；群组/频道数据来自 src/data/content_*.txt，
-         构建期打进 bundle，推荐群由浏览器实时选择 -->
       <script type="module" crossorigin>(function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) return;
@@ -135,6 +132,12 @@ const DATA = {
   })
 };
 const groupInfoCache = /* @__PURE__ */ Object.create(null);
+function tpl(id) {
+  return document.getElementById(id).content.firstElementChild.cloneNode(true);
+}
+function tplFrag(id) {
+  return document.getElementById(id).content.cloneNode(true);
+}
 let redirectEnabled = false;
 let countdown = 8;
 let countdownTimer = null;
@@ -178,44 +181,38 @@ function startRedirect(url) {
   if (countdownTimer) clearTimeout(countdownTimer);
   const text = document.getElementById("redirectText");
   if (text) {
-    text.replaceChildren();
-    text.appendChild(document.createTextNode("已选择平台，页面将在 "));
-    const cd = el("span", "", String(countdown));
-    cd.id = "countdown";
-    text.appendChild(cd);
-    text.appendChild(document.createTextNode(" 秒后自动跳转……"));
-    const cancelBtn = el("button", "cancel-btn", "取消自动跳转");
-    cancelBtn.type = "button";
-    cancelBtn.id = "cancelBtn";
+    text.replaceChildren(tplFrag("tplRedirectText"));
+    text.querySelector("#countdown").textContent = String(countdown);
+    const cancelBtn = text.querySelector("#cancelBtn");
+    cancelBtn.textContent = cancelBtn.textContent.trim();
     cancelBtn.addEventListener("click", cancelRedirect);
-    text.appendChild(cancelBtn);
   }
   countdownTimer = setTimeout(updateCountdown, 1e3);
 }
 function updateCountdown() {
   if (redirectEnabled && countdown > 0) {
     countdown--;
-    const el2 = document.getElementById("countdown");
-    if (el2) el2.textContent = countdown;
+    const el = document.getElementById("countdown");
+    if (el) el.textContent = countdown;
     countdownTimer = setTimeout(updateCountdown, 1e3);
   } else if (redirectEnabled && countdown === 0) {
     window.location.href = currentJoinUrl;
   }
 }
-function renderMembersInto(el2, info) {
-  if (!el2) return false;
-  el2.replaceChildren();
+function renderMembersInto(el, info) {
+  if (!el) return false;
   const max = info && info.known ? info.max_member_count : 0;
   if (!max || max <= 0) {
-    el2.hidden = true;
+    el.replaceChildren();
+    el.hidden = true;
     return false;
   }
   const free = typeof info.free_slots === "number" ? info.free_slots : Math.max(0, max - info.member_count);
-  const span = document.createElement("span");
+  const span = tpl("tplMemberChip");
   span.className = free <= 0 ? "full" : "ok";
   span.textContent = `${info.member_count} / ${max} · ${free <= 0 ? "已满" : "余 " + free}`;
-  el2.appendChild(span);
-  el2.hidden = false;
+  el.replaceChildren(span);
+  el.hidden = false;
   return true;
 }
 function applyInfoToItem(li, info) {
@@ -319,52 +316,39 @@ async function loadPlatformGroupInfo(platform) {
     if (currentPlatform === platform) applyPlatformInfoForIds(platform, partIds, recGid);
   });
 }
-function el(tag, className, text) {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (text != null) node.textContent = text;
-  return node;
-}
 function isGroupRecommend(rec, g) {
   return !!rec && rec.kind === "group" && String(rec.gid) === String(g.gid);
 }
 function buildGroupItem(platform, g, rec) {
   const gid = String(g.gid || "");
-  const li = el("li", "group-item");
+  const li = tpl(g.active ? "tplGroupItemActive" : "tplGroupItemDisabled");
   li.setAttribute("data-platform", platform);
   li.setAttribute("data-gid", gid);
   if (isGroupRecommend(rec, g)) li.setAttribute("data-recommend", "1");
-  const row = el("div", g.active ? "group-row" : "group-row disabled-row");
-  const avatar = el("img", "group-avatar");
-  avatar.alt = "";
-  avatar.width = 40;
-  avatar.height = 40;
-  avatar.hidden = true;
-  const body = el("div", "group-body");
-  body.appendChild(el("span", "group-title", `${g.name || ""} (${gid})`));
-  const meta = el("span", "group-meta");
-  meta.hidden = true;
-  body.appendChild(meta);
-  row.appendChild(avatar);
-  row.appendChild(body);
-  if (g.active) {
-    const a = el("a", "group-link");
-    a.href = g.url;
-    a.appendChild(row);
-    li.appendChild(a);
-  } else {
-    li.appendChild(row);
-  }
+  li.querySelector(".group-title").textContent = `${g.name || ""} (${gid})`;
+  const link = li.querySelector(".group-link");
+  if (link) link.href = g.url;
   return li;
 }
 function buildChannelItem(platform, ch, rec) {
-  const li = el("li", "channel channel-item");
+  const li = tpl("tplChannelItem");
   li.setAttribute("data-platform", platform);
   if (rec && rec.kind === "channel") li.setAttribute("data-recommend", "1");
-  const a = el("a", "", ch.name || "");
+  const a = li.querySelector("a");
+  a.textContent = ch.name || "";
   a.href = ch.url;
-  li.appendChild(a);
   return li;
+}
+function buildGroupSection(p, pd, groups, rec) {
+  const valid = groups.filter((g) => g.active).length;
+  const section = tpl("tplGroupSection");
+  section.id = "section-" + p;
+  section.setAttribute("data-platform", p);
+  section.querySelector(".group-label").textContent = `${pd.label || p} 群组`;
+  section.querySelector(".group-count").textContent = `共 ${valid} 个`;
+  const ul = section.querySelector(".group-list");
+  ul.replaceChildren(...groups.map((g) => buildGroupItem(p, g, rec)));
+  return section;
 }
 function renderLists() {
   const platforms = DATA.platforms || {};
@@ -374,37 +358,20 @@ function renderLists() {
   if (header) header.classList.toggle("channel-header", anyChannelRec);
   const channelBlock = document.getElementById("channelBlock");
   if (channelBlock) channelBlock.style.display = hasAnyChannel ? "" : "none";
+  const channelItems = [];
+  for (const p of PLATFORMS) {
+    const pd = platforms[p];
+    if (pd && pd.channel) channelItems.push(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
+  }
   const channelList = document.getElementById("channelList");
-  if (channelList) {
-    channelList.replaceChildren();
-    for (const p of PLATFORMS) {
-      const pd = platforms[p];
-      if (pd && pd.channel) {
-        channelList.appendChild(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
-      }
-    }
+  if (channelList) channelList.replaceChildren(...channelItems);
+  const sections = [];
+  for (const p of PLATFORMS) {
+    const pd = platforms[p];
+    if (pd) sections.push(buildGroupSection(p, pd, pd.groups || [], RECOMMENDS[p]));
   }
-  const sections = document.getElementById("groupSections");
-  if (sections) {
-    sections.replaceChildren();
-    for (const p of PLATFORMS) {
-      const pd = platforms[p];
-      if (!pd) continue;
-      const groups = pd.groups || [];
-      const valid = groups.filter((g) => g.active).length;
-      const section = el("section", "group-section");
-      section.id = "section-" + p;
-      section.setAttribute("data-platform", p);
-      const title = el("h3", "group-section-title");
-      title.appendChild(document.createTextNode(`${pd.label || p} 群组 `));
-      title.appendChild(el("span", "group-count", `共 ${valid} 个`));
-      const ul = el("ul", "group-list");
-      for (const g of groups) ul.appendChild(buildGroupItem(p, g, RECOMMENDS[p]));
-      section.appendChild(title);
-      section.appendChild(ul);
-      sections.appendChild(section);
-    }
-  }
+  const sectionsEl = document.getElementById("groupSections");
+  if (sectionsEl) sectionsEl.replaceChildren(...sections);
 }
 function normalizePlatform(raw) {
   const s = String(raw || "").trim().toLowerCase();
@@ -488,18 +455,12 @@ function selectPlatform(platform, options) {
   const label = PLATFORM_LABELS[platform] || platform;
   const isChannel = rec.kind === "channel";
   const title = document.getElementById("join-title");
-  if (title) {
-    title.replaceChildren();
-    title.appendChild(document.createTextNode("欢迎加入【"));
-    title.appendChild(document.createTextNode(rec.name));
-    title.appendChild(document.createTextNode(`】（${label}）`));
-  }
+  if (title) title.textContent = `欢迎加入【${rec.name}】（${label}）`;
   const gidEl = document.getElementById("join-gid");
+  const gidValueEl = document.getElementById("join-gid-value");
   if (gidEl) {
-    gidEl.replaceChildren();
     if (!isChannel && rec.gid) {
-      gidEl.appendChild(document.createTextNode("群号: "));
-      gidEl.appendChild(el("strong", "", String(rec.gid)));
+      if (gidValueEl) gidValueEl.textContent = String(rec.gid);
       gidEl.style.display = "";
     } else {
       gidEl.style.display = "none";
@@ -852,7 +813,6 @@ li > a:hover {
     color: #666;
     font-size: 0.95em;
 }
-/* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
 .group-section {
     display: none;
     margin: 18px 0 24px;
@@ -927,7 +887,6 @@ li > a:hover {
 .group-item.is-recommend .group-title {
     color: #ff6600;
 }
-/* 「 - 当前推荐」后缀由 CSS 生成，JS 只负责切 is-recommend 类 */
 .group-item.is-recommend .group-title::after {
     content: " - 当前推荐";
 }
@@ -1004,7 +963,7 @@ li > a:hover {
                     <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden />
                     <p id="headerMembers" class="header-members" hidden></p>
                 </div>
-                <p id="join-gid" style="display: none"></p>
+                <p id="join-gid" style="display: none">群号: <strong id="join-gid-value"></strong></p>
 
                 <div class="platform-row">
                     <span class="platform-label">请先选择平台：</span>
@@ -1034,5 +993,58 @@ li > a:hover {
             <div id="groupSections"></div>
             <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
         </div>
+
+        <template id="tplGroupItemActive">
+            <li class="group-item">
+                <a class="group-link">
+                    <div class="group-row">
+                        <img class="group-avatar" alt="" width="40" height="40" hidden />
+                        <div class="group-body">
+                            <span class="group-title"></span>
+                            <span class="group-meta" hidden></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </template>
+
+        <template id="tplGroupItemDisabled">
+            <li class="group-item">
+                <div class="group-row disabled-row">
+                    <img class="group-avatar" alt="" width="40" height="40" hidden />
+                    <div class="group-body">
+                        <span class="group-title"></span>
+                        <span class="group-meta" hidden></span>
+                    </div>
+                </div>
+            </li>
+        </template>
+
+        <template id="tplChannelItem">
+            <li class="channel channel-item"><a></a></li>
+        </template>
+
+        <template id="tplGroupSection">
+            <section class="group-section">
+                <!-- 换行缩进会渲染成空格，两个 span 必须紧挨着；.group-count 自带 margin-left -->
+                <h3 class="group-section-title"><span class="group-label"></span><span class="group-count"></span></h3>
+                <ul class="group-list"></ul>
+            </section>
+        </template>
+
+        <template id="tplMemberChip">
+            <span class="ok"></span>
+        </template>
+
+        <!-- 按钮内换行会产生多余空白，由 JS 克隆后 trim -->
+        <template id="tplRedirectText">
+            已选择平台，页面将在 <span id="countdown">8</span> 秒后自动跳转……<button
+                type="button"
+                class="cancel-btn"
+                id="cancelBtn"
+            >
+                取消自动跳转
+            </button>
+        </template>
     </body>
 </html>

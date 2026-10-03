@@ -1,32 +1,12 @@
-// 本文件是 Vite 工程的 ES module 入口（src/main.js），由 index.html 以
-// <script type="module"> 引入，经 pnpm run build 产出到上级目录的 index.html
-// （vite-plugin-singlefile 内联，单文件自包含）。
-//
-// 数据来源（全部在构建期打包，运行时无请求）：
-//   src/data/content_*.txt  群列表 / 频道配置（解析规则见 shared/content.mjs）
-//   src/data/recommend.json 当前推荐（由 pnpm run gen 写入，所有访客看到同一个推荐）
-// 人数与头像是唯一的运行时数据，来源 join.maameow.com/groupinfo。
-//
-// ?raw 是 Vite 的约定后缀（由 vite:asset 插件实现，非 web 标准）：
-//   把文件内容当字符串导入，而不是当资源处理。
-//   这里是必需的——content_*.txt 不是 JS 模块，不加 ?raw 无法 import；
-//   加了之后四个文件的内容会作为 JS 字符串常量内联进 bundle（配合
-//   vite-plugin-singlefile，最终产物里没有额外的 .txt 请求）。
-//   同类后缀还有 ?url（返回资源 URL）、?inline（强制内联）、?worker。
-//   注意：Node 侧（scripts/gen-recommend.mjs）没有 Vite，用 fs.readFileSync 读同一批文件，
-//   两边共用 shared/content.mjs 的解析函数。
+// 运行时只从 join.maameow.com 拉人数与头像，群组/频道配置构建期已打进 bundle。
 import windowsTxt from "./data/content_windows.txt?raw";
 import androidTxt from "./data/content_android.txt?raw";
 import macTxt from "./data/content_mac.txt?raw";
 import channelsTxt from "./data/content_channels.txt?raw";
-// JSON 导入是 Vite 原生支持（无需后缀），构建时同样会被内联
 import RECOMMENDS from "./data/recommend.json";
 import { PLATFORM_LABELS, GROUPINFO_API, buildPlatformsFromTexts } from "./shared/content.mjs";
 
-// 文件名 → buildPlatformsFromTexts 认识的键（去掉目录与 .txt 后缀）
 const PLATFORMS = Object.keys(PLATFORM_LABELS);
-// buildPlatformsFromTexts 返回的是「平台 → {label, groups, channel}」字典，
-// 这里包一层成 { platforms }，与下面 DATA.platforms 的用法保持一致
 const DATA = {
     platforms: buildPlatformsFromTexts({
         content_windows: windowsTxt,
@@ -38,10 +18,14 @@ const DATA = {
 
 const groupInfoCache = Object.create(null); // gid -> info | null(failed)
 
-// 全文件不使用 innerHTML / document.write：所有外部数据（txt 配置、groupinfo API
-// 返回值）一律走文本节点或属性赋值，从根上避免 XSS sink 告警。
+// 外部数据一律走 textContent / 属性赋值，不碰 innerHTML
+function tpl(id) {
+    return document.getElementById(id).content.firstElementChild.cloneNode(true);
+}
 
-// ---- 自动跳转 ----
+function tplFrag(id) {
+    return document.getElementById(id).content.cloneNode(true);
+}
 
 let redirectEnabled = false;
 let countdown = 8;
@@ -66,7 +50,6 @@ function cancelRedirect() {
 }
 
 function handleLinkClick() {
-    // 点了列表里的群/频道：取消自动跳转，但保留已选平台与主按钮
     if (currentPlatform) cancelRedirect();
 }
 
@@ -81,7 +64,7 @@ function handlePrimaryLinkClick(event) {
 
 function startRedirect(url) {
     if (userCancelled) {
-        // 用户已取消过：只更新链接，不再自动跳
+        // 只换链接，不重开倒计时
         currentJoinUrl = url;
         const text = document.getElementById("redirectText");
         if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
@@ -94,17 +77,12 @@ function startRedirect(url) {
 
     const text = document.getElementById("redirectText");
     if (text) {
-        text.replaceChildren();
-        text.appendChild(document.createTextNode("已选择平台，页面将在 "));
-        const cd = el("span", "", String(countdown));
-        cd.id = "countdown";
-        text.appendChild(cd);
-        text.appendChild(document.createTextNode(" 秒后自动跳转……"));
-        const cancelBtn = el("button", "cancel-btn", "取消自动跳转");
-        cancelBtn.type = "button";
-        cancelBtn.id = "cancelBtn";
+        text.replaceChildren(tplFrag("tplRedirectText"));
+        text.querySelector("#countdown").textContent = String(countdown);
+        const cancelBtn = text.querySelector("#cancelBtn");
+        // 模板里按钮换行写了，要去掉首尾空白
+        cancelBtn.textContent = cancelBtn.textContent.trim();
         cancelBtn.addEventListener("click", cancelRedirect);
-        text.appendChild(cancelBtn);
     }
     countdownTimer = setTimeout(updateCountdown, 1000);
 }
@@ -120,21 +98,19 @@ function updateCountdown() {
     }
 }
 
-// ---- 人数 / 头像（外部 API 数据，不进 innerHTML）----
-
 function renderMembersInto(el, info) {
     if (!el) return false;
-    el.replaceChildren();
     const max = info && info.known ? info.max_member_count : 0;
     if (!max || max <= 0) {
+        el.replaceChildren();
         el.hidden = true;
         return false;
     }
     const free = typeof info.free_slots === "number" ? info.free_slots : Math.max(0, max - info.member_count);
-    const span = document.createElement("span");
+    const span = tpl("tplMemberChip");
     span.className = free <= 0 ? "full" : "ok";
     span.textContent = `${info.member_count} / ${max} · ${free <= 0 ? "已满" : "余 " + free}`;
-    el.appendChild(span);
+    el.replaceChildren(span);
     el.hidden = false;
     return true;
 }
@@ -188,7 +164,6 @@ function chunk(arr, size) {
 }
 
 function applyPlatformInfoForIds(platform, ids, recGid) {
-    // 只刷新本批相关 DOM，有结果就先展示
     ids.forEach((id) => {
         if (!(id in groupInfoCache)) return;
         document
@@ -206,7 +181,6 @@ async function fetchGroupInfoBatch(ids, onPartDone) {
     if (already.length) onPartDone(already);
     if (!missing.length) return;
 
-    // 小批量串行；每批返回立刻 onPartDone，不用等全部
     for (const part of chunk(missing, 5)) {
         try {
             const url = `${GROUPINFO_API}?ids=${encodeURIComponent(part.join(","))}`;
@@ -247,7 +221,6 @@ async function loadPlatformGroupInfo(platform) {
         .map((li) => li.getAttribute("data-gid"))
         .filter(Boolean);
 
-    // 推荐群也查一下（可能与列表同一 gid），并优先拉取让顶部更早出数
     const rec = RECOMMENDS[platform];
     const recGid = rec && rec.kind !== "channel" && rec.gid ? String(rec.gid) : "";
     if (!recGid) clearHeaderRecExtra();
@@ -260,21 +233,9 @@ async function loadPlatformGroupInfo(platform) {
 
     const cached = unique.filter((id) => id in groupInfoCache);
     if (cached.length) applyPlatformInfoForIds(platform, cached, recGid);
-    // 逐批回调：哪批好了就先画哪批；平台已切换则丢弃过期回调
     await fetchGroupInfoBatch(unique, (partIds) => {
         if (currentPlatform === platform) applyPlatformInfoForIds(platform, partIds, recGid);
     });
-}
-
-// ---- 列表渲染（DOM API 构建；「当前推荐」文案由 CSS ::after 生成）----
-// 不用 innerHTML：群名/链接来自 content_*.txt，虽是仓库内数据，但走文本节点与
-// 属性赋值可以彻底避免 XSS 告警（CodeQL、Sourcery 都会盯 innerHTML sink）。
-
-function el(tag, className, text) {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text != null) node.textContent = text;
-    return node;
 }
 
 function isGroupRecommend(rec, g) {
@@ -283,46 +244,37 @@ function isGroupRecommend(rec, g) {
 
 function buildGroupItem(platform, g, rec) {
     const gid = String(g.gid || "");
-    const li = el("li", "group-item");
+    const li = tpl(g.active ? "tplGroupItemActive" : "tplGroupItemDisabled");
     li.setAttribute("data-platform", platform);
     li.setAttribute("data-gid", gid);
-    // 构建期写入的推荐标记；选平台时由 markPlatformRecommend 切成 is-recommend
     if (isGroupRecommend(rec, g)) li.setAttribute("data-recommend", "1");
 
-    const row = el("div", g.active ? "group-row" : "group-row disabled-row");
-    // 头像/人数由 groupinfo API 填充，失败则保持隐藏
-    const avatar = el("img", "group-avatar");
-    avatar.alt = "";
-    avatar.width = 40;
-    avatar.height = 40;
-    avatar.hidden = true;
-    const body = el("div", "group-body");
-    body.appendChild(el("span", "group-title", `${g.name || ""} (${gid})`));
-    const meta = el("span", "group-meta");
-    meta.hidden = true;
-    body.appendChild(meta);
-    row.appendChild(avatar);
-    row.appendChild(body);
-
-    if (g.active) {
-        const a = el("a", "group-link");
-        a.href = g.url;
-        a.appendChild(row);
-        li.appendChild(a);
-    } else {
-        li.appendChild(row);
-    }
+    li.querySelector(".group-title").textContent = `${g.name || ""} (${gid})`;
+    const link = li.querySelector(".group-link"); // 停用群没有 <a>
+    if (link) link.href = g.url;
     return li;
 }
 
 function buildChannelItem(platform, ch, rec) {
-    const li = el("li", "channel channel-item");
+    const li = tpl("tplChannelItem");
     li.setAttribute("data-platform", platform);
     if (rec && rec.kind === "channel") li.setAttribute("data-recommend", "1");
-    const a = el("a", "", ch.name || "");
+    const a = li.querySelector("a");
+    a.textContent = ch.name || "";
     a.href = ch.url;
-    li.appendChild(a);
     return li;
+}
+
+function buildGroupSection(p, pd, groups, rec) {
+    const valid = groups.filter((g) => g.active).length;
+    const section = tpl("tplGroupSection");
+    section.id = "section-" + p;
+    section.setAttribute("data-platform", p);
+    section.querySelector(".group-label").textContent = `${pd.label || p} 群组`;
+    section.querySelector(".group-count").textContent = `共 ${valid} 个`;
+    const ul = section.querySelector(".group-list");
+    ul.replaceChildren(...groups.map((g) => buildGroupItem(p, g, rec)));
+    return section;
 }
 
 function renderLists() {
@@ -330,48 +282,27 @@ function renderLists() {
     const hasAnyChannel = PLATFORMS.some((p) => platforms[p] && platforms[p].channel);
     const anyChannelRec = PLATFORMS.some((p) => RECOMMENDS[p] && RECOMMENDS[p].kind === "channel");
 
-    // 任一平台推荐是频道时用频道风格头图（选平台后仍会切换文案）
     const header = document.getElementById("join-header");
     if (header) header.classList.toggle("channel-header", anyChannelRec);
     const channelBlock = document.getElementById("channelBlock");
     if (channelBlock) channelBlock.style.display = hasAnyChannel ? "" : "none";
 
+    const channelItems = [];
+    for (const p of PLATFORMS) {
+        const pd = platforms[p];
+        if (pd && pd.channel) channelItems.push(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
+    }
     const channelList = document.getElementById("channelList");
-    if (channelList) {
-        channelList.replaceChildren();
-        for (const p of PLATFORMS) {
-            const pd = platforms[p];
-            if (pd && pd.channel) {
-                channelList.appendChild(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
-            }
-        }
-    }
+    if (channelList) channelList.replaceChildren(...channelItems);
 
-    const sections = document.getElementById("groupSections");
-    if (sections) {
-        sections.replaceChildren();
-        for (const p of PLATFORMS) {
-            const pd = platforms[p];
-            if (!pd) continue;
-            const groups = pd.groups || [];
-            const valid = groups.filter((g) => g.active).length;
-
-            const section = el("section", "group-section");
-            section.id = "section-" + p;
-            section.setAttribute("data-platform", p);
-            const title = el("h3", "group-section-title");
-            title.appendChild(document.createTextNode(`${pd.label || p} 群组 `));
-            title.appendChild(el("span", "group-count", `共 ${valid} 个`));
-            const ul = el("ul", "group-list");
-            for (const g of groups) ul.appendChild(buildGroupItem(p, g, RECOMMENDS[p]));
-            section.appendChild(title);
-            section.appendChild(ul);
-            sections.appendChild(section);
-        }
+    const sections = [];
+    for (const p of PLATFORMS) {
+        const pd = platforms[p];
+        if (pd) sections.push(buildGroupSection(p, pd, pd.groups || [], RECOMMENDS[p]));
     }
+    const sectionsEl = document.getElementById("groupSections");
+    if (sectionsEl) sectionsEl.replaceChildren(...sections);
 }
-
-// ---- 平台选择 ----
 
 function normalizePlatform(raw) {
     const s = String(raw || "")
@@ -423,7 +354,7 @@ function syncPlatformToUrl(platform) {
 }
 
 function markPlatformRecommend(platform) {
-    // 只切 class：推荐标记来自构建期写入的 data-recommend，后缀与配色由 CSS ::after 处理
+    // 「- 当前推荐」后缀由 CSS ::after 生成，JS 只切 class
     document.querySelectorAll(".group-section").forEach((sec) => {
         sec.classList.toggle("is-active", sec.dataset.platform === platform);
     });
@@ -455,7 +386,6 @@ function selectPlatform(platform, options) {
     if (!rec) return;
     options = options || {};
 
-    // 主动点选平台视为新意图：重新开启自动跳转
     userCancelled = false;
     currentPlatform = platform;
 
@@ -469,19 +399,13 @@ function selectPlatform(platform, options) {
     const label = PLATFORM_LABELS[platform] || platform;
     const isChannel = rec.kind === "channel";
     const title = document.getElementById("join-title");
-    if (title) {
-        title.replaceChildren();
-        title.appendChild(document.createTextNode("欢迎加入【"));
-        title.appendChild(document.createTextNode(rec.name));
-        title.appendChild(document.createTextNode(`】（${label}）`));
-    }
+    if (title) title.textContent = `欢迎加入【${rec.name}】（${label}）`;
 
     const gidEl = document.getElementById("join-gid");
+    const gidValueEl = document.getElementById("join-gid-value");
     if (gidEl) {
-        gidEl.replaceChildren();
         if (!isChannel && rec.gid) {
-            gidEl.appendChild(document.createTextNode("群号: "));
-            gidEl.appendChild(el("strong", "", String(rec.gid)));
+            if (gidValueEl) gidValueEl.textContent = String(rec.gid);
             gidEl.style.display = "";
         } else {
             gidEl.style.display = "none";
@@ -499,22 +423,18 @@ function selectPlatform(platform, options) {
     startRedirect(rec.url);
 }
 
-// ---- 启动 ----
-
 function wireStaticControls() {
     document.querySelectorAll(".platform-tab").forEach((btn) => {
         btn.addEventListener("click", () => selectPlatform(btn.dataset.platform));
     });
     const primary = document.getElementById("primaryLink");
     if (primary) primary.addEventListener("click", handlePrimaryLinkClick);
-    // 列表项是动态创建的，用事件委托而不是逐个绑定
     document.addEventListener("click", (e) => {
         if (e.target.closest(".group-link, .channel-item a")) handleLinkClick();
     });
 }
 
-// URL 带平台时自动选中，无需手动点
-// 例: ?platform=windows  ?os=android  ?p=mac  #windows
+// URL 带平台时直接选中：?platform=windows / ?os=android / ?p=mac / #windows
 function initPlatformFromUrl() {
     const p = platformFromUrl();
     if (p) selectPlatform(p, { skipUrlSync: true });
