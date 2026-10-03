@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+    <head>
+        <title>欢迎加入 MAA 交流群</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="./styles.css" />
+        <script type="module" src="./main.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div id="join-header" class="header">
+                <h2 id="join-title">欢迎加入 MAA 交流群</h2>
+                <div id="headerRecRow" class="header-rec-row">
+                    <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden />
+                    <p id="headerMembers" class="header-members" hidden></p>
+                </div>
+                <p id="join-gid" style="display: none">群号: <strong id="join-gid-value"></strong></p>
+
+                <div class="platform-row">
+                    <span class="platform-label">请先选择平台：</span>
+                    <div class="platform-tabs" role="group" aria-label="客户端平台">
+                        <button type="button" class="platform-tab" data-platform="windows">Windows</button>
+                        <button type="button" class="platform-tab" data-platform="android">Android</button>
+                        <button type="button" class="platform-tab" data-platform="mac">Mac</button>
+                    </div>
+                </div>
+
+                <p>
+                    <a id="primaryLink" href="#" class="primary-link chroma is-disabled" aria-disabled="true">
+                        <span class="btn-text">请先选择平台</span>
+                    </a>
+                </p>
+                <p id="redirectText">尚未选择平台，不会自动跳转</p>
+            </div>
+
+            <div id="channelBlock" class="channel-block" style="display: none">
+                <h3>QQ 频道</h3>
+                <p id="channelPlaceholder" class="channel-placeholder">请先选择平台，以查看对应频道。</p>
+                <ul class="channel-list" id="channelList"></ul>
+            </div>
+
+            <h3 class="lists-heading">群组列表</h3>
+            <p id="listsPlaceholder" class="lists-placeholder">请先在上方选择平台，以查看对应群列表。</p>
+            <div id="groupSections"></div>
+            <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
+        </div>
+
+        <template id="tplGroupItemActive">
+            <li class="group-item">
+                <a class="group-link">
+                    <div class="group-row">
+                        <img class="group-avatar" alt="" width="40" height="40" hidden />
+                        <div class="group-body">
+                            <span class="group-title"></span>
+                            <span class="group-meta" hidden></span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </template>
+
+        <template id="tplGroupItemDisabled">
+            <li class="group-item">
+                <div class="group-row disabled-row">
+                    <img class="group-avatar" alt="" width="40" height="40" hidden />
+                    <div class="group-body">
+                        <span class="group-title"></span>
+                        <span class="group-meta" hidden></span>
+                    </div>
+                </div>
+            </li>
+        </template>
+
+        <template id="tplChannelItem">
+            <li class="channel channel-item"><a></a></li>
+        </template>
+
+        <template id="tplGroupSection">
+            <section class="group-section">
+                <!-- 换行缩进会渲染成空格，两个 span 必须紧挨着；.group-count 自带 margin-left -->
+                <h3 class="group-section-title"><span class="group-label"></span><span class="group-count"></span></h3>
+                <ul class="group-list"></ul>
+            </section>
+        </template>
+
+        <template id="tplMemberChip">
+            <span class="ok"></span>
+        </template>
+
+        <!-- 按钮内换行会产生多余空白，由 JS 克隆后 trim -->
+        <template id="tplRedirectText">
+            已选择平台，页面将在 <span id="countdown">8</span> 秒后自动跳转……<button
+                type="button"
+                class="cancel-btn"
+                id="cancelBtn"
+            >
+                取消自动跳转
+            </button>
+        </template>
+    </body>
+</html>

@@ -1,0 +1,4 @@
+# qqgroup 源文件行尾会被 vite 原样内联进产物，Windows 检出 CRLF、CI 检出 LF，两边构建结果不一致
+MaaAssistantArknights/api/qqgroup/** text=auto eol=lf
+
+.gitattributes text eol=lf
