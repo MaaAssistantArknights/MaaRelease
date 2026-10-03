@@ -38,15 +38,8 @@ const DATA = {
 
 const groupInfoCache = Object.create(null); // gid -> info | null(failed)
 
-// 列表渲染用 innerHTML（数据来自仓库内 txt，插值统一过 esc）；
-// 外部 API 的人数/头像仍走 DOM 属性赋值，避免把第三方字段当 HTML/URL 注入。
-function esc(s) {
-    return String(s ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-}
+// 全文件不使用 innerHTML / document.write：所有外部数据（txt 配置、groupinfo API
+// 返回值）一律走文本节点或属性赋值，从根上避免 XSS sink 告警。
 
 // ---- 自动跳转 ----
 
@@ -101,9 +94,17 @@ function startRedirect(url) {
 
     const text = document.getElementById("redirectText");
     if (text) {
-        text.innerHTML = `已选择平台，页面将在 <span id="countdown">${countdown}</span> 秒后自动跳转……
-            <button type="button" id="cancelBtn" class="cancel-btn">取消自动跳转</button>`;
-        text.querySelector("#cancelBtn").addEventListener("click", cancelRedirect);
+        text.replaceChildren();
+        text.appendChild(document.createTextNode("已选择平台，页面将在 "));
+        const cd = el("span", "", String(countdown));
+        cd.id = "countdown";
+        text.appendChild(cd);
+        text.appendChild(document.createTextNode(" 秒后自动跳转……"));
+        const cancelBtn = el("button", "cancel-btn", "取消自动跳转");
+        cancelBtn.type = "button";
+        cancelBtn.id = "cancelBtn";
+        cancelBtn.addEventListener("click", cancelRedirect);
+        text.appendChild(cancelBtn);
     }
     countdownTimer = setTimeout(updateCountdown, 1000);
 }
@@ -265,34 +266,63 @@ async function loadPlatformGroupInfo(platform) {
     });
 }
 
-// ---- 列表渲染（一次性 innerHTML；「当前推荐」文案由 CSS ::after 生成）----
+// ---- 列表渲染（DOM API 构建；「当前推荐」文案由 CSS ::after 生成）----
+// 不用 innerHTML：群名/链接来自 content_*.txt，虽是仓库内数据，但走文本节点与
+// 属性赋值可以彻底避免 XSS 告警（CodeQL、Sourcery 都会盯 innerHTML sink）。
+
+function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+}
 
 function isGroupRecommend(rec, g) {
     return !!rec && rec.kind === "group" && String(rec.gid) === String(g.gid);
 }
 
-function groupItemHtml(platform, g, rec) {
-    const gid = esc(g.gid);
-    const row = `<div class="group-row${g.active ? "" : " disabled-row"}">
-            <img class="group-avatar" alt="" width="40" height="40" hidden>
-            <div class="group-body">
-              <span class="group-title">${esc(g.name)} (${gid})</span>
-              <span class="group-meta" hidden></span>
-            </div>
-          </div>`;
-    const recAttr = isGroupRecommend(rec, g) ? ' data-recommend="1"' : "";
-    const attrs = `class="group-item" data-platform="${platform}" data-gid="${gid}"${recAttr}`;
-    // 下架的群渲染成 disabled-row，不给链接
-    return g.active
-        ? `<li ${attrs}><a class="group-link" href="${esc(g.url)}">${row}</a></li>`
-        : `<li ${attrs}>${row}</li>`;
+function buildGroupItem(platform, g, rec) {
+    const gid = String(g.gid || "");
+    const li = el("li", "group-item");
+    li.setAttribute("data-platform", platform);
+    li.setAttribute("data-gid", gid);
+    // 构建期写入的推荐标记；选平台时由 markPlatformRecommend 切成 is-recommend
+    if (isGroupRecommend(rec, g)) li.setAttribute("data-recommend", "1");
+
+    const row = el("div", g.active ? "group-row" : "group-row disabled-row");
+    // 头像/人数由 groupinfo API 填充，失败则保持隐藏
+    const avatar = el("img", "group-avatar");
+    avatar.alt = "";
+    avatar.width = 40;
+    avatar.height = 40;
+    avatar.hidden = true;
+    const body = el("div", "group-body");
+    body.appendChild(el("span", "group-title", `${g.name || ""} (${gid})`));
+    const meta = el("span", "group-meta");
+    meta.hidden = true;
+    body.appendChild(meta);
+    row.appendChild(avatar);
+    row.appendChild(body);
+
+    if (g.active) {
+        const a = el("a", "group-link");
+        a.href = g.url;
+        a.appendChild(row);
+        li.appendChild(a);
+    } else {
+        li.appendChild(row);
+    }
+    return li;
 }
 
-function channelItemHtml(platform, ch, rec) {
-    const recAttr = rec && rec.kind === "channel" ? ' data-recommend="1"' : "";
-    return `<li class="channel channel-item" data-platform="${platform}"${recAttr}>
-            <a href="${esc(ch.url)}">${esc(ch.name)}</a>
-          </li>`;
+function buildChannelItem(platform, ch, rec) {
+    const li = el("li", "channel channel-item");
+    li.setAttribute("data-platform", platform);
+    if (rec && rec.kind === "channel") li.setAttribute("data-recommend", "1");
+    const a = el("a", "", ch.name || "");
+    a.href = ch.url;
+    li.appendChild(a);
+    return li;
 }
 
 function renderLists() {
@@ -308,26 +338,36 @@ function renderLists() {
 
     const channelList = document.getElementById("channelList");
     if (channelList) {
-        channelList.innerHTML = PLATFORMS.filter((p) => platforms[p] && platforms[p].channel)
-            .map((p) => channelItemHtml(p, platforms[p].channel, RECOMMENDS[p]))
-            .join("");
+        channelList.replaceChildren();
+        for (const p of PLATFORMS) {
+            const pd = platforms[p];
+            if (pd && pd.channel) {
+                channelList.appendChild(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
+            }
+        }
     }
 
     const sections = document.getElementById("groupSections");
     if (sections) {
-        sections.innerHTML = PLATFORMS.filter((p) => platforms[p])
-            .map((p) => {
-                const groups = platforms[p].groups || [];
-                const valid = groups.filter((g) => g.active).length;
-                const items = groups.map((g) => groupItemHtml(p, g, RECOMMENDS[p])).join("");
-                return `<section class="group-section" id="section-${p}" data-platform="${p}">
-            <h3 class="group-section-title">${esc(platforms[p].label)} 群组
-              <span class="group-count">共 ${valid} 个</span>
-            </h3>
-            <ul class="group-list">${items}</ul>
-          </section>`;
-            })
-            .join("");
+        sections.replaceChildren();
+        for (const p of PLATFORMS) {
+            const pd = platforms[p];
+            if (!pd) continue;
+            const groups = pd.groups || [];
+            const valid = groups.filter((g) => g.active).length;
+
+            const section = el("section", "group-section");
+            section.id = "section-" + p;
+            section.setAttribute("data-platform", p);
+            const title = el("h3", "group-section-title");
+            title.appendChild(document.createTextNode(`${pd.label || p} 群组 `));
+            title.appendChild(el("span", "group-count", `共 ${valid} 个`));
+            const ul = el("ul", "group-list");
+            for (const g of groups) ul.appendChild(buildGroupItem(p, g, RECOMMENDS[p]));
+            section.appendChild(title);
+            section.appendChild(ul);
+            sections.appendChild(section);
+        }
     }
 }
 
@@ -429,12 +469,23 @@ function selectPlatform(platform, options) {
     const label = PLATFORM_LABELS[platform] || platform;
     const isChannel = rec.kind === "channel";
     const title = document.getElementById("join-title");
-    if (title) title.innerHTML = `欢迎加入【${esc(rec.name)}】（${esc(label)}）`;
+    if (title) {
+        title.replaceChildren();
+        title.appendChild(document.createTextNode("欢迎加入【"));
+        title.appendChild(document.createTextNode(rec.name));
+        title.appendChild(document.createTextNode(`】（${label}）`));
+    }
 
     const gidEl = document.getElementById("join-gid");
     if (gidEl) {
-        gidEl.innerHTML = isChannel || !rec.gid ? "" : `群号: <strong>${esc(rec.gid)}</strong>`;
-        gidEl.style.display = isChannel || !rec.gid ? "none" : "";
+        gidEl.replaceChildren();
+        if (!isChannel && rec.gid) {
+            gidEl.appendChild(document.createTextNode("群号: "));
+            gidEl.appendChild(el("strong", "", String(rec.gid)));
+            gidEl.style.display = "";
+        } else {
+            gidEl.style.display = "none";
+        }
     }
 
     const primary = document.getElementById("primaryLink");
@@ -456,7 +507,7 @@ function wireStaticControls() {
     });
     const primary = document.getElementById("primaryLink");
     if (primary) primary.addEventListener("click", handlePrimaryLinkClick);
-    // 列表是 innerHTML 渲染的，用事件委托而不是逐个绑定
+    // 列表项是动态创建的，用事件委托而不是逐个绑定
     document.addEventListener("click", (e) => {
         if (e.target.closest(".group-link, .channel-item a")) handleLinkClick();
     });

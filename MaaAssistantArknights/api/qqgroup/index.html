@@ -135,9 +135,6 @@ const DATA = {
   })
 };
 const groupInfoCache = /* @__PURE__ */ Object.create(null);
-function esc(s) {
-  return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
 let redirectEnabled = false;
 let countdown = 8;
 let countdownTimer = null;
@@ -181,36 +178,44 @@ function startRedirect(url) {
   if (countdownTimer) clearTimeout(countdownTimer);
   const text = document.getElementById("redirectText");
   if (text) {
-    text.innerHTML = `已选择平台，页面将在 <span id="countdown">${countdown}</span> 秒后自动跳转……
-            <button type="button" id="cancelBtn" class="cancel-btn">取消自动跳转</button>`;
-    text.querySelector("#cancelBtn").addEventListener("click", cancelRedirect);
+    text.replaceChildren();
+    text.appendChild(document.createTextNode("已选择平台，页面将在 "));
+    const cd = el("span", "", String(countdown));
+    cd.id = "countdown";
+    text.appendChild(cd);
+    text.appendChild(document.createTextNode(" 秒后自动跳转……"));
+    const cancelBtn = el("button", "cancel-btn", "取消自动跳转");
+    cancelBtn.type = "button";
+    cancelBtn.id = "cancelBtn";
+    cancelBtn.addEventListener("click", cancelRedirect);
+    text.appendChild(cancelBtn);
   }
   countdownTimer = setTimeout(updateCountdown, 1e3);
 }
 function updateCountdown() {
   if (redirectEnabled && countdown > 0) {
     countdown--;
-    const el = document.getElementById("countdown");
-    if (el) el.textContent = countdown;
+    const el2 = document.getElementById("countdown");
+    if (el2) el2.textContent = countdown;
     countdownTimer = setTimeout(updateCountdown, 1e3);
   } else if (redirectEnabled && countdown === 0) {
     window.location.href = currentJoinUrl;
   }
 }
-function renderMembersInto(el, info) {
-  if (!el) return false;
-  el.replaceChildren();
+function renderMembersInto(el2, info) {
+  if (!el2) return false;
+  el2.replaceChildren();
   const max = info && info.known ? info.max_member_count : 0;
   if (!max || max <= 0) {
-    el.hidden = true;
+    el2.hidden = true;
     return false;
   }
   const free = typeof info.free_slots === "number" ? info.free_slots : Math.max(0, max - info.member_count);
   const span = document.createElement("span");
   span.className = free <= 0 ? "full" : "ok";
   span.textContent = `${info.member_count} / ${max} · ${free <= 0 ? "已满" : "余 " + free}`;
-  el.appendChild(span);
-  el.hidden = false;
+  el2.appendChild(span);
+  el2.hidden = false;
   return true;
 }
 function applyInfoToItem(li, info) {
@@ -314,27 +319,52 @@ async function loadPlatformGroupInfo(platform) {
     if (currentPlatform === platform) applyPlatformInfoForIds(platform, partIds, recGid);
   });
 }
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text != null) node.textContent = text;
+  return node;
+}
 function isGroupRecommend(rec, g) {
   return !!rec && rec.kind === "group" && String(rec.gid) === String(g.gid);
 }
-function groupItemHtml(platform, g, rec) {
-  const gid = esc(g.gid);
-  const row = `<div class="group-row${g.active ? "" : " disabled-row"}">
-            <img class="group-avatar" alt="" width="40" height="40" hidden>
-            <div class="group-body">
-              <span class="group-title">${esc(g.name)} (${gid})</span>
-              <span class="group-meta" hidden></span>
-            </div>
-          </div>`;
-  const recAttr = isGroupRecommend(rec, g) ? ' data-recommend="1"' : "";
-  const attrs = `class="group-item" data-platform="${platform}" data-gid="${gid}"${recAttr}`;
-  return g.active ? `<li ${attrs}><a class="group-link" href="${esc(g.url)}">${row}</a></li>` : `<li ${attrs}>${row}</li>`;
+function buildGroupItem(platform, g, rec) {
+  const gid = String(g.gid || "");
+  const li = el("li", "group-item");
+  li.setAttribute("data-platform", platform);
+  li.setAttribute("data-gid", gid);
+  if (isGroupRecommend(rec, g)) li.setAttribute("data-recommend", "1");
+  const row = el("div", g.active ? "group-row" : "group-row disabled-row");
+  const avatar = el("img", "group-avatar");
+  avatar.alt = "";
+  avatar.width = 40;
+  avatar.height = 40;
+  avatar.hidden = true;
+  const body = el("div", "group-body");
+  body.appendChild(el("span", "group-title", `${g.name || ""} (${gid})`));
+  const meta = el("span", "group-meta");
+  meta.hidden = true;
+  body.appendChild(meta);
+  row.appendChild(avatar);
+  row.appendChild(body);
+  if (g.active) {
+    const a = el("a", "group-link");
+    a.href = g.url;
+    a.appendChild(row);
+    li.appendChild(a);
+  } else {
+    li.appendChild(row);
+  }
+  return li;
 }
-function channelItemHtml(platform, ch, rec) {
-  const recAttr = rec && rec.kind === "channel" ? ' data-recommend="1"' : "";
-  return `<li class="channel channel-item" data-platform="${platform}"${recAttr}>
-            <a href="${esc(ch.url)}">${esc(ch.name)}</a>
-          </li>`;
+function buildChannelItem(platform, ch, rec) {
+  const li = el("li", "channel channel-item");
+  li.setAttribute("data-platform", platform);
+  if (rec && rec.kind === "channel") li.setAttribute("data-recommend", "1");
+  const a = el("a", "", ch.name || "");
+  a.href = ch.url;
+  li.appendChild(a);
+  return li;
 }
 function renderLists() {
   const platforms = DATA.platforms || {};
@@ -346,21 +376,34 @@ function renderLists() {
   if (channelBlock) channelBlock.style.display = hasAnyChannel ? "" : "none";
   const channelList = document.getElementById("channelList");
   if (channelList) {
-    channelList.innerHTML = PLATFORMS.filter((p) => platforms[p] && platforms[p].channel).map((p) => channelItemHtml(p, platforms[p].channel, RECOMMENDS[p])).join("");
+    channelList.replaceChildren();
+    for (const p of PLATFORMS) {
+      const pd = platforms[p];
+      if (pd && pd.channel) {
+        channelList.appendChild(buildChannelItem(p, pd.channel, RECOMMENDS[p]));
+      }
+    }
   }
   const sections = document.getElementById("groupSections");
   if (sections) {
-    sections.innerHTML = PLATFORMS.filter((p) => platforms[p]).map((p) => {
-      const groups = platforms[p].groups || [];
+    sections.replaceChildren();
+    for (const p of PLATFORMS) {
+      const pd = platforms[p];
+      if (!pd) continue;
+      const groups = pd.groups || [];
       const valid = groups.filter((g) => g.active).length;
-      const items = groups.map((g) => groupItemHtml(p, g, RECOMMENDS[p])).join("");
-      return `<section class="group-section" id="section-${p}" data-platform="${p}">
-            <h3 class="group-section-title">${esc(platforms[p].label)} 群组
-              <span class="group-count">共 ${valid} 个</span>
-            </h3>
-            <ul class="group-list">${items}</ul>
-          </section>`;
-    }).join("");
+      const section = el("section", "group-section");
+      section.id = "section-" + p;
+      section.setAttribute("data-platform", p);
+      const title = el("h3", "group-section-title");
+      title.appendChild(document.createTextNode(`${pd.label || p} 群组 `));
+      title.appendChild(el("span", "group-count", `共 ${valid} 个`));
+      const ul = el("ul", "group-list");
+      for (const g of groups) ul.appendChild(buildGroupItem(p, g, RECOMMENDS[p]));
+      section.appendChild(title);
+      section.appendChild(ul);
+      sections.appendChild(section);
+    }
   }
 }
 function normalizePlatform(raw) {
@@ -445,11 +488,22 @@ function selectPlatform(platform, options) {
   const label = PLATFORM_LABELS[platform] || platform;
   const isChannel = rec.kind === "channel";
   const title = document.getElementById("join-title");
-  if (title) title.innerHTML = `欢迎加入【${esc(rec.name)}】（${esc(label)}）`;
+  if (title) {
+    title.replaceChildren();
+    title.appendChild(document.createTextNode("欢迎加入【"));
+    title.appendChild(document.createTextNode(rec.name));
+    title.appendChild(document.createTextNode(`】（${label}）`));
+  }
   const gidEl = document.getElementById("join-gid");
   if (gidEl) {
-    gidEl.innerHTML = isChannel || !rec.gid ? "" : `群号: <strong>${esc(rec.gid)}</strong>`;
-    gidEl.style.display = isChannel || !rec.gid ? "none" : "";
+    gidEl.replaceChildren();
+    if (!isChannel && rec.gid) {
+      gidEl.appendChild(document.createTextNode("群号: "));
+      gidEl.appendChild(el("strong", "", String(rec.gid)));
+      gidEl.style.display = "";
+    } else {
+      gidEl.style.display = "none";
+    }
   }
   const primary = document.getElementById("primaryLink");
   const btnText = primary.querySelector(".btn-text");

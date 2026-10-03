@@ -201,6 +201,17 @@ function freezeRecommend(platform, groups, stickyGid) {
 }
 
 async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
+    const state = loadState();
+    const prev = state[platform];
+    const stickyGid = prev && prev.kind === "group" ? prev.gid : null;
+
+    // 0. freeze：本轮未选中的平台 —— 沿用上次推荐，不查人数
+    //    （与旧 gen_index.py 的 freeze_recommend 一致；漏掉这一步会导致未选中平台
+    //     也去查人数、甚至在推荐群满员时被自动换掉）
+    if (mode === "freeze") {
+        return freezeRecommend(platform, groups, stickyGid);
+    }
+
     // 1. 频道钉死
     if (channel && channel.pinned) {
         return {
@@ -238,12 +249,17 @@ async function resolveRecommend(platform, groups, channel, mode, manualNumber) {
                 `${PLATFORM_LABELS[platform]} 推荐群编号超出范围: ${manualNumber}（共 ${groups.length} 个）`
             );
         }
-        return { rec: groupRec(groups[idx]), source: `manual#${manualNumber}` };
+        const g = groups[idx];
+        if (!g.active) {
+            // 与旧 pick_recommend 一致：manual 允许钉已下架的群，仅提示
+            console.error(
+                `警告[${PLATFORM_LABELS[platform]}]: manual#${manualNumber}「${g.name}」已下架（${g.url}），仍按旧行为钉住该行`
+            );
+        }
+        return { rec: groupRec(g), source: `manual#${manualNumber}` };
     }
 
     // 5. auto：粘性
-    const state = loadState();
-    const stickyGid = state[platform] && state[platform].kind === "group" ? state[platform].gid : null;
     const { index, source } = await stickyAutoIndex(groups, platform, stickyGid);
     return { rec: groupRec(groups[index]), source };
 }
