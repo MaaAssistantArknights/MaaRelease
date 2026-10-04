@@ -359,34 +359,15 @@ def _pick_sticky(recommends) -> dict[str, dict]:
 
 
 def load_sticky(data_path: Path) -> dict[str, dict]:
-    """读取粘性推荐（platform -> {gid, name}），来源优先级 data.json > 旧 index.html。"""
-    if data_path.is_file():
-        try:
-            data = json.loads(data_path.read_text(encoding="utf-8"))
-            return _pick_sticky(data.get("recommends") if isinstance(data, dict) else None)
-        except (OSError, json.JSONDecodeError) as e:
-            print(f"解析 {DATA_FILE} 失败 ({e})，忽略粘性", file=sys.stderr)
-
-    legacy_index = data_path.parent / "index.html"
-    if not legacy_index.is_file():
+    """读取粘性推荐（platform -> {gid, name}）。"""
+    if not data_path.is_file():
         return {}
     try:
-        text = legacy_index.read_text(encoding="utf-8")
-    except OSError:
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"解析 {DATA_FILE} 失败 ({e})，忽略粘性", file=sys.stderr)
         return {}
-    marker = "const RECOMMENDS = "
-    start = text.find(marker)
-    if start < 0:
-        return {}
-    start += len(marker)
-    end = text.find(";", start)
-    if end < 0:
-        return {}
-    try:
-        return _pick_sticky(json.loads(text[start:end].strip()))
-    except json.JSONDecodeError as e:
-        print(f"解析旧 index.html RECOMMENDS 失败 ({e})，忽略粘性", file=sys.stderr)
-        return {}
+    return _pick_sticky(data.get("recommends") if isinstance(data, dict) else None)
 
 
 def index_of_gid(groups: list[dict], gid: str) -> int | None:
@@ -554,9 +535,8 @@ def main() -> None:
     data_path = base / DATA_FILE
     sticky = load_sticky(data_path)
     if sticky:
-        source = DATA_FILE if data_path.is_file() else "旧 index.html"
         print(
-            f"从 {source} 读取粘性: "
+            f"从 {DATA_FILE} 读取粘性: "
             + ", ".join(f"{p}={sticky[p].get('gid')}" for p in sticky),
             file=sys.stderr,
         )
