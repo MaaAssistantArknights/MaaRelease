@@ -6,6 +6,9 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+# 产出 data.json：群列表、频道、各平台推荐。页面本体（index.html / styles.css /
+# main.js）是静态的，前端 fetch data.json 后渲染。
+#
 # 使用：
 #   python gen_index.py                          - 三平台粘性自动
 #   python gen_index.py auto                     - 同上
@@ -16,10 +19,10 @@ from pathlib import Path
 #   python gen_index.py channel                  - 兼容：等同 windows channel
 #
 # 自动策略（粘性，仅对「本次操作的平台」生效）：
-#   1. 从现有 index.html 的 RECOMMENDS 读取上次推荐群
+#   1. 从现有 data.json 的 recommends 读取上次推荐群
 #   2. 只查当前推荐是否满员；未满 / 查失败 → 保持
 #   3. 已满 / 已下架 → 按列表顺序选「第一个有空位」的群
-#   4. 写回 index.html（粘性状态就在 RECOMMENDS 里，无额外文件）
+#   4. 写回 data.json（粘性状态就在 recommends 里，无额外文件）
 #
 # 运营配置：
 #   content_windows.txt / content_android.txt / content_mac.txt
@@ -30,6 +33,7 @@ from pathlib import Path
 # 环境变量 GROUPINFO_API 可覆盖自动选群用的接口（默认 join.maameow.com）
 
 CHANNELS_FILE = "content_channels.txt"
+DATA_FILE = "data.json"
 GROUPINFO_API = os.environ.get(
     "GROUPINFO_API", "https://join.maameow.com/api/groupinfo"
 ).rstrip("/")
@@ -340,40 +344,30 @@ def free_slots_of(info: dict | None) -> int | None:
     return max(0, mx - cur)
 
 
-def load_sticky_from_index(index_path: Path) -> dict[str, dict]:
-    """从现有 index.html 的 RECOMMENDS 读取粘性推荐（platform -> {gid, name}）。"""
-    if not index_path.is_file():
-        return {}
-    try:
-        text = index_path.read_text(encoding="utf-8")
-    except OSError:
-        return {}
-    marker = "const RECOMMENDS = "
-    start = text.find(marker)
-    if start < 0:
-        return {}
-    start += len(marker)
-    end = text.find(";", start)
-    if end < 0:
-        return {}
-    try:
-        data = json.loads(text[start:end].strip())
-    except json.JSONDecodeError as e:
-        print(f"解析 index.html RECOMMENDS 失败 ({e})，忽略粘性", file=sys.stderr)
-        return {}
+def _pick_sticky(recommends) -> dict[str, dict]:
+    """从 recommends（platform -> 群推荐）里挑出可粘性的项。"""
     out: dict[str, dict] = {}
-    if not isinstance(data, dict):
+    if not isinstance(recommends, dict):
         return out
-    for p, rec in data.items():
+    for p, rec in recommends.items():
         if p not in PLATFORMS or not isinstance(rec, dict):
             continue
         # 仅群推荐带 gid；频道模式没有可粘性的群号
         if rec.get("kind") == "group" and rec.get("gid"):
-            out[p] = {
-                "gid": str(rec["gid"]),
-                "name": rec.get("name") or "",
-            }
+            out[p] = {"gid": str(rec["gid"]), "name": rec.get("name") or ""}
     return out
+
+
+def load_sticky(data_path: Path) -> dict[str, dict]:
+    """读取粘性推荐（platform -> {gid, name}）。"""
+    if not data_path.is_file():
+        return {}
+    try:
+        data = json.loads(data_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"解析 {DATA_FILE} 失败 ({e})，忽略粘性", file=sys.stderr)
+        return {}
+    return _pick_sticky(data.get("recommends") if isinstance(data, dict) else None)
 
 
 def index_of_gid(groups: list[dict], gid: str) -> int | None:
@@ -538,18 +532,17 @@ def main() -> None:
     plan = parse_args(sys.argv[1:])
     channels = load_channels(base / CHANNELS_FILE)
 
-    index_path = base / "index.html"
-    sticky = load_sticky_from_index(index_path)
+    data_path = base / DATA_FILE
+    sticky = load_sticky(data_path)
     if sticky:
         print(
-            "从 index.html RECOMMENDS 读取粘性: "
+            f"从 {DATA_FILE} 读取粘性: "
             + ", ".join(f"{p}={sticky[p].get('gid')}" for p in sticky),
             file=sys.stderr,
         )
     else:
         print("无可用粘性状态（首次生成或尚无群推荐）", file=sys.stderr)
 
-    # 清理误留的旧状态文件（粘性已并入 index.html）
     legacy_state = base / "recommend_state.json"
     if legacy_state.is_file():
         try:
@@ -593,973 +586,37 @@ def main() -> None:
             "channel": ch,
         }
 
-    def esc(s: str) -> str:
-        return (
-            s.replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-            .replace('"', "&quot;")
-        )
-
-    def render_group_items(platform: str) -> str:
-        data = platforms_data[platform]
-        items = []
-        for i, g in enumerate(data["groups"]):
-            name, gid, url = g["name"], g["gid"], g["url"]
-            label = f"{esc(name)} ({esc(gid)})"
-            # 仅「群推荐」时才标 data-recommend；选平台后由 JS 高亮
-            is_rec = data["recommend"]["kind"] == "group" and i == data["recommendIndex"]
-            rec_attr = ' data-recommend="1"' if is_rec else ""
-            # 头像/人数由前端调 groupinfo API 填充；失败则保持隐藏
-            row_inner = (
-                f'<img class="group-avatar" alt="" width="40" height="40" hidden>'
-                f'<div class="group-body">'
-                f'<span class="group-title">{label}</span>'
-                f'<span class="group-meta" hidden></span>'
-                f"</div>"
-            )
-            if not g["active"]:
-                items.append(
-                    f'<li class="group-item" data-platform="{platform}" '
-                    f'data-gid="{esc(gid)}" data-label="{label}"{rec_attr}>'
-                    f'<div class="group-row disabled-row">'
-                    f'{row_inner}</div></li>'
+    data = {
+            "recommends": {
+                p: {
+                    "url": platforms_data[p]["recommend"]["url"],
+                    "name": platforms_data[p]["recommend"]["name"],
+                    "gid": platforms_data[p]["recommend"]["gid"],
+                    "kind": platforms_data[p]["recommend"]["kind"],
+                }
+                for p in PLATFORMS
+            },
+            "channels": {
+                p: (
+                    {"url": platforms_data[p]["channel"]["url"], "name": platforms_data[p]["channel"]["name"]}
+                    if platforms_data[p]["channel"]
+                    else None
                 )
-            else:
-                items.append(
-                    f'<li class="group-item" data-platform="{platform}" '
-                    f'data-gid="{esc(gid)}" data-label="{label}" '
-                    f'data-href="{esc(url)}"{rec_attr}>'
-                    f'<a class="group-link" href="{esc(url)}" onclick="handleLinkClick(event)">'
-                    f'<div class="group-row">{row_inner}</div></a></li>'
-                )
-        return "\n".join(items)
-
-    groups_sections_html = ""
-    for platform in PLATFORMS:
-        data = platforms_data[platform]
-        groups_sections_html += f"""
-        <section class="group-section" id="section-{platform}" data-platform="{platform}">
-            <h3 class="group-section-title">{esc(data["label"])} 群组
-                <span class="group-count">共 {data["validCount"]} 个</span>
-            </h3>
-            <ul class="group-list">
-                {render_group_items(platform)}
-            </ul>
-        </section>
-"""
-
-    # 频道：按平台渲染，默认隐藏，选平台后只显示对应项
-    channel_items_html = ""
-    for platform in PLATFORMS:
-        ch = channels.get(platform)
-        if not ch:
-            continue
-        label = esc(ch["name"])
-        url = esc(ch["url"])
-        is_ch_rec = platforms_data[platform]["recommend"]["kind"] == "channel"
-        rec_attr = ' data-recommend="1"' if is_ch_rec else ""
-        channel_items_html += (
-            f'<li class="channel channel-item" data-platform="{platform}" '
-            f'data-label="{label}" data-href="{url}"{rec_attr}>'
-            f'<a href="{url}" onclick="handleLinkClick(event)">{label}</a></li>\n'
-        )
-
-    # 任一侧默认推荐是频道时，用频道风格头图（页面选平台后仍会切换文案）
-    any_channel_rec = any(
-        platforms_data[p]["recommend"]["kind"] == "channel" for p in PLATFORMS
-    )
-    header_extra = " channel-header" if any_channel_rec else ""
-
-    # JS 用的推荐映射（平台 → 跳转目标）
-    recommend_map = {
-        p: {
-            "url": platforms_data[p]["recommend"]["url"],
-            "name": platforms_data[p]["recommend"]["name"],
-            "gid": platforms_data[p]["recommend"]["gid"],
-            "kind": platforms_data[p]["recommend"]["kind"],
+                for p in PLATFORMS
+            },
+            "groupinfo_api": GROUPINFO_API,
+            "platforms": {
+                p: {
+                    "label": platforms_data[p]["label"],
+                    "validCount": platforms_data[p]["validCount"],
+                    "groups": platforms_data[p]["groups"],
+                }
+                for p in PLATFORMS
+            },
         }
-        for p in PLATFORMS
-    }
-    recommend_json = json.dumps(recommend_map, ensure_ascii=False)
-    # 各平台是否有频道（前端切换展示用）
-    channels_meta = {
-        p: ({"url": ch["url"], "name": ch["name"]} if (ch := channels.get(p)) else None)
-        for p in PLATFORMS
-    }
-    channels_json = json.dumps(channels_meta, ensure_ascii=False)
-    # 与生成期 Python 侧同一 GROUPINFO_API（含环境变量覆盖）
-    groupinfo_api_json = json.dumps(GROUPINFO_API)
-    has_any_channel = bool(channels)
-    channel_block_display = "" if has_any_channel else " style=\"display:none\""
 
-    index_html = f"""<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <title>欢迎加入 MAA 交流群</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {{ font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; color: #222; }}
-        .current {{ color: #ff6600; }}
-        ul {{ list-style-type: none; padding: 0; }}
-        li {{ margin: 12px 0; padding: 8px; background: #f9f9f9; border-radius: 5px; }}
-        a {{ text-decoration: none; color: #0066cc; font-weight: bold; }}
-        a:hover {{ text-decoration: underline; }}
-        li > a:hover {{ color: #004499; }}
-        .container {{ max-width: 800px; margin: 0 auto; }}
-        .header {{ background: #eef5ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
-        .header.channel-header {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); }}
-        .platform-row {{
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-            margin: 12px 0 4px;
-        }}
-        .platform-label {{ color: #555; font-size: 0.95em; margin-right: 4px; }}
-        .platform-tabs {{
-            display: inline-flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }}
-        .platform-tab {{
-            padding: 8px 16px;
-            border: 2px solid #c5d8f5;
-            border-radius: 999px;
-            background: #fff;
-            color: #0066cc;
-            font-weight: bold;
-            font-size: 0.95em;
-            cursor: pointer;
-            transition: border-color .15s, background .15s, color .15s;
-        }}
-        .platform-tab:hover {{
-            border-color: #0066cc;
-            background: #f3f8ff;
-        }}
-        .platform-tab.active {{
-            border-color: #0066cc;
-            background: #0066cc;
-            color: #fff;
-        }}
-        .header.channel-header .platform-tab.active {{
-            border-color: #7c4dff;
-            background: #7c4dff;
-        }}
-        .primary-link {{
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 22px;
-            min-height: 44px;
-            background: #0066cc;
-            color: #fff;
-            border-radius: 8px;
-            margin: 10px 0;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
-            text-decoration: none;
-            overflow: hidden;
-            isolation: isolate;
-            z-index: 0;
-            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.28);
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }}
-        .primary-link .btn-text {{
-            position: relative;
-            z-index: 2;
-            border-radius: 8px;
-        }}
-        .primary-link.is-disabled {{
-            pointer-events: none;
-            cursor: not-allowed;
-            box-shadow: none;
-            opacity: 0.55;
-            background: #8aa8cc;
-        }}
-        .primary-link.is-disabled.chroma {{
-            background: #8aa8cc;
-        }}
-        .primary-link.is-disabled.chroma::before,
-        .primary-link.is-disabled.chroma::after {{
-            display: none;
-        }}
-        /* 满幅流动炫彩（中等明度）；文字胶囊偏实，保证可读 */
-        .primary-link.chroma:not(.is-disabled) {{
-            background: #2a2048;
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(114, 46, 209, 0.3);
-        }}
-        .primary-link.chroma:not(.is-disabled) .btn-text {{
-            position: relative;
-            z-index: 2;
-            display: inline-block;
-            padding: 5px 14px;
-            border-radius: 8px;
-            background: rgba(16, 12, 32, 0.8);
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.14) inset,
-                0 2px 8px rgba(0, 0, 0, 0.22);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-            letter-spacing: 0.02em;
-            -webkit-backdrop-filter: blur(6px);
-            backdrop-filter: blur(6px);
-        }}
-        .primary-link.chroma:not(.is-disabled)::before {{
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 200%;
-            z-index: 0;
-            opacity: 0.88;
-            background: linear-gradient(
-                90deg,
-                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
-                #ff4d4f, #fa8c16, #fadb14, #52c41a, #13c2c2, #1677ff, #722ed1, #eb2f96,
-                #ff4d4f
-            );
-            animation: chroma-slide 3s linear infinite;
-            pointer-events: none;
-            will-change: transform;
-        }}
-        .primary-link.chroma:not(.is-disabled)::after {{
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%),
-                linear-gradient(
-                    100deg,
-                    transparent 0%,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.2) 50%,
-                    transparent 60%,
-                    transparent 100%
-                );
-            background-size: 100% 100%, 42% 100%;
-            background-repeat: no-repeat, no-repeat;
-            background-position: 0 0, -42% 0;
-            animation: chroma-shine 2.8s linear infinite;
-            pointer-events: none;
-            will-change: background-position;
-        }}
-        .primary-link.chroma:not(.is-disabled):hover {{
-            filter: brightness(1.05) saturate(1.04);
-            box-shadow: 0 6px 20px rgba(114, 46, 209, 0.38);
-            text-decoration: none;
-            color: #fff;
-        }}
-        .primary-link.chroma:not(.is-disabled):hover .btn-text {{
-            background: rgba(16, 12, 32, 0.86);
-        }}
-        .primary-link.chroma:not(.is-disabled):active {{
-            filter: brightness(0.97);
-        }}
-        .primary-link.chroma:not(.is-disabled):active .btn-text {{
-            background: rgba(16, 12, 32, 0.9);
-        }}
-        @keyframes chroma-slide {{
-            from {{ transform: translateX(0); }}
-            to {{ transform: translateX(-50%); }}
-        }}
-        @keyframes chroma-shine {{
-            from {{ background-position: 0 0, -42% 0; }}
-            to {{ background-position: 0 0, 142% 0; }}
-        }}
-        @media (prefers-reduced-motion: reduce) {{
-            .primary-link.chroma:not(.is-disabled)::before,
-            .primary-link.chroma:not(.is-disabled)::after {{
-                animation: none;
-            }}
-            .primary-link.chroma:not(.is-disabled)::before {{
-                width: 100%;
-                opacity: 0.92;
-                background: linear-gradient(135deg, #1677ff 0%, #722ed1 55%, #eb2f96 100%);
-                transform: none;
-            }}
-            .primary-link.chroma:not(.is-disabled)::after {{
-                background: linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%);
-                animation: none;
-            }}
-            .primary-link.chroma:not(.is-disabled) {{
-                box-shadow: 0 4px 12px rgba(114, 46, 209, 0.3);
-            }}
-            .primary-link.chroma:not(.is-disabled) .btn-text {{
-                background: rgba(16, 12, 32, 0.8);
-                text-shadow: none;
-                -webkit-backdrop-filter: none;
-                backdrop-filter: none;
-            }}
-            .header.channel-header .primary-link.chroma:not(.is-disabled)::before {{
-                background: linear-gradient(135deg, #722ed1 0%, #b37feb 100%);
-            }}
-        }}
-        .cancel-btn {{
-            display: inline-block;
-            padding: 8px 16px;
-            background: #ff6666;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }}
-        .cancel-btn:hover {{ background: #cc5555; }}
-        #countdown {{ color: #ff6600; font-weight: bold; }}
-        .disabled {{ color: #999; }}
-        .channel {{ background: linear-gradient(135deg, #e8f0fe, #f0e6ff); border-left: 4px solid #7c4dff; }}
-        .channel a {{ color: #7c4dff; }}
-        .channel a:hover {{ color: #5e35b1; }}
-        .channel-item {{ display: none; }}
-        .channel-item.is-active {{ display: list-item; }}
-        .channel-item.is-recommend {{
-            background: #f3e8ff;
-            border-left: 4px solid #7c4dff;
-        }}
-        .tip {{ color: #666; font-size: 0.95em; }}
-        /* 下方群列表：按平台分块，默认隐藏，选中后只显示对应平台 */
-        .group-section {{
-            display: none;
-            margin: 18px 0 24px;
-            padding: 14px 16px 8px;
-            border: 1px solid #e3eaf5;
-            border-radius: 10px;
-            background: #fafcff;
-        }}
-        .group-section.is-active {{
-            display: block;
-            border-color: #0066cc;
-            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
-            background: #f3f8ff;
-        }}
-        .group-section-title {{
-            margin: 0 0 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #e3eaf5;
-            font-size: 1.1em;
-        }}
-        .group-count {{
-            color: #888;
-            font-weight: normal;
-            font-size: 0.9em;
-            margin-left: 6px;
-        }}
-        .group-list {{ margin: 0; }}
-        .group-item.is-recommend {{
-            background: #fff4e8;
-            border-left: 4px solid #ff6600;
-        }}
-        .group-link {{
-            display: block;
-            color: inherit;
-            text-decoration: none;
-            font-weight: normal;
-        }}
-        .group-link:hover {{ text-decoration: none; }}
-        .group-link:hover .group-title {{ text-decoration: underline; color: #004499; }}
-        .group-row {{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }}
-        .group-avatar {{
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
-            background: #e8eef8;
-        }}
-        .group-body {{
-            min-width: 0;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }}
-        .group-title {{
-            font-weight: bold;
-            color: #0066cc;
-            word-break: break-all;
-        }}
-        .group-item.is-recommend .group-title {{ color: #ff6600; }}
-        .group-meta {{
-            color: #666;
-            font-size: 0.9em;
-        }}
-        .group-meta .full {{ color: #cc4444; }}
-        .group-meta .ok {{ color: #2a7a2a; }}
-        .disabled-row .group-title {{ color: #999; font-weight: normal; }}
-        .header-rec-row {{
-            display: none;
-            align-items: center;
-            gap: 12px;
-            margin: 8px 0 4px;
-        }}
-        .header-rec-row.is-visible {{ display: flex; }}
-        .header-avatar {{
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            object-fit: cover;
-            background: #e8eef8;
-            flex-shrink: 0;
-        }}
-        .header-members {{
-            margin: 0;
-            color: #555;
-            font-size: 0.95em;
-        }}
-        .lists-heading {{ margin: 24px 0 8px; font-size: 1.15em; }}
-        .lists-placeholder {{ color: #888; margin: 12px 0 24px; }}
-        .lists-placeholder.is-hidden {{ display: none; }}
-        .channel-placeholder {{ color: #888; margin: 8px 0; }}
-        .channel-placeholder.is-hidden {{ display: none; }}
-        .channel-block.is-empty .channel-list {{ display: none; }}
-    </style>
-    <script>
-        const RECOMMENDS = {recommend_json};
-        const CHANNELS = {channels_json};
-        const PLATFORM_LABELS = {{ windows: "Windows", android: "Android", mac: "Mac" }};
-        // 与 gen_index.py 同一 GROUPINFO_API（可由环境变量覆盖后注入）
-        const GROUPINFO_API = {groupinfo_api_json};
-        const groupInfoCache = Object.create(null); // gid -> info | null(failed)
-
-        // 未选平台不自动跳转；URL/?platform= 指定时等同已选并启动跳转
-        let redirectEnabled = false;
-        let countdown = 8;
-        let countdownTimer = null;
-        let currentJoinUrl = "";
-        let currentPlatform = "";
-        let userCancelled = false;
-
-        function stopCountdown() {{
-            redirectEnabled = false;
-            if (countdownTimer) {{
-                clearTimeout(countdownTimer);
-                countdownTimer = null;
-            }}
-        }}
-
-        function cancelRedirect() {{
-            userCancelled = true;
-            stopCountdown();
-            const text = document.getElementById("redirectText");
-            if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
-        }}
-
-        function handleLinkClick(event) {{
-            // 点了列表里的群：取消自动跳转，但保留已选平台与主按钮
-            if (currentPlatform) cancelRedirect();
-        }}
-
-        function handlePrimaryLinkClick(event) {{
-            const primary = document.getElementById("primaryLink");
-            if (primary.classList.contains("is-disabled") || !currentJoinUrl) {{
-                event.preventDefault();
-                return;
-            }}
-            cancelRedirect();
-        }}
-
-        function startRedirect(url) {{
-            if (userCancelled) {{
-                // 用户已取消过：只更新链接，不再自动跳
-                currentJoinUrl = url;
-                const text = document.getElementById("redirectText");
-                if (text) text.textContent = "自动跳转已取消，可点击上方按钮或下方群链接加入";
-                return;
-            }}
-            currentJoinUrl = url;
-            redirectEnabled = true;
-            countdown = 8;
-            if (countdownTimer) clearTimeout(countdownTimer);
-
-            const text = document.getElementById("redirectText");
-            if (text) {{
-                text.replaceChildren();
-                text.appendChild(document.createTextNode("已选择平台，页面将在 "));
-                const cd = document.createElement("span");
-                cd.id = "countdown";
-                cd.textContent = String(countdown);
-                text.appendChild(cd);
-                text.appendChild(document.createTextNode(" 秒后自动跳转……"));
-                const cancelBtn = document.createElement("button");
-                cancelBtn.type = "button";
-                cancelBtn.id = "cancelBtn";
-                cancelBtn.className = "cancel-btn";
-                cancelBtn.textContent = "取消自动跳转";
-                cancelBtn.addEventListener("click", cancelRedirect);
-                text.appendChild(cancelBtn);
-            }}
-            countdownTimer = setTimeout(updateCountdown, 1000);
-        }}
-
-        function updateCountdown() {{
-            if (redirectEnabled && countdown > 0) {{
-                countdown--;
-                const el = document.getElementById("countdown");
-                if (el) el.textContent = countdown;
-                countdownTimer = setTimeout(updateCountdown, 1000);
-            }} else if (redirectEnabled && countdown === 0) {{
-                window.location.href = currentJoinUrl;
-            }}
-        }}
-
-        function renderMembersInto(el, info) {{
-            // 用 DOM API 写人数，避免 innerHTML + 外部字段触发 XSS 告警
-            if (!el) return false;
-            el.replaceChildren();
-            if (!info || !info.known) {{
-                el.hidden = true;
-                return false;
-            }}
-            const cur = info.member_count;
-            const max = info.max_member_count;
-            if (!max || max <= 0) {{
-                el.hidden = true;
-                return false;
-            }}
-            const free = typeof info.free_slots === "number"
-                ? info.free_slots
-                : Math.max(0, max - cur);
-            const span = document.createElement("span");
-            span.className = free <= 0 ? "full" : "ok";
-            const freeText = free <= 0 ? "已满" : ("余 " + free);
-            span.textContent = cur + " / " + max + " · " + freeText;
-            el.appendChild(span);
-            el.hidden = false;
-            return true;
-        }}
-
-        function applyInfoToItem(li, info) {{
-            const avatar = li.querySelector(".group-avatar");
-            const meta = li.querySelector(".group-meta");
-            if (!info || !info.known) {{
-                if (avatar) {{
-                    avatar.hidden = true;
-                    avatar.removeAttribute("src");
-                }}
-                if (meta) {{
-                    meta.hidden = true;
-                    meta.replaceChildren();
-                }}
-                return;
-            }}
-            if (avatar && info.avatar_url) {{
-                avatar.src = info.avatar_url;
-                avatar.alt = (info.group_name || "") + " 头像";
-                avatar.hidden = false;
-            }} else if (avatar) {{
-                avatar.hidden = true;
-            }}
-            renderMembersInto(meta, info);
-        }}
-
-        function clearHeaderRecExtra() {{
-            const row = document.getElementById("headerRecRow");
-            const img = document.getElementById("headerAvatar");
-            const members = document.getElementById("headerMembers");
-            if (row) row.classList.remove("is-visible");
-            if (img) {{
-                img.hidden = true;
-                img.removeAttribute("src");
-            }}
-            if (members) {{
-                members.hidden = true;
-                members.replaceChildren();
-            }}
-        }}
-
-        function applyHeaderRecExtra(info) {{
-            const row = document.getElementById("headerRecRow");
-            const img = document.getElementById("headerAvatar");
-            const members = document.getElementById("headerMembers");
-            if (!row || !info || !info.known) {{
-                clearHeaderRecExtra();
-                return;
-            }}
-            let show = false;
-            if (img && info.avatar_url) {{
-                img.src = info.avatar_url;
-                img.alt = (info.group_name || "推荐群") + " 头像";
-                img.hidden = false;
-                show = true;
-            }} else if (img) {{
-                img.hidden = true;
-            }}
-            if (renderMembersInto(members, info)) {{
-                show = true;
-            }}
-            row.classList.toggle("is-visible", show);
-        }}
-
-        function chunk(arr, size) {{
-            const out = [];
-            for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-            return out;
-        }}
-
-        function applyPlatformInfoForIds(platform, ids, recGid) {{
-            // 只刷新本批相关 DOM，有结果就先展示
-            ids.forEach((id) => {{
-                if (!(id in groupInfoCache)) return;
-                document.querySelectorAll(
-                    '.group-item[data-platform="' + platform + '"][data-gid="' + id + '"]'
-                ).forEach((li) => {{
-                    applyInfoToItem(li, groupInfoCache[id]);
-                }});
-            }});
-            if (recGid && (recGid in groupInfoCache)) {{
-                applyHeaderRecExtra(groupInfoCache[recGid]);
-            }}
-        }}
-
-        async function fetchGroupInfoBatch(ids, onPartDone) {{
-            const missing = ids.filter((id) => !(id in groupInfoCache));
-            // 已有缓存的也回调，方便立刻上屏
-            const already = ids.filter((id) => id in groupInfoCache);
-            if (already.length && typeof onPartDone === "function") {{
-                onPartDone(already);
-            }}
-            if (!missing.length) return;
-
-            // 小批量串行；每批返回立刻 onPartDone，不用等全部
-            for (const part of chunk(missing, 5)) {{
-                try {{
-                    const url = GROUPINFO_API + "?ids=" + encodeURIComponent(part.join(","));
-                    const resp = await fetch(url, {{
-                        method: "GET",
-                        mode: "cors",
-                        credentials: "omit",
-                        cache: "default",
-                    }});
-                    if (!resp.ok) {{
-                        part.forEach((id) => {{ groupInfoCache[id] = null; }});
-                        if (typeof onPartDone === "function") onPartDone(part);
-                        continue;
-                    }}
-                    const body = await resp.json();
-                    if (!body || body.code !== 0 || !body.data) {{
-                        part.forEach((id) => {{ groupInfoCache[id] = null; }});
-                        if (typeof onPartDone === "function") onPartDone(part);
-                        continue;
-                    }}
-                    const list = Array.isArray(body.data.groups)
-                        ? body.data.groups
-                        : (body.data.group_id ? [body.data] : []);
-                    const byId = Object.create(null);
-                    list.forEach((g) => {{
-                        if (g && g.group_id) byId[String(g.group_id)] = g;
-                    }});
-                    part.forEach((id) => {{
-                        const g = byId[id];
-                        groupInfoCache[id] = (g && g.known) ? g : null;
-                    }});
-                }} catch (e) {{
-                    part.forEach((id) => {{ groupInfoCache[id] = null; }});
-                }}
-                if (typeof onPartDone === "function") onPartDone(part);
-            }}
-        }}
-
-        async function loadPlatformGroupInfo(platform) {{
-            const items = document.querySelectorAll(
-                '.group-item[data-platform="' + platform + '"][data-gid]'
-            );
-            const ids = [];
-            items.forEach((li) => {{
-                const gid = li.getAttribute("data-gid");
-                if (gid) ids.push(gid);
-            }});
-            // 推荐群也查一下（可能与列表同一 gid）
-            const rec = RECOMMENDS[platform];
-            let recGid = "";
-            if (rec && rec.kind !== "channel" && rec.gid) {{
-                recGid = String(rec.gid);
-                ids.push(recGid);
-            }} else {{
-                clearHeaderRecExtra();
-            }}
-            // 推荐群优先拉取，顶部头像/人数更早出现
-            let unique = Array.from(new Set(ids));
-            if (recGid) {{
-                unique = [recGid].concat(unique.filter((id) => id !== recGid));
-            }}
-            if (!unique.length) {{
-                clearHeaderRecExtra();
-                return;
-            }}
-            // 已缓存的立刻上屏
-            const cachedNow = unique.filter((id) => id in groupInfoCache);
-            if (cachedNow.length) {{
-                applyPlatformInfoForIds(platform, cachedNow, recGid);
-            }}
-            // 逐批回调：哪批好了就先画哪批
-            await fetchGroupInfoBatch(unique, (partIds) => {{
-                // 平台已切换则丢弃过期回调
-                if (currentPlatform !== platform) return;
-                applyPlatformInfoForIds(platform, partIds, recGid);
-            }});
-        }}
-
-        function resetGroupRecommendMarks() {{
-            document.querySelectorAll(".group-item").forEach((li) => {{
-                li.classList.remove("is-recommend");
-                const title = li.querySelector(".group-title");
-                if (!title) return;
-                const label = li.getAttribute("data-label") || "";
-                // 去掉「 - 当前推荐」后缀
-                title.textContent = label;
-                title.classList.remove("current");
-            }});
-        }}
-
-        function resetChannelRecommendMarks() {{
-            // 不重建 <a>、不写回 href（CodeQL 会把 getAttribute→setAttribute(href) 判为 DOM XSS）
-            // 静态 HTML 里已有安全的 <a href=...>，只恢复文案与样式
-            document.querySelectorAll(".channel-item").forEach((li) => {{
-                li.classList.remove("is-recommend");
-                const a = li.querySelector("a");
-                if (!a) return;
-                const label = li.getAttribute("data-label") || "";
-                a.textContent = label;
-                a.classList.remove("current");
-            }});
-        }}
-
-        function applyGroupRecommendMark(li) {{
-            li.classList.add("is-recommend");
-            const title = li.querySelector(".group-title");
-            const label = li.getAttribute("data-label") || "";
-            if (title) {{
-                title.textContent = label + " - 当前推荐";
-                title.classList.add("current");
-            }}
-        }}
-
-        function applyChannelRecommendMark(li) {{
-            // 保留原有 <a href>，只改 textContent，避免从 data-* 回写 URL
-            li.classList.add("is-recommend");
-            const a = li.querySelector("a");
-            const label = li.getAttribute("data-label") || "";
-            if (a) {{
-                a.textContent = label + " - 当前推荐";
-                a.classList.add("current");
-            }}
-        }}
-
-        function markPlatformRecommend(platform) {{
-            resetGroupRecommendMarks();
-            resetChannelRecommendMarks();
-
-            const listsPlaceholder = document.getElementById("listsPlaceholder");
-            if (listsPlaceholder) listsPlaceholder.classList.add("is-hidden");
-
-            document.querySelectorAll(".group-section").forEach((sec) => {{
-                sec.classList.toggle("is-active", sec.getAttribute("data-platform") === platform);
-            }});
-
-            // 频道：只展示当前平台
-            const channelPlaceholder = document.getElementById("channelPlaceholder");
-            const channelBlock = document.getElementById("channelBlock");
-            let hasChannel = false;
-            document.querySelectorAll(".channel-item").forEach((li) => {{
-                const match = li.getAttribute("data-platform") === platform;
-                li.classList.toggle("is-active", match);
-                if (match) hasChannel = true;
-            }});
-            if (channelPlaceholder) {{
-                channelPlaceholder.classList.toggle("is-hidden", hasChannel);
-                if (!hasChannel) {{
-                    channelPlaceholder.textContent = "该平台暂无 QQ 频道";
-                }}
-            }}
-            if (channelBlock) {{
-                channelBlock.classList.toggle("is-empty", !hasChannel);
-            }}
-
-            document.querySelectorAll(
-                '.group-item[data-platform="' + platform + '"][data-recommend="1"]'
-            ).forEach(applyGroupRecommendMark);
-            document.querySelectorAll(
-                '.channel-item[data-platform="' + platform + '"][data-recommend="1"]'
-            ).forEach(applyChannelRecommendMark);
-        }}
-
-        function normalizePlatform(raw) {{
-            if (!raw) return "";
-            const s = String(raw).trim().toLowerCase();
-            const map = {{
-                windows: "windows", win: "windows", win32: "windows", pc: "windows",
-                android: "android", and: "android",
-                mac: "mac", macos: "mac", osx: "mac", darwin: "mac",
-            }};
-            return map[s] || "";
-        }}
-
-        function platformFromUrl() {{
-            try {{
-                const params = new URLSearchParams(window.location.search);
-                const keys = ["platform", "os", "p", "client"];
-                for (let i = 0; i < keys.length; i++) {{
-                    const v = normalizePlatform(params.get(keys[i]));
-                    if (v && RECOMMENDS[v]) return v;
-                }}
-                // 兼容 #windows / #mac / #platform=android
-                const hash = (window.location.hash || "").replace(/^#/, "");
-                if (hash) {{
-                    let h = hash;
-                    const eq = hash.indexOf("=");
-                    if (eq >= 0) h = hash.slice(eq + 1);
-                    const v = normalizePlatform(h);
-                    if (v && RECOMMENDS[v]) return v;
-                }}
-            }} catch (e) {{}}
-            return "";
-        }}
-
-        function syncPlatformToUrl(platform) {{
-            try {{
-                const url = new URL(window.location.href);
-                url.searchParams.set("platform", platform);
-                ["os", "p", "client"].forEach((k) => url.searchParams.delete(k));
-                const next = url.pathname + url.search + (url.hash || "");
-                if (next !== window.location.pathname + window.location.search + window.location.hash) {{
-                    history.replaceState(null, "", next);
-                }}
-            }} catch (e) {{}}
-        }}
-
-        function selectPlatform(platform, options) {{
-            const rec = RECOMMENDS[platform];
-            if (!rec) return;
-            options = options || {{}};
-
-            // 主动点选平台视为新意图：重新开启自动跳转
-            userCancelled = false;
-            currentPlatform = platform;
-
-            document.querySelectorAll(".platform-tab").forEach((btn) => {{
-                btn.classList.toggle("active", btn.getAttribute("data-platform") === platform);
-            }});
-
-            markPlatformRecommend(platform);
-            clearHeaderRecExtra();
-            // 异步拉头像/人数；失败静默，不展示
-            loadPlatformGroupInfo(platform);
-
-            const title = document.getElementById("join-title");
-            const gidEl = document.getElementById("join-gid");
-            const primary = document.getElementById("primaryLink");
-            const btnText = primary.querySelector(".btn-text");
-            const label = PLATFORM_LABELS[platform] || platform;
-            const isChannel = rec.kind === "channel";
-
-            if (isChannel) {{
-                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
-                gidEl.style.display = "none";
-                if (btnText) btnText.textContent = "立即加入 QQ 频道";
-            }} else {{
-                title.textContent = "欢迎加入【" + rec.name + "】（" + label + "）";
-                if (rec.gid) {{
-                    gidEl.style.display = "";
-                    gidEl.replaceChildren();
-                    gidEl.appendChild(document.createTextNode("群号: "));
-                    const strong = document.createElement("strong");
-                    strong.textContent = String(rec.gid);
-                    gidEl.appendChild(strong);
-                }} else {{
-                    gidEl.style.display = "none";
-                }}
-                if (btnText) btnText.textContent = "立即加入当前推荐群组";
-            }}
-
-            primary.href = rec.url;
-            primary.classList.remove("is-disabled");
-            primary.setAttribute("aria-disabled", "false");
-            if (!options.skipUrlSync) {{
-                syncPlatformToUrl(platform);
-            }}
-            startRedirect(rec.url);
-        }}
-
-        // URL 带平台时自动选中，无需手动点
-        // 例: ?platform=windows  ?os=android  ?p=mac  #windows
-        function initPlatformFromUrl() {{
-            const p = platformFromUrl();
-            if (p) selectPlatform(p, {{ skipUrlSync: true }});
-        }}
-        if (document.readyState === "loading") {{
-            document.addEventListener("DOMContentLoaded", initPlatformFromUrl);
-        }} else {{
-            initPlatformFromUrl();
-        }}
-    </script>
-</head>
-<body>
-    <div class="container">
-        <div id="join-header" class="header{header_extra}">
-            <h2 id="join-title">欢迎加入 MAA 交流群</h2>
-            <div id="headerRecRow" class="header-rec-row">
-                <img id="headerAvatar" class="header-avatar" alt="" width="48" height="48" hidden>
-                <p id="headerMembers" class="header-members" hidden></p>
-            </div>
-            <p id="join-gid" style="display:none"></p>
-
-            <div class="platform-row">
-                <span class="platform-label">请先选择平台：</span>
-                <div class="platform-tabs" role="group" aria-label="客户端平台">
-                    <button type="button" class="platform-tab" data-platform="windows"
-                        onclick="selectPlatform('windows')">Windows</button>
-                    <button type="button" class="platform-tab" data-platform="android"
-                        onclick="selectPlatform('android')">Android</button>
-                    <button type="button" class="platform-tab" data-platform="mac"
-                        onclick="selectPlatform('mac')">Mac</button>
-                </div>
-            </div>
-
-            <p>
-                <a id="primaryLink" href="#" class="primary-link chroma is-disabled"
-                   aria-disabled="true" onclick="handlePrimaryLinkClick(event)">
-                    <span class="btn-text">请先选择平台</span>
-                </a>
-            </p>
-            <p id="redirectText">尚未选择平台，不会自动跳转</p>
-        </div>
-
-        <div id="channelBlock" class="channel-block"{channel_block_display}>
-            <h3>QQ 频道</h3>
-            <p id="channelPlaceholder" class="channel-placeholder">请先选择平台，以查看对应频道。</p>
-            <ul class="channel-list">
-{channel_items_html}            </ul>
-        </div>
-
-        <h3 class="lists-heading">群组列表</h3>
-        <p id="listsPlaceholder" class="lists-placeholder">请先在上方选择平台，以查看对应群列表。</p>
-{groups_sections_html}
-        <p class="tip">如果当前群组已满或链接失效，请选择其他群组加入（点击任意链接将取消自动跳转）。</p>
-    </div>
-</body>
-</html>
-"""
-
-    out = index_path
-    out.write_text(index_html, encoding="utf-8")
-
-    # 清理旧的分平台页面
-    for stale in ("index_windows.html", "index_android.html", "index_mac.html"):
-        p = base / stale
-        if p.exists():
-            p.unlink()
+    out = data_path
+    out.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     parts = []
     for p in PLATFORMS:
@@ -1582,7 +639,7 @@ def main() -> None:
             f", 配置 {PLATFORM_FILES[p]}{ch_info}"
         )
     print(f"  - 频道配置: {CHANNELS_FILE} ({len(channels)} 个平台)")
-    print("  - 粘性状态: index.html RECOMMENDS")
+    print(f"  - 粘性状态: {DATA_FILE} recommends")
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ name: update_qq_group_index
 #   - mode=auto：粘性自动（未满保持，满了选第一个有空位）
 #   - mode=manual：用 group_number 钉死该平台推荐群
 #   - mode=channel：该平台推 QQ 频道（无配置则回退 auto）
-#   - 未选中的平台：保持 index.html 里上次推荐，不查人数
+#   - 未选中的平台：保持 data.json 里上次推荐，不查人数
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate index.html
+      - name: Generate data.json
         working-directory: MaaAssistantArknights/api/qqgroup
         env:
           GROUPINFO_API: https://join.maameow.com/api/groupinfo
@@ -105,7 +105,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
+          git add data.json
 
           PLATFORM="$(echo -n "$PLATFORM" | tr -d '[:space:]')"
           MODE="$(echo -n "$MODE" | tr -d '[:space:]')"
@@ -113,16 +113,16 @@ jobs:
 
           case "$MODE" in
             auto)
-              MSG="Update index.html: sticky auto (${PLATFORM})"
+              MSG="Update data.json: sticky auto (${PLATFORM})"
               ;;
             channel)
-              MSG="Update index.html: QQ channel (${PLATFORM})"
+              MSG="Update data.json: QQ channel (${PLATFORM})"
               ;;
             manual)
-              MSG="Update index.html: ${PLATFORM} group ${GROUP_NUMBER} (manual)"
+              MSG="Update data.json: ${PLATFORM} group ${GROUP_NUMBER} (manual)"
               ;;
             *)
-              MSG="Update index.html (${PLATFORM}/${MODE})"
+              MSG="Update data.json (${PLATFORM}/${MODE})"
               ;;
           esac
 
