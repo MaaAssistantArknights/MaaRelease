@@ -5,14 +5,14 @@
         "action": "ClickSelf",
         "next": ["FightSeries-CloseList"]
     },
-    "TA-OpenOcr": {
-        "ocrReplace": [
-            ["^.春$", "望春"],		
-            ["潰事", "遺事"]
-		],
-        "text": ["辭歲行", "望春", "遺事", "待筆", "新篇"]
+    "PA-OpenOcr": {
+        "text": ["人們", "我們", "踏入", "新生", "黎明"]
     },
-    "TAChapterToTA": {
-        "text": ["霜秋", "實錄"]
+    "PAChapterToPA": {
+        "ocrReplace": [
+            ["芙真", "天真"],
+            ["告别", "告別"]
+        ],
+        "text": ["告別", "天真", "年代"]
     }
 }
