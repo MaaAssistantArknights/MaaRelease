@@ -243,10 +243,10 @@
         "next": ["BlackFlowTemporary@DepartFor", "BlackFlowTemporary@ExitThenAbandon"]
     },
     "BlackFlowTemporary@DepartFor": {
-        "doc": "识别 <出发前往> 并点击；若点击后未出现 <投资系统> 则直接放弃本次探索",
+        "doc": "识别 <加工品前往> 并点击；若点击后未出现 <投资系统> 则直接放弃本次探索",
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
-        "text": ["出发前往"],
+        "text": ["工品前往"],
         "roi": [1140, 520, 120, 55],
         "postDelay": 2000,
         "next": ["BlackFlowTemporary@InvestSystem", "BlackFlowTemporary@ExitThenAbandon"]
