@@ -346,5 +346,11 @@
         "roi": [1075, 590, 120, 45],
         "postDelay": 1000,
         "next": ["#self", "BlackFlowTemporary@StartExplore", "BlackFlowTemporary@WaitForExploreRestart"]
+    },
+    "AccountManager": {
+        "Doc": "新版登录页账号管理左移，同步自 MaaAssistantArknights#18524",
+        "action": "ClickSelf",
+        "roi": [697, 663, 144, 39],
+        "next": ["LoginOther"]
     }
 }
