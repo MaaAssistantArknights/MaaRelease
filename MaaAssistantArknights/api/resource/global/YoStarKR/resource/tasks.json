@@ -6,10 +6,18 @@
         "next": ["FightSeries-CloseList"]
     },
     "Episode17": {
-        "text": ["임계", "상전이", "익스트림"]
+        "baseTask": "SS-OpenOcr",
+        "postDelay": 7000,
+        "text": ["임계", "상전이", "익스트림"],
+        "next": ["Main17ChapterToMain17"]
     },
     "Main17ChapterToMain17": {
-        "text": ["연계", "구역"]
+        "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "text": ["연계", "구역"],
+        "postDelay": 1000,
+        "roi": [1101, 563, 168, 121],
+        "next": ["#self", "ChapterSwipeToTheRight"]
     },
     "OrundumActivities": {
         "text": ["용문", "복권방", "소원", "게시판"]
