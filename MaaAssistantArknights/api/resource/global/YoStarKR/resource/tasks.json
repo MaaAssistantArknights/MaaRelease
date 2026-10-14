@@ -5,18 +5,16 @@
         "action": "ClickSelf",
         "next": ["FightSeries-CloseList"]
     },
+    "Episode17": {
+        "text": ["임계", "상전이", "익스트림"]
+    },
+    "Main17ChapterToMain17": {
+        "text": ["연계", "구역"]
+    },
     "OrundumActivities": {
         "text": ["용문", "복권방", "소원", "게시판"]
     },
-    "PA-OpenOcr": {
-        "text": ["사람들", "우리들", "순수", "했던", "날과의", "작별", "새로운", "여명을", "향해"]
-    },
-    "PAChapterToPA": {
-        "text": ["순수", "했던", "날과의", "작별"]
-    },
     "SpecialAccessActivities": {
-        "ocrReplace": [
-            ["[사-싷][파-핗][사-싷]", "스페셜"]
-        ]
+        "ocrReplace": [["[사-싷][파-핗][사-싷]", "스페셜"]]
     }
 }
