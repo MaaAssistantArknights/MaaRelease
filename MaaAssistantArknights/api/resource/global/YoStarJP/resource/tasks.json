@@ -38,10 +38,18 @@
         "text": ["開運", "おみくじ", "バザール", "カルネヴァ", "ラテラーノ", "良縁成就", "カランド", "龍門", "スクラッチ", "スクラツ"],
         "ocrReplace": [["(良.*成.*|良縁.*)", "良縁成就"]]
     },
-    "PA-OpenOcr": {
-        "text": ["人々、我々", "人々", "我々", "黎明に歩みを", "黎明", "歩みを"]
+    "Episode17": {
+        "baseTask": "SS-OpenOcr",
+        "postDelay": 7000,
+        "text": ["相変", "臨界"],
+        "next": ["Main17ChapterToMain17"]
     },
-    "PAChapterToPA": {
-        "text": ["青さに別れを", "青さに", "別れを"]
+    "Main17ChapterToMain17": {
+        "algorithm": "OcrDetect",
+        "action": "ClickSelf",
+        "text": ["Transfer", "Area"],
+        "postDelay": 1000,
+        "roi": [1101, 563, 168, 121],
+        "next": ["#self", "ChapterSwipeToTheRight"]
     }
 }
