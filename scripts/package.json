@@ -5,13 +5,13 @@
         "@octokit/auth-unauthenticated": "^7.0.5",
         "@octokit/plugin-retry": "^8.1.1",
         "@octokit/rest": "^22.0.1",
-        "byte-size": "^9.0.1",
+        "byte-size": "^9.0.2",
         "cron": "^4.4.0",
         "eslint": "^10.12.0",
         "minimatch": "^10.2.6",
         "minio": "^8.0.7",
         "simple-git": "^4.0.2",
-        "undici": "^8.11.2"
+        "undici": "^8.12.2"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
