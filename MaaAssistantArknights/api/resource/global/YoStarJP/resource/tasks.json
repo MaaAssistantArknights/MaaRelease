@@ -37,19 +37,5 @@
         "doc": "幸运墙领合成玉",
         "text": ["開運", "おみくじ", "バザール", "カルネヴァ", "ラテラーノ", "良縁成就", "カランド", "龍門", "ゼルグラ", "スクラッチ", "スクラツ"],
         "ocrReplace": [["(良.*成.*|良縁.*)", "良縁成就"]]
-    },
-    "Episode17": {
-        "baseTask": "SS-OpenOcr",
-        "postDelay": 7000,
-        "text": ["相変", "臨界"],
-        "next": ["Main17ChapterToMain17"]
-    },
-    "Main17ChapterToMain17": {
-        "algorithm": "OcrDetect",
-        "action": "ClickSelf",
-        "text": ["接続", "区画", "Transfer", "Area"],
-        "postDelay": 1000,
-        "roi": [1101, 563, 168, 121],
-        "next": ["#self", "ChapterSwipeToTheRight"]
     }
 }

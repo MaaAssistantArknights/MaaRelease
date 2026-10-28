@@ -7,19 +7,5 @@
     },
     "OrundumActivities": {
         "text": ["Lucky Strips", "Wishing", "Lucky", "Wall", "Bazaar", "Shrine", "Nurtury", "Wish", "Board", "Enmusubi", "Zelgrad"]
-    },
-    "Episode17": {
-        "baseTask": "SS-OpenOcr",
-        "postDelay": 7000,
-        "text": ["Critical", "Phase", "Transition", "Extreme"],
-        "next": ["Main17ChapterToMain17"]
-    },
-    "Main17ChapterToMain17": {
-        "algorithm": "OcrDetect",
-        "action": "ClickSelf",
-        "text": ["Transfer", "Area"],
-        "postDelay": 1000,
-        "roi": [1101, 563, 168, 121],
-        "next": ["#self", "ChapterSwipeToTheRight"]
     }
 }
