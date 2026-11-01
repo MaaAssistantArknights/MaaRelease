@@ -60,6 +60,7 @@ jobs:
   #   3. `notAlpha` 代表不上传 alpha 版本。
   # 如果需要新增上传流程，需在下方参考其他上传流程和上方说明添加。
   upload:
+    name: Upload ${{ matrix.os }} (${{ matrix.repo }}) to ${{ matrix.target }}
     needs: getReleaseTag
     strategy:
       fail-fast: false
@@ -171,6 +172,7 @@ jobs:
           rclone delete MAA:maa-release/macos --min-age 90d --rmdirs --log-level INFO
 
   webhook:
+    name: Trigger release webhooks
     needs: getReleaseTag
     runs-on: ubuntu-latest
     steps:
