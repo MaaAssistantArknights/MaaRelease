@@ -1,3 +1,8 @@
+---
+name: update-stage-activity
+description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/StageActivityV2.json（sideStoryStage 活动关卡、resourceCollection 资源收集、miniGame 小游戏）时使用。包含字段参考、时间/时区语义、每服保留策略与验证清单。
+---
+
 # 修改 MAA 活动信息（StageActivityV2.json）
 
 ## 目标文件
@@ -116,12 +121,14 @@
 
 `UtcStartTime` / `UtcExpireTime` **名不副实**：写入的是活动所在时区的**本地墙上时间**，GUI 解析时减去 `TimeZone` 小时得到 UTC。格式必须严格为 `yyyy/MM/dd HH:mm:ss`（如 `2026/11/22 03:59:59`）。开服时间常见 `16:00:00`（下午四点维护后）或 `04:00:00`/`12:00:00`，以各服公告为准。
 
+格式仅支持**单一** `TimeZone`：活动跨越夏令时切换时（EN 服），两个边界必有一个偏差 1 小时，此时以**结束时刻**所在偏移为准（避免活动结束后界面仍多显示 1 小时）。
+
 ## 修改流程
 
 1. 确认各服当前活动档期（官服/外服公告），按保留策略决定增删。
-2. 新活动需要确认：关卡代号（`XX-N`）、是否可搓玉（搓玉效率文案）、代理关（复刻）、小游戏任务名及其最低支持版本（查主仓库 git log：`git log --oneline -S "MiniGame@WartimePressCommittee" -- resource/tasks/`）。
+2. 新活动需要确认：关卡代号（`XX-N`）、是否可搓玉（搓玉效率文案）、代理关（复刻）、小游戏任务名及其最低支持版本（在主仓库根执行 `git log --oneline -S "MiniGame@WartimePressCommittee" -- resource/tasks/`，任务按目录组织在 `resource/tasks/` 下）。
 3. 编辑 JSON，格式遵循 `.prettierrc` 对 `MaaAssistantArknights/api/gui/*.json` 的覆盖配置：**2 空格缩进**、单行内联 stage/miniGame 对象（`{ "Display": ..., "Value": ..., "Drop": ... }`）。
-4. 校验 JSON 合法：`python -m json.tool MaaAssistantArknights/api/gui/StageActivityV2.json > /dev/null`
+4. 校验 JSON 合法（无输出即通过，兼容 PowerShell / bash）：`python -c "import json; json.load(open('MaaAssistantArknights/api/gui/StageActivityV2.json', encoding='utf-8'))"`
 5. 用了 `DisplayKey`/`TipKey` → grep 主仓库 `src/MaaWpfGui/Res/Localizations/` 确认 key 已存在（各语言文件）；用新 key = 无效，需先发 GUI 版本。
 6. 用了 `Drop` 物品 id → 确认存在于主仓库 `resource/item_index.json`。
 7. 提交（历史惯例：`chore: Yostar MT rerun (#669)`、`feat: TL 战时新闻委员会 (#667)`、`chore: 添加 TL-4 搓玉活动关卡配置 (#661)`）。
@@ -133,5 +140,5 @@
 - [ ] 所有 miniGame 条目带 UtcStartTime/UtcExpireTime/TimeZone
 - [ ] 时间格式 `yyyy/MM/dd HH:mm:ss`，TimeZone 与服匹配（EN 服注意夏令时）
 - [ ] DisplayKey/TipKey 在主仓库语言文件中已存在
-- [ ] JSON 通过 `python -m json.tool` 校验
+- [ ] JSON 校验通过（`python -c` 命令无输出）
 - [ ] 2 空格缩进、内联对象风格与现有内容一致
