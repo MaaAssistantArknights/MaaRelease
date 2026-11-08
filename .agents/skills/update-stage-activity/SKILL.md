@@ -10,7 +10,7 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 `MaaAssistantArknights/api/gui/StageActivityV2.json`（MaaRelease 仓库内，下文相对路径均以 MaaRelease 根为基准）
 
 - 这是 MAA 客户端的 **OTA 热更文件**，经 GitHub Pages 发布（仓库根有 CNAME），GUI 启动时拉取 `gui/StageActivityV2.json` 并缓存到 `cache/gui/`。
-- MAA 主仓库（[MaaAssistantArknights](https://github.com/MaaAssistantArknights/MaaAssistantArknights)，通常与本仓库同级克隆，下称"主仓库"）**没有**它的正本，`build/bin/Release/cache/gui/` 下只是本地运行缓存——本文件只改 MaaRelease 这一处。
+- MAA 主仓库（[MaaAssistantArknights](https://github.com/MaaAssistantArknights/MaaAssistantArknights)，通常与本仓库同级克隆，下称"主仓库"）**没有**它的正本，`build/bin/*/cache/gui/`（Debug/Release 构建）下只是本地运行缓存——本文件只改 MaaRelease 这一处。
 - 联动文件：`MaaAssistantArknights/api/resource/tasks.json`（精简 tasks 覆盖层，活动导航热更，见「tasks.json 联动」）。
 - 解析代码位于主仓库（只读参考，不要改）：WPF GUI `src/MaaWpfGui/Services/StageManager.cs`（字段权威，全量解析）。
 - 完整活动上线流程（含主仓库 `resource/tasks/Stages/XX.json` 导航文件的编写、本地测试缓存同步）见主仓库 `.agents/skills/side-story-navigation/SKILL.md`；本 skill 覆盖以 MaaRelease 为工作区的部分。
@@ -24,7 +24,7 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 3. **1 个 resourceCollection**（资源收集/全开放，单对象）
 4. **所有当前开放的小游戏**（miniGame 数组条目）
 
-前三个槽位各取**最新一期**：条目允许已过期（两期活动之间的空档期即此状态），**等下一期上线时才替换**，不因"已过期"单独删除；也不保留同槽位的更旧条目。小游戏只留当前开放的（GUI 本会自动隐藏过期小游戏）。两服活动档期不同（外服落后国服约半年），替换时按各服自己的档期判断，不要一改全改。
+前三个槽位各取**最新一期**：判断标准是"最新"而非"当前开放"——活动档期常有重叠（复刻与新活动并行、同槽位前后紧接），不能按是否过期取舍。有新一期上线时立即替换，并**删除该槽位所有更旧的条目（多余的过期内容一律清除）**；仅当暂无新一期时，槽位里的过期条目可保留至下一期上线（两期之间的空档期即此状态），不因"已过期"单独删除。小游戏只留当前开放的（GUI 本会自动隐藏过期小游戏）。两服活动档期不同（外服落后国服约半年），替换时按各服自己的档期判断，不要一改全改。
 
 ## 顶层结构
 
@@ -71,7 +71,7 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 | `Activity.TimeZone` | int，小时偏移 |
 | `Stages[].Display` | 下拉框显示名；**是去重键**（TryAdd 先到先得），也是可选本地化键 `TaskQueue.Stage.<Display>`（主仓库语言文件命中则翻译，否则原样显示） |
 | `Stages[].Value` | 提交给刷理智任务的实际关卡代号，必须可被 tasks.json 导航（复刻代理关为 `SSReopen-XX` 形式） |
-| `Stages[].Drop` | 材料掉落写物品 id（主仓库 `resource/item_index.json` 按 `name` 字段反查 key；GUI 自动显示物品名+仓库数量；**当期活动代币不写，只写固定掉落的材料**）；搓玉/代理等特殊关直接写文字描述（如 `搓玉效率0.69`、`代理1~8关`），不查表 |
+| `Stages[].Drop` | 材料掉落写物品 id（按 `name` 字段反查物品表取 key：官服主仓库 `resource/item_index.json`，外服 `resource/global/<服>/resource/item_index.json`；GUI 自动显示物品名+仓库数量；**当期活动代币不写，只写固定掉落的材料**）；搓玉/代理等特殊关直接写文字描述（如 `搓玉效率0.69`、`代理1~8关`），不查表 |
 | `Stages[].Activity` / `MinimumRequired` | 可选，覆盖组级 |
 
 排列：`Stages` 数组按关卡编号**从大到小**（高价值关卡在前），搓玉关放最后。
@@ -142,13 +142,13 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 ## 修改流程
 
 1. 确认各服当前活动档期（官服/外服公告），按保留策略决定增删。
-2. 新活动需要确认：关卡代号（`XX-N`）、是否可搓玉（搓玉效率文案）、代理关（复刻）、小游戏任务名及其最低支持版本（在主仓库根执行 `git log --oneline -S "MiniGame@WartimePressCommittee" -- resource/tasks/`，任务按目录组织在 `resource/tasks/` 下）。
+2. 新活动需要确认：关卡代号（`XX-N`）、是否可搓玉（搓玉效率文案）、代理关（复刻）、小游戏任务名及其最低支持版本（在主仓库根执行 `git log --oneline -S "MiniGame@WartimePressCommittee" -- resource/tasks/`；任务按目录组织：官服在 `resource/tasks/`，外服在 `resource/global/<服>/resource/tasks/`）。
 3. 确定 `MinimumRequired`：选章为 OCR 的活动沿用上一期的值；选章为**模板图**时改为**最新 tag 的下一个版本**（主仓库 `git describe --tags` 查当前，如 `v6.15.1` → `v6.15.2`），并提醒用户复查（模板图需随新版本客户端分发）。
 4. 按需同步 `api/resource/tasks.json` 覆盖层（见「tasks.json 联动」）。
 5. 编辑 JSON，格式遵循 `.prettierrc` 对 `MaaAssistantArknights/api/gui/*.json` 的覆盖配置：**2 空格缩进**、单行内联 stage/miniGame 对象（`{ "Display": ..., "Value": ..., "Drop": ... }`）。
 6. 校验 JSON 合法（无输出即通过，兼容 PowerShell / bash）：`python -c "import json; json.load(open('MaaAssistantArknights/api/gui/StageActivityV2.json', encoding='utf-8'))"`
 7. 用了 `DisplayKey`/`TipKey` → grep 主仓库 `src/MaaWpfGui/Res/Localizations/` 确认 key 已存在（各语言文件）；用新 key = 无效，需先发 GUI 版本。
-8. 用了 `Drop` 物品 id → 确认存在于主仓库 `resource/item_index.json`。
+8. 用了 `Drop` 物品 id → 确认存在于主仓库对应服的物品表（官服 `resource/item_index.json`，外服 `resource/global/<服>/resource/item_index.json`）。
 9. 提交（历史惯例：`chore: Yostar MT rerun (#669)`、`feat: TL 战时新闻委员会 (#667)`、`chore: 添加 TL-4 搓玉活动关卡配置 (#661)`）。
 
 ## 检查清单
