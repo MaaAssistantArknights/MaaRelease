@@ -4,18 +4,18 @@
       "SSReopen": {
         "MinimumRequired": "v6.14.0",
         "Activity": {
-          "Tip": "SideStory「墟」复刻",
-          "StageName": "墟",
-          "UtcStartTime": "2026/08/22 04:00:00",
-          "UtcExpireTime": "2026/09/01 03:59:59",
+          "Tip": "SideStory「雪山降临1101」复刻",
+          "StageName": "雪山降临1101",
+          "UtcStartTime": "2026/11/22 04:00:00",
+          "UtcExpireTime": "2026/12/02 03:59:59",
           "TimeZone": 8
         },
         "Stages": [
-          { "Display": "SSReopen-AT", "Value": "SSReopen-AT", "Drop": "代理1~8关" },
-          { "Display": "AT-8", "Value": "AT-8", "Drop": "31093" },
-          { "Display": "AT-7", "Value": "AT-7", "Drop": "30053" },
-          { "Display": "AT-6", "Value": "AT-6", "Drop": "30013" },
-          { "Display": "AT-4", "Value": "AT-4", "Drop": "搓玉效率0.91" }
+          { "Display": "SSReopen-OS", "Value": "SSReopen-OS", "Drop": "代理1~9关" },
+          { "Display": "OS-9", "Value": "OS-9", "Drop": "31053" },
+          { "Display": "OS-8", "Value": "OS-8", "Drop": "30103" },
+          { "Display": "OS-7", "Value": "OS-7", "Drop": "30023" },
+          { "Display": "OS-4", "Value": "OS-4", "Drop": "搓玉效率0.69" }
         ]
       },
       "TL": {
@@ -43,6 +43,17 @@
       "IsResourceCollection": true
     },
     "miniGame": [
+      {
+        "MinimumRequired": "v6.21.0",
+        "Activity": "雪山降临1101",
+        "Display": "OS-喀兰贸易技术研发部",
+        "DisplayKey": "Toolbox.MiniGame.OS",
+        "Value": "MiniGame@OS@Begin",
+        "TipKey": "Toolbox.MiniGame.OS.Tip",
+        "UtcStartTime": "2026/11/22 04:00:00",
+        "UtcExpireTime": "2026/12/02 03:59:59",
+        "TimeZone": 8
+      },
       {
         "MinimumRequired": "v6.22.0-beta.1",
         "Display": "卫戍协议",
