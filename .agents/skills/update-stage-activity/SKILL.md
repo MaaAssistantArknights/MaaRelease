@@ -128,7 +128,7 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 | `UtcStartTime` / `UtcExpireTime` / `TimeZone` | **必填**。WPF 按开放区间过滤，缺失会导致时间解析为 MinValue → 视为已过期 → **条目不显示**。长期保留的条目用 `2099` 年到期 |
 | `Activity` | 可选，关联 sideStoryStage 组的 `Activity.StageName`，使小游戏名出现在该活动的今日提示行下 |
 
-⚠️ 本地化 key 曾被主仓库 #18879 全量重命名（如 `MiniGame@OS` → `Toolbox.MiniGame.OS`，首发 **v6.21.0**）。从老条目/外服条目复制小游戏条目时：`DisplayKey`/`TipKey` 必须换成现行新 key（grep `src/MaaWpfGui/Res/Localizations/zh-cn.xaml` 确认），且 `MinimumRequired` 下限 = **max(任务首发版本, key 首发版本)**，不可照抄原条目的值——如 txwy OS 条目的 `v6.9.4` 是老 key 时代的值，换新 key 后须 ≥ v6.21.0。
+⚠️ 本地化 key 曾被主仓库 #18879 全量重命名（如 `MiniGame@OS` → `Toolbox.MiniGame.OS`，首发 **v6.21.0**）。从老条目/外服条目复制小游戏条目时：`DisplayKey`/`TipKey` 必须换成现行新 key（grep `src/MaaWpfGui/Res/Localizations/zh-cn.xaml` 确认），且 `MinimumRequired` 下限 = **max(任务首发版本, key 首发版本)**，不可照抄原条目的值——如 txwy OS 条目的 `v6.9.4` 是老 key 时代的值，换新 key 后须 ≥ v6.21.0。key 首发版本必须计入下限的原因：GUI 对缺失 key **不会**优雅回退——`LocalizationHelper.GetString` 返回 `{{ key }}` 原文，且 `StageManager.cs` 会拿它直接覆盖 `Display`/`Tip`，低版本客户端会显示裸 key。
 
 ## 时间语义（重要）
 
@@ -143,7 +143,7 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 `MaaAssistantArknights/api/resource/tasks.json` 是精简 tasks **覆盖层**，全量任务由客户端本地资源提供，此处只放热更所需的条目：
 
 - **新活动导航任务**（选章为 OCR 时才需要写入）：任务块放文件**开头**（`{` 之后、现有内容之前），内容与主仓库 `resource/tasks/Stages/XX.json` 完全一致；**不放依赖项**（`SS-Open`、`SideStoryStage`、`SwipeToStage`、`ChapterSwipeToTheRight` 等基础任务由客户端本地资源提供）。
-- **写入前先确认 `Stages/XX.json` 尚未随任何正式 tag 发布**（用「修改流程」的发版查询法）；已发布的（如 OS 自 v6.4.1 起）**不写覆盖层**，`MinimumRequired` ≥ 首发版本即可。
+- **写入前先确认 `Stages/XX.json` 尚未随任何稳定 tag 发布**（用「修改流程」的发版查询法）；已发布的（如 OS 自 v6.4.1 起）**不写覆盖层**，`MinimumRequired` ≥ 首发版本即可——旧于首发版本的客户端仍能看到关卡但 Drop 显示「版本过低」，提示阈值恰好与实际可用性对齐（旧档客户端强行选中提交导致的运行期失败是 GUI 既有行为，与模板图活动一致，按「发版自带后不再热更」惯例接受）。
 - **外服覆盖层**在 `api/resource/global/<服>/resource/tasks.json`：客户端任务本体通用的活动，只需把 OCR text 覆盖为本地语言（如 txwy OS 条目对 `OS-OpenOcr`/`OSChapterToOS` 打的繁体文案补丁），不重发任务结构。
 - **同时删除被替换旧活动的整块任务**（旧前缀开头的所有键）——覆盖层只保留现役活动导航，与 StageActivityV2 旧条目整体替换的语义对齐。
 - **选章为模板图时不写入新活动任务**：模板图随客户端版本分发，未达 MinimumRequired 的旧客户端拿不到图，覆盖层下发的导航任务无法执行；此情况仍要删除旧活动整块。
@@ -157,11 +157,11 @@ description: 修改 MAA OTA 活动信息文件 MaaAssistantArknights/api/gui/Sta
 3. **优先复用其他服历史条目**：同一活动常已在外服跑过，在 MaaRelease 根执行 `git log --all --oneline -S "XX-9" -- MaaAssistantArknights/api/gui/StageActivityV2.json` 找到后，关卡清单、掉落 id、搓玉效率、小游戏 `Value`/`DisplayKey`、时间窗都是现成参考。复制时必须本地化改写：Drop 文案（`合成玉効率 69%` → `搓玉效率0.69`）、Tip 复刻后缀按本服轮次判断、StageName 用本服语言、时间按本服档期、**MinimumRequired 重新推导不可照抄**；官服还要补上外服条目可能没有的代理关。
 4. **发版查询**（主仓库根，判断任务/本地化 key 首发于哪个版本）：
    ```bash
-   git log --oneline -1 -S "<任务名或key>" -- <路径>            # 找到引入 commit
-   git tag --contains <commit> | grep "^v" | sort -V | head -2  # 最早的正式 tag 即首发版本
+   git log --oneline --reverse -S "<任务名或key>" -- <路径> | head -1  # 首次引入的 commit
+   git tag --contains <commit> | grep -E "^v[0-9]+\.[0-9]+\.[0-9]+$" | sort -V | head -1  # 最早稳定 tag 即首发版本
    ```
-   `git tag --contains` 会混入大量 CI 打的 `alpha/` 前缀 tag，务必 `grep "^v"` 过滤。用途：导航任务是否已随客户端发布（决定覆盖层写不写）、`MinimumRequired` 下限。
-5. 确定 `MinimumRequired`：选章为 OCR 的活动沿用上一期的值（且不低于所依赖任务/本地化 key 的首发版本）；选章为**模板图**时改为**最新 tag 的下一个版本**（主仓库 `git describe --tags` 查当前，如 `v6.15.1` → `v6.15.2`），并提醒用户复查（模板图需随新版本客户端分发）。
+   两个坑：`-S` 匹配出现次数的变化，不带 `--reverse` 会取到**最近**一次增删（key 被重命名时就拿错 commit）；`git tag --contains` 会混入 CI 的 `alpha/` 前缀 tag 与 `-beta.N` 预发布 tag，正则只留稳定版号。用途：导航任务是否已随客户端发布（决定覆盖层写不写）、`MinimumRequired` 下限。
+5. 确定 `MinimumRequired`：选章为 OCR 的活动沿用上一期的值（且不低于所依赖任务/本地化 key 的首发版本）；选章为**模板图**时改为**最新稳定 tag 的下一个版本**（主仓库 `git tag --sort=-v:refname | grep -E "^v[0-9]+\.[0-9]+\.[0-9]+$" | head -1` 查当前，如 `v6.15.1` → `v6.15.2`；勿用 `git describe --tags`，CI 的 `alpha/` tag 会抢先命中），并提醒用户复查（模板图需随新版本客户端分发）。
 6. 按需同步 `api/resource/tasks.json` 覆盖层（见「tasks.json 联动」）。
 7. 编辑 JSON，格式遵循 `.prettierrc` 对 `MaaAssistantArknights/api/gui/*.json` 的覆盖配置：**2 空格缩进**、单行内联 stage/miniGame 对象（`{ "Display": ..., "Value": ..., "Drop": ... }`）。
 8. 校验 JSON 合法（无输出即通过，兼容 PowerShell / bash）：`python -c "import json; json.load(open('MaaAssistantArknights/api/gui/StageActivityV2.json', encoding='utf-8'))"`
