@@ -298,13 +298,5 @@
         "roi": [1075, 590, 120, 45],
         "postDelay": 1000,
         "next": ["#self", "BlackFlowTemporary@StartExplore", "BlackFlowTemporary@WaitForExploreRestart"]
-    },
-    "MiniGame@OS@ClickToContinue": {
-        "next": ["MiniGame@OS@CheckAchieved", "MiniGame@OS@Obtain", "MiniGame@OS@StartRebuild", "#self"]
-    },
-    "MiniGame@OS@Obtain": {
-        "baseTask": "CreditShop-Bought",
-        "template": "ItemObtainedIcon.png",
-        "next": ["Stop"]
     }
 }
