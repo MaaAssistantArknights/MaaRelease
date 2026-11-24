@@ -6,12 +6,12 @@
         "@octokit/plugin-retry": "^8.1.1",
         "@octokit/rest": "^22.0.1",
         "byte-size": "^9.0.2",
-        "cron": "^4.4.0",
+        "cron": "^4.4.1",
         "eslint": "^10.15.0",
         "minimatch": "^11.0.9",
         "minio": "^8.0.7",
         "simple-git": "^4.1.0",
-        "undici": "^8.12.4"
+        "undici": "^8.13.1"
     },
     "scripts": {
         "ci": "export RANDOM_UUID=$(uuidgen) && node ci/before.js && npm ci && node ci/after.js",
