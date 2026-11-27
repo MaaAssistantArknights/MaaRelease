@@ -67,21 +67,18 @@
   },
   "YoStarJP": {
     "sideStoryStage": {
-      "MT": {
+      "CF": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "サイドストーリー「命ある者の旅」復刻",
-          "StageName": "MT",
-          "UtcStartTime": "2026/11/05 16:00:00",
-          "UtcExpireTime": "2026/11/15 03:59:59",
+          "Tip": "サイドストーリー「紅炎遣らう落葉」復刻",
+          "StageName": "CF",
+          "UtcStartTime": "2026/11/30 16:00:00",
+          "UtcExpireTime": "2026/12/10 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "SSReopen-MT", "Value": "SSReopen-MT", "Drop": "復刻代理指揮 1~10" },
-          { "Display": "MT-10", "Value": "MT-10", "Drop": "31053" },
-          { "Display": "MT-9", "Value": "MT-9", "Drop": "30093" },
-          { "Display": "MT-8", "Value": "MT-8", "Drop": "30053" },
-          { "Display": "MT-6", "Value": "MT-6", "Drop": "1理性あたり0.69合成玉" }
+          { "Display": "SSReopen-CF", "Value": "SSReopen-CF", "Drop": "復刻代理指揮 1~8", "MinimumRequired": "v6.10.5" },
+          { "Display": "CF-8", "Value": "CF-8", "Drop": "このステージ効率最高" }
         ]
       },
       "TD": {
@@ -122,21 +119,18 @@
   },
   "YoStarKR": {
     "sideStoryStage": {
-      "MT": {
+      "CF": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "재개방 SideStory '중생의 여정'",
-          "StageName": "MT",
-          "UtcStartTime": "2026/11/05 16:00:00",
-          "UtcExpireTime": "2026/11/15 03:59:59",
+          "Tip": "재개방 SideStory '불을 쫓는 낙엽'",
+          "StageName": "CF",
+          "UtcStartTime": "2026/11/30 16:00:00",
+          "UtcExpireTime": "2026/12/10 03:59:59",
           "TimeZone": 9
         },
         "Stages": [
-          { "Display": "SSReopen-MT", "Value": "SSReopen-MT", "Drop": "재개방 대리지휘 1~10" },
-          { "Display": "MT-10", "Value": "MT-10", "Drop": "31053" },
-          { "Display": "MT-9", "Value": "MT-9", "Drop": "30093" },
-          { "Display": "MT-8", "Value": "MT-8", "Drop": "30053" },
-          { "Display": "MT-6", "Value": "MT-6", "Drop": "이성 당 0.69 합성옥" }
+          { "Display": "SSReopen-CF", "Value": "SSReopen-CF", "Drop": "재개방 대리지휘 1~8", "MinimumRequired": "v6.10.5" },
+          { "Display": "CF-8", "Value": "CF-8", "Drop": "이 스테이지 효율 최고" }
         ]
       },
       "TD": {
@@ -177,21 +171,18 @@
   },
   "YoStarEN": {
     "sideStoryStage": {
-      "MT": {
+      "CF": {
         "MinimumRequired": "v6.0.1",
         "Activity": {
-          "Tip": "The Masses' Travels - Rerun",
-          "StageName": "MT",
-          "UtcStartTime": "2026/11/05 08:00:00",
-          "UtcExpireTime": "2026/11/15 03:59:59",
+          "Tip": "A Flurry to the Flame - Rerun",
+          "StageName": "CF",
+          "UtcStartTime": "2026/11/30 08:00:00",
+          "UtcExpireTime": "2026/12/10 03:59:59",
           "TimeZone": -7
         },
         "Stages": [
-          { "Display": "SSReopen-MT", "Value": "SSReopen-MT", "Drop": "Rerun Auto Deploy 1~10" },
-          { "Display": "MT-10", "Value": "MT-10", "Drop": "31053" },
-          { "Display": "MT-9", "Value": "MT-9", "Drop": "30093" },
-          { "Display": "MT-8", "Value": "MT-8", "Drop": "30053" },
-          { "Display": "MT-6", "Value": "MT-6", "Drop": "0.69 Orundum per Sanity" }
+          { "Display": "SSReopen-CF", "Value": "SSReopen-CF", "Drop": "Rerun Auto Deploy 1~8", "MinimumRequired": "v6.10.5" },
+          { "Display": "CF-8", "Value": "CF-8", "Drop": "Most efficient stage" }
         ]
       },
       "TD": {
