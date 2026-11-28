@@ -7,7 +7,7 @@ import urllib.request
 from pathlib import Path
 
 # 使用：
-#   python gen_index.py                          - 三平台粘性自动
+#   python gen_index.py                          - 各平台粘性自动
 #   python gen_index.py auto                     - 同上
 #   python gen_index.py windows auto             - 只刷新 Windows（其它平台保持状态，不查人数）
 #   python gen_index.py android 2                - 手动钉 Android 第 2 群
@@ -22,7 +22,7 @@ from pathlib import Path
 #   4. 写回 index.html（粘性状态就在 RECOMMENDS 里，无额外文件）
 #
 # 运营配置：
-#   content_windows.txt / content_android.txt / content_mac.txt
+#   content_windows.txt / content_android.txt / content_mac.txt / content_linux.txt
 #     每行: 加群链接|群名称|群号
 #   content_channels.txt
 #     每行: 平台|频道链接|频道名称   （# 开头为注释）
@@ -36,16 +36,18 @@ GROUPINFO_API = os.environ.get(
 # 换群时分批查人数，每批找到有空位的就停
 OCCUPANCY_BATCH = 5
 
-PLATFORMS = ("windows", "android", "mac")
+PLATFORMS = ("windows", "android", "mac", "linux")
 PLATFORM_FILES = {
     "windows": "content_windows.txt",
     "android": "content_android.txt",
     "mac": "content_mac.txt",
+    "linux": "content_linux.txt",
 }
 PLATFORM_LABELS = {
     "windows": "Windows",
     "android": "Android",
     "mac": "Mac",
+    "linux": "Linux",
 }
 # 兼容别名
 PLATFORM_ALIASES = {
@@ -54,6 +56,7 @@ PLATFORM_ALIASES = {
     "android": "android",
     "mac": "mac",
     "macos": "mac",
+    "linux": "linux",
 }
 
 
@@ -118,7 +121,7 @@ def parse_args(argv: list[str]) -> dict:
     """
     usage = (
         "用法:\n"
-        "  python gen_index.py                         # 三平台粘性自动\n"
+        "  python gen_index.py                         # 各平台粘性自动\n"
         "  python gen_index.py auto\n"
         "  python gen_index.py windows auto            # 只刷新 Windows\n"
         "  python gen_index.py android 2               # 手动钉 Android #2\n"
@@ -688,6 +691,12 @@ def main() -> None:
         for p in PLATFORMS
     }
     channels_json = json.dumps(channels_meta, ensure_ascii=False)
+    platform_labels_json = json.dumps(PLATFORM_LABELS, ensure_ascii=False)
+    platform_tabs_html = "\n".join(
+        f'                    <button type="button" class="platform-tab" data-platform="{p}"\n'
+        f"                        onclick=\"selectPlatform('{p}')\">{esc(PLATFORM_LABELS[p])}</button>"
+        for p in PLATFORMS
+    )
     # 与生成期 Python 侧同一 GROUPINFO_API（含环境变量覆盖）
     groupinfo_api_json = json.dumps(GROUPINFO_API)
     has_any_channel = bool(channels)
@@ -1028,7 +1037,7 @@ def main() -> None:
     <script>
         const RECOMMENDS = {recommend_json};
         const CHANNELS = {channels_json};
-        const PLATFORM_LABELS = {{ windows: "Windows", android: "Android", mac: "Mac" }};
+        const PLATFORM_LABELS = {platform_labels_json};
         // 与 gen_index.py 同一 GROUPINFO_API（可由环境变量覆盖后注入）
         const GROUPINFO_API = {groupinfo_api_json};
         const groupInfoCache = Object.create(null); // gid -> info | null(failed)
@@ -1402,6 +1411,7 @@ def main() -> None:
                 windows: "windows", win: "windows", win32: "windows", pc: "windows",
                 android: "android", and: "android",
                 mac: "mac", macos: "mac", osx: "mac", darwin: "mac",
+                linux: "linux",
             }};
             return map[s] || "";
         }}
@@ -1493,7 +1503,7 @@ def main() -> None:
         }}
 
         // URL 带平台时自动选中，无需手动点
-        // 例: ?platform=windows  ?os=android  ?p=mac  #windows
+        // 例: ?platform=windows  ?os=android  ?p=mac  ?platform=linux  #windows
         function initPlatformFromUrl() {{
             const p = platformFromUrl();
             if (p) selectPlatform(p, {{ skipUrlSync: true }});
@@ -1518,12 +1528,7 @@ def main() -> None:
             <div class="platform-row">
                 <span class="platform-label">请先选择平台：</span>
                 <div class="platform-tabs" role="group" aria-label="客户端平台">
-                    <button type="button" class="platform-tab" data-platform="windows"
-                        onclick="selectPlatform('windows')">Windows</button>
-                    <button type="button" class="platform-tab" data-platform="android"
-                        onclick="selectPlatform('android')">Android</button>
-                    <button type="button" class="platform-tab" data-platform="mac"
-                        onclick="selectPlatform('mac')">Mac</button>
+{platform_tabs_html}
                 </div>
             </div>
 

@@ -19,6 +19,7 @@ on:
           - windows
           - android
           - mac
+          - linux
           - all
       mode:
         description: 推荐模式
@@ -62,7 +63,7 @@ jobs:
           GROUP_NUMBER="$(echo -n "$GROUP_NUMBER" | tr -d '[:space:]')"
 
           case "$PLATFORM" in
-            windows|android|mac|all) ;;
+            windows|android|mac|linux|all) ;;
             *)
               echo "invalid platform: $PLATFORM"
               exit 1
@@ -86,7 +87,7 @@ jobs:
                 exit 1
               fi
               if [ "$PLATFORM" = "all" ]; then
-                echo "mode=manual 不能选 platform=all，请指定 windows/android/mac"
+                echo "mode=manual 不能选 platform=all，请指定 windows/android/mac/linux"
                 exit 1
               fi
               python gen_index.py "$PLATFORM" "$GROUP_NUMBER"
