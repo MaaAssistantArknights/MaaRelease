@@ -35,6 +35,10 @@ on:
         required: false
         default: ""
 
+concurrency:
+  group: update-qq-group-index
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build QQ Group Index
